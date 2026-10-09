@@ -6,12 +6,14 @@ import google.generativeai as genai
 from datetime import datetime
 from dotenv import load_dotenv
 
-load_dotenv()
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+load_dotenv(os.path.join(BASE_DIR, ".env"))
+
 API_KEY = os.getenv("GEMINI_API_KEY", "")
 if API_KEY and API_KEY != "your_api_key_here":
     genai.configure(api_key=API_KEY)
 
-DB_FILE = "data/news.json"
+DB_FILE = os.path.join(BASE_DIR, "data", "news.json")
 
 FEEDS = {
     "National": "https://feeds.bbci.co.uk/news/world/rss.xml",
@@ -74,7 +76,7 @@ def fetch_and_generate():
                         title = parts[0].replace("TITLE:", "").strip()
                         content = parts[1].strip()
                 except Exception as e:
-                    print("AI Processing Error:", e)
+                    pass
 
             article = {
                 "id": len(existing_news) + len(new_articles) + 1,
@@ -90,11 +92,9 @@ def fetch_and_generate():
 
     if new_articles:
         combined = new_articles + existing_news
+        os.makedirs(os.path.dirname(DB_FILE), exist_ok=True)
         with open(DB_FILE, "w", encoding="utf-8") as f:
             json.dump(combined[:60], f, ensure_ascii=False, indent=2)
-        print(f"Success: {len(new_articles)} new articles added.")
-    else:
-        print("No new updates found.")
 
 if __name__ == "__main__":
     fetch_and_generate()

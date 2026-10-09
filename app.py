@@ -4,8 +4,13 @@ from flask import Flask, render_template, abort
 from apscheduler.schedulers.background import BackgroundScheduler
 from news_engine import fetch_and_generate
 
-app = Flask(__name__)
-DB_FILE = "data/news.json"
+# ডিরেক্টরি পাথ স্বয়ংক্রিয়ভাবে নিশ্চিত করা
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
+STATIC_DIR = os.path.join(BASE_DIR, "static")
+DB_FILE = os.path.join(BASE_DIR, "data", "news.json")
+
+app = Flask(__name__, template_folder=TEMPLATE_DIR, static_folder=STATIC_DIR)
 
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=fetch_and_generate, trigger="interval", minutes=30)
