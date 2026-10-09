@@ -180,6 +180,8 @@ def home():
 
 @app.route("/sync-news")
 def force_sync():
+    global LAST_FETCH_TIME
+    LAST_FETCH_TIME = 0  # ক্যাশ মেয়াদ তৎক্ষণাৎ শূন্য করে দেওয়া
     sync_trending_news(force=True)
     return redirect(url_for("home"))
 
