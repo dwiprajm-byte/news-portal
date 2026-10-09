@@ -3,250 +3,181 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>24 Early News - 24/7 Real-Time & Trending Updates | 24earlynews.com</title>
-  <meta name="description" content="Stay ahead with 24 Early News (24earlynews.com). Fast, reliable and comprehensive 24/7 news coverage.">
-  <meta name="google-site-verification" content="ajimu1pWScLZ0tX7u7qyzrAkSlQOz_DmqHPiBGdwbWM" />
-  
+  <title>24 Early News - Real-Time Breaking News Portal</title>
+  <meta name="description" content="24 Early News brings live real-time coverage, breaking news, market updates, daily horoscopes and verified global stories.">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
-
   <style>
     body { font-family: 'Poppins', sans-serif; }
-    .goog-te-banner-frame.skiptranslate, .goog-te-gadget-simple { display: none !important; }
-    body { top: 0px !important; }
-    #goog-gt-tt { display: none !important; }
-    .goog-tooltip { display: none !important; }
-    .goog-text-highlight { background: none !important; box-shadow: none !important; }
-    
-    .lang-dropdown-menu { max-height: 260px; overflow-y: auto; }
-    .lang-dropdown-menu::-webkit-scrollbar { width: 6px; }
-    .lang-dropdown-menu::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-    .menu-scroll::-webkit-scrollbar { height: 3px; }
-    .menu-scroll::-webkit-scrollbar-thumb { background: #ef4444; border-radius: 2px; }
   </style>
-  <!-- Google News & Search Schema Engine -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "NewsMediaOrganization",
     "name": "24 Early News",
     "url": "https://news-portal-6alq.onrender.com/",
-    "logo": "https://news-portal-6alq.onrender.com/static/logo.png",
     "founder": {
       "@type": "Person",
       "name": "DWIPRAJ MALLICK"
-    },
-    "publishingPrinciples": "https://news-portal-6alq.onrender.com/privacy-policy"
+    }
   }
   </script>
 </head>
 <body class="bg-gray-100 text-gray-900 flex flex-col min-h-screen">
 
-  <div id="google_translate_element" style="display:none;"></div>
-
-  <!-- টপ বার -->
-  <div class="bg-gray-900 text-gray-300 py-2 px-4 text-xs font-medium border-b border-gray-800">
-    <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-3">
-      
+  <!-- টপবার -->
+  <div class="bg-black text-gray-300 text-xs py-2 border-b border-red-900">
+    <div class="max-w-7xl mx-auto px-4 flex flex-wrap justify-between items-center gap-2">
+      <div class="flex items-center space-x-3">
+        <span class="text-red-500 font-bold flex items-center animate-pulse"><i class="fas fa-circle text-[8px] mr-1.5"></i> LIVE</span>
+        <span id="currentDateTime">Live Desk 24/7</span>
+      </div>
       <div class="flex items-center space-x-4 notranslate">
         <span class="bg-red-950 text-red-200 border border-red-800 px-2.5 py-0.5 rounded-full text-[11px] font-semibold tracking-wide flex items-center shadow-sm">
           <i class="fas fa-user-edit text-yellow-400 mr-1.5 text-[10px]"></i> Founder & Editor-in-Chief: <span class="text-white font-bold ml-1 tracking-wider">DWIPRAJ MALLICK</span>
         </span>
-        <span class="flex items-center"><i class="far fa-calendar-alt text-red-500 mr-1.5"></i> <span id="currentDate">--</span></span>
-        <span class="text-amber-400 font-semibold flex items-center"><i class="far fa-clock mr-1.5"></i> <span id="currentTime">--:--:--</span></span>
+        <div id="google_translate_element" class="text-xs"></div>
       </div>
-
-      <div class="relative notranslate">
-        <button id="langDropdownBtn" type="button" class="bg-gray-800 hover:bg-gray-700 text-white px-3 py-1.5 rounded-lg border border-gray-700 flex items-center space-x-2 transition shadow-sm">
-          <i class="fas fa-globe text-blue-400"></i>
-          <span id="currentLangLabel" class="font-semibold text-xs tracking-wide">English</span>
-          <i class="fas fa-chevron-down text-[10px] text-gray-400 ml-1"></i>
-        </button>
-
-        <div id="langDropdown" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl border border-gray-200 z-[9999] p-2 text-gray-800">
-          <div class="relative mb-2">
-            <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
-            <input type="text" id="langSearchInput" placeholder="Search language..." class="w-full pl-7 pr-3 py-1.5 bg-gray-50 border border-gray-300 rounded-md text-xs focus:outline-none focus:border-red-600 focus:bg-white text-gray-900 font-medium" autocomplete="off">
-          </div>
-          <ul id="langList" class="lang-dropdown-menu space-y-0.5 text-xs"></ul>
-        </div>
-      </div>
-
     </div>
   </div>
 
-  <!-- লাইভ ব্রেকিং বার -->
-  <div class="bg-red-700 text-white py-2 px-4 flex items-center text-sm font-semibold shadow">
-    <span class="bg-black px-2.5 py-0.5 rounded text-xs uppercase mr-3 tracking-wider font-bold animate-pulse flex items-center notranslate">
-      <i class="fas fa-bolt mr-1 text-yellow-400"></i> LIVE 24/7
-    </span>
-    <marquee class="tracking-wide">
-      {% if lead %}{{ lead.title }}{% else %}Welcome to 24 Early News (24earlynews.com) - Real-time breaking news, stock markets, sports & lifestyle updates...{% endif %}
-    </marquee>
-  </div>
-
-  <!-- হেডার ও ব্র্যান্ডিং -->
-  <header class="bg-white border-b shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 py-3.5 flex justify-between items-center">
-      <a href="/" class="flex items-center gap-2 group notranslate">
-        <div class="bg-gradient-to-br from-red-600 to-red-800 text-white font-black px-3 py-1.5 rounded-lg text-2xl tracking-tighter shadow-md">
-          24<span class="text-yellow-400">⚡</span>
+  <!-- মূল হেডার -->
+  <header class="bg-white border-b shadow-sm sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex flex-wrap justify-between items-center gap-4">
+      <div>
+        <a href="/" class="text-2xl md:text-3xl font-black text-red-700 tracking-tight">24 EARLY<span class="text-gray-900 ml-1">NEWS</span></a>
+        <div class="flex items-center gap-1.5">
+          <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">24earlynews.com</span>
+          <span class="text-gray-300 text-[10px]">&bull;</span>
+          <span class="text-[10px] text-red-700 font-semibold">Founded by DWIPRAJ MALLICK</span>
         </div>
-        <div>
-          <span class="text-2xl font-black text-gray-900 tracking-tight block leading-none">
-            EARLY<span class="text-red-700">NEWS</span>
-          </span>
-          <div class="flex items-center gap-1.5">
-            <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">24earlynews.com</span>
-            <span class="text-gray-300 text-[10px]">&bull;</span>
-            <span class="text-[10px] text-red-700 font-semibold">Founded by DWIPRAJ MALLICK</span>
-          </div>
-        </div>
-      </a>
-
-      <div class="hidden lg:flex items-center space-x-2 text-xs font-bold text-gray-700">
-        <span class="bg-red-50 text-red-700 border border-red-200 px-2.5 py-1 rounded-full flex items-center gap-1.5">
-          <span class="w-2 h-2 rounded-full bg-red-600 animate-ping"></span> Live Feeds Active
-        </span>
-        <button id="instantRefreshBtn" onclick="triggerLiveRefresh()" class="bg-gray-100 hover:bg-red-50 hover:text-red-700 text-gray-800 border border-gray-300 px-3 py-1 rounded-md transition flex items-center gap-1.5 font-bold cursor-pointer shadow-sm">
-  <i id="refreshIcon" class="fas fa-sync-alt text-red-600"></i> <span id="refreshText">Refresh Now</span>
-</button>
       </div>
 
-      <div class="flex items-center space-x-3 text-lg text-gray-600 notranslate">
-        <a href="https://facebook.com" target="_blank" class="hover:text-blue-600"><i class="fab fa-facebook"></i></a>
-        <a href="https://whatsapp.com" target="_blank" class="hover:text-green-500"><i class="fab fa-whatsapp"></i></a>
-        <a href="https://telegram.org" target="_blank" class="hover:text-blue-400"><i class="fab fa-telegram"></i></a>
+      <div class="flex items-center gap-3">
+        <a href="/sync-news" class="bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1.5 shadow-sm transition">
+          <i class="fas fa-sync-alt text-red-600"></i> Refresh News
+        </a>
       </div>
     </div>
+
+    <!-- ক্যাটাগরি মেনু বার -->
+    <nav class="bg-red-700 text-white overflow-x-auto whitespace-nowrap shadow-inner">
+      <div class="max-w-7xl mx-auto px-4 flex items-center space-x-1 py-1.5 text-xs font-bold uppercase tracking-wider">
+        <a href="/" class="px-3 py-1.5 rounded bg-red-900 text-white flex items-center gap-1"><i class="fas fa-home"></i> Home</a>
+        <a href="/category/national" class="px-3 py-1.5 rounded hover:bg-red-800 transition"><i class="fas fa-flag mr-1"></i> National</a>
+        <a href="/category/international" class="px-3 py-1.5 rounded hover:bg-red-800 transition"><i class="fas fa-globe mr-1"></i> World News</a>
+        <a href="/category/business" class="px-3 py-1.5 rounded hover:bg-red-800 transition"><i class="fas fa-chart-line mr-1"></i> Market & Gold</a>
+        <a href="/category/sports" class="px-3 py-1.5 rounded hover:bg-red-800 transition"><i class="fas fa-futbol mr-1"></i> Live Sports</a>
+        <a href="/category/entertainment" class="px-3 py-1.5 rounded hover:bg-red-800 transition"><i class="fas fa-film mr-1"></i> Cinema & Viral</a>
+        <a href="/category/technology" class="px-3 py-1.5 rounded hover:bg-red-800 transition"><i class="fas fa-microchip mr-1"></i> Tech & AI</a>
+        <a href="/horoscope" class="px-3 py-1.5 rounded hover:bg-yellow-600 bg-yellow-500 text-black font-extrabold transition"><i class="fas fa-star mr-1"></i> Daily Horoscope</a>
+        <a href="/recipes" class="px-3 py-1.5 rounded hover:bg-orange-600 bg-orange-500 text-white font-extrabold transition"><i class="fas fa-utensils mr-1"></i> Recipes</a>
+      </div>
+    </nav>
   </header>
 
-  <!-- ১০০% কার্যকরী মেনুবার -->
-  <nav class="bg-gray-900 sticky top-0 z-50 shadow-md">
-    <div class="max-w-7xl mx-auto px-2 sm:px-4">
-      <div class="flex items-center space-x-1 sm:space-x-2 overflow-x-auto menu-scroll py-2 text-xs sm:text-sm font-bold text-gray-200 whitespace-nowrap">
-        <a href="/" class="bg-red-700 text-white px-3 py-1.5 rounded-md hover:bg-red-800 transition flex items-center gap-1.5">
-          <i class="fas fa-home"></i> Home
-        </a>
-        <a href="/category/national" class="hover:bg-gray-800 hover:text-red-400 px-3 py-1.5 rounded-md transition flex items-center gap-1.5">
-          <i class="fas fa-flag"></i> National
-        </a>
-        <a href="/category/international" class="hover:bg-gray-800 hover:text-red-400 px-3 py-1.5 rounded-md transition flex items-center gap-1.5">
-          <i class="fas fa-globe-americas"></i> World News
-        </a>
-        <a href="/category/business" class="hover:bg-gray-800 hover:text-amber-400 px-3 py-1.5 rounded-md transition flex items-center gap-1.5 text-amber-300">
-          <i class="fas fa-chart-line text-amber-400"></i> Market & Gold
-        </a>
-        <a href="/category/sports" class="hover:bg-gray-800 hover:text-green-400 px-3 py-1.5 rounded-md transition flex items-center gap-1.5">
-          <i class="fas fa-futbol text-green-400"></i> Live Sports
-        </a>
-        <a href="/category/entertainment" class="hover:bg-gray-800 hover:text-pink-400 px-3 py-1.5 rounded-md transition flex items-center gap-1.5 text-pink-300">
-          <i class="fas fa-film text-pink-400"></i> Cinema & Viral
-        </a>
-        <a href="/category/technology" class="hover:bg-gray-800 hover:text-cyan-400 px-3 py-1.5 rounded-md transition flex items-center gap-1.5">
-          <i class="fas fa-mobile-alt text-cyan-400"></i> Tech & AI
-        </a>
-        <a href="/horoscope" class="hover:bg-gray-800 hover:text-yellow-400 px-3 py-1.5 rounded-md transition flex items-center gap-1.5 text-yellow-300">
-          <i class="fas fa-star text-yellow-400"></i> Daily Horoscope
-        </a>
-        <a href="/recipes" class="hover:bg-gray-800 hover:text-orange-400 px-3 py-1.5 rounded-md transition flex items-center gap-1.5">
-          <i class="fas fa-utensils text-orange-400"></i> Recipes
-        </a>
-        <a href="/category/science" class="hover:bg-gray-800 hover:text-purple-400 px-3 py-1.5 rounded-md transition flex items-center gap-1.5">
-          <i class="fas fa-flask text-purple-400"></i> Science & Space
-        </a>
-      </div>
-    </div>
-  </nav>
-
-  <!-- হেডার অ্যাড -->
-  <div class="max-w-7xl mx-auto px-4 my-4 w-full">
-    <div class="border border-dashed border-gray-300 bg-white rounded-lg h-24 flex items-center justify-center text-gray-400 font-bold text-xs uppercase tracking-widest shadow-sm notranslate">
+  <!-- টপ ব্যানার অ্যাড -->
+  <div class="max-w-7xl mx-auto px-4 mt-4">
+    <div class="border border-dashed border-gray-300 bg-white rounded-xl h-20 flex items-center justify-center text-gray-400 font-bold text-xs uppercase tracking-widest shadow-sm notranslate">
       High CPC Header Ad (728x90)
     </div>
   </div>
 
-  <!-- মূল বডি -->
-  <main class="max-w-7xl mx-auto px-4 py-4 grid grid-cols-1 lg:grid-cols-12 gap-8 flex-grow">
-    
-    <div class="lg:col-span-8 space-y-8">
-      
-      {% if lead %}
-      <article id="mainLeadCard" class="bg-white rounded-xl shadow-sm border overflow-hidden hover:shadow-md transition duration-500">
-  <div class="relative overflow-hidden">
-    <img id="leadImg" src="{{ lead.image }}" alt="{{ lead.title }}" class="w-full h-80 md:h-96 object-cover transition-opacity duration-500">
-    <span id="leadCat" class="absolute top-4 left-4 bg-red-600 text-white text-xs font-bold px-2.5 py-1 rounded uppercase tracking-wider notranslate shadow">{{ lead.category }}</span>
-  </div>
-  <div class="p-6">
-    <h1 class="text-2xl md:text-3xl font-bold leading-snug hover:text-red-700 transition">
-      <a id="leadTitleLink" href="/news/{{ lead.id }}">{{ lead.title }}</a>
-    </h1>
-    <div class="mt-4 flex justify-between items-center text-xs text-gray-400 border-t pt-3">
-      <span><i class="far fa-clock mr-1"></i> <span id="leadDate">{{ lead.date }}</span></span>
-      <a id="leadReadMore" href="/news/{{ lead.id }}" class="text-red-700 font-bold hover:underline">Read Full Story &rarr;</a>
-    </div>
-  </div>
-</article>
-      {% endif %}
+  <!-- মূল কন্টেন্ট গ্রিড -->
+  <main class="max-w-7xl mx-auto px-4 py-6 flex-grow">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-      <div>
-        <div class="border-b-2 border-red-700 pb-2 mb-4 flex justify-between items-center">
-          <h2 class="text-xl font-bold text-gray-900 flex items-center">
-            <i class="fas fa-newspaper text-red-600 mr-2"></i> Real-Time Trending Headlines
-          </h2>
-          <span class="text-xs text-gray-500 font-semibold notranslate">Updated Every Second</span>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {% for item in news_list %}
-          <div class="bg-white rounded-xl shadow-sm border p-4 flex flex-col justify-between hover:border-red-400 transition hover:shadow-md">
-            <div>
-              <span class="text-xs font-bold text-red-600 uppercase notranslate">{{ item.category }}</span>
-              <h3 class="text-base font-bold text-gray-800 mt-1 hover:text-red-700 transition leading-snug">
-                <a href="/news/$1">$2</a>
-              </h3>
-            </div>
-            <div class="text-xs text-gray-400 mt-4 border-t pt-2 flex justify-between items-center">
-              <span>{{ item.date }}</span>
-              <a href="/news/$1">$2</a>
+      <!-- বাঁদিকের অংশ: লিড নিউজ ও লাইভ ওয়্যার -->
+      <div class="lg:col-span-2 space-y-6">
+
+        <!-- ১ মিনিটে অটো-রোটেট হওয়া লিড নিউজ কার্ড -->
+        {% if lead %}
+        <article id="mainLeadCard" class="bg-white rounded-2xl shadow-sm border overflow-hidden hover:shadow-md transition duration-500">
+          <div class="relative overflow-hidden">
+            <a id="leadImgLink" href="/news/{{ lead.id }}">
+              <img id="leadImg" src="{{ lead.image }}" alt="{{ lead.title }}" class="w-full h-80 md:h-96 object-cover transition duration-300 hover:scale-105">
+            </a>
+            <span id="leadCat" class="absolute top-4 left-4 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded shadow uppercase tracking-wider notranslate">
+              {{ lead.category }}
+            </span>
+          </div>
+          <div class="p-6">
+            <h1 class="text-xl md:text-3xl font-extrabold text-gray-900 leading-snug hover:text-red-700 transition">
+              <a id="leadTitleLink" href="/news/{{ lead.id }}">{{ lead.title }}</a>
+            </h1>
+            <div class="mt-4 flex justify-between items-center text-xs text-gray-400 border-t pt-3">
+              <span><i class="far fa-clock mr-1 text-red-500"></i> <span id="leadDate">{{ lead.date }}</span></span>
+              <a id="leadReadMore" href="/news/{{ lead.id }}" class="text-red-600 font-bold hover:underline flex items-center">
+                Read Full Story &rarr;
+              </a>
             </div>
           </div>
-          {% endfor %}
-        </div>
+        </article>
+        {% endif %}
+
+        <!-- Real-Time Trending Headlines গ্রিড (যেখানে আগে $2 আসছিল) -->
+        <section class="bg-white rounded-2xl shadow-sm border p-6">
+          <div class="flex items-center justify-between border-b pb-3 mb-6">
+            <h2 class="text-lg md:text-xl font-black text-gray-900 flex items-center">
+              <i class="far fa-newspaper text-red-600 mr-2"></i> Real-Time Trending Headlines
+            </h2>
+            <span class="text-[10px] bg-red-100 text-red-700 font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
+              Updated Every Minute
+            </span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {% for item in news_list[:6] %}
+            <article class="bg-gray-50 border border-gray-200 rounded-xl p-4 hover:border-red-500 hover:bg-white hover:shadow-md transition duration-200 flex flex-col justify-between">
+              <div>
+                <span class="text-[10px] font-bold text-red-600 uppercase tracking-wider block mb-1.5">
+                  {{ item.category }}
+                </span>
+                <h3 class="text-sm font-bold text-gray-900 leading-snug hover:text-red-700 transition line-clamp-2">
+                  <a href="/news/{{ item.id }}" class="block">
+                    {{ item.title }}
+                  </a>
+                </h3>
+              </div>
+              <div class="flex items-center justify-between text-[11px] text-gray-400 border-t border-gray-200 pt-2.5 mt-3">
+                <span><i class="far fa-clock mr-1"></i> {{ item.date }}</span>
+                <a href="/news/{{ item.id }}" class="text-red-600 font-bold hover:underline">
+                  Read &rarr;
+                </a>
+              </div>
+            </article>
+            {% endfor %}
+          </div>
+        </section>
+
       </div>
 
-    </div>
-
-    <!-- সাইডবার -->
-          <!-- Most Read & Trending Sidebar (100% Clickable & Verified) -->
-            <!-- Most Read & Trending Sidebar (100% Clickable & Verified) -->
+      <!-- ডানদিকের সাইডবার: Most Read Headlines ও বিজ্ঞাপন -->
       <aside class="space-y-6">
-        <div class="bg-white rounded-2xl shadow-sm border p-5">
+        <div class="bg-white rounded-2xl shadow-sm border p-6">
           <div class="flex items-center justify-between border-b pb-3 mb-4">
             <h2 class="text-base font-extrabold text-gray-900 flex items-center">
-              <i class="fas fa-fire-flame-curved text-red-600 mr-2"></i>
-              Most Read Headlines
+              <i class="fas fa-fire text-red-600 mr-2"></i> Most Read Headlines
             </h2>
             <span class="text-[10px] bg-red-100 text-red-700 font-bold px-2 py-0.5 rounded uppercase">Trending</span>
           </div>
 
-          <div class="space-y-3.5">
-            {% for item in news_list[:6] %}
-            <article class="group pb-3 border-b border-gray-100 last:border-b-0 last:pb-0">
-              <a href="/news/{{ item.id }}" class="flex items-start gap-3 cursor-pointer">
-                <span class="text-red-600 font-black text-sm w-5 flex-shrink-0 mt-0.5 group-hover:scale-110 transition">
+          <div class="space-y-4">
+            {% for item in news_list[6:13] %}
+            <article class="pb-3 border-b border-gray-100 last:border-b-0 last:pb-0 group">
+              <a href="/news/{{ item.id }}" class="flex items-start gap-3">
+                <span class="text-red-600 font-black text-sm w-4 flex-shrink-0 mt-0.5 group-hover:scale-125 transition">
                   0{{ loop.index }}
                 </span>
                 <div class="flex-grow">
                   <span class="text-[10px] font-bold text-red-600 uppercase tracking-wider block mb-0.5">{{ item.category }}</span>
-                  <h3 class="text-xs sm:text-sm font-bold text-gray-800 leading-snug group-hover:text-red-700 group-hover:underline transition">
+                  <h3 class="text-xs sm:text-sm font-bold text-gray-800 leading-snug group-hover:text-red-700 transition line-clamp-2">
                     {{ item.title }}
                   </h3>
-                  <div class="flex items-center justify-between text-[10px] text-gray-400 mt-1.5">
+                  <div class="flex items-center justify-between text-[10px] text-gray-400 mt-1">
                     <span><i class="far fa-clock mr-1"></i> {{ item.date }}</span>
-                    <span class="text-red-600 font-bold group-hover:translate-x-1 transition flex items-center">
-                      Read &rarr;
-                    </span>
+                    <span class="text-red-600 font-bold group-hover:translate-x-1 transition">Read &rarr;</span>
                   </div>
                 </div>
               </a>
@@ -255,34 +186,37 @@
           </div>
         </div>
 
-        <!-- সাইডবার বিজ্ঞাপন ব্যানার -->
-        <div class="border border-dashed border-gray-300 bg-gray-50 rounded-xl h-60 flex items-center justify-center text-gray-400 font-bold text-xs uppercase tracking-widest shadow-inner notranslate">
-          High CPC Ad (300x250)
+        <div class="border border-dashed border-gray-300 bg-white rounded-2xl h-64 flex items-center justify-center text-gray-400 font-bold text-xs uppercase tracking-widest shadow-sm notranslate">
+          Sidebar High CPC Ad (300x250)
         </div>
       </aside>
 
-      <!-- লাইভ নিউজ গ্রিড: সব নতুন খবর উপরে, পুরনো খবর নিচে -->
+    </div>
+
+    <!-- ২৪ ঘণ্টার রোলিং লাইভ ওয়্যার (নতুন খবর সবার উপরে, পুরোনো খবর নিচে) -->
     <section class="mt-10">
       <div class="flex items-center justify-between border-b-2 border-red-600 pb-3 mb-6">
         <h2 class="text-xl md:text-2xl font-black text-gray-900 flex items-center">
-          <i class="fas fa-newspaper text-red-600 mr-2.5"></i> Today's Full Live Wire (Latest to Oldest)
+          <i class="fas fa-layer-group text-red-600 mr-2.5"></i> Today's Full 24-Hour Continuous Live Feed
         </h2>
-        <span class="text-xs bg-red-100 text-red-700 font-bold px-3 py-1 rounded-full animate-pulse">24-Hour Rolling Feed</span>
+        <span class="text-xs bg-red-100 text-red-700 font-bold px-3 py-1 rounded-full animate-pulse">Auto-Purged after 24h</span>
       </div>
 
-      <div id="fullNewsListContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {% for item in news_list %}
         <article class="bg-white rounded-xl shadow-sm border overflow-hidden hover:shadow-lg transition duration-200 flex flex-col justify-between group">
           <div>
             <div class="relative overflow-hidden h-48">
-              <a href="/news/$1">$2</a>
+              <a href="/news/{{ item.id }}">
+                <img src="{{ item.image }}" alt="{{ item.title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+              </a>
               <span class="absolute top-2.5 left-2.5 bg-red-600 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded shadow">
                 {{ item.category }}
               </span>
             </div>
             <div class="p-4">
               <h3 class="font-bold text-sm sm:text-base text-gray-900 group-hover:text-red-700 transition leading-snug line-clamp-2">
-                <a href="/news/$1">$2</a>
+                <a href="/news/{{ item.id }}">{{ item.title }}</a>
               </h3>
               <p class="text-xs text-gray-400 mt-2 flex items-center">
                 <i class="far fa-clock mr-1 text-red-500"></i> {{ item.date }}
@@ -290,8 +224,10 @@
             </div>
           </div>
           <div class="bg-gray-50 border-t px-4 py-2.5 flex justify-between items-center text-xs">
-            <span class="text-gray-500 font-medium">Verified Story</span>
-            <a href="/news/$1">$2</a>
+            <span class="text-gray-500 font-medium">Fact Checked</span>
+            <a href="/news/{{ item.id }}" class="text-red-600 font-bold hover:underline">
+              Read Report &rarr;
+            </a>
           </div>
         </article>
         {% endfor %}
@@ -300,250 +236,57 @@
   </main>
 
   <!-- ফুটার -->
-  <footer class="bg-gray-900 text-gray-400 py-10 border-t border-gray-800 mt-auto">
-    <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 text-sm">
-      <div>
-        <h3 class="text-white font-bold text-base mb-3 border-l-4 border-red-600 pl-2">24 Early News</h3>
-        <p class="leading-relaxed text-xs">24 Early News (24earlynews.com) delivers 24/7 global coverage spanning politics, financial markets, sports, cinema, technology, recipes and zodiac horoscopes.</p>
+  <footer class="bg-gray-900 text-gray-400 text-xs py-8 mt-12 border-t-4 border-red-700">
+    <div class="max-w-7xl mx-auto px-4 text-center space-y-3">
+      <p class="text-white font-bold text-base">24 EARLY NEWS</p>
+      <div class="flex flex-wrap justify-center gap-4 text-gray-300 font-medium">
+        <a href="/privacy-policy" class="hover:text-white">Privacy Policy</a>
+        <a href="/terms" class="hover:text-white">Terms of Service</a>
+        <a href="/disclaimer" class="hover:text-white">Disclaimer</a>
+        <a href="/about" class="hover:text-white">About Us</a>
+        <a href="/contact" class="hover:text-white">Contact Us</a>
       </div>
-      <div>
-        <h3 class="text-white font-bold text-base mb-3 border-l-4 border-red-600 pl-2">Categories</h3>
-        <ul class="space-y-1.5 text-xs">
-          <li><a href="/category/national" class="hover:text-white">National & World News</a></li>
-          <li><a href="/category/business" class="hover:text-white">Share Market & Gold Rates</a></li>
-          <li><a href="/category/sports" class="hover:text-white">Sports & Scores</a></li>
-          <li><a href="/category/entertainment" class="hover:text-white">Bollywood & Hollywood Viral</a></li>
-          <li><a href="/horoscope" class="hover:text-white">Daily 12 Zodiac Horoscopes</a></li>
-        </ul>
-      </div>
-      <div>
-        <h3 class="text-white font-bold text-base mb-3 border-l-4 border-red-600 pl-2">Policies & Contact</h3>
-        <ul class="space-y-1.5 text-xs">
-          <li><a href="/about" class="hover:text-white">About Us</a></li>
-          <li><a href="/contact" class="hover:text-white">Contact Us</a></li>
-          <li><a href="/privacy-policy" class="hover:text-white">Privacy Policy</a></li>
-          <li><a href="/terms" class="hover:text-white">Terms & Conditions</a></li>
-          <li><a href="/disclaimer" class="hover:text-white">Disclaimer</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="max-w-7xl mx-auto px-4 pt-6 border-t border-gray-800 text-center text-xs notranslate">
-      <p>&copy; 2026 <strong>24 Early News</strong> (24earlynews.com). Founded & Directed by <strong>DWIPRAJ MALLICK</strong>. All Rights Reserved.</p>
+      <p>&copy; 2026 <strong>24 Early News</strong>. Founded & Directed by <strong>DWIPRAJ MALLICK</strong>. All Rights Reserved.</p>
     </div>
   </footer>
 
+  <!-- গুগল ট্রান্সলেট স্ক্রিপ্ট -->
   <script type="text/javascript">
     function googleTranslateElementInit() {
-      new google.translate.TranslateElement({ pageLanguage: 'en', autoDisplay: false }, 'google_translate_element');
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'bn,hi,en,ur,ta,te,mr,gu,ar,es,fr',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+      }, 'google_translate_element');
     }
   </script>
   <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
-  <script>
-    function updateClock() {
-      const now = new Date();
-      const options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
-      document.getElementById('currentDate').innerText = now.toLocaleDateString('en-US', options);
-      document.getElementById('currentTime').innerText = now.toLocaleTimeString('en-US');
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-
-    const languages = [
-      { code: 'en', name: 'English' },
-      { code: 'bn', name: 'Bengali (বাংলা)' },
-      { code: 'hi', name: 'Hindi (हिन्दी)' },
-      { code: 'es', name: 'Spanish (Español)' },
-      { code: 'ar', name: 'Arabic (العربية)' },
-      { code: 'fr', name: 'French (Français)' },
-      { code: 'de', name: 'German (Deutsch)' },
-      { code: 'ur', name: 'Urdu (اردو)' },
-      { code: 'pt', name: 'Portuguese (Português)' },
-      { code: 'ru', name: 'Russian (Русский)' },
-      { code: 'zh-CN', name: 'Chinese (Simplified)' },
-      { code: 'ja', name: 'Japanese (日本語)' },
-      { code: 'ta', name: 'Tamil (தமிழ்)' },
-      { code: 'te', name: 'Telugu (తెలుగు)' },
-      { code: 'mr', name: 'Marathi (मराठी)' },
-      { code: 'gu', name: 'Gujarati (ગુજરાતી)' },
-      { code: 'pa', name: 'Punjabi (ਪੰਜਾਬੀ)' },
-      { code: 'it', name: 'Italian (Italiano)' },
-      { code: 'tr', name: 'Turkish (Türkçe)' }
-    ];
-
-    const langDropdownBtn = document.getElementById('langDropdownBtn');
-    const langDropdown = document.getElementById('langDropdown');
-    const langSearchInput = document.getElementById('langSearchInput');
-    const langList = document.getElementById('langList');
-    const currentLangLabel = document.getElementById('currentLangLabel');
-
-    function renderLanguages(list) {
-      langList.innerHTML = '';
-      list.forEach(lang => {
-        const li = document.createElement('li');
-        li.className = "px-3 py-1.5 hover:bg-red-50 hover:text-red-700 cursor-pointer rounded-md transition font-medium flex justify-between items-center";
-        li.innerText = lang.name;
-        li.onclick = () => selectLanguage(lang.code, lang.name);
-        langList.appendChild(li);
-      });
-    }
-
-    renderLanguages(languages);
-
-    langDropdownBtn.onclick = (e) => {
-      e.stopPropagation();
-      langDropdown.classList.toggle('hidden');
-      if (!langDropdown.classList.contains('hidden')) {
-        langSearchInput.value = '';
-        renderLanguages(languages);
-        setTimeout(() => langSearchInput.focus(), 100);
-      }
-    };
-
-    langSearchInput.oninput = (e) => {
-      const q = e.target.value.toLowerCase();
-      const filtered = languages.filter(l => l.name.toLowerCase().includes(q) || l.code.toLowerCase().includes(q));
-      renderLanguages(filtered);
-    };
-
-    window.onclick = (e) => {
-      if (!langDropdown.contains(e.target) && !langDropdownBtn.contains(e.target)) {
-        langDropdown.classList.add('hidden');
-      }
-    };
-
-    function selectLanguage(code, name) {
-      currentLangLabel.innerText = name.split(' ')[0];
-      langDropdown.classList.add('hidden');
-      const selectElement = document.querySelector('.goog-te-combo');
-      if (selectElement) {
-        selectElement.value = code;
-        selectElement.dispatchEvent(new Event('change'));
-      } else {
-        document.cookie = `googtrans=/en/${code}; path=/; domain=${window.location.hostname}`;
-        document.cookie = `googtrans=/en/${code}; path=/;`;
-        location.reload();
-      }
-    }
-  </script>
-
-  <!-- Instant Live News Refresher -->
-  <script>
-    function triggerLiveRefresh() {
-      const btn = document.getElementById('instantRefreshBtn');
-      const icon = document.getElementById('refreshIcon');
-      const text = document.getElementById('refreshText');
-      
-      // বোতাম লক ও স্পিনিং অ্যানিমেশন শুরু
-      btn.disabled = true;
-      icon.classList.add('fa-spin');
-      text.innerText = 'Updating Feeds...';
-
-      // ব্যাকএন্ডে সাথে সাথে নতুন খবর সিঙ্ক রিকোয়েস্ট পাঠানো
-      fetch('/sync-news', { cache: 'no-store' })
-        .then(() => {
-          text.innerText = 'Refreshed!';
-          // ব্রাউজার ক্যাশ বাইপাস করে তৎক্ষণাৎ তাজা পেজ রিলোড
-          setTimeout(() => {
-            window.location.reload(true);
-          }, 400);
-        })
-        .catch(() => {
-          // কোনো কারণে নেটওয়ার্ক ফেইল করলে সরাসরি রিডাইরেক্ট
-          window.location.href = '/sync-news';
-        });
-    }
-  </script>
-      <!-- 1-Minute Fresh Non-Repeating Lead News Engine -->
+  <!-- ১ মিনিটে ফ্রেশ নো-রিপিট লিড রোটেটর ইঞ্জিন -->
   <script>
     async function fetchFreshLeadNews() {
       try {
-        const response = await fetch('/api/latest-lead?t=' + new Date().getTime(), { cache: 'no-store' });
+        const response = await fetch('/api/latest-lead?t=' + Date.now(), { cache: 'no-store' });
         const data = await response.json();
-        
         if (data.status === 'success' && data.news) {
-          const nextStory = data.news;
-          const leadCard = document.getElementById('mainLeadCard');
-          const leadImg = document.getElementById('leadImg');
-          const leadCat = document.getElementById('leadCat');
-          const leadTitleLink = document.getElementById('leadTitleLink');
-          const leadDate = document.getElementById('leadDate');
-          const leadReadMore = document.getElementById('leadReadMore');
-
-          if (!leadCard || !leadImg) return;
-
-          // স্মুথ ফেড আউট
-          leadCard.style.opacity = '0.2';
-
+          const s = data.news;
+          const card = document.getElementById('mainLeadCard');
+          if (!card) return;
+          card.style.opacity = '0.3';
           setTimeout(() => {
-            leadImg.src = nextStory.image;
-            leadCat.innerText = nextStory.category;
-            leadTitleLink.innerText = nextStory.title;
-            leadTitleLink.href = '/news/' + nextStory.id;
-            leadDate.innerText = nextStory.date;
-            leadReadMore.href = '/news/' + nextStory.id;
-
-            // স্মুথ ফেড ইন
-            leadCard.style.opacity = '1';
-          }, 450);
+            document.getElementById('leadImg').src = s.image;
+            document.getElementById('leadImgLink').href = '/news/' + s.id;
+            document.getElementById('leadCat').innerText = s.category;
+            document.getElementById('leadTitleLink').innerText = s.title;
+            document.getElementById('leadTitleLink').href = '/news/' + s.id;
+            document.getElementById('leadDate').innerText = s.date;
+            document.getElementById('leadReadMore').href = '/news/' + s.id;
+            card.style.opacity = '1';
+          }, 350);
         }
-      } catch (err) {
-        console.log('Error fetching fresh lead news:', err);
-      }
+      } catch (err) {}
     }
-
-    // প্রতি ১ মিনিট (৬০ সেকেন্ড) অন্তর অন্তর ব্যাকএন্ড থেকে একদম নতুন খবর নিয়ে আসবে
     setInterval(fetchFreshLeadNews, 60000);
-  </script>
-  <script>
-    // প্রতি ১ মিনিটে নতুন খবর সবার উপরে স্বয়ংক্রিয়ভাবে পুশ করা
-    async function liveRefreshNewsFeed() {
-      try {
-        const res = await fetch('/api/latest-lead?t=' + Date.now(), { cache: 'no-store' });
-        const data = await res.json();
-        if (data.status === 'success' && data.news) {
-          const container = document.getElementById('fullNewsListContainer');
-          if (!container) return;
-          
-          // যদি এই খবরটি পেজে আগে থেকে না থাকে তবে সবার উপরে অ্যাড করা
-          const existingCard = document.querySelector(`a[href="/news/${data.news.id}"]`);
-          if (!existingCard) {
-            const newCard = document.createElement('article');
-            newCard.className = "bg-white rounded-xl shadow-sm border overflow-hidden hover:shadow-lg transition duration-200 flex flex-col justify-between group animate-fade-in";
-            newCard.innerHTML = `
-              <div>
-                <div class="relative overflow-hidden h-48">
-                  <a href="/news/${data.news.id}">
-                    <img src="${data.news.image}" alt="${data.news.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                  </a>
-                  <span class="absolute top-2.5 left-2.5 bg-red-600 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded shadow">
-                    ${data.news.category}
-                  </span>
-                </div>
-                <div class="p-4">
-                  <h3 class="font-bold text-sm sm:text-base text-gray-900 group-hover:text-red-700 transition leading-snug line-clamp-2">
-                    <a href="/news/${data.news.id}" class="hover:underline">${data.news.title}</a>
-                  </h3>
-                  <p class="text-xs text-gray-400 mt-2 flex items-center">
-                    <i class="far fa-clock mr-1 text-red-500"></i> ${data.news.date}
-                  </p>
-                </div>
-              </div>
-              <div class="bg-gray-50 border-t px-4 py-2.5 flex justify-between items-center text-xs">
-                <span class="text-red-600 font-bold">New Breaking</span>
-                <a href="/news/${data.news.id}" class="text-red-600 font-bold hover:underline flex items-center">
-                  Read Report &rarr;
-                </a>
-              </div>
-            `;
-            container.insertBefore(newCard, container.firstChild);
-          }
-        }
-      } catch (e) {
-        console.log("Feed auto-update silent retry...");
-      }
-    }
-    setInterval(liveRefreshNewsFeed, 60000);
   </script>
 </body>
 </html>
