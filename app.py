@@ -302,3 +302,15 @@ def api_latest_lead():
         })
         
     return jsonify({"status": "empty"})
+# --- Production Enterprise Security Headers ---
+@app.after_request
+def apply_security_headers(response):
+    # Clickjacking প্রতিরোধ (অন্য সাইটে এম্বেড হওয়া আটকাবে)
+    response.headers["X-Frame-Options"] = "SAMEORIGIN"
+    # ব্রাউজার ফাইল টাইপ ম্যানিপুলেশন (Sniffing) বন্ধ
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    # ক্রস সাইট স্ক্রিপ্টিং (XSS) প্রতিরোধ
+    response.headers["X-XSS-Protection"] = "1; mode=block"
+    # রেফারার ট্র্যাকিং সীমাবদ্ধ রাখা
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    return response
