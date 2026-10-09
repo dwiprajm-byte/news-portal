@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ article.title }} - Early News (erlynews.com)</title>
+  <title>{{ article.title }} - 24 Early News (24earlynews.com)</title>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -11,11 +11,11 @@
     "headline": "{{ article.title }}",
     "image": ["{{ article.image }}"],
     "datePublished": "{{ article.date }}",
-    "author": [{ "@type": "Organization", "name": "Early News Editorial Desk" }],
+    "author": [{ "@type": "Organization", "name": "24 Early News Editorial Desk" }],
     "publisher": {
       "@type": "Organization",
-      "name": "Early News",
-      "url": "https://erlynews.com"
+      "name": "24 Early News",
+      "url": "https://24earlynews.com"
     }
   }
   </script>
@@ -24,14 +24,14 @@
 <body class="bg-gray-50 text-gray-900">
   <header class="bg-white border-b shadow-sm">
     <div class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
-      <a href="/" class="text-2xl font-black text-red-700">EARLY<span class="text-gray-900">NEWS</span></a>
+      <a href="/" class="text-2xl font-black text-red-700">24 EARLY<span class="text-gray-900 ml-1">NEWS</span></a>
       <a href="/" class="text-sm font-semibold text-gray-600 hover:text-red-700">&larr; Back to Home</a>
     </div>
   </header>
   <main class="max-w-4xl mx-auto px-4 py-8 bg-white my-6 rounded-xl shadow-sm border p-6">
     <span class="bg-red-100 text-red-700 px-3 py-1 rounded text-xs font-bold uppercase">{{ article.category }}</span>
     <h1 class="text-3xl font-extrabold mt-3 text-gray-900 leading-snug">{{ article.title }}</h1>
-    <p class="text-xs text-gray-400 mt-2 mb-6">Published: {{ article.date }} &bull; Early News Desk (erlynews.com)</p>
+    <p class="text-xs text-gray-400 mt-2 mb-6">Published: {{ article.date }} &bull; 24 Early News Desk (24earlynews.com)</p>
     <img src="{{ article.image }}" alt="{{ article.title }}" class="w-full max-h-96 object-cover rounded-lg mb-6">
     <div class="text-gray-700 leading-relaxed text-lg space-y-4">
       {{ article.content | safe }}

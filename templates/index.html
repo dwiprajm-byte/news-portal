@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Early News - Breaking, Real-Time & Trending Updates | erlynews.com</title>
-  <meta name="description" content="Stay ahead with Early News (erlynews.com). Fast, reliable and comprehensive news coverage.">
-  <link rel="canonical" href="https://erlynews.com/">
+  <title>24 Early News - 24/7 Real-Time & Trending Updates | 24earlynews.com</title>
+  <meta name="description" content="Stay ahead with 24 Early News (24earlynews.com). Fast, reliable and comprehensive 24/7 news coverage.">
+  <link rel="canonical" href="https://24earlynews.com/">
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50 text-gray-900">
   <div class="bg-red-700 text-white py-2 px-4 flex items-center text-sm font-semibold">
     <span class="bg-black px-2 py-0.5 rounded text-xs uppercase mr-2 tracking-wider animate-pulse">BREAKING</span>
-    <marquee>{% if lead %}{{ lead.title }}{% else %}Welcome to Early News (erlynews.com) - Stay informed around the clock...{% endif %}</marquee>
+    <marquee>{% if lead %}{{ lead.title }}{% else %}Welcome to 24 Early News (24earlynews.com) - 24/7 Live Coverage...{% endif %}</marquee>
   </div>
   <header class="bg-white border-b sticky top-0 z-50 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
       <a href="/" class="text-3xl font-black text-red-700 tracking-tight flex items-center">
-        EARLY<span class="text-gray-900">NEWS</span>
-        <span class="text-xs bg-gray-100 text-gray-500 font-normal px-2 py-0.5 ml-2 rounded border">erlynews.com</span>
+        24 EARLY<span class="text-gray-900 ml-1">NEWS</span>
+        <span class="text-xs bg-red-100 text-red-700 font-bold px-2 py-0.5 ml-2 rounded border border-red-200">24earlynews.com</span>
       </a>
       <nav class="hidden md:flex space-x-6 font-semibold text-gray-700">
         <a href="/" class="text-red-700">Home</a>
@@ -66,7 +66,7 @@
     </div>
     <aside class="lg:col-span-4 space-y-6">
       <div class="bg-white rounded-xl shadow-sm border p-5">
-        <h2 class="text-lg font-bold border-b-2 border-red-600 pb-2 text-gray-800">Trending On Early News</h2>
+        <h2 class="text-lg font-bold border-b-2 border-red-600 pb-2 text-gray-800">Trending On 24 Early News</h2>
         <div class="divide-y space-y-3 mt-3">
           {% for item in news_list[:5] %}
           <div class="pt-2">
@@ -82,7 +82,7 @@
   </main>
   <footer class="bg-gray-900 text-gray-400 py-6 mt-12 border-t">
     <div class="max-w-7xl mx-auto px-4 text-center text-sm">
-      <p>&copy; 2026 <strong>Early News</strong> (erlynews.com) - All Rights Reserved.</p>
+      <p>&copy; 2026 <strong>24 Early News</strong> (24earlynews.com) - All Rights Reserved.</p>
     </div>
   </footer>
 </body>
