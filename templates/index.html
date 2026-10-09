@@ -151,19 +151,21 @@
     <div class="lg:col-span-8 space-y-8">
       
       {% if lead %}
-      <article class="bg-white rounded-xl shadow-sm border overflow-hidden hover:shadow-md transition">
-        <img src="{{ lead.image }}" alt="{{ lead.title }}" class="w-full h-80 md:h-96 object-cover">
-        <div class="p-6">
-          <span class="bg-red-600 text-white text-xs font-bold px-2.5 py-1 rounded uppercase tracking-wider notranslate">{{ lead.category }}</span>
-          <h1 class="text-2xl md:text-3xl font-bold mt-3 leading-snug hover:text-red-700 transition">
-            <a href="/news/{{ lead.id }}">{{ lead.title }}</a>
-          </h1>
-          <div class="mt-4 flex justify-between items-center text-xs text-gray-400 border-t pt-3">
-            <span><i class="far fa-clock mr-1"></i> {{ lead.date }}</span>
-            <a href="/news/{{ lead.id }}" class="text-red-700 font-bold hover:underline">Read Full Story &rarr;</a>
-          </div>
-        </div>
-      </article>
+      <article id="mainLeadCard" class="bg-white rounded-xl shadow-sm border overflow-hidden hover:shadow-md transition duration-500">
+  <div class="relative overflow-hidden">
+    <img id="leadImg" src="{{ lead.image }}" alt="{{ lead.title }}" class="w-full h-80 md:h-96 object-cover transition-opacity duration-500">
+    <span id="leadCat" class="absolute top-4 left-4 bg-red-600 text-white text-xs font-bold px-2.5 py-1 rounded uppercase tracking-wider notranslate shadow">{{ lead.category }}</span>
+  </div>
+  <div class="p-6">
+    <h1 class="text-2xl md:text-3xl font-bold leading-snug hover:text-red-700 transition">
+      <a id="leadTitleLink" href="/news/{{ lead.id }}">{{ lead.title }}</a>
+    </h1>
+    <div class="mt-4 flex justify-between items-center text-xs text-gray-400 border-t pt-3">
+      <span><i class="far fa-clock mr-1"></i> <span id="leadDate">{{ lead.date }}</span></span>
+      <a id="leadReadMore" href="/news/{{ lead.id }}" class="text-red-700 font-bold hover:underline">Read Full Story &rarr;</a>
+    </div>
+  </div>
+</article>
       {% endif %}
 
       <div>
@@ -384,6 +386,59 @@
           window.location.href = '/sync-news';
         });
     }
+  </script>
+  <!-- 1-Minute Dynamic Lead News Auto-Rotator -->
+  <script>
+    // সার্ভার থেকে প্রাপ্ত ট্রেন্ডিং সংবাদের তালিকা
+    const rotatingNewsPool = [
+      {% if lead %}
+      { id: {{ lead.id }}, title: {{ lead.title | tojson }}, category: {{ lead.category | tojson }}, image: {{ lead.image | tojson }}, date: {{ lead.date | tojson }} },
+      {% endif %}
+      {% for item in news_list %}
+      { id: {{ item.id }}, title: {{ item.title | tojson }}, category: {{ item.category | tojson }}, image: {{ item.image | tojson }}, date: {{ item.date | tojson }} },
+      {% endfor %}
+    ];
+
+    let currentLeadIndex = 0;
+
+    function rotateLeadNews() {
+      if (!rotatingNewsPool || rotatingNewsPool.length <= 1) return;
+
+      currentLeadIndex = (currentLeadIndex + 1) % rotatingNewsPool.length;
+      const nextStory = rotatingNewsPool[currentLeadIndex];
+
+      const leadCard = document.getElementById('mainLeadCard');
+      const leadImg = document.getElementById('leadImg');
+      const leadCat = document.getElementById('leadCat');
+      const leadTitleLink = document.getElementById('leadTitleLink');
+      const leadDate = document.getElementById('leadDate');
+      const leadReadMore = document.getElementById('leadReadMore');
+
+      if (!leadCard || !leadImg) return;
+
+      // স্মুথ ফেড আউট
+      leadCard.style.opacity = '0.3';
+
+      setTimeout(() => {
+        leadImg.src = nextStory.image;
+        leadCat.innerText = nextStory.category;
+        leadTitleLink.innerText = nextStory.title;
+        leadTitleLink.href = '/news/' + nextStory.id;
+        leadDate.innerText = nextStory.date;
+        leadReadMore.href = '/news/' + nextStory.id;
+
+        // স্মুথ ফেড ইন
+        leadCard.style.opacity = '1';
+      }, 400);
+    }
+
+    // প্রতি ১ মিনিট (৬০,০০০ মিলিসেকেন্ড) অন্তর অন্তর খবর রোটেট করবে
+    setInterval(rotateLeadNews, 60000);
+
+    // ব্যাকগ্রাউন্ডে ব্যাকএন্ড থেকে তাজা আরএসএস ফিড রিফ্রেশ
+    setInterval(() => {
+      fetch('/sync-news', { cache: 'no-store' }).catch(() => {});
+    }, 180000);
   </script>
 </body>
 </html>
