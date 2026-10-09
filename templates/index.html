@@ -192,7 +192,7 @@
                 </h3>
               </div>
               <div class="flex items-center justify-between text-[11px] text-gray-400 border-t border-gray-200/60 pt-3 mt-3">
-                <span class="flex items-center"><i class="far fa-clock mr-1 text-slate-400"></i> {{ item.date }}</span>
+                <span class="flex items-center"><span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-black bg-red-100 text-red-700 mr-2"><span class="w-1.5 h-1.5 rounded-full bg-red-600 animate-ping mr-1"></span>LIVE</span><span class="live-ago-time" data-time="{{ item.date }}">{{ item.date }}</span></span>
                 <a href="/news/{{ item.id }}" class="text-red-600 font-bold group-hover:translate-x-1 transition-transform flex items-center">
                   Read &rarr;
                 </a>
@@ -271,7 +271,7 @@
                 <a href="/news/{{ item.id }}">{{ item.title }}</a>
               </h3>
               <p class="text-xs text-gray-400 mt-2.5 flex items-center">
-                <i class="far fa-clock mr-1 text-red-500"></i> {{ item.date }}
+                <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-black bg-red-100 text-red-700 mr-2"><span class="w-1.5 h-1.5 rounded-full bg-red-600 animate-ping mr-1"></span>LIVE</span><span class="live-ago-time" data-time="{{ item.date }}">{{ item.date }}</span>
               </p>
             </div>
           </div>
@@ -437,6 +437,25 @@
       } catch (err) {}
     }
     setInterval(fetchFreshLeadNews, 60000);
+  </script>
+  <script>
+    function updateLiveAgoTimes() {
+      document.querySelectorAll('.live-ago-time').forEach(el => {
+        const raw = el.getAttribute('data-time');
+        const dt = new Date(raw);
+        if (!isNaN(dt.getTime())) {
+          const diffSec = Math.floor((new Date() - dt) / 1000);
+          if (diffSec < 60) el.innerText = "Just now";
+          else if (diffSec < 3600) el.innerText = Math.floor(diffSec / 60) + "m ago";
+          else if (diffSec < 86400) el.innerText = Math.floor(diffSec / 3600) + "h ago";
+          else el.innerText = "Today";
+        } else {
+          el.innerText = "Live Just Now";
+        }
+      });
+    }
+    document.addEventListener("DOMContentLoaded", updateLiveAgoTimes);
+    setInterval(updateLiveAgoTimes, 30000);
   </script>
 </body>
 </html>
