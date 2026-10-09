@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>24 Early News - Global Breaking News Wire</title>
-  <meta name="description" content="24 Early News brings live global updates, market data, horoscopes, and multi-language international reporting.">
+  <title>24 Early News - Global Real-Time News Wire</title>
+  <meta name="description" content="24 Early News: Verified breaking stories, market reports, horoscopes and multi-language live coverage.">
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
@@ -42,7 +42,7 @@
 </head>
 <body class="bg-[#f8f9fa] text-gray-900 min-h-screen flex flex-col antialiased">
 
-  <!-- ১. টপবার: লাইভ ঘড়ি, তারিখ, বার এবং গ্লোবাল ভাষা সার্চ ইঞ্জিন -->
+  <!-- ১. আন্তর্জাতিক টপবার: লাইভ ঘড়ি, তারিখ, বার এবং গ্লোবাল ভাষা সার্চ ইঞ্জিন -->
   <div class="bg-slate-950 text-slate-300 text-xs py-2.5 border-b border-red-900/60">
     <div class="max-w-7xl mx-auto px-4 flex flex-wrap justify-between items-center gap-3">
       
@@ -52,11 +52,11 @@
           <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse mr-1.5"></span> LIVE CLOCK
         </span>
         <span id="liveClockDisplay" class="font-semibold text-slate-200 tracking-wide">
-          Loading live date and time...
+          Live Desk Active
         </span>
       </div>
 
-      <!-- প্রতিষ্ঠাতা ও ভাষা সার্চ বার -->
+      <!-- প্রতিষ্ঠাতা ও স্মার্ট ভাষা সার্চ বার -->
       <div class="flex items-center space-x-3 notranslate relative">
         <span class="bg-red-950 text-red-200 border border-red-800/80 px-2.5 py-1 rounded-full text-[11px] font-semibold tracking-wide flex items-center shadow-inner">
           <i class="fas fa-certificate text-yellow-400 mr-1.5 text-xs"></i> 
@@ -67,7 +67,7 @@
         <div class="relative">
           <div class="flex items-center bg-slate-900 border border-slate-700 rounded-full px-2.5 py-1 focus-within:border-red-500 transition shadow-sm">
             <i class="fas fa-language text-red-400 mr-1.5 text-xs"></i>
-            <input type="text" id="langSearchInput" onkeyup="filterGlobalLanguages()" placeholder="Search language (বাংলা, हिन्दी)..." class="bg-transparent text-white text-[11px] outline-none w-32 sm:w-44 placeholder-slate-400">
+            <input type="text" id="langSearchInput" onkeyup="filterGlobalLanguages()" placeholder="Search language..." class="bg-transparent text-white text-[11px] outline-none w-28 sm:w-36 placeholder-slate-400">
             <i class="fas fa-search text-slate-400 text-[10px] ml-1"></i>
           </div>
 
@@ -118,7 +118,7 @@
     </nav>
   </header>
 
-  <!-- ৪. ব্রেকিং নিউজ টিকার -->
+  <!-- ৪. ব্রেকিং নিউজ টিকার (আরামদায়ক স্ক্রোলিং) -->
   <div class="bg-red-600 text-white flex items-center overflow-hidden shadow-md border-b-2 border-red-700 py-1">
     <div class="bg-black text-yellow-400 font-black text-xs md:text-sm px-4 py-2 uppercase tracking-wider flex items-center gap-2 flex-shrink-0 z-10 shadow-lg">
       <i class="fas fa-bolt text-yellow-300 animate-pulse"></i> BREAKING
@@ -304,7 +304,7 @@
     </div>
   </footer>
 
-  <!-- জাভাস্ক্রিপ্ট: লাইভ ঘড়ি এবং গ্লোবাল ভাষা সার্চ ইঞ্জিন -->
+  <!-- জাভাস্ক্রিপ্ট: লাইভ ঘড়ি এবং গ্লোবাল ভাষা সার্চ ও মেমোরি ইঞ্জিন -->
   <script type="text/javascript">
     // ১. লাইভ ডেট ও টাইম আপডেট
     function updateLiveClock() {
@@ -326,10 +326,10 @@
     setInterval(updateLiveClock, 1000);
     updateLiveClock();
 
-    // ২. বিশ্বের শীর্ষ ভাষাসমূহের তালিকা
+    // ২. আন্তর্জাতিক ভাষাসমূহের ডাটাবেস
     const globalLanguages = [
+      { code: 'en', name: 'English (Default)' },
       { code: 'bn', name: 'Bengali (বাংলা)' },
-      { code: 'en', name: 'English (English)' },
       { code: 'hi', name: 'Hindi (हिन्दी)' },
       { code: 'ur', name: 'Urdu (اردو)' },
       { code: 'ar', name: 'Arabic (العربية)' },
@@ -378,8 +378,15 @@
     }
 
     function selectLanguage(langCode, langName) {
-      document.cookie = `googtrans=/en/${langCode}; path=/; domain=${window.location.hostname}`;
-      document.cookie = `googtrans=/en/${langCode}; path=/;`;
+      if (langCode === 'en') {
+        // ইংরেজিতে রিসেট করা
+        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" + window.location.hostname;
+      } else {
+        // কাঙ্ক্ষিত ভাষায় সেট করা
+        document.cookie = `googtrans=/en/${langCode}; path=/; domain=${window.location.hostname}`;
+        document.cookie = `googtrans=/en/${langCode}; path=/;`;
+      }
       window.location.reload();
     }
 
