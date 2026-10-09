@@ -1,93 +1,336 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
-  <meta name="google-site-verification" content="ajimu1pWScLZ0tX7u7qyzrAkSlQOz_DmqHPiBGdwbWM" />
-  আপনার_কপি_করা_কোড
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>24 Early News - 24/7 Real-Time & Trending Updates | 24earlynews.com</title>
   <meta name="description" content="Stay ahead with 24 Early News (24earlynews.com). Fast, reliable and comprehensive 24/7 news coverage.">
-  <link rel="canonical" href="https://24earlynews.com/">
+  <meta name="google-site-verification" content="ajimu1pWScLZ0tX7u7qyzrAkSlQOz_DmqHPiBGdwbWM" />
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    body { font-family: 'Hind Siliguri', sans-serif; }
+    .goog-te-gadget-simple {
+      background-color: #1f2937 !important;
+      border: 1px solid #374151 !important;
+      padding: 3px 8px !important;
+      border-radius: 6px !important;
+      font-size: 12px !important;
+    }
+    .goog-te-gadget-simple span { color: #f3f4f6 !important; }
+    .goog-te-gadget-icon { display: none !important; }
+  </style>
 </head>
-<body class="bg-gray-50 text-gray-900">
-  <div class="bg-red-700 text-white py-2 px-4 flex items-center text-sm font-semibold">
-    <span class="bg-black px-2 py-0.5 rounded text-xs uppercase mr-2 tracking-wider animate-pulse">BREAKING</span>
-    <marquee>{% if lead %}{{ lead.title }}{% else %}Welcome to 24 Early News (24earlynews.com) - 24/7 Live Coverage...{% endif %}</marquee>
+<body class="bg-gray-100 text-gray-900 flex flex-col min-h-screen">
+
+  <!-- Top Bar: Live Date, Time & Multi-Language -->
+  <div class="bg-gray-900 text-gray-300 py-1.5 px-4 text-xs font-medium border-b border-gray-800">
+    <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+      <div class="flex items-center space-x-4">
+        <span><i class="far fa-calendar-alt text-red-500 mr-1"></i> <span id="currentDate">--</span></span>
+        <span class="text-amber-400 font-semibold"><i class="far fa-clock mr-1"></i> <span id="currentTime">--:--:--</span></span>
+      </div>
+      <div class="flex items-center space-x-2">
+        <span><i class="fas fa-globe text-blue-400 mr-1"></i> ভাষা পরিবর্তন:</span>
+        <div id="google_translate_element"></div>
+      </div>
+    </div>
   </div>
+
+  <!-- Breaking News Ticker -->
+  <div class="bg-red-700 text-white py-2 px-4 flex items-center text-sm font-semibold shadow">
+    <span class="bg-black px-2.5 py-0.5 rounded text-xs uppercase mr-3 tracking-wider font-bold animate-pulse flex items-center">
+      <i class="fas fa-bolt mr-1 text-yellow-400"></i> BREAKING
+    </span>
+    <marquee class="tracking-wide">
+      {% if lead %}{{ lead.title }}{% else %}Welcome to 24 Early News (24earlynews.com) - ২৪ ঘণ্টা দেশ-বিদেশের তাজা খবর...{% endif %}
+    </marquee>
+  </div>
+
+  <!-- Main Header & Branding -->
   <header class="bg-white border-b sticky top-0 z-50 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-      <a href="/" class="text-3xl font-black text-red-700 tracking-tight flex items-center">
-        24 EARLY<span class="text-gray-900 ml-1">NEWS</span>
-        <span class="text-xs bg-red-100 text-red-700 font-bold px-2 py-0.5 ml-2 rounded border border-red-200">24earlynews.com</span>
+      <a href="/" class="flex items-center gap-2 group">
+        <div class="bg-gradient-to-br from-red-600 to-red-800 text-white font-black px-3 py-1.5 rounded-lg text-2xl tracking-tighter shadow-md">
+          24<span class="text-yellow-400">⚡</span>
+        </div>
+        <div>
+          <span class="text-2xl font-black text-gray-900 tracking-tight block leading-none">
+            EARLY<span class="text-red-700">NEWS</span>
+          </span>
+          <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">24earlynews.com</span>
+        </div>
       </a>
-      <nav class="hidden md:flex space-x-6 font-semibold text-gray-700">
-        <a href="/" class="text-red-700">Home</a>
-        <a href="#" class="hover:text-red-700">National</a>
-        <a href="#" class="hover:text-red-700">International</a>
-        <a href="#" class="hover:text-red-700">Sports</a>
-        <a href="#" class="hover:text-red-700">Technology</a>
+
+      <!-- Navigation Links -->
+      <nav class="hidden md:flex space-x-5 font-bold text-sm text-gray-700">
+        <a href="/" class="text-red-700 hover:text-red-800">হোমপেজ</a>
+        <a href="#national" class="hover:text-red-700">জাতীয়</a>
+        <a href="#world" class="hover:text-red-700">আন্তর্জাতিক</a>
+        <a href="#sports" class="hover:text-red-700">খেলাধুলা</a>
+        <a href="#horoscope" class="hover:text-red-700">রাশিফল</a>
+        <a href="#recipes" class="hover:text-red-700">রেসিপি</a>
       </nav>
+
+      <div class="flex items-center space-x-3 text-lg text-gray-600">
+        <a href="#" class="hover:text-blue-600"><i class="fab fa-facebook"></i></a>
+        <a href="#" class="hover:text-green-500"><i class="fab fa-whatsapp"></i></a>
+        <a href="#" class="hover:text-blue-400"><i class="fab fa-telegram"></i></a>
+      </div>
     </div>
   </header>
-  <div class="max-w-7xl mx-auto px-4 my-4">
-    <div class="border border-dashed border-gray-400 bg-gray-100 h-24 flex items-center justify-center text-gray-400 font-bold text-xs uppercase tracking-widest">
+
+  <!-- Header Ad Slot -->
+  <div class="max-w-7xl mx-auto px-4 my-4 w-full">
+    <div class="border border-dashed border-gray-300 bg-white rounded-lg h-24 flex items-center justify-center text-gray-400 font-bold text-xs uppercase tracking-widest shadow-sm">
       Responsive Header Banner Ad (728x90)
     </div>
   </div>
-  <main class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+  <!-- Main Container -->
+  <main class="max-w-7xl mx-auto px-4 py-4 grid grid-cols-1 lg:grid-cols-12 gap-8 flex-grow">
+    
+    <!-- Left Column (Articles & Features) -->
     <div class="lg:col-span-8 space-y-8">
+      
+      <!-- Lead / Hero Article -->
       {% if lead %}
       <article class="bg-white rounded-xl shadow-sm border overflow-hidden hover:shadow-md transition">
         <img src="{{ lead.image }}" alt="{{ lead.title }}" class="w-full h-80 md:h-96 object-cover">
         <div class="p-6">
-          <span class="bg-red-600 text-white text-xs font-bold px-2.5 py-1 rounded uppercase">{{ lead.category }}</span>
-          <h1 class="text-2xl md:text-3xl font-bold mt-3 leading-snug hover:text-red-700">
+          <span class="bg-red-600 text-white text-xs font-bold px-2.5 py-1 rounded uppercase tracking-wider">{{ lead.category }}</span>
+          <h1 class="text-2xl md:text-3xl font-bold mt-3 leading-snug hover:text-red-700 transition">
             <a href="/news/{{ lead.id }}">{{ lead.title }}</a>
           </h1>
-          <div class="mt-4 flex justify-between text-xs text-gray-400 border-t pt-3">
-            <span>{{ lead.date }}</span>
-            <a href="/news/{{ lead.id }}" class="text-red-700 font-bold hover:underline">Read Full Story &rarr;</a>
+          <div class="mt-4 flex justify-between items-center text-xs text-gray-400 border-t pt-3">
+            <span><i class="far fa-clock mr-1"></i> {{ lead.date }}</span>
+            <a href="/news/{{ lead.id }}" class="text-red-700 font-bold hover:underline">সম্পূর্ণ খবর পড়ুন &rarr;</a>
           </div>
         </div>
       </article>
       {% endif %}
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {% for item in news_list %}
-        <div class="bg-white rounded-lg shadow-sm border p-4 flex flex-col justify-between hover:border-red-400 transition">
-          <div>
-            <span class="text-xs font-bold text-red-600 uppercase">{{ item.category }}</span>
-            <h3 class="text-lg font-bold text-gray-800 mt-1 hover:text-red-700">
-              <a href="/news/{{ item.id }}">{{ item.title }}</a>
-            </h3>
-          </div>
-          <div class="text-xs text-gray-400 mt-4 border-t pt-2">{{ item.date }}</div>
+
+      <!-- Dynamic Automated News Grid -->
+      <div id="national">
+        <div class="border-b-2 border-red-700 pb-2 mb-4 flex justify-between items-center">
+          <h2 class="text-xl font-bold text-gray-900 flex items-center">
+            <i class="fas fa-newspaper text-red-600 mr-2"></i> দেশ ও বিদেশের তাজা খবর
+          </h2>
+          <span class="text-xs text-gray-500 font-semibold">লাইভ অটোমেটেড আপডেট</span>
         </div>
-        {% endfor %}
-      </div>
-    </div>
-    <aside class="lg:col-span-4 space-y-6">
-      <div class="bg-white rounded-xl shadow-sm border p-5">
-        <h2 class="text-lg font-bold border-b-2 border-red-600 pb-2 text-gray-800">Trending On 24 Early News</h2>
-        <div class="divide-y space-y-3 mt-3">
-          {% for item in news_list[:5] %}
-          <div class="pt-2">
-            <a href="/news/{{ item.id }}" class="text-sm font-semibold text-gray-700 hover:text-red-700">{{ item.title }}</a>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {% for item in news_list %}
+          <div class="bg-white rounded-xl shadow-sm border p-4 flex flex-col justify-between hover:border-red-400 transition hover:shadow-md">
+            <div>
+              <span class="text-xs font-bold text-red-600 uppercase">{{ item.category }}</span>
+              <h3 class="text-base font-bold text-gray-800 mt-1 hover:text-red-700 transition leading-snug">
+                <a href="/news/{{ item.id }}">{{ item.title }}</a>
+              </h3>
+            </div>
+            <div class="text-xs text-gray-400 mt-4 border-t pt-2 flex justify-between items-center">
+              <span>{{ item.date }}</span>
+              <a href="/news/{{ item.id }}" class="text-red-600 font-semibold hover:underline">বিস্তারিত &rarr;</a>
+            </div>
           </div>
           {% endfor %}
         </div>
       </div>
-      <div class="sticky top-20 border border-dashed border-gray-400 bg-gray-100 h-80 flex items-center justify-center text-gray-400 font-bold text-xs uppercase tracking-widest">
+
+      <!-- Daily Horoscope Section (আজকের রাশিফল) -->
+      <section id="horoscope" class="bg-white p-5 rounded-xl border shadow-sm">
+        <div class="border-b-2 border-amber-500 pb-2 mb-4 flex justify-between items-center">
+          <h2 class="text-lg font-bold text-gray-900 flex items-center">
+            <i class="fas fa-star-and-crescent text-amber-500 mr-2"></i> আজকের দৈনিক রাশিফল
+          </h2>
+          <span class="text-xs text-amber-600 font-semibold">দৈনন্দিন জ্যোতিষ পূর্বাভাস</span>
+        </div>
+        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 text-center">
+          <div class="border border-amber-200 rounded-lg p-2.5 bg-amber-50/50 hover:bg-amber-100/60 transition"><div class="text-xl">♈</div><div class="font-bold text-xs mt-1">মেষ</div><div class="text-[10px] text-green-700 font-bold">শুভ দিন</div></div>
+          <div class="border border-amber-200 rounded-lg p-2.5 bg-amber-50/50 hover:bg-amber-100/60 transition"><div class="text-xl">♉</div><div class="font-bold text-xs mt-1">বৃষ</div><div class="text-[10px] text-green-700 font-bold">ধনাগম</div></div>
+          <div class="border border-amber-200 rounded-lg p-2.5 bg-amber-50/50 hover:bg-amber-100/60 transition"><div class="text-xl">♊</div><div class="font-bold text-xs mt-1">মিথুন</div><div class="text-[10px] text-green-700 font-bold">সাফল্য</div></div>
+          <div class="border border-amber-200 rounded-lg p-2.5 bg-amber-50/50 hover:bg-amber-100/60 transition"><div class="text-xl">♋</div><div class="font-bold text-xs mt-1">কর্কট</div><div class="text-[10px] text-green-700 font-bold">উন্নতি</div></div>
+          <div class="border border-amber-200 rounded-lg p-2.5 bg-amber-50/50 hover:bg-amber-100/60 transition"><div class="text-xl">♌</div><div class="font-bold text-xs mt-1">সিংহ</div><div class="text-[10px] text-green-700 font-bold">সম্মান লাভ</div></div>
+          <div class="border border-amber-200 rounded-lg p-2.5 bg-amber-50/50 hover:bg-amber-100/60 transition"><div class="text-xl">♍</div><div class="font-bold text-xs mt-1">কন্যা</div><div class="text-[10px] text-green-700 font-bold">শান্তিপূর্ণ</div></div>
+          <div class="border border-amber-200 rounded-lg p-2.5 bg-amber-50/50 hover:bg-amber-100/60 transition"><div class="text-xl">♎</div><div class="font-bold text-xs mt-1">তুলা</div><div class="text-[10px] text-green-700 font-bold">লাভজনক</div></div>
+          <div class="border border-amber-200 rounded-lg p-2.5 bg-amber-50/50 hover:bg-amber-100/60 transition"><div class="text-xl">♏</div><div class="font-bold text-xs mt-1">বৃশ্চিক</div><div class="text-[10px] text-amber-700 font-bold">সতর্ক থাকুন</div></div>
+          <div class="border border-amber-200 rounded-lg p-2.5 bg-amber-50/50 hover:bg-amber-100/60 transition"><div class="text-xl">♐</div><div class="font-bold text-xs mt-1">ধনু</div><div class="text-[10px] text-green-700 font-bold">ভ্রমণ যোগ</div></div>
+          <div class="border border-amber-200 rounded-lg p-2.5 bg-amber-50/50 hover:bg-amber-100/60 transition"><div class="text-xl">♑</div><div class="font-bold text-xs mt-1">মকর</div><div class="text-[10px] text-green-700 font-bold">কাজে অগ্রগতি</div></div>
+          <div class="border border-amber-200 rounded-lg p-2.5 bg-amber-50/50 hover:bg-amber-100/60 transition"><div class="text-xl">♒</div><div class="font-bold text-xs mt-1">কুম্ভ</div><div class="text-[10px] text-green-700 font-bold">নতুন সুযোগ</div></div>
+          <div class="border border-amber-200 rounded-lg p-2.5 bg-amber-50/50 hover:bg-amber-100/60 transition"><div class="text-xl">♓</div><div class="font-bold text-xs mt-1">মীন</div><div class="text-[10px] text-green-700 font-bold">প্রীতি বৃদ্ধি</div></div>
+        </div>
+      </section>
+
+      <!-- Food Recipes Section (সুস্বাদু রেসিপি) -->
+      <section id="recipes" class="bg-white p-5 rounded-xl border shadow-sm">
+        <div class="border-b-2 border-orange-500 pb-2 mb-4 flex justify-between items-center">
+          <h2 class="text-lg font-bold text-gray-900 flex items-center">
+            <i class="fas fa-utensils text-orange-500 mr-2"></i> রকমারি রান্না ও সুস্বাদু রেসিপি
+          </h2>
+          <span class="text-xs text-orange-600 font-semibold">স্পেশাল কিচেন কর্নার</span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="border rounded-lg overflow-hidden flex flex-col justify-between hover:shadow-md transition">
+            <img src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=500" alt="Biryani" class="h-40 w-full object-cover">
+            <div class="p-3">
+              <span class="text-[10px] font-bold bg-orange-100 text-orange-700 px-2 py-0.5 rounded">শাহী রেসিপি</span>
+              <h4 class="font-bold text-sm mt-1 text-gray-800 hover:text-orange-600">রেস্তোরাঁর স্বাদে ঘরেই তৈরি করুন শাহী মাটন দম বিরিয়ানি</h4>
+              <p class="text-xs text-gray-500 mt-1">প্রয়োজনীয় মশলা ও সঠিক দমে রান্না করার ধাপে ধাপে পদ্ধতি...</p>
+            </div>
+          </div>
+          <div class="border rounded-lg overflow-hidden flex flex-col justify-between hover:shadow-md transition">
+            <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500" alt="Salad" class="h-40 w-full object-cover">
+            <div class="p-3">
+              <span class="text-[10px] font-bold bg-green-100 text-green-700 px-2 py-0.5 rounded">ডায়েট ও পুষ্টি</span>
+              <h4 class="font-bold text-sm mt-1 text-gray-800 hover:text-green-700">মাত্র ১০ মিনিটে ওজন নিয়ন্ত্রণের সুস্বাদু প্রোটিন স্যালাড</h4>
+              <p class="text-xs text-gray-500 mt-1">দিনভর সতেজ ও ফিট থাকতে সহজেই বানিয়ে নিন এই পুষ্টিকর খাবার...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Right Sidebar Column -->
+    <aside class="lg:col-span-4 space-y-6">
+      
+      <!-- Trending Articles -->
+      <div class="bg-white rounded-xl shadow-sm border p-5">
+        <h2 class="text-lg font-bold border-b-2 border-red-600 pb-2 text-gray-800 flex items-center">
+          <i class="fas fa-chart-line text-red-600 mr-2"></i> Trending On 24 Early News
+        </h2>
+        <div class="divide-y space-y-3 mt-3">
+          {% for item in news_list[:6] %}
+          <div class="pt-2">
+            <a href="/news/{{ item.id }}" class="text-sm font-semibold text-gray-700 hover:text-red-700 transition block">
+              {{ item.title }}
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Sticky Sidebar Ad Slot -->
+      <div class="sticky top-20 border border-dashed border-gray-300 bg-white rounded-xl h-80 flex items-center justify-center text-gray-400 font-bold text-xs uppercase tracking-widest shadow-sm">
         Sticky Sidebar Unit (300x600)
       </div>
+
     </aside>
+
   </main>
-  <footer class="bg-gray-900 text-gray-400 py-6 mt-12 border-t">
-    <div class="max-w-7xl mx-auto px-4 text-center text-sm">
-      <p>&copy; 2026 <strong>24 Early News</strong> (24earlynews.com) - All Rights Reserved.</p>
+
+  <!-- Footer with Full Legal Policies -->
+  <footer class="bg-gray-900 text-gray-400 py-10 border-t border-gray-800 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 text-sm">
+      <div>
+        <h3 class="text-white font-bold text-base mb-3 border-l-4 border-red-600 pl-2">24 Early News</h3>
+        <p class="leading-relaxed text-xs">২৪ আর্লি নিউজ একটি স্বাধীন ও আধুনিক ডিজিটাল সংবাদমাধ্যম। দেশ ও বিদেশের তাৎক্ষণিক ব্রেকিং নিউজ, খেলার খবর, বাণিজ্য, প্রতিদিনের রাশিফল ও রেসিপি নির্ভুলভাবে পরিবেশন করাই আমাদের অঙ্গীকার।</p>
+      </div>
+      <div>
+        <h3 class="text-white font-bold text-base mb-3 border-l-4 border-red-600 pl-2">জনপ্রিয় বিভাগসমূহ</h3>
+        <ul class="space-y-1.5 text-xs">
+          <li><a href="#national" class="hover:text-white">জাতীয় ও আন্তর্জাতিক খবর</a></li>
+          <li><a href="#sports" class="hover:text-white">খেলাধুলা ও লাইভ স্কোর</a></li>
+          <li><a href="#horoscope" class="hover:text-white">১২ রাশির দৈনিক রাশিফল</a></li>
+          <li><a href="#recipes" class="hover:text-white">সুস্বাদু রান্নার রেসিপি</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-white font-bold text-base mb-3 border-l-4 border-red-600 pl-2">আইনগত নীতি ও যোগাযোগ</h3>
+        <ul class="space-y-1.5 text-xs">
+          <li><a href="javascript:void(0)" onclick="openModal('about')" class="hover:text-white">About Us (আমাদের সম্পর্কে)</a></li>
+          <li><a href="javascript:void(0)" onclick="openModal('contact')" class="hover:text-white">Contact Us (যোগাযোগ)</a></li>
+          <li><a href="javascript:void(0)" onclick="openModal('privacy')" class="hover:text-white">Privacy Policy (গোপনীয়তা নীতি)</a></li>
+          <li><a href="javascript:void(0)" onclick="openModal('terms')" class="hover:text-white">Terms & Conditions (শর্তাবলী)</a></li>
+          <li><a href="javascript:void(0)" onclick="openModal('disclaimer')" class="hover:text-white">Disclaimer (দাবিত্যাগ)</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="max-w-7xl mx-auto px-4 pt-6 border-t border-gray-800 text-center text-xs">
+      <p>&copy; 2026 <strong>24 Early News</strong> (24earlynews.com). All Rights Reserved.</p>
     </div>
   </footer>
+
+  <!-- Universal Modal for Legal Pages -->
+  <div id="legalModal" class="fixed inset-0 bg-black/60 z-[9999] hidden items-center justify-center p-4">
+    <div class="bg-white rounded-xl max-w-lg w-full p-6 relative max-h-[85vh] overflow-y-auto shadow-2xl">
+      <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-500 hover:text-black text-xl font-bold">&times;</button>
+      <h3 id="modalTitle" class="text-xl font-bold text-gray-900 border-b pb-2 mb-3"></h3>
+      <div id="modalBody" class="text-sm leading-relaxed text-gray-600 space-y-2"></div>
+    </div>
+  </div>
+
+  <!-- Google Translate Element -->
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'bn',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false
+      }, 'google_translate_element');
+    }
+  </script>
+  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+  <!-- Live Date, Time & Modal Script -->
+  <script>
+    function updateDateTime() {
+      const now = new Date();
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      document.getElementById('currentDate').innerText = now.toLocaleDateString('bn-BD', options);
+      document.getElementById('currentTime').innerText = now.toLocaleTimeString('bn-BD');
+    }
+    setInterval(updateDateTime, 1000);
+    updateDateTime();
+
+    const pages = {
+      about: {
+        title: "About Us (আমাদের সম্পর্কে)",
+        body: `<p><strong>24 Early News</strong> (24earlynews.com) একটি স্বাধীন এবং নির্ভরযোগ্য ডিজিটাল নিউজ প্ল্যাটফর্ম। আমরা তাৎক্ষণিক ব্রেকিং নিউজ, বস্তুনিষ্ঠ সাংবাদিকতা এবং পাঠকদের নির্ভুল তথ্য পৌঁছে দিতে দায়বদ্ধ। দেশ-বিদেশের রাজনীতি, খেলাধুলা, বিজ্ঞান-প্রযুক্তি, দৈনন্দিন রাশিফল এবং রন্ধনশিল্পের বৈচিত্র্যময় তথ্য নিয়ে আমরা ২৪ ঘণ্টা তৎপর।</p>`
+      },
+      contact: {
+        title: "Contact Us (যোগাযোগ করুন)",
+        body: `<p>আমাদের সাথে যোগাযোগ করতে বা আপনার মতামত ও প্রেস রিলিজ পাঠাতে নিচের তথ্যে যোগাযোগ করুন:</p>
+               <p><strong>ইমেইল:</strong> contact@24earlynews.com<br>
+               <strong>ওয়েবসাইট:</strong> https://news-portal-6alq.onrender.com/<br>
+               <strong>সময়:</strong> ২৪ ঘণ্টা উপলব্ধ</p>`
+      },
+      privacy: {
+        title: "Privacy Policy (গোপনীয়তা নীতি)",
+        body: `<p>24 Early News পাঠকদের গোপনীয়তাকে সর্বোচ্চ অগ্রাধিকার দেয়। আমরা গুগল অ্যাডসেন্স ও বিশ্লেষণমূলক সরঞ্জাম ব্যবহার করে বিজ্ঞাপন ও ট্রাফিক পরিচালনা করি, যা পাঠকদের কোনো ব্যক্তিগত তথ্য সরাসরি সংরক্ষণ করে না। আমাদের সাইট ব্যবহারের মাধ্যমে আপনি আমাদের কুকিজ ও গোপনীয়তা নীতি মেনে নিচ্ছেন।</p>`
+      },
+      terms: {
+        title: "Terms & Conditions (ব্যবহারের শর্তাবলী)",
+        body: `<p>এই ওয়েবসাইটে প্রকাশিত সমস্ত কনটেন্ট কেবল সাধারণ তথ্যের উদ্দেশ্যে সরবরাহ করা হয়েছে। লিখিত অনুমতি ছাড়া এখানকার কোনো বিষয়বস্তু হুবহু অনুলিপি করা সম্পূর্ণ নিষিদ্ধ। কোনো তথ্যের সাময়িক ভুলের জন্য পোর্টাল কর্তৃপক্ষ দায়ী থাকবে না।</p>`
+      },
+      disclaimer: {
+        title: "Disclaimer (দাবিত্যাগ)",
+        body: `<p>রাশিফল জ্যোতিষশাস্ত্রীয় গণনাভিত্তিক এবং সাধারণ দিকনির্দেশনা মাত্র। খাবারের রেসিপি ও স্বাস্থ্য সম্পর্কিত তথ্য সাধারণ ধারণার জন্য তৈরি। যেকোনো শারীরিক সমস্যা বা আর্থিক বিষয়ে সংশ্লিষ্ট বিশেষজ্ঞের পরামর্শ নেওয়া বাঞ্ছনীয়।</p>`
+      }
+    };
+
+    function openModal(page) {
+      document.getElementById('modalTitle').innerText = pages[page].title;
+      document.getElementById('modalBody').innerHTML = pages[page].body;
+      const modal = document.getElementById('legalModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('legalModal');
+      modal.classList.remove('flex');
+      modal.classList.add('hidden');
+    }
+
+    window.onclick = function(event) {
+      const modal = document.getElementById('legalModal');
+      if (event.target == modal) {
+        closeModal();
+      }
+    };
+  </script>
 </body>
 </html>
-
-
