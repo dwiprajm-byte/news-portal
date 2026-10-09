@@ -73,73 +73,143 @@ def save_to_disk():
         pass
 
 
-def generate_automatic_seo_article(title, category, raw_snippet):
+
+
+
+def generate_mega_longform_seo_article(title, category, raw_snippet):
     summary_text = raw_snippet.strip() if raw_snippet else title
     
-    seo_formatted_html = f"""
-    <div class="seo-article-body space-y-6 text-gray-800 leading-relaxed text-base">
+    html_content = f"""
+    <div class="space-y-8 text-gray-800 leading-relaxed text-base md:text-lg">
       
-      <!-- ১. কুইক হাইলাইটস বক্স (Google Featured Snippet-এর জন্য) -->
-      <div class="bg-red-50 border-l-4 border-red-600 p-5 rounded-r-xl shadow-sm">
-        <h3 class="text-sm font-extrabold text-red-900 mb-1.5 flex items-center">
-          <i class="fas fa-bolt text-red-600 mr-2"></i> Quick Summary & Executive Highlights
+      <!-- ১. ব্রেকিং এক্সিকিউটিভ সামারি বক্স -->
+      <div class="bg-gradient-to-r from-red-50 to-orange-50 border-l-4 border-red-600 p-6 rounded-r-2xl shadow-sm">
+        <h3 class="text-lg font-black text-red-900 mb-2 flex items-center">
+          <i class="fas fa-bolt text-red-600 mr-2.5"></i> Executive Summary & Core Incident Report
         </h3>
-        <p class="text-sm text-red-800 font-medium leading-normal">
+        <p class="text-sm md:text-base text-gray-800 font-medium leading-relaxed">
           {summary_text}
         </p>
       </div>
 
-      <!-- ২. বিস্তারিত পটভূমি ও ঘটনা বিশ্লেষণ (H2 হেডিং) -->
-      <h2 class="text-xl md:text-2xl font-extrabold text-gray-900 border-b pb-2 tracking-tight">
-        Comprehensive Analysis: Key Developments in {category}
-      </h2>
-      <p class="text-base text-gray-700 leading-relaxed">
-        In today's fast-moving news landscape, significant developments have emerged surrounding <strong>{title}</strong>. According to primary reports and industry correspondents, this ongoing situation marks an important milestone within the <strong>{category.lower()}</strong> sphere, sparking widespread interest among stakeholders, analysts, and general readers.
-      </p>
-      <p class="text-base text-gray-700 leading-relaxed">
-        Experts observing these patterns indicate that recent policy adjustments and public conversations have brought this issue directly into focus. Verified reporting reveals that {summary_text.lower() if summary_text else 'continuous procedural steps and official evaluations are currently underway to address the emerging dynamics.'}
-      </p>
+      <!-- ২. বিস্তারিত ভূমিকা ও প্রাথমিক পরিস্থিতি (H2) -->
+      <div>
+        <h2 class="text-2xl md:text-3xl font-extrabold text-gray-900 border-b pb-3 mb-4 tracking-tight">
+          1. Comprehensive Overview: Unfolding Situation Around {title}
+        </h2>
+        <p class="mb-4">
+          In an era defined by fast-paced communication and evolving international landscapes, significant reporting has consolidated around the topic of <strong>"{title}"</strong>. Originating within the core jurisdiction of <strong>{category}</strong>, this development is causing significant discourse across government institutions, public sector monitoring committees, and independent research groups.
+        </p>
+        <p class="mb-4">
+          Correspondents from leading news desks indicate that preliminary notifications were monitored earlier today. The primary factual indicators confirm that {summary_text.lower() if summary_text else 'decisive multi-tier operational procedures and discussions have begun.'} As field observers gather first-hand verification, it has become evident that the reverberations of this event extend far beyond localized boundaries, touching upon regional stability, policy adaptations, and everyday public interest.
+        </p>
+      </div>
 
-      <!-- ৩. মূল পয়েন্ট ও বুলেট তালিকা (SEO Bullet Points) -->
-      <div class="bg-gray-50 border border-gray-200 rounded-xl p-6 shadow-sm">
-        <h3 class="text-base font-bold text-gray-900 mb-3 flex items-center">
-          <i class="fas fa-list-check text-green-600 mr-2"></i> Key Takeaways & Fact Sheet
+      <!-- ৩. ঐতিহাসিক প্রেক্ষাপট ও টাইমলাইন বিশ্লেষণ (H2) -->
+      <div>
+        <h2 class="text-2xl md:text-3xl font-extrabold text-gray-900 border-b pb-3 mb-4 tracking-tight">
+          2. Background Context and Historical Progression
+        </h2>
+        <p class="mb-4">
+          To truly comprehend the depth of this story, one must contextualize the sequential occurrences that paved the way for current decisions. Over recent months, the broader <strong>{category.lower()}</strong> sector has encountered substantial structural reforms, shifting technological requirements, and rising socioeconomic expectations from the public.
+        </p>
+        <p class="mb-4">
+          Industry archives show that comparable scenarios in previous quarters regularly stimulated broad debate among governing councils and corporate executives. Experts highlighting this background observe that early indicators had been developing for weeks before escalating to current prominence. The swift sequence of recent notices reflects a pressing need to modernize operational playbooks, reinforce oversight accountability, and provide transparent public updates.
+        </p>
+      </div>
+
+      <!-- ৪. মূল পয়েন্ট ও তথ্য তালিকা (Fact Sheet & Key Takeaways) -->
+      <div class="bg-gray-50 border border-gray-200 rounded-2xl p-6 md:p-8 shadow-sm">
+        <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
+          <i class="fas fa-list-check text-green-600 mr-3"></i> Detailed Fact Sheet & Strategic Takeaways
         </h3>
-        <ul class="list-disc pl-5 space-y-2.5 text-sm text-gray-700">
-          <li><strong>Direct Significance:</strong> The emerging details have immediate strategic and informational relevance for the {category.lower()} sector.</li>
-          <li><strong>Institutional Actions:</strong> Authorities and leadership teams are actively monitoring further developments to ensure complete transparency and stability.</li>
-          <li><strong>Broader Impact:</strong> Analysts note that events of this magnitude frequently create ripple effects across broader national and international audiences.</li>
+        <ul class="space-y-3.5 pl-2 text-sm md:text-base text-gray-700">
+          <li class="flex items-start">
+            <i class="fas fa-circle-check text-red-600 mt-1 mr-3 flex-shrink-0"></i>
+            <span><strong>Direct Public Impact:</strong> Consumers, sector professionals, and community leaders face immediate strategic modifications following this announcement.</span>
+          </li>
+          <li class="flex items-start">
+            <i class="fas fa-circle-check text-red-600 mt-1 mr-3 flex-shrink-0"></i>
+            <span><strong>Regulatory & Compliance Inquiries:</strong> Specialized advisory panels have initiated formal investigations to evaluate procedural adherence and future compliance guidelines.</span>
+          </li>
+          <li class="flex items-start">
+            <i class="fas fa-circle-check text-red-600 mt-1 mr-3 flex-shrink-0"></i>
+            <span><strong>Economic and Market Sensitivity:</strong> Early indicators show notable movements across interconnected fiscal sectors, highlighting heightened stakeholder sensitivity to continuous updates.</span>
+          </li>
+          <li class="flex items-start">
+            <i class="fas fa-circle-check text-red-600 mt-1 mr-3 flex-shrink-0"></i>
+            <span><strong>Global vs Domestic Perspective:</strong> While domestic stakeholders evaluate immediate policy implications, global analysts are tracking potential cross-border precedents.</span>
+          </li>
         </ul>
       </div>
 
-      <!-- ৪. ভবিষ্যৎ প্রভাব ও আউটলুক (H2 হেডিং) -->
-      <h2 class="text-xl md:text-2xl font-extrabold text-gray-900 border-b pb-2 tracking-tight">
-        Future Outlook and Strategic Perspectives
-      </h2>
-      <p class="text-base text-gray-700 leading-relaxed">
-        Looking ahead, observers anticipate additional official briefings and clarifications over the coming hours. Maintaining access to verified, fact-checked, and continuous 24/7 reporting is vital as conversations continue to unfold across global news outlets. <strong>24 Early News</strong> continues tracking updates on this developing story around the clock.
-      </p>
+      <!-- ৫. অর্থনৈতিক ও আর্থ-সামাজিক প্রভাব (H2) -->
+      <div>
+        <h2 class="text-2xl md:text-3xl font-extrabold text-gray-900 border-b pb-3 mb-4 tracking-tight">
+          3. Socioeconomic Repercussions and Community Outlook
+        </h2>
+        <p class="mb-4">
+          Beyond administrative declarations, the grass-roots implications of <em>"{title}"</em> are beginning to surface. In modern interconnected systems, shifts within <strong>{category.lower()}</strong> directly govern supply chains, pricing mechanisms, consumer confidence, and digital engagement.
+        </p>
+        <p class="mb-4">
+          Leading socio-analysts warn that failing to account for public feedback can create friction in practical deployment. In response, civic forums, online consumer collectives, and professional associations have organized formal commentary sessions. Their consensus highlights the necessity of predictable guidelines, institutional support for affected parties, and transparent timelines for full implementation.
+        </p>
+      </div>
 
-      <!-- ৫. এসইও সাধারণ প্রশ্নোত্তর (FAQ Schema Ready) -->
-      <div class="border-t pt-5 mt-6">
-        <h3 class="text-base font-bold text-gray-900 mb-2.5 flex items-center">
-          <i class="fas fa-question-circle text-blue-600 mr-2"></i> Frequently Asked Questions (FAQ)
+      <!-- ৬. বিশেষজ্ঞ পর্যালোচনা ও প্রাতিষ্ঠানিক মতামত (H2) -->
+      <div>
+        <h2 class="text-2xl md:text-3xl font-extrabold text-gray-900 border-b pb-3 mb-4 tracking-tight">
+          4. Expert Perspectives and Institutional Analysis
+        </h2>
+        <blockquote class="border-l-4 border-red-600 pl-4 py-2 italic text-gray-700 bg-red-50/50 rounded-r-lg my-4 text-base md:text-lg">
+          "When developments of this scale unfold in real-time, the greatest priority is verified clarity over speculation. Every policy iteration carries long-term strategic gravity."
+        </blockquote>
+        <p class="mb-4">
+          Independent think tanks and credentialed domain analysts have urged all concerned parties to maintain objective scrutiny. Ongoing assessments demonstrate that contemporary systems react exponentially to regulatory changes. Therefore, ensuring verified dissemination through dedicated 24/7 channels prevents misinformation and fosters an informed public dialogue.
+        </p>
+      </div>
+
+      <!-- ৭. ভবিষ্যৎ পূর্বাভাস ও পথচলা (H2) -->
+      <div>
+        <h2 class="text-2xl md:text-3xl font-extrabold text-gray-900 border-b pb-3 mb-4 tracking-tight">
+          5. Future Roadmaps, Projections, and What to Expect Next
+        </h2>
+        <p class="mb-4">
+          Looking ahead into the upcoming quarter, multiple critical phases are scheduled to unravel. Authorities have indicated that supplementary policy whitepapers, committee resolutions, and technical roadmaps will be presented in subsequent press releases.
+        </p>
+        <p class="mb-4">
+          Stakeholders are encouraged to monitor ongoing coverage as technical panels evaluate real-world feedback. <strong>24 Early News</strong> maintains round-the-clock newsrooms dedicated to fact-checking, verifying ground intelligence, and delivering timely, high-fidelity coverage on every new development as it happens.
+        </p>
+      </div>
+
+      <!-- ৮. এসইও এফএকিউ ব্লক (Schema-Ready FAQs) -->
+      <div class="border-t-2 border-gray-200 pt-6 mt-8">
+        <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
+          <i class="fas fa-circle-question text-blue-600 mr-2.5"></i> Frequently Asked Questions (FAQ)
         </h3>
-        <div class="space-y-3 text-sm text-gray-600">
-          <div>
-            <p class="font-bold text-gray-800">Q: What is the primary focus of this breaking report?</p>
-            <p class="mt-0.5">A: This report provides comprehensive and verified context surrounding {title}.</p>
+        <div class="space-y-4 text-sm md:text-base text-gray-700">
+          <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+            <h4 class="font-bold text-gray-900">Q1: What sparked the current coverage surrounding this story?</h4>
+            <p class="mt-1">A: Verified dispatches and sudden policy shifts in the {category.lower()} sphere initiated intense public scrutiny and real-time coverage.</p>
           </div>
-          <div>
-            <p class="font-bold text-gray-800">Q: Where can readers follow verified updates on this topic?</p>
-            <p class="mt-0.5">A: Real-time, fact-checked coverage is updated 24/7 directly on <strong>24 Early News</strong>.</p>
+          <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+            <h4 class="font-bold text-gray-900">Q2: Who is most affected by these developments?</h4>
+            <p class="mt-1">A: Consumers, specialized industry practitioners, and regulatory oversight teams across regional and international sectors are directly impacted.</p>
+          </div>
+          <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+            <h4 class="font-bold text-gray-900">Q3: How often will updates be released regarding this event?</h4>
+            <p class="mt-1">A: Official press conferences and regulatory follow-ups are expected within the next 24 to 48 hours as evaluations progress.</p>
+          </div>
+          <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+            <h4 class="font-bold text-gray-900">Q4: Where can I access live, fact-checked reporting 24/7?</h4>
+            <p class="mt-1">A: <strong>24 Early News</strong> provides uninterrupted verified reporting and live updates directly on our digital portal.</p>
           </div>
         </div>
       </div>
 
     </div>
     """
-    return seo_formatted_html
+    return html_content
 
 def sync_trending_news(force=False):
     global CACHED_NEWS, NEWS_DICT, LAST_FETCH_TIME
@@ -167,7 +237,7 @@ def sync_trending_news(force=False):
                         "category": category,
                         "date": getattr(entry, "published", "Just Now"),
                         "image": safe_image,
-                        "content": generate_automatic_seo_article(entry.title, category, clean_summary)
+                        "content": generate_mega_longform_seo_article(entry.title, category, clean_summary)
                     })
                     existing_titles.add(entry.title)
                     current_id += 1
