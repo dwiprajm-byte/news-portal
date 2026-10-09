@@ -394,58 +394,46 @@
         });
     }
   </script>
-  <!-- 1-Minute Dynamic Lead News Auto-Rotator -->
+      <!-- 1-Minute Fresh Non-Repeating Lead News Engine -->
   <script>
-    // সার্ভার থেকে প্রাপ্ত ট্রেন্ডিং সংবাদের তালিকা
-    const rotatingNewsPool = [
-      {% if lead %}
-      { id: {{ lead.id }}, title: {{ lead.title | tojson }}, category: {{ lead.category | tojson }}, image: {{ lead.image | tojson }}, date: {{ lead.date | tojson }} },
-      {% endif %}
-      {% for item in news_list %}
-      { id: {{ item.id }}, title: {{ item.title | tojson }}, category: {{ item.category | tojson }}, image: {{ item.image | tojson }}, date: {{ item.date | tojson }} },
-      {% endfor %}
-    ];
+    async function fetchFreshLeadNews() {
+      try {
+        const response = await fetch('/api/latest-lead?t=' + new Date().getTime(), { cache: 'no-store' });
+        const data = await response.json();
+        
+        if (data.status === 'success' && data.news) {
+          const nextStory = data.news;
+          const leadCard = document.getElementById('mainLeadCard');
+          const leadImg = document.getElementById('leadImg');
+          const leadCat = document.getElementById('leadCat');
+          const leadTitleLink = document.getElementById('leadTitleLink');
+          const leadDate = document.getElementById('leadDate');
+          const leadReadMore = document.getElementById('leadReadMore');
 
-    let currentLeadIndex = 0;
+          if (!leadCard || !leadImg) return;
 
-    function rotateLeadNews() {
-      if (!rotatingNewsPool || rotatingNewsPool.length <= 1) return;
+          // স্মুথ ফেড আউট
+          leadCard.style.opacity = '0.2';
 
-      currentLeadIndex = (currentLeadIndex + 1) % rotatingNewsPool.length;
-      const nextStory = rotatingNewsPool[currentLeadIndex];
+          setTimeout(() => {
+            leadImg.src = nextStory.image;
+            leadCat.innerText = nextStory.category;
+            leadTitleLink.innerText = nextStory.title;
+            leadTitleLink.href = '/news/' + nextStory.id;
+            leadDate.innerText = nextStory.date;
+            leadReadMore.href = '/news/' + nextStory.id;
 
-      const leadCard = document.getElementById('mainLeadCard');
-      const leadImg = document.getElementById('leadImg');
-      const leadCat = document.getElementById('leadCat');
-      const leadTitleLink = document.getElementById('leadTitleLink');
-      const leadDate = document.getElementById('leadDate');
-      const leadReadMore = document.getElementById('leadReadMore');
-
-      if (!leadCard || !leadImg) return;
-
-      // স্মুথ ফেড আউট
-      leadCard.style.opacity = '0.3';
-
-      setTimeout(() => {
-        leadImg.src = nextStory.image;
-        leadCat.innerText = nextStory.category;
-        leadTitleLink.innerText = nextStory.title;
-        leadTitleLink.href = '/news/' + nextStory.id;
-        leadDate.innerText = nextStory.date;
-        leadReadMore.href = '/news/' + nextStory.id;
-
-        // স্মুথ ফেড ইন
-        leadCard.style.opacity = '1';
-      }, 400);
+            // স্মুথ ফেড ইন
+            leadCard.style.opacity = '1';
+          }, 450);
+        }
+      } catch (err) {
+        console.log('Error fetching fresh lead news:', err);
+      }
     }
 
-    // প্রতি ১ মিনিট (৬০,০০০ মিলিসেকেন্ড) অন্তর অন্তর খবর রোটেট করবে
-    setInterval(rotateLeadNews, 60000);
-
-    // ব্যাকগ্রাউন্ডে ব্যাকএন্ড থেকে তাজা আরএসএস ফিড রিফ্রেশ
-    setInterval(() => {
-      fetch('/sync-news', { cache: 'no-store' }).catch(() => {});
-    }, 180000);
+    // প্রতি ১ মিনিট (৬০ সেকেন্ড) অন্তর অন্তর ব্যাকএন্ড থেকে একদম নতুন খবর নিয়ে আসবে
+    setInterval(fetchFreshLeadNews, 60000);
   </script>
 </body>
 </html>

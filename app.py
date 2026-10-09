@@ -275,3 +275,30 @@ def set_response_headers(response):
     response.headers["Pragma"] = "no-cache"
     response.headers["Expires"] = "0"
     return response
+from flask import jsonify
+
+SHOWN_LEAD_IDS = set()
+
+@app.route("/api/latest-lead")
+def api_latest_lead():
+    global SHOWN_LEAD_IDS, CACHED_NEWS
+    # নতুন তাজা খবর ব্যাকগ্রাউন্ড সিঙ্ক করা
+    sync_trending_news()
+    
+    # যে খবরগুলো এখনও দেখানো হয়নি সেগুলো খোঁজা
+    unseen_news = [item for item in CACHED_NEWS if item["id"] not in SHOWN_LEAD_IDS]
+    
+    if not unseen_news:
+        # সমস্ত খবর একবার দেখানো শেষ হলে পুল ক্লিয়ার করে নতুন সাইকেল শুরু
+        SHOWN_LEAD_IDS.clear()
+        unseen_news = CACHED_NEWS
+        
+    if unseen_news:
+        selected = unseen_news[0]
+        SHOWN_LEAD_IDS.add(selected["id"])
+        return jsonify({
+            "status": "success",
+            "news": selected
+        })
+        
+    return jsonify({"status": "empty"})
