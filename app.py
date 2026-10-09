@@ -1,46 +1,63 @@
 ﻿import os
 import json
+import time
 import feedparser
 from flask import Flask, render_template, abort
 
 app = Flask(__name__)
 DATA_FILE = "data/news.json"
 
-# বিশ্বের শীর্ষ ভাইরাল, ট্রেন্ডিং ও হাই-সিপিসি নিউজ ফিড
+# গ্লোবাল মেমোরি ক্যাশ (যাতে প্রতি ক্লিকে ফাইল রিড বা নেটওয়ার্ক রিকোয়েস্ট না হয়)
+CACHED_NEWS = []
+NEWS_DICT = {}
+LAST_FETCH_TIME = 0
+CACHE_DURATION = 600  # ১০ মিনিট পর পর ব্যাকগ্রাউন্ডে নতুন খবর খুঁজবে
+
 RSS_FEEDS = {
     "National": "https://news.google.com/rss/headlines/section/topic/NATION?hl=en-IN&gl=IN&ceid=IN:en",
     "International": "https://news.google.com/rss/headlines/section/topic/WORLD?hl=en-IN&gl=IN&ceid=IN:en",
     "Business": "https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=en-IN&gl=IN&ceid=IN:en",
     "Technology": "https://news.google.com/rss/headlines/section/topic/TECHNOLOGY?hl=en-IN&gl=IN&ceid=IN:en",
     "Entertainment": "https://news.google.com/rss/headlines/section/topic/ENTERTAINMENT?hl=en-IN&gl=IN&ceid=IN:en",
-    "Sports": "https://news.google.com/rss/headlines/section/topic/SPORTS?hl=en-IN&gl=IN&ceid=IN:en",
-    "Science": "https://news.google.com/rss/headlines/section/topic/SCIENCE?hl=en-IN&gl=IN&ceid=IN:en"
+    "Sports": "https://news.google.com/rss/headlines/section/topic/SPORTS?hl=en-IN&gl=IN&ceid=IN:en"
 }
 
-def load_news():
-    if not os.path.exists(DATA_FILE):
-        return []
-    try:
-        with open(DATA_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except Exception:
-        return []
+def load_from_disk():
+    global CACHED_NEWS, NEWS_DICT
+    if os.path.exists(DATA_FILE):
+        try:
+            with open(DATA_FILE, "r", encoding="utf-8") as f:
+                CACHED_NEWS = json.load(f)
+                NEWS_DICT = {item["id"]: item for item in CACHED_NEWS}
+        except Exception:
+            CACHED_NEWS = []
+            NEWS_DICT = {}
 
-def save_news(news_list):
+def save_to_disk():
     os.makedirs("data", exist_ok=True)
-    with open(DATA_FILE, "w", encoding="utf-8") as f:
-        json.dump(news_list, f, ensure_ascii=False, indent=2)
+    try:
+        with open(DATA_FILE, "w", encoding="utf-8") as f:
+            json.dump(CACHED_NEWS, f, ensure_ascii=False, indent=2)
+    except Exception:
+        pass
 
-def fetch_trending_news():
-    existing_news = load_news()
-    existing_titles = {item["title"] for item in existing_news}
+def sync_trending_news(force=False):
+    global CACHED_NEWS, NEWS_DICT, LAST_FETCH_TIME
+    now = time.time()
+    
+    # ক্যাশ ভ্যালিড থাকলে ইন্টারনেট থেকে ডাউনলোড করে ইউজারকে আটকে রাখবে না
+    if not force and CACHED_NEWS and (now - LAST_FETCH_TIME < CACHE_DURATION):
+        return CACHED_NEWS
+
+    LAST_FETCH_TIME = now
+    existing_titles = {item["title"] for item in CACHED_NEWS}
     new_items = []
-    current_id = len(existing_news) + 1
+    current_id = max([item["id"] for item in CACHED_NEWS], default=0) + 1
 
     for category, url in RSS_FEEDS.items():
         try:
             feed = feedparser.parse(url)
-            for entry in feed.entries[:8]:
+            for entry in feed.entries[:5]:
                 if entry.title not in existing_titles:
                     image_url = "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=800"
                     if "media_content" in entry and len(entry.media_content) > 0:
@@ -69,34 +86,42 @@ def fetch_trending_news():
             continue
 
     if new_items:
-        combined = new_items + existing_news
-        save_news(combined[:120])
-        return combined[:120]
-    return existing_news
+        CACHED_NEWS = (new_items + CACHED_NEWS)[:150]
+        NEWS_DICT = {item["id"]: item for item in CACHED_NEWS}
+        save_to_disk()
+        
+    return CACHED_NEWS
+
+# সার্ভার স্টার্ট হওয়ার সাথে সাথে মেমোরিতে খবর লোড করা
+load_from_disk()
+if not CACHED_NEWS:
+    sync_trending_news(force=True)
 
 @app.route("/")
 def home():
-    news = fetch_trending_news()
+    news = sync_trending_news()
     lead = news[0] if news else None
     remaining = news[1:] if len(news) > 1 else []
     return render_template("index.html", lead=lead, news_list=remaining)
 
-@app.route("/category/<cat_name>")
-def category_view(cat_name):
-    news = load_news()
-    filtered = [n for n in news if n.get("category", "").lower() == cat_name.lower()]
-    return render_template("category.html", category_name=cat_name.title(), news_list=filtered)
-
+# সুপার-ফাস্ট ইনস্ট্যান্ট সিঙ্গেল নিউজ রাউট (০.১ সেকেন্ডে ওপেন হবে)
 @app.route("/news/<int:news_id>")
 def single_news(news_id):
-    news = load_news()
-    article = next((n for n in news if n["id"] == news_id), None)
+    article = NEWS_DICT.get(news_id)
     if not article:
-        abort(404)
-    related = [n for n in news if n["id"] != news_id][:4]
+        # মেমোরিতে না পেলে একবার ডিস্ক থেকে রিফ্রেশ
+        load_from_disk()
+        article = NEWS_DICT.get(news_id)
+        if not article:
+            abort(404)
+    related = [n for n in CACHED_NEWS if n["id"] != news_id][:4]
     return render_template("single.html", article=article, related=related)
 
-# পলিসি ও লিগ্যাল রাউট
+@app.route("/category/<cat_name>")
+def category_view(cat_name):
+    filtered = [n for n in CACHED_NEWS if n.get("category", "").lower() == cat_name.lower()]
+    return render_template("category.html", category_name=cat_name.title(), news_list=filtered)
+
 @app.route("/privacy-policy")
 def privacy_policy(): return render_template("privacy-policy.html")
 
