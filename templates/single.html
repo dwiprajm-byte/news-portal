@@ -4,39 +4,62 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ article.title }} - 24 Early News</title>
+  
+  <!-- Open Graph & Twitter Cards for High Viral Social Sharing -->
+  <meta property="og:title" content="{{ article.title }}" />
+  <meta property="og:description" content="{{ article.content[:150] }}..." />
+  <meta property="og:image" content="{{ article.image }}" />
+  <meta property="og:url" content="https://news-portal-6alq.onrender.com/news/{{ article.id }}" />
+  <meta property="og:type" content="article" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{{ article.title }}" />
+  <meta name="twitter:image" content="{{ article.image }}" />
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Poppins', sans-serif; }
+    #readingProgress { height: 4px; background: #dc2626; width: 0%; position: fixed; top: 0; left: 0; z-index: 9999; }
+  </style>
 </head>
-<body class="bg-gray-100 text-gray-900">
+<body class="bg-gray-100 text-gray-900 pb-16 md:pb-0">
+
+  <!-- রিডিং প্রোগ্রেস বার -->
+  <div id="readingProgress"></div>
+
   <header class="bg-white border-b shadow-sm sticky top-0 z-50">
-    <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+    <div class="max-w-4xl mx-auto px-4 py-3.5 flex justify-between items-center">
       <a href="/" class="text-2xl font-black text-red-700">24 EARLY<span class="text-gray-900 ml-1">NEWS</span></a>
       <a href="/" class="text-sm font-bold text-gray-600 hover:text-red-700">&larr; Back to Home</a>
     </div>
   </header>
 
   <main class="max-w-4xl mx-auto px-4 py-8">
-    <article class="bg-white rounded-xl shadow-sm border p-6 md:p-8">
-      <span class="bg-red-100 text-red-700 px-3 py-1 rounded text-xs font-bold uppercase">{{ article.category }}</span>
-      <h1 class="text-2xl md:text-3xl font-extrabold mt-3 text-gray-900 leading-snug">{{ article.title }}</h1>
-      <p class="text-xs text-gray-400 mt-2 mb-6">Published: {{ article.date }} &bull; 24 Early News Desk</p>
+    <article class="bg-white rounded-2xl shadow-sm border p-6 md:p-10">
+      <span class="bg-red-100 text-red-700 px-3 py-1 rounded text-xs font-bold uppercase tracking-wider">{{ article.category }}</span>
+      <h1 class="text-2xl md:text-4xl font-extrabold mt-3 text-gray-900 leading-tight">{{ article.title }}</h1>
+      <p class="text-xs text-gray-400 mt-2 mb-6"><i class="far fa-clock mr-1"></i> Published: {{ article.date }} &bull; 24 Early News Live Desk</p>
       
-      <!-- Viral Social Share Buttons (Facebook & WhatsApp Group Share) -->
-      <div class="flex items-center gap-2 mb-6 border-y py-2.5">
+      <!-- ভাইরাল শেয়ার বাটন -->
+      <div class="flex flex-wrap items-center gap-2 mb-6 border-y py-3">
         <span class="text-xs font-bold text-gray-600 mr-2">Share this story:</span>
-        <a href="https://api.whatsapp.com/send?text={{ article.title }} - https://news-portal-6alq.onrender.com/news/{{ article.id }}" target="_blank" class="bg-green-500 hover:bg-green-600 text-white text-xs font-bold px-3 py-1.5 rounded flex items-center gap-1.5 shadow-sm">
-          <i class="fab fa-whatsapp text-sm"></i> WhatsApp
+        <a href="https://api.whatsapp.com/send?text={{ article.title }} - https://news-portal-6alq.onrender.com/news/{{ article.id }}" target="_blank" class="bg-green-500 hover:bg-green-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1.5 shadow-sm">
+          <i class="fab fa-whatsapp"></i> WhatsApp
         </a>
-        <a href="https://www.facebook.com/sharer/sharer.php?u=https://news-portal-6alq.onrender.com/news/{{ article.id }}" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3 py-1.5 rounded flex items-center gap-1.5 shadow-sm">
-          <i class="fab fa-facebook text-sm"></i> Facebook
+        <a href="https://www.facebook.com/sharer/sharer.php?u=https://news-portal-6alq.onrender.com/news/{{ article.id }}" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1.5 shadow-sm">
+          <i class="fab fa-facebook"></i> Facebook
+        </a>
+        <a href="https://telegram.me/share/url?url=https://news-portal-6alq.onrender.com/news/{{ article.id }}&text={{ article.title }}" target="_blank" class="bg-sky-500 hover:bg-sky-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1.5 shadow-sm">
+          <i class="fab fa-telegram"></i> Telegram
         </a>
       </div>
 
-      <img src="{{ article.image }}" alt="{{ article.title }}" class="w-full max-h-96 object-cover rounded-lg mb-6 shadow">
+      <img src="{{ article.image }}" alt="{{ article.title }}" class="w-full max-h-96 object-cover rounded-xl mb-6 shadow">
 
-      <!-- In-Article High Earning Ad Slot -->
+      <!-- ইন-আর্টিকেল হাই CPC অ্যাড -->
       <div class="border border-dashed border-gray-300 bg-gray-50 h-24 my-6 flex items-center justify-center text-gray-400 font-bold text-xs uppercase tracking-widest shadow-inner">
-        High CPC In-Article Google Ad (336x280 / Responsive)
+        High CPC In-Article Google Ad (336x280)
       </div>
 
       <div class="text-gray-700 leading-relaxed text-base space-y-4">
@@ -44,18 +67,39 @@
       </div>
     </article>
 
-    <!-- Related Viral Stories -->
+    <!-- সম্পর্কিত ট্রেন্ডিং খবর -->
     <div class="mt-8">
-      <h3 class="text-lg font-bold text-gray-900 mb-4 border-l-4 border-red-600 pl-2">You May Also Like (Trending Stories)</h3>
+      <h3 class="text-lg font-bold text-gray-900 mb-4 border-l-4 border-red-600 pl-2">You May Also Like (Viral News)</h3>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {% for r in related %}
-        <div class="bg-white p-4 rounded-xl border shadow-sm hover:border-red-400 transition">
+        <a href="/news/{{ r.id }}" class="bg-white p-4 rounded-xl border shadow-sm hover:border-red-400 transition block">
           <span class="text-[10px] font-bold text-red-600 uppercase">{{ r.category }}</span>
-          <h4 class="font-bold text-sm mt-1 text-gray-800 hover:text-red-700"><a href="/news/{{ r.id }}">{{ r.title }}</a></h4>
-        </div>
+          <h4 class="font-bold text-sm mt-1 text-gray-800 hover:text-red-700 line-clamp-2">{{ r.title }}</h4>
+        </a>
         {% endfor %}
       </div>
     </div>
   </main>
+
+  <!-- মোবাইলে ফ্লোটিং স্টিকি শেয়ার বার -->
+  <div class="fixed bottom-0 left-0 right-0 bg-white border-t p-2.5 flex justify-around items-center md:hidden z-50 shadow-lg">
+    <span class="text-xs font-bold text-gray-700">Share:</span>
+    <a href="https://api.whatsapp.com/send?text={{ article.title }} - https://news-portal-6alq.onrender.com/news/{{ article.id }}" target="_blank" class="bg-green-500 text-white px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-1">
+      <i class="fab fa-whatsapp"></i> WhatsApp
+    </a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://news-portal-6alq.onrender.com/news/{{ article.id }}" target="_blank" class="bg-blue-600 text-white px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-1">
+      <i class="fab fa-facebook"></i> Facebook
+    </a>
+  </div>
+
+  <script>
+    // স্ক্রল প্রোগ্রেস বার
+    window.onscroll = function() {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById("readingProgress").style.width = scrolled + "%";
+    };
+  </script>
 </body>
 </html>

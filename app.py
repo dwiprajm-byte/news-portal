@@ -244,3 +244,27 @@ def contact(): return render_template("contact.html")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+from flask import Response
+
+@app.route("/sitemap.xml")
+def sitemap():
+    base_url = "https://news-portal-6alq.onrender.com"
+    pages = [
+        "", "/category/national", "/category/international", "/category/business",
+        "/category/sports", "/category/entertainment", "/category/technology",
+        "/category/science", "/horoscope", "/recipes", "/about", "/contact",
+        "/privacy-policy", "/terms", "/disclaimer"
+    ]
+    xml = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    for p in pages:
+        xml.append(f"<url><loc>{base_url}{p}</loc><changefreq>hourly</changefreq><priority>0.8</priority></url>")
+    
+    for item in CACHED_NEWS[:60]:
+        xml.append(f"<url><loc>{base_url}/news/{item['id']}</loc><changefreq>daily</changefreq><priority>1.0</priority></url>")
+        
+    xml.append("</urlset>")
+    return Response("\n".join(xml), mimetype="application/xml")
+
+@app.route("/robots.txt")
+def robots():
+    return app.send_static_file("robots.txt")

@@ -1,0 +1,3 @@
+﻿User-agent: *
+Allow: /
+Sitemap: https://news-portal-6alq.onrender.com/sitemap.xml
