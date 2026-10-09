@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ recipe.title }} - 24 Early News Recipes</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-900 min-h-screen flex flex-col">
+  <header class="bg-white border-b shadow-sm sticky top-0 z-50">
+    <div class="max-w-4xl mx-auto px-4 py-3.5 flex justify-between items-center">
+      <a href="/" class="text-2xl font-black text-red-700">24 EARLY<span class="text-gray-900 ml-1">NEWS</span></a>
+      <a href="/recipes" class="text-sm font-bold text-orange-600 hover:underline">&larr; সব রেসিপিতে ফিরে যান</a>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 py-8 flex-grow">
+    <article class="bg-white rounded-2xl shadow-sm border p-6 md:p-10">
+      
+      <div class="flex flex-wrap items-center gap-2 mb-3">
+        <span class="bg-orange-600 text-white text-xs font-bold px-2.5 py-0.5 rounded uppercase">{{ recipe.meal }} স্পেশাল</span>
+        <span class="text-xs text-gray-400">&bull; 24 Early News কিচেন স্পেশাল</span>
+      </div>
+
+      <h1 class="text-2xl md:text-3xl font-black text-gray-900 leading-tight mb-4">
+        {{ recipe.title }}
+      </h1>
+
+      <div class="flex items-center gap-6 text-xs sm:text-sm font-bold text-gray-600 border-y py-3 mb-6">
+        <span><i class="far fa-clock text-orange-500 mr-1.5"></i> রান্নার সময়: {{ recipe.time }}</span>
+        <span><i class="fas fa-fire-alt text-red-500 mr-1.5"></i> ক্যালোরি: {{ recipe.cal }}</span>
+        <span class="text-green-600"><i class="fas fa-check-circle mr-1"></i> সহজ ও পরীক্ষিত</span>
+      </div>
+
+      <!-- সোশ্যাল শেয়ার -->
+      <div class="flex items-center gap-2 mb-6">
+        <span class="text-xs font-bold text-gray-600">রেসিপি শেয়ার করুন:</span>
+        <a href="https://api.whatsapp.com/send?text=ঘরেই বানান {{ recipe.title }}! সহজ রান্নার নিয়ম দেখুন: https://news-portal-6alq.onrender.com/recipes/{{ recipe.id }}" target="_blank" class="bg-green-500 hover:bg-green-600 text-white text-xs font-bold px-3 py-1.5 rounded flex items-center gap-1.5 shadow-sm">
+          <i class="fab fa-whatsapp"></i> WhatsApp
+        </a>
+      </div>
+
+      <img src="{{ recipe.image }}" alt="{{ recipe.title }}" class="w-full max-h-96 object-cover rounded-xl shadow mb-8">
+
+      <!-- উপাদান সমূহ -->
+      <div class="bg-orange-50 border border-orange-200 rounded-xl p-6 mb-8">
+        <h2 class="text-lg font-extrabold text-orange-900 mb-3 flex items-center">
+          <i class="fas fa-shopping-basket text-orange-600 mr-2"></i> প্রয়োজনীয় উপকরণ (Key Ingredients)
+        </h2>
+        <p class="text-sm text-gray-800 leading-relaxed font-medium">
+          {{ recipe.ingredients }}
+        </p>
+      </div>
+
+      <!-- ইন-আর্টিকেল অ্যাড -->
+      <div class="border border-dashed border-gray-300 bg-gray-50 h-24 my-6 flex items-center justify-center text-gray-400 font-bold text-xs uppercase tracking-widest shadow-inner">
+        High CPC Recipe In-Content Ad (300x250)
+      </div>
+
+      <!-- প্রস্তুত প্রণালী -->
+      <div>
+        <h2 class="text-lg font-extrabold text-gray-900 mb-3 flex items-center">
+          <i class="fas fa-blender text-orange-600 mr-2"></i> ধাপে ধাপে প্রস্তুত প্রণালী (Step-by-Step Method)
+        </h2>
+        <div class="text-sm sm:text-base text-gray-700 leading-relaxed space-y-3 bg-gray-50 p-6 rounded-xl border">
+          <p>{{ recipe.method }}</p>
+        </div>
+      </div>
+
+    </article>
+
+    <!-- আরও অন্যান্য রেসিপি -->
+    <div class="mt-8">
+      <h3 class="text-lg font-bold text-gray-900 mb-4 border-l-4 border-orange-600 pl-2">আজকের অন্যান্য চমৎকার রেসিপি</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {% for extra in more_recipes %}
+        <a href="/recipes/{{ extra.id }}" class="bg-white p-3 rounded-xl border shadow-sm hover:border-orange-400 transition flex items-center gap-3">
+          <img src="{{ extra.image }}" alt="{{ extra.title }}" class="w-14 h-14 object-cover rounded-lg">
+          <div>
+            <span class="text-[10px] font-bold text-orange-600 uppercase">{{ extra.meal }}</span>
+            <h4 class="font-bold text-xs text-gray-800 hover:text-orange-600 line-clamp-1">{{ extra.title }}</h4>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </main>
+</body>
+</html>
