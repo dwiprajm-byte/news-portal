@@ -211,6 +211,19 @@ def generate_mega_longform_seo_article(title, category, raw_snippet):
     """
     return html_content
 
+def get_safe_royalty_free_image(category):
+    """কপিরাইট মুক্ত হাই-রেজোলিউশন আনস্প্ল্যাশ লাইসেন্স ইমেজ পুল"""
+    safe_pools = {
+        "National": "https://images.unsplash.com/photo-1532375810709-75b1da00537c?w=900&auto=format&fit=crop",
+        "International": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=900&auto=format&fit=crop",
+        "Business": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=900&auto=format&fit=crop",
+        "Sports": "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=900&auto=format&fit=crop",
+        "Entertainment": "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=900&auto=format&fit=crop",
+        "Technology": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=900&auto=format&fit=crop",
+        "Science": "https://images.unsplash.com/photo-1507668077129-56e32842fceb?w=900&auto=format&fit=crop"
+    }
+    return safe_pools.get(category, "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=900&auto=format&fit=crop")
+
 def sync_trending_news(force=False):
     global CACHED_NEWS, NEWS_DICT, LAST_FETCH_TIME
     now = time.time()
