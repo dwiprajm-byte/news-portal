@@ -19,14 +19,9 @@
     .goog-tooltip { display: none !important; }
     .goog-text-highlight { background: none !important; box-shadow: none !important; }
     
-    .lang-dropdown-menu {
-      max-height: 260px;
-      overflow-y: auto;
-    }
+    .lang-dropdown-menu { max-height: 260px; overflow-y: auto; }
     .lang-dropdown-menu::-webkit-scrollbar { width: 6px; }
     .lang-dropdown-menu::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-
-    /* মেনু স্ক্রোলবার ডিজাইন */
     .menu-scroll::-webkit-scrollbar { height: 3px; }
     .menu-scroll::-webkit-scrollbar-thumb { background: #ef4444; border-radius: 2px; }
   </style>
@@ -35,7 +30,7 @@
 
   <div id="google_translate_element" style="display:none;"></div>
 
-  <!-- ১. টপ বার: নন-ব্লিংকিং ঘড়ি ও সার্চেবল ল্যাঙ্গুয়েজ -->
+  <!-- টপ বার -->
   <div class="bg-gray-900 text-gray-300 py-2 px-4 text-xs font-medium border-b border-gray-800">
     <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-3">
       
@@ -63,7 +58,7 @@
     </div>
   </div>
 
-  <!-- ২. ব্রেকিং নিউজ লাইভ স্ট্রিপ -->
+  <!-- লাইভ ব্রেকিং বার -->
   <div class="bg-red-700 text-white py-2 px-4 flex items-center text-sm font-semibold shadow">
     <span class="bg-black px-2.5 py-0.5 rounded text-xs uppercase mr-3 tracking-wider font-bold animate-pulse flex items-center notranslate">
       <i class="fas fa-bolt mr-1 text-yellow-400"></i> LIVE 24/7
@@ -73,7 +68,7 @@
     </marquee>
   </div>
 
-  <!-- ৩. মেইন হেডার ও লোগো -->
+  <!-- হেডার ও ব্র্যান্ডিং -->
   <header class="bg-white border-b shadow-sm">
     <div class="max-w-7xl mx-auto px-4 py-3.5 flex justify-between items-center">
       <a href="/" class="flex items-center gap-2 group notranslate">
@@ -88,7 +83,6 @@
         </div>
       </a>
 
-      <!-- লাইভ আপডেট ট্যাগ বাটন -->
       <div class="hidden lg:flex items-center space-x-2 text-xs font-bold text-gray-700">
         <span class="bg-red-50 text-red-700 border border-red-200 px-2.5 py-1 rounded-full flex items-center gap-1.5">
           <span class="w-2 h-2 rounded-full bg-red-600 animate-ping"></span> Live Feeds Active
@@ -99,14 +93,14 @@
       </div>
 
       <div class="flex items-center space-x-3 text-lg text-gray-600 notranslate">
-        <a href="#" class="hover:text-blue-600"><i class="fab fa-facebook"></i></a>
-        <a href="#" class="hover:text-green-500"><i class="fab fa-whatsapp"></i></a>
-        <a href="#" class="hover:text-blue-400"><i class="fab fa-telegram"></i></a>
+        <a href="https://facebook.com" target="_blank" class="hover:text-blue-600"><i class="fab fa-facebook"></i></a>
+        <a href="https://whatsapp.com" target="_blank" class="hover:text-green-500"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://telegram.org" target="_blank" class="hover:text-blue-400"><i class="fab fa-telegram"></i></a>
       </div>
     </div>
   </header>
 
-  <!-- ৪. সুপার-ট্রেন্ডিং মেনুবার (সবচেয়ে প্রয়োজনীয় সব ক্যাটাগরি) -->
+  <!-- ১০০% কার্যকরী মেনুবার -->
   <nav class="bg-gray-900 sticky top-0 z-50 shadow-md">
     <div class="max-w-7xl mx-auto px-2 sm:px-4">
       <div class="flex items-center space-x-1 sm:space-x-2 overflow-x-auto menu-scroll py-2 text-xs sm:text-sm font-bold text-gray-200 whitespace-nowrap">
@@ -131,10 +125,10 @@
         <a href="/category/technology" class="hover:bg-gray-800 hover:text-cyan-400 px-3 py-1.5 rounded-md transition flex items-center gap-1.5">
           <i class="fas fa-mobile-alt text-cyan-400"></i> Tech & AI
         </a>
-        <a href="#horoscope" class="hover:bg-gray-800 hover:text-yellow-400 px-3 py-1.5 rounded-md transition flex items-center gap-1.5 text-yellow-300">
+        <a href="/horoscope" class="hover:bg-gray-800 hover:text-yellow-400 px-3 py-1.5 rounded-md transition flex items-center gap-1.5 text-yellow-300">
           <i class="fas fa-star text-yellow-400"></i> Daily Horoscope
         </a>
-        <a href="#recipes" class="hover:bg-gray-800 hover:text-orange-400 px-3 py-1.5 rounded-md transition flex items-center gap-1.5">
+        <a href="/recipes" class="hover:bg-gray-800 hover:text-orange-400 px-3 py-1.5 rounded-md transition flex items-center gap-1.5">
           <i class="fas fa-utensils text-orange-400"></i> Recipes
         </a>
         <a href="/category/science" class="hover:bg-gray-800 hover:text-purple-400 px-3 py-1.5 rounded-md transition flex items-center gap-1.5">
@@ -144,14 +138,14 @@
     </div>
   </nav>
 
-  <!-- ৫. হেডার অ্যাড ব্যানার -->
+  <!-- হেডার অ্যাড -->
   <div class="max-w-7xl mx-auto px-4 my-4 w-full">
     <div class="border border-dashed border-gray-300 bg-white rounded-lg h-24 flex items-center justify-center text-gray-400 font-bold text-xs uppercase tracking-widest shadow-sm notranslate">
       High CPC Header Ad (728x90)
     </div>
   </div>
 
-  <!-- ৬. মূল কন্টেন্ট গ্রিড -->
+  <!-- মূল বডি -->
   <main class="max-w-7xl mx-auto px-4 py-4 grid grid-cols-1 lg:grid-cols-12 gap-8 flex-grow">
     
     <div class="lg:col-span-8 space-y-8">
@@ -172,7 +166,7 @@
       </article>
       {% endif %}
 
-      <div id="national">
+      <div>
         <div class="border-b-2 border-red-700 pb-2 mb-4 flex justify-between items-center">
           <h2 class="text-xl font-bold text-gray-900 flex items-center">
             <i class="fas fa-newspaper text-red-600 mr-2"></i> Real-Time Trending Headlines
@@ -197,61 +191,9 @@
         </div>
       </div>
 
-      <!-- দৈনিক রাশিফল সেকশন -->
-      <section id="horoscope" class="bg-white p-5 rounded-xl border shadow-sm">
-        <div class="border-b-2 border-amber-500 pb-2 mb-4 flex justify-between items-center">
-          <h2 class="text-lg font-bold text-gray-900 flex items-center">
-            <i class="fas fa-star text-amber-500 mr-2"></i> Today's Live Horoscope
-          </h2>
-          <span class="text-xs text-amber-600 font-semibold">12 Zodiac Forecast</span>
-        </div>
-        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 text-center">
-          <div class="border border-amber-200 rounded-lg p-2.5 bg-amber-50/50 hover:bg-amber-100 transition"><div class="text-xl">♈</div><div class="font-bold text-xs mt-1">Aries</div><div class="text-[10px] text-green-700 font-bold">Lucky Day</div></div>
-          <div class="border border-amber-200 rounded-lg p-2.5 bg-amber-50/50 hover:bg-amber-100 transition"><div class="text-xl">♉</div><div class="font-bold text-xs mt-1">Taurus</div><div class="text-[10px] text-green-700 font-bold">Wealth Gain</div></div>
-          <div class="border border-amber-200 rounded-lg p-2.5 bg-amber-50/50 hover:bg-amber-100 transition"><div class="text-xl">♊</div><div class="font-bold text-xs mt-1">Gemini</div><div class="text-[10px] text-green-700 font-bold">Success</div></div>
-          <div class="border border-amber-200 rounded-lg p-2.5 bg-amber-50/50 hover:bg-amber-100 transition"><div class="text-xl">♋</div><div class="font-bold text-xs mt-1">Cancer</div><div class="text-[10px] text-green-700 font-bold">Growth</div></div>
-          <div class="border border-amber-200 rounded-lg p-2.5 bg-amber-50/50 hover:bg-amber-100 transition"><div class="text-xl">♌</div><div class="font-bold text-xs mt-1">Leo</div><div class="text-[10px] text-green-700 font-bold">Respect</div></div>
-          <div class="border border-amber-200 rounded-lg p-2.5 bg-amber-50/50 hover:bg-amber-100 transition"><div class="text-xl">♍</div><div class="font-bold text-xs mt-1">Virgo</div><div class="text-[10px] text-green-700 font-bold">Peaceful</div></div>
-          <div class="border border-amber-200 rounded-lg p-2.5 bg-amber-50/50 hover:bg-amber-100 transition"><div class="text-xl">♎</div><div class="font-bold text-xs mt-1">Libra</div><div class="text-[10px] text-green-700 font-bold">Profitable</div></div>
-          <div class="border border-amber-200 rounded-lg p-2.5 bg-amber-50/50 hover:bg-amber-100 transition"><div class="text-xl">♏</div><div class="font-bold text-xs mt-1">Scorpio</div><div class="text-[10px] text-amber-700 font-bold">Caution</div></div>
-          <div class="border border-amber-200 rounded-lg p-2.5 bg-amber-50/50 hover:bg-amber-100 transition"><div class="text-xl">♐</div><div class="font-bold text-xs mt-1">Sagittarius</div><div class="text-[10px] text-green-700 font-bold">Travel</div></div>
-          <div class="border border-amber-200 rounded-lg p-2.5 bg-amber-50/50 hover:bg-amber-100 transition"><div class="text-xl">♑</div><div class="font-bold text-xs mt-1">Capricorn</div><div class="text-[10px] text-green-700 font-bold">Progress</div></div>
-          <div class="border border-amber-200 rounded-lg p-2.5 bg-amber-50/50 hover:bg-amber-100 transition"><div class="text-xl">♒</div><div class="font-bold text-xs mt-1">Aquarius</div><div class="text-[10px] text-green-700 font-bold">Opportunity</div></div>
-          <div class="border border-amber-200 rounded-lg p-2.5 bg-amber-50/50 hover:bg-amber-100 transition"><div class="text-xl">♓</div><div class="font-bold text-xs mt-1">Pisces</div><div class="text-[10px] text-green-700 font-bold">Joyful</div></div>
-        </div>
-      </section>
-
-      <!-- স্পেশাল রেসিপি সেকশন -->
-      <section id="recipes" class="bg-white p-5 rounded-xl border shadow-sm">
-        <div class="border-b-2 border-orange-500 pb-2 mb-4 flex justify-between items-center">
-          <h2 class="text-lg font-bold text-gray-900 flex items-center">
-            <i class="fas fa-utensils text-orange-500 mr-2"></i> Gourmet Recipes & Kitchen Secrets
-          </h2>
-          <span class="text-xs text-orange-600 font-semibold">Foodie Hub</span>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div class="border rounded-lg overflow-hidden flex flex-col justify-between hover:shadow-md transition">
-            <img src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=500" alt="Biryani" class="h-40 w-full object-cover">
-            <div class="p-3">
-              <span class="text-[10px] font-bold bg-orange-100 text-orange-700 px-2 py-0.5 rounded">Chef's Special</span>
-              <h4 class="font-bold text-sm mt-1 text-gray-800 hover:text-orange-600">Restaurant-Style Shahi Mutton Dum Biryani</h4>
-              <p class="text-xs text-gray-500 mt-1">Authentic secret spices and perfect slow dum technique for delicious aroma...</p>
-            </div>
-          </div>
-          <div class="border rounded-lg overflow-hidden flex flex-col justify-between hover:shadow-md transition">
-            <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500" alt="Salad" class="h-40 w-full object-cover">
-            <div class="p-3">
-              <span class="text-[10px] font-bold bg-green-100 text-green-700 px-2 py-0.5 rounded">Diet & Wellness</span>
-              <h4 class="font-bold text-sm mt-1 text-gray-800 hover:text-green-700">Quick 10-Minute High Protein Fitness Salad</h4>
-              <p class="text-xs text-gray-500 mt-1">Essential low-carb nutritious booster bowl for active daily health...</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
     </div>
 
-    <!-- সাইডবার ট্রেন্ডিং উইজেট -->
+    <!-- সাইডবার -->
     <aside class="lg:col-span-4 space-y-6">
       
       <div class="bg-white rounded-xl shadow-sm border p-5">
@@ -269,6 +211,17 @@
         </div>
       </div>
 
+      <!-- কুইক শর্টকাট উইজেট -->
+      <div class="bg-white rounded-xl shadow-sm border p-5">
+        <h3 class="text-base font-bold border-b pb-2 mb-3 text-gray-800">Quick Access</h3>
+        <div class="grid grid-cols-2 gap-2 text-xs font-semibold">
+          <a href="/horoscope" class="p-2.5 rounded-lg bg-amber-50 text-amber-800 hover:bg-amber-100 flex items-center gap-2"><i class="fas fa-star text-amber-500"></i> Horoscope</a>
+          <a href="/recipes" class="p-2.5 rounded-lg bg-orange-50 text-orange-800 hover:bg-orange-100 flex items-center gap-2"><i class="fas fa-utensils text-orange-500"></i> Recipes</a>
+          <a href="/category/business" class="p-2.5 rounded-lg bg-emerald-50 text-emerald-800 hover:bg-emerald-100 flex items-center gap-2"><i class="fas fa-coins text-emerald-500"></i> Gold Rates</a>
+          <a href="/category/sports" class="p-2.5 rounded-lg bg-blue-50 text-blue-800 hover:bg-blue-100 flex items-center gap-2"><i class="fas fa-trophy text-blue-500"></i> Live Scores</a>
+        </div>
+      </div>
+
       <div class="sticky top-20 border border-dashed border-gray-300 bg-white rounded-xl h-80 flex items-center justify-center text-gray-400 font-bold text-xs uppercase tracking-widest shadow-sm notranslate">
         Sticky Sidebar Unit (300x600)
       </div>
@@ -277,7 +230,7 @@
 
   </main>
 
-  <!-- ফুটার ও পলিসি লিংক -->
+  <!-- ফুটার -->
   <footer class="bg-gray-900 text-gray-400 py-10 border-t border-gray-800 mt-auto">
     <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 text-sm">
       <div>
@@ -291,7 +244,7 @@
           <li><a href="/category/business" class="hover:text-white">Share Market & Gold Rates</a></li>
           <li><a href="/category/sports" class="hover:text-white">Sports & Scores</a></li>
           <li><a href="/category/entertainment" class="hover:text-white">Bollywood & Hollywood Viral</a></li>
-          <li><a href="#horoscope" class="hover:text-white">Daily 12 Zodiac Horoscopes</a></li>
+          <li><a href="/horoscope" class="hover:text-white">Daily 12 Zodiac Horoscopes</a></li>
         </ul>
       </div>
       <div>
