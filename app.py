@@ -44,3 +44,24 @@ if __name__ == "__main__":
     if not os.path.exists(DB_FILE) or os.path.getsize(DB_FILE) <= 2:
         fetch_and_generate()
     app.run(host="0.0.0.0", port=5000, debug=True)
+
+# --- Policy & Legal Routes ---
+@app.route('/privacy-policy')
+def privacy_policy():
+    return render_template('privacy-policy.html')
+
+@app.route('/terms')
+def terms():
+    return render_template('terms.html')
+
+@app.route('/disclaimer')
+def disclaimer():
+    return render_template('disclaimer.html')
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
