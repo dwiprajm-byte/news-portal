@@ -167,7 +167,7 @@ def generate_daily_50_recipes():
             "cal": base["cal"],
             "image": base["img"],
             "ingredients": base["ing"],
-            "method": f"আজকের বিশেষ রেসিপি ({datetime.date.today().strftime('%d %B, %Y')}): {base['met']} স্বাদ দ্বিগুণ করতে সামান্য ঘি বা মাখন ছড়িয়ে পরিবেশন করুন।"
+            "method": f"Chef's Daily Special: {base['met']} Garnish with fresh herbs and butter before serving."
         })
     return recipes_list
 
