@@ -224,6 +224,32 @@ def get_safe_royalty_free_image(category):
     }
     return safe_pools.get(category, "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=900&auto=format&fit=crop")
 
+
+from datetime import datetime, timedelta
+
+def purge_old_and_sort_news():
+    """২৪ ঘণ্টার বেশি পুরোনো খবর স্বয়ংক্রিয়ভাবে মুছে ফেলা এবং নতুন খবর সবার উপরে রাখা"""
+    global CACHED_NEWS, NEWS_DICT
+    now = datetime.now()
+    cutoff_time = now - timedelta(hours=24)
+    
+    valid_news = []
+    for item in CACHED_NEWS:
+        # পাবলিশ টাইম যাচাই বা ডিফল্ট হিসেবে আজকের রাখা
+        pub_dt = item.get("parsed_time")
+        if not pub_dt:
+            pub_dt = now
+            item["parsed_time"] = pub_dt
+            
+        if pub_dt >= cutoff_time:
+            valid_news.append(item)
+            
+    # নতুন খবর সবার উপরে সাজানো (Descending sort)
+    valid_news.sort(key=lambda x: x.get("parsed_time", now), reverse=True)
+    CACHED_NEWS = valid_news
+    NEWS_DICT = {n["id"]: n for n in CACHED_NEWS}
+    return CACHED_NEWS
+
 def sync_trending_news(force=False):
     global CACHED_NEWS, NEWS_DICT, LAST_FETCH_TIME
     now = time.time()
@@ -325,7 +351,7 @@ def generate_daily_50_recipes():
 
 @app.route("/")
 def home():
-    news = sync_trending_news()
+    sync_trending_news(); news = purge_old_and_sort_news()
     lead = news[0] if news else None
     remaining = news[1:] if len(news) > 1 else []
     return render_template("index.html", lead=lead, news_list=remaining)
@@ -443,7 +469,7 @@ def api_latest_lead():
     if not unseen_news:
         # সমস্ত খবর একবার দেখানো শেষ হলে পুল ক্লিয়ার করে নতুন সাইকেল শুরু
         SHOWN_LEAD_IDS.clear()
-        unseen_news = CACHED_NEWS
+        unseen_news = purge_old_and_sort_news()
         
     if unseen_news:
         selected = unseen_news[0]

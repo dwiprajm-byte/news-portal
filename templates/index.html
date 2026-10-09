@@ -203,12 +203,12 @@
             <div>
               <span class="text-xs font-bold text-red-600 uppercase notranslate">{{ item.category }}</span>
               <h3 class="text-base font-bold text-gray-800 mt-1 hover:text-red-700 transition leading-snug">
-                <a href="/news/{{ item.id }}">{{ item.title }}</a>
+                <a href="/news/$1">$2</a>
               </h3>
             </div>
             <div class="text-xs text-gray-400 mt-4 border-t pt-2 flex justify-between items-center">
               <span>{{ item.date }}</span>
-              <a href="/news/{{ item.id }}" class="text-red-600 font-semibold hover:underline">Details &rarr;</a>
+              <a href="/news/$1">$2</a>
             </div>
           </div>
           {% endfor %}
@@ -227,9 +227,7 @@
         <div class="divide-y space-y-3 mt-3">
           {% for item in news_list[:6] %}
           <div class="pt-2">
-            <a href="/news/{{ item.id }}" class="text-sm font-semibold text-gray-700 hover:text-red-700 transition block leading-snug">
-              {{ item.title }}
-            </a>
+            <a href="/news/$1">$2</a>
           </div>
           {% endfor %}
         </div>
@@ -252,6 +250,42 @@
 
     </aside>
 
+      <!-- লাইভ নিউজ গ্রিড: সব নতুন খবর উপরে, পুরনো খবর নিচে -->
+    <section class="mt-10">
+      <div class="flex items-center justify-between border-b-2 border-red-600 pb-3 mb-6">
+        <h2 class="text-xl md:text-2xl font-black text-gray-900 flex items-center">
+          <i class="fas fa-newspaper text-red-600 mr-2.5"></i> Today's Full Live Wire (Latest to Oldest)
+        </h2>
+        <span class="text-xs bg-red-100 text-red-700 font-bold px-3 py-1 rounded-full animate-pulse">24-Hour Rolling Feed</span>
+      </div>
+
+      <div id="fullNewsListContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for item in news_list %}
+        <article class="bg-white rounded-xl shadow-sm border overflow-hidden hover:shadow-lg transition duration-200 flex flex-col justify-between group">
+          <div>
+            <div class="relative overflow-hidden h-48">
+              <a href="/news/$1">$2</a>
+              <span class="absolute top-2.5 left-2.5 bg-red-600 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded shadow">
+                {{ item.category }}
+              </span>
+            </div>
+            <div class="p-4">
+              <h3 class="font-bold text-sm sm:text-base text-gray-900 group-hover:text-red-700 transition leading-snug line-clamp-2">
+                <a href="/news/$1">$2</a>
+              </h3>
+              <p class="text-xs text-gray-400 mt-2 flex items-center">
+                <i class="far fa-clock mr-1 text-red-500"></i> {{ item.date }}
+              </p>
+            </div>
+          </div>
+          <div class="bg-gray-50 border-t px-4 py-2.5 flex justify-between items-center text-xs">
+            <span class="text-gray-500 font-medium">Verified Story</span>
+            <a href="/news/$1">$2</a>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+    </section>
   </main>
 
   <!-- ফুটার -->
@@ -449,6 +483,56 @@
 
     // প্রতি ১ মিনিট (৬০ সেকেন্ড) অন্তর অন্তর ব্যাকএন্ড থেকে একদম নতুন খবর নিয়ে আসবে
     setInterval(fetchFreshLeadNews, 60000);
+  </script>
+  <script>
+    // প্রতি ১ মিনিটে নতুন খবর সবার উপরে স্বয়ংক্রিয়ভাবে পুশ করা
+    async function liveRefreshNewsFeed() {
+      try {
+        const res = await fetch('/api/latest-lead?t=' + Date.now(), { cache: 'no-store' });
+        const data = await res.json();
+        if (data.status === 'success' && data.news) {
+          const container = document.getElementById('fullNewsListContainer');
+          if (!container) return;
+          
+          // যদি এই খবরটি পেজে আগে থেকে না থাকে তবে সবার উপরে অ্যাড করা
+          const existingCard = document.querySelector(`a[href="/news/${data.news.id}"]`);
+          if (!existingCard) {
+            const newCard = document.createElement('article');
+            newCard.className = "bg-white rounded-xl shadow-sm border overflow-hidden hover:shadow-lg transition duration-200 flex flex-col justify-between group animate-fade-in";
+            newCard.innerHTML = `
+              <div>
+                <div class="relative overflow-hidden h-48">
+                  <a href="/news/${data.news.id}">
+                    <img src="${data.news.image}" alt="${data.news.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                  </a>
+                  <span class="absolute top-2.5 left-2.5 bg-red-600 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded shadow">
+                    ${data.news.category}
+                  </span>
+                </div>
+                <div class="p-4">
+                  <h3 class="font-bold text-sm sm:text-base text-gray-900 group-hover:text-red-700 transition leading-snug line-clamp-2">
+                    <a href="/news/${data.news.id}" class="hover:underline">${data.news.title}</a>
+                  </h3>
+                  <p class="text-xs text-gray-400 mt-2 flex items-center">
+                    <i class="far fa-clock mr-1 text-red-500"></i> ${data.news.date}
+                  </p>
+                </div>
+              </div>
+              <div class="bg-gray-50 border-t px-4 py-2.5 flex justify-between items-center text-xs">
+                <span class="text-red-600 font-bold">New Breaking</span>
+                <a href="/news/${data.news.id}" class="text-red-600 font-bold hover:underline flex items-center">
+                  Read Report &rarr;
+                </a>
+              </div>
+            `;
+            container.insertBefore(newCard, container.firstChild);
+          }
+        }
+      } catch (e) {
+        console.log("Feed auto-update silent retry...");
+      }
+    }
+    setInterval(liveRefreshNewsFeed, 60000);
   </script>
 </body>
 </html>
