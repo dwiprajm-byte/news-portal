@@ -268,3 +268,10 @@ def sitemap():
 @app.route("/robots.txt")
 def robots():
     return app.send_static_file("robots.txt")
+# সমস্ত ব্রাউজার ক্যাশ বন্ধ রাখা যাতে হার্ড রিফ্রেশ ছাড়াই তৎক্ষণাৎ নতুন পেজ লোড হয়
+@app.after_request
+def set_response_headers(response):
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate, max-age=0"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
