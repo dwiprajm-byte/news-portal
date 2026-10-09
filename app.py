@@ -72,6 +72,75 @@ def save_to_disk():
     except Exception:
         pass
 
+
+def generate_automatic_seo_article(title, category, raw_snippet):
+    summary_text = raw_snippet.strip() if raw_snippet else title
+    
+    seo_formatted_html = f"""
+    <div class="seo-article-body space-y-6 text-gray-800 leading-relaxed text-base">
+      
+      <!-- ১. কুইক হাইলাইটস বক্স (Google Featured Snippet-এর জন্য) -->
+      <div class="bg-red-50 border-l-4 border-red-600 p-5 rounded-r-xl shadow-sm">
+        <h3 class="text-sm font-extrabold text-red-900 mb-1.5 flex items-center">
+          <i class="fas fa-bolt text-red-600 mr-2"></i> Quick Summary & Executive Highlights
+        </h3>
+        <p class="text-sm text-red-800 font-medium leading-normal">
+          {summary_text}
+        </p>
+      </div>
+
+      <!-- ২. বিস্তারিত পটভূমি ও ঘটনা বিশ্লেষণ (H2 হেডিং) -->
+      <h2 class="text-xl md:text-2xl font-extrabold text-gray-900 border-b pb-2 tracking-tight">
+        Comprehensive Analysis: Key Developments in {category}
+      </h2>
+      <p class="text-base text-gray-700 leading-relaxed">
+        In today's fast-moving news landscape, significant developments have emerged surrounding <strong>{title}</strong>. According to primary reports and industry correspondents, this ongoing situation marks an important milestone within the <strong>{category.lower()}</strong> sphere, sparking widespread interest among stakeholders, analysts, and general readers.
+      </p>
+      <p class="text-base text-gray-700 leading-relaxed">
+        Experts observing these patterns indicate that recent policy adjustments and public conversations have brought this issue directly into focus. Verified reporting reveals that {summary_text.lower() if summary_text else 'continuous procedural steps and official evaluations are currently underway to address the emerging dynamics.'}
+      </p>
+
+      <!-- ৩. মূল পয়েন্ট ও বুলেট তালিকা (SEO Bullet Points) -->
+      <div class="bg-gray-50 border border-gray-200 rounded-xl p-6 shadow-sm">
+        <h3 class="text-base font-bold text-gray-900 mb-3 flex items-center">
+          <i class="fas fa-list-check text-green-600 mr-2"></i> Key Takeaways & Fact Sheet
+        </h3>
+        <ul class="list-disc pl-5 space-y-2.5 text-sm text-gray-700">
+          <li><strong>Direct Significance:</strong> The emerging details have immediate strategic and informational relevance for the {category.lower()} sector.</li>
+          <li><strong>Institutional Actions:</strong> Authorities and leadership teams are actively monitoring further developments to ensure complete transparency and stability.</li>
+          <li><strong>Broader Impact:</strong> Analysts note that events of this magnitude frequently create ripple effects across broader national and international audiences.</li>
+        </ul>
+      </div>
+
+      <!-- ৪. ভবিষ্যৎ প্রভাব ও আউটলুক (H2 হেডিং) -->
+      <h2 class="text-xl md:text-2xl font-extrabold text-gray-900 border-b pb-2 tracking-tight">
+        Future Outlook and Strategic Perspectives
+      </h2>
+      <p class="text-base text-gray-700 leading-relaxed">
+        Looking ahead, observers anticipate additional official briefings and clarifications over the coming hours. Maintaining access to verified, fact-checked, and continuous 24/7 reporting is vital as conversations continue to unfold across global news outlets. <strong>24 Early News</strong> continues tracking updates on this developing story around the clock.
+      </p>
+
+      <!-- ৫. এসইও সাধারণ প্রশ্নোত্তর (FAQ Schema Ready) -->
+      <div class="border-t pt-5 mt-6">
+        <h3 class="text-base font-bold text-gray-900 mb-2.5 flex items-center">
+          <i class="fas fa-question-circle text-blue-600 mr-2"></i> Frequently Asked Questions (FAQ)
+        </h3>
+        <div class="space-y-3 text-sm text-gray-600">
+          <div>
+            <p class="font-bold text-gray-800">Q: What is the primary focus of this breaking report?</p>
+            <p class="mt-0.5">A: This report provides comprehensive and verified context surrounding {title}.</p>
+          </div>
+          <div>
+            <p class="font-bold text-gray-800">Q: Where can readers follow verified updates on this topic?</p>
+            <p class="mt-0.5">A: Real-time, fact-checked coverage is updated 24/7 directly on <strong>24 Early News</strong>.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    """
+    return seo_formatted_html
+
 def sync_trending_news(force=False):
     global CACHED_NEWS, NEWS_DICT, LAST_FETCH_TIME
     now = time.time()
@@ -98,7 +167,7 @@ def sync_trending_news(force=False):
                         "category": category,
                         "date": getattr(entry, "published", "Just Now"),
                         "image": safe_image,
-                        "content": clean_summary
+                        "content": generate_automatic_seo_article(entry.title, category, clean_summary)
                     })
                     existing_titles.add(entry.title)
                     current_id += 1
