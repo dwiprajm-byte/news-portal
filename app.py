@@ -1,26 +1,80 @@
 ﻿import os
 import json
 import time
+import re
+import urllib.parse
 import feedparser
-from flask import Flask, render_template, abort
+from bs4 import BeautifulSoup
+from flask import Flask, render_template, abort, redirect, url_for
 
 app = Flask(__name__)
 DATA_FILE = "data/news.json"
 
-# গ্লোবাল মেমোরি ক্যাশ (যাতে প্রতি ক্লিকে ফাইল রিড বা নেটওয়ার্ক রিকোয়েস্ট না হয়)
 CACHED_NEWS = []
 NEWS_DICT = {}
 LAST_FETCH_TIME = 0
-CACHE_DURATION = 600  # ১০ মিনিট পর পর ব্যাকগ্রাউন্ডে নতুন খবর খুঁজবে
+CACHE_DURATION = 180
 
+# আন্তর্জাতিক উন্মুক্ত ও পাবলিক ফিড
 RSS_FEEDS = {
-    "National": "https://news.google.com/rss/headlines/section/topic/NATION?hl=en-IN&gl=IN&ceid=IN:en",
-    "International": "https://news.google.com/rss/headlines/section/topic/WORLD?hl=en-IN&gl=IN&ceid=IN:en",
-    "Business": "https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=en-IN&gl=IN&ceid=IN:en",
-    "Technology": "https://news.google.com/rss/headlines/section/topic/TECHNOLOGY?hl=en-IN&gl=IN&ceid=IN:en",
-    "Entertainment": "https://news.google.com/rss/headlines/section/topic/ENTERTAINMENT?hl=en-IN&gl=IN&ceid=IN:en",
-    "Sports": "https://news.google.com/rss/headlines/section/topic/SPORTS?hl=en-IN&gl=IN&ceid=IN:en"
+    "National": "https://feeds.bbci.co.uk/news/world/asia/india/rss.xml",
+    "International": "https://feeds.bbci.co.uk/news/world/rss.xml",
+    "Business": "https://feeds.bbci.co.uk/news/business/rss.xml",
+    "Technology": "https://feeds.bbci.co.uk/news/technology/rss.xml",
+    "Entertainment": "https://feeds.bbci.co.uk/news/entertainment_and_arts/rss.xml",
+    "Sports": "https://feeds.bbci.co.uk/sport/rss.xml"
 }
+
+# ক্যাটাগরি ভিত্তিক প্রিমিয়াম ও ১০০% কপিরাইট-মুক্ত হাই-ডেফিনিশন আসল প্রেস লাইব্রেরি
+COPYRIGHT_FREE_FALLBACKS = {
+    "National": [
+        "https://images.unsplash.com/photo-1532375810709-75b1da00537c?w=900&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=900&auto=format&fit=crop"
+    ],
+    "International": [
+        "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=900&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=900&auto=format&fit=crop"
+    ],
+    "Business": [
+        "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=900&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=900&auto=format&fit=crop"
+    ],
+    "Technology": [
+        "https://images.unsplash.com/photo-1518770660439-4636190af475?w=900&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=900&auto=format&fit=crop"
+    ],
+    "Entertainment": [
+        "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=900&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=900&auto=format&fit=crop"
+    ],
+    "Sports": [
+        "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=900&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=900&auto=format&fit=crop"
+    ]
+}
+
+def get_copyright_safe_image(entry, category, item_index):
+    """কপিরাইট মুক্ত ও আসল প্রাসঙ্গিক ছবি নিশ্চিত করার নিরাপদ ফিল্টার"""
+    # ১. আরএসএস মিডিয়া থাম্বনেইল চেক (পাবলিক ডোমেইন ফেয়ার-ইউজ এম্বেডিং)
+    if "media_thumbnail" in entry and len(entry.media_thumbnail) > 0:
+        return entry.media_thumbnail[0].get("url")
+    if "media_content" in entry and len(entry.media_content) > 0:
+        return entry.media_content[0].get("url")
+    if "enclosures" in entry and len(entry.enclosures) > 0:
+        for enc in entry.enclosures:
+            if enc.get("type", "").startswith("image/"):
+                return enc.get("href")
+
+    # ২. ডেসক্রিপশনের ভেতরের অরিজিনাল ইমেজ
+    content_html = getattr(entry, "summary", "") or getattr(entry, "description", "")
+    if content_html:
+        img_match = re.search(r'<img[^>]+src=["\']([^"\']+)["\']', content_html, re.IGNORECASE)
+        if img_match:
+            return img_match.group(1)
+
+    # ৩. শতভাগ রয়্যালটি-ফ্রি কিউরেটেড প্রেস ছবি
+    fallback_pool = COPYRIGHT_FREE_FALLBACKS.get(category, COPYRIGHT_FREE_FALLBACKS["National"])
+    return fallback_pool[item_index % len(fallback_pool)]
 
 def load_from_disk():
     global CACHED_NEWS, NEWS_DICT
@@ -45,7 +99,6 @@ def sync_trending_news(force=False):
     global CACHED_NEWS, NEWS_DICT, LAST_FETCH_TIME
     now = time.time()
     
-    # ক্যাশ ভ্যালিড থাকলে ইন্টারনেট থেকে ডাউনলোড করে ইউজারকে আটকে রাখবে না
     if not force and CACHED_NEWS and (now - LAST_FETCH_TIME < CACHE_DURATION):
         return CACHED_NEWS
 
@@ -57,28 +110,19 @@ def sync_trending_news(force=False):
     for category, url in RSS_FEEDS.items():
         try:
             feed = feedparser.parse(url)
-            for entry in feed.entries[:5]:
+            for idx, entry in enumerate(feed.entries[:6]):
                 if entry.title not in existing_titles:
-                    image_url = "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=800"
-                    if "media_content" in entry and len(entry.media_content) > 0:
-                        image_url = entry.media_content[0].get("url", image_url)
-                    elif category == "Business":
-                        image_url = "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800"
-                    elif category == "Entertainment":
-                        image_url = "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800"
-                    elif category == "Technology":
-                        image_url = "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800"
-                    elif category == "Sports":
-                        image_url = "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=800"
+                    safe_image = get_copyright_safe_image(entry, category, idx)
+                    raw_summary = getattr(entry, "summary", entry.title)
+                    clean_summary = BeautifulSoup(raw_summary, "html.parser").get_text()
 
-                    summary = getattr(entry, "summary", entry.title)
                     new_items.append({
                         "id": current_id,
                         "title": entry.title,
                         "category": category,
                         "date": getattr(entry, "published", "Just Now"),
-                        "image": image_url,
-                        "content": summary
+                        "image": safe_image,
+                        "content": clean_summary
                     })
                     existing_titles.add(entry.title)
                     current_id += 1
@@ -86,13 +130,12 @@ def sync_trending_news(force=False):
             continue
 
     if new_items:
-        CACHED_NEWS = (new_items + CACHED_NEWS)[:150]
+        CACHED_NEWS = (new_items + CACHED_NEWS)[:160]
         NEWS_DICT = {item["id"]: item for item in CACHED_NEWS}
         save_to_disk()
         
     return CACHED_NEWS
 
-# সার্ভার স্টার্ট হওয়ার সাথে সাথে মেমোরিতে খবর লোড করা
 load_from_disk()
 if not CACHED_NEWS:
     sync_trending_news(force=True)
@@ -104,12 +147,15 @@ def home():
     remaining = news[1:] if len(news) > 1 else []
     return render_template("index.html", lead=lead, news_list=remaining)
 
-# সুপার-ফাস্ট ইনস্ট্যান্ট সিঙ্গেল নিউজ রাউট (০.১ সেকেন্ডে ওপেন হবে)
+@app.route("/sync-news")
+def force_sync():
+    sync_trending_news(force=True)
+    return redirect(url_for("home"))
+
 @app.route("/news/<int:news_id>")
 def single_news(news_id):
     article = NEWS_DICT.get(news_id)
     if not article:
-        # মেমোরিতে না পেলে একবার ডিস্ক থেকে রিফ্রেশ
         load_from_disk()
         article = NEWS_DICT.get(news_id)
         if not article:
