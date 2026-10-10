@@ -3,559 +3,189 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>24 Early News - Global Journal & Wire</title>
-  
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,700;0,6..72,800;1,6..72,400&display=swap" rel="stylesheet">
+  <title>24 Early News | Worldwide Live Wire & Deep Analysis</title>
+  <meta name="description" content="24 Early News - Global breaking news wire, deep geopolitical reports, and continuous world updates.">
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Inter', sans-serif; background-color: #fcfcfb; color: #1c1917; top: 0px !important; }
-    .editorial-title { font-family: 'Newsreader', Georgia, serif; }
-    .goog-te-banner-frame.skiptranslate { display: none !important; }
-    @keyframes marquee {
+    body { font-family: 'Inter', sans-serif; }
+    .headline-font { font-family: 'Playfair Display', Georgia, serif; }
+    /* ধীরগতির ও মসৃণ রানিং ব্রেকিং নিউজ টিকার */
+    @keyframes slowTicker {
       0% { transform: translateX(100%); }
       100% { transform: translateX(-100%); }
     }
-    .animate-marquee {
+    .ticker-track {
       display: inline-block;
       white-space: nowrap;
-      animation: marquee 65s linear infinite;
+      animation: slowTicker 65s linear infinite;
     }
-    .animate-marquee:hover {
+    .ticker-track:hover {
       animation-play-state: paused;
     }
   </style>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "NewsMediaOrganization",
-    "name": "24 Early News",
-    "url": "https://news-portal-6alq.onrender.com/",
-    "founder": {
-      "@type": "Person",
-      "name": "DWIPRAJ MALLICK"
-    }
-  }
-  </script>
-  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6DVCYX5938"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-6DVCYX5938');
   </script>
 </head>
-<body class="min-h-screen flex flex-col antialiased">
+<body class="bg-[#faf9f6] text-stone-800 transition-colors duration-200">
 
-  <!-- ১. ক্লাসিক ও আভিজাত্যপূর্ণ টপবার -->
-  <div class="bg-[#0f172a] text-slate-300 text-xs py-2 border-b border-slate-800">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-wrap justify-between items-center gap-3">
-      
-      <!-- লাইভ ক্লক -->
-      <div class="flex items-center space-x-3 notranslate">
-        <span class="inline-flex items-center text-[10px] uppercase font-black tracking-wider text-red-400 bg-red-950/90 border border-red-800 px-2.5 py-0.5 rounded-full shadow-inner"><span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse mr-1.5"></span>LIVE</span>
-        <span id="liveClockDisplay" class="font-medium text-slate-300 tracking-wide text-[11px]"></span>
-      </div>
-
-      <!-- প্রতিষ্ঠাতা ও ভাষা সার্চ বার -->
-      <div class="flex items-center space-x-4 notranslate relative">
-        <span class="text-slate-400 text-[11px] font-medium hidden sm:inline-block">
-          Director: <strong class="text-slate-100 font-semibold tracking-wide">DWIPRAJ MALLICK</strong>
-        </span>
-
-        <!-- স্মার্ট মিনিমাল ভাষা সার্চ -->
-        <div class="relative">
-          <div class="flex items-center bg-slate-900 border border-slate-700/80 rounded-lg px-2.5 py-1 focus-within:border-slate-400 transition shadow-inner">
-            <i class="fas fa-globe text-slate-400 mr-2 text-xs"></i>
-            <input type="text" id="langSearchInput" onkeyup="filterGlobalLanguages()" placeholder="Translate..." class="bg-transparent text-white text-[11px] outline-none w-24 sm:w-32 placeholder-slate-500">
-            <i class="fas fa-search text-slate-500 text-[10px] ml-1"></i>
-          </div>
-
-          <div id="langDropdownList" class="hidden absolute right-0 mt-2 w-48 bg-[#0f172a] border border-slate-700 rounded-xl shadow-2xl max-h-60 overflow-y-auto z-50 p-1.5 space-y-0.5 text-xs"></div>
-        </div>
-
-        <div id="google_translate_element" class="hidden"></div>
+  <!-- ধীরগতির রানিং ব্রেকিং নিউজ বার -->
+  <div class="bg-red-700 text-white flex items-center overflow-hidden border-b border-red-800 shadow-sm">
+    <div class="bg-red-900 px-4 py-2 font-black text-xs uppercase tracking-widest flex items-center gap-2 z-10 whitespace-nowrap shadow-md">
+      <span class="inline-block w-2.5 h-2.5 bg-white rounded-full animate-ping"></span>
+      BREAKING WIRE
+    </div>
+    <div class="overflow-hidden w-full py-2">
+      <div class="ticker-track text-sm font-medium tracking-wide">
+        {% for item in ticker %}
+          <span class="mx-8 font-semibold"><i class="fas fa-bolt text-yellow-300 mr-2"></i>{{ item }}</span>
+        {% endfor %}
       </div>
     </div>
   </div>
 
-  <!-- ২. মূল জার্নাল হেডার (The Royal Editorial Look) -->
-  <header class="bg-white border-b border-stone-200 sticky top-0 z-40 shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-5 flex justify-between items-center">
-      <div>
-        <a href="/" class="editorial-title text-3xl sm:text-5xl font-extrabold text-stone-900 tracking-tight block">
-          24 Early News
-        </a>
-        <div class="flex items-center gap-2 text-[10px] text-stone-500 tracking-widest uppercase font-semibold mt-1">
-          <span class="text-red-700 font-bold">24earlynews.com</span> <span>&bull;</span> <span>Founded by DWIPRAJ MALLICK</span>
-        </div>
+  <!-- হেডার ও ব্র্যান্ডিং -->
+  <header class="bg-white border-b border-stone-200 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-wrap justify-between items-center gap-4">
+      <div class="flex items-center gap-4">
+        <a href="/" class="headline-font text-3xl sm:text-4xl font-black text-stone-900 tracking-tight">24 EARLY NEWS</a>
+        <span class="hidden md:inline-block bg-stone-100 text-stone-600 border border-stone-200 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Worldwide Live Edition</span>
       </div>
-
-              <div class="flex items-center gap-2">
-          <!-- লাইভ সার্চ বার -->
-          <div class="relative notranslate hidden sm:block">
-            <input type="text" id="liveNewsSearchInput" onkeyup="filterLiveNewsCards()" placeholder="Search news..." class="bg-stone-100 text-stone-800 text-xs rounded-lg pl-8 pr-3 py-1.5 border border-stone-300 focus:outline-none focus:border-stone-500 w-36 md:w-48 transition">
-            <i class="fas fa-search absolute left-2.5 top-2.5 text-stone-400 text-xs"></i>
-          </div>
-
-          <!-- ডার্ক মোড টগল বাটন -->
-          <button id="themeToggleBtn" onclick="toggleEditorialDarkMode()" title="Toggle Dark/Light Mode" class="bg-stone-100 hover:bg-stone-200 text-stone-800 p-2 rounded-lg border border-stone-300 transition text-xs flex items-center justify-center w-8 h-8">
-            <i id="themeToggleIcon" class="fas fa-moon"></i>
-          </button>
-
-          <a href="/sync-news" class="bg-stone-100 hover:bg-stone-200 text-stone-800 text-xs font-semibold px-3.5 py-2 rounded-lg transition border border-stone-300/80 flex items-center gap-1.5 shadow-sm">
-          <i class="fas fa-arrows-rotate text-stone-600 text-[11px]"></i>
-          <span>Update</span>
-        </a>
+      <div class="flex items-center gap-4">
+        <a href="/recipes" class="text-xs font-semibold text-amber-700 hover:text-amber-800 flex items-center gap-1.5"><i class="fas fa-utensils"></i> Recipes Desk</a>
+        <span id="liveClock" class="text-xs font-mono text-stone-500 bg-stone-100 px-3 py-1.5 rounded-full border border-stone-200"></span>
       </div>
     </div>
-
-    <!-- ৩. সুবিন্যস্ত মিনিমাল মেনু বার -->
-    <nav class="bg-[#1e293b] text-slate-200 overflow-x-auto whitespace-nowrap">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center space-x-6 py-2.5 text-xs font-semibold uppercase tracking-wider">
-        <a href="/" class="text-white hover:text-amber-300 transition flex items-center gap-1"><i class="fas fa-home text-[11px]"></i> Home</a>
-        <a href="/category/national" class="hover:text-amber-300 transition text-slate-300">National</a>
-        <a href="/category/international" class="hover:text-amber-300 transition text-slate-300">World</a>
-        <a href="/category/business" class="hover:text-amber-300 transition text-slate-300">Business & Markets</a>
-        <a href="/category/sports" class="hover:text-amber-300 transition text-slate-300">Sports</a>
-        <a href="/category/entertainment" class="hover:text-amber-300 transition text-slate-300">Culture & Arts</a>
-        <a href="/category/technology" class="hover:text-amber-300 transition text-slate-300">Technology</a>
-        <a href="/horoscope" class="text-amber-300 hover:text-white transition">Horoscope</a>
-        <a href="/recipes" class="text-amber-300 hover:text-white transition">Recipes</a>
-              <!-- কন্ট্রি ফিল্টার ড্রপডাউন -->
-        <div class="inline-flex items-center notranslate ml-auto">
-          <label for="countryFilterSelect" class="text-stone-300 text-[11px] font-bold mr-2 hidden md:inline">EDITION:</label>
-          <select id="countryFilterSelect" onchange="filterByCountry(this.value)" class="bg-slate-900 text-amber-300 border border-slate-700 text-[11px] font-semibold rounded-lg px-2.5 py-1 focus:outline-none focus:border-amber-400">
-            <option value="ALL" {% if selected_country == 'ALL' %}selected{% endif %}>🌍 All Countries</option>
-            {% for code, data in countries.items() %}
-            <option value="{{ code }}" {% if selected_country == code %}selected{% endif %}>{{ data.name }}</option>
-            {% endfor %}
-          </select>
-        </div>
-      </div>
-    </nav>
   </header>
 
-  <!-- ৪. ব্রেকিং নিউজ টিকার (রয়াল নেভি ও অ্যাম্বার কম্বিনেশন) -->
-  <div class="bg-[#0f172a] text-slate-200 flex items-center overflow-hidden border-b border-slate-800 py-1.5">
-    <div class="bg-rose-900/90 text-rose-100 font-bold text-[11px] px-3.5 py-1 uppercase tracking-wider flex items-center gap-2 flex-shrink-0 z-10 ml-4 rounded">
-      <span class="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse"></span> Breaking
-    </div>
-    <div class="flex-grow overflow-hidden py-1 text-xs sm:text-sm font-medium">
-      <div class="animate-marquee cursor-pointer space-x-12 flex items-center">
-        {% for item in news_list[:12] %}
-        <a href="/news/{{ item.id }}" class="hover:text-amber-300 hover:underline text-slate-200 inline-flex items-center transition">
-          <span class="w-1.5 h-1.5 bg-stone-500 rounded-full mr-3"></span>
-          {{ item.title }}
-        </a>
-        {% endfor %}
-      </div>
-    </div>
-  </div>
-
-  <!-- ৫. মূল কন্টেন্ট গ্রিড -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-10 flex-grow w-full">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
-
-      <!-- বাঁদিকের অংশ: লিড কার্ড ও ট্রেন্ডিং -->
-      <div class="lg:col-span-8 space-y-10">
-        {% if lead %}
-        <article id="mainLeadCard" class="bg-white rounded-xl border border-stone-200/90 overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-lg transition duration-300 group">
-          <div class="relative overflow-hidden">
-            <a id="leadImgLink" href="/news/{{ lead.id }}" class="block cursor-pointer">
-              <img id="leadImg" src="{{ lead.image }}" alt="{{ lead.title }}" class="w-full h-80 sm:h-[450px] object-cover group-hover:scale-102 transition-transform duration-500">
-            </a>
-            <span id="leadCat" class="absolute top-4 left-4 bg-[#0f172a]/90 backdrop-blur-sm text-slate-100 text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded">
-              {{ lead.category }}
-            </span>
-          </div>
-          <div class="p-6 sm:p-8">
-            <h1 class="editorial-title text-2xl sm:text-4xl font-extrabold text-stone-900 leading-tight group-hover:text-stone-700 transition">
-              <a id="leadTitleLink" href="/news/{{ lead.id }}" class="cursor-pointer hover:underline">{{ lead.title }}</a>
-            </h1>
-                          <!-- সোশ্যাল শেয়ার ও অডিও রিডার টুলবার -->
-              <div class="mt-4 pt-3 border-t border-stone-100 flex flex-wrap items-center justify-between gap-3 text-xs">
-                <div class="flex items-center gap-2">
-                  <button id="leadListenBtn" onclick="speakArticle('leadTitleLink')" class="bg-stone-100 hover:bg-stone-200 text-stone-800 font-semibold px-2.5 py-1 rounded border border-stone-300 flex items-center gap-1.5 transition">
-                    <i class="fas fa-volume-up text-amber-700"></i>
-                    <span id="leadListenText">Listen</span>
-                  </button>
-                  <span class="text-[11px] text-stone-400 font-medium"><i class="far fa-hourglass mr-1"></i>2 min read</span>
-                </div>
-                <div class="flex items-center gap-1.5 text-stone-500">
-                  <span class="text-[10px] font-bold uppercase tracking-wider mr-1">Share:</span>
-                  <a href="#" onclick="shareArticle('wa', 'leadTitleLink'); return false;" class="w-6 h-6 rounded bg-emerald-50 text-emerald-600 flex items-center justify-center hover:bg-emerald-600 hover:text-white transition"><i class="fab fa-whatsapp"></i></a>
-                  <a href="#" onclick="shareArticle('fb', 'leadTitleLink'); return false;" class="w-6 h-6 rounded bg-blue-50 text-blue-600 flex items-center justify-center hover:bg-blue-600 hover:text-white transition"><i class="fab fa-facebook-f"></i></a>
-                  <a href="#" onclick="shareArticle('x', 'leadTitleLink'); return false;" class="w-6 h-6 rounded bg-stone-100 text-stone-800 flex items-center justify-center hover:bg-stone-900 hover:text-white transition"><i class="fab fa-x-twitter"></i></a>
-                </div>
-              </div>
-
-              <div class="mt-6 flex items-center justify-between text-xs text-stone-500 border-t border-stone-100 pt-4">
-              <span class="flex items-center font-medium">
-                <span class="inline-flex items-center text-[10px] font-semibold text-rose-700 mr-2 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded">
-                  <span class="w-1.5 h-1.5 rounded-full bg-rose-600 animate-pulse mr-1"></span>LIVE
-                </span>
-                <i class="far fa-clock mr-1.5 text-stone-400"></i>
-                <span id="leadDate" class="live-ago-time" data-time="{{ lead.date }}">{{ lead.date }}</span>
-              </span>
-              <a id="leadReadMore" href="/news/{{ lead.id }}" class="text-stone-900 font-bold hover:text-stone-600 transition flex items-center gap-1 group-hover:translate-x-1 duration-200">
-                Full Report &rarr;
-              </a>
-            </div>
-          </div>
-        </article>
-        {% endif %}
-
-        <!-- রিয়েল-টাইম ট্রেন্ডিং গ্রিড -->
-        <section class="bg-white rounded-xl border border-stone-200/90 p-6 sm:p-8 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
-          <div class="flex items-center justify-between border-b border-stone-200 pb-4 mb-6">
-            <h2 class="editorial-title text-xl sm:text-2xl font-bold text-stone-900 flex items-center">
-              Trending Dispatches
-            </h2>
-            <span class="text-[10px] font-bold uppercase tracking-wider text-stone-500">
-              Live Updates
-            </span>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {% for item in news_list[:6] %}
-            <article class="p-4 rounded-lg border border-stone-200/60 bg-stone-50/40 hover:bg-white hover:border-stone-400 transition-all duration-200 flex flex-col justify-between group">
-              <div>
-                <span class="text-[10px] font-bold tracking-wider uppercase text-stone-500 block mb-1.5">
-                  {{ item.category }}
-                </span>
-                <h3 class="editorial-title text-base font-bold text-stone-900 group-hover:text-stone-700 leading-snug transition line-clamp-2">
-                  <a href="/news/{{ item.id }}" class="hover:underline cursor-pointer">{{ item.title }}</a>
-                </h3>
-              </div>
-              <div class="flex items-center justify-between text-xs text-stone-500 border-t border-stone-200/60 pt-3 mt-4">
-                <span class="live-ago-time" data-time="{{ item.date }}">{{ item.date }}</span>
-                <a href="/news/{{ item.id }}" class="text-stone-900 font-bold hover:underline flex items-center">
-                  Read &rarr;
-                </a>
-              </div>
-            </article>
-            {% endfor %}
-          </div>
-        </section>
-      </div>
-
-      <!-- ডানদিকের সাইডবার -->
-      <aside class="lg:col-span-4 space-y-8">
-        <div class="bg-white rounded-xl border border-stone-200/90 p-6 sm:p-7 shadow-[0_2px_8px_rgba(0,0,0,0.04)] sticky top-28">
-          <div class="border-b border-stone-200 pb-4 mb-5">
-            <h2 class="editorial-title text-xl font-bold text-stone-900">
-              Most Read Stories
-            </h2>
-          </div>
-
-          <div class="space-y-4">
-            {% for item in news_list[6:13] %}
-            <article class="pb-4 border-b border-stone-100 last:border-b-0 last:pb-0 group">
-              <a href="/news/{{ item.id }}" class="flex items-start gap-4 cursor-pointer">
-                <span class="editorial-title text-stone-300 font-bold text-xl w-4 flex-shrink-0 group-hover:text-stone-900 transition">
-                  {{ loop.index }}
-                </span>
-                <div class="flex-grow">
-                  <span class="text-[10px] font-bold text-stone-500 uppercase tracking-wider block mb-1">{{ item.category }}</span>
-                  <h3 class="text-sm font-semibold text-stone-900 leading-snug group-hover:underline transition line-clamp-2">
-                    {{ item.title }}
-                  </h3>
-                  <div class="text-[11px] text-stone-400 mt-1.5 live-ago-time" data-time="{{ item.date }}">
-                    {{ item.date }}
-                  </div>
-                </div>
-              </a>
-            </article>
-            {% endfor %}
-          </div>
+  <!-- মূল কন্টেন্ট -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    
+    <!-- লিড ব্রেকিং স্টোরি -->
+    {% if lead %}
+    <section class="bg-white border border-stone-200 rounded-xl overflow-hidden shadow-sm mb-12 hover:shadow-md transition">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-0">
+        <div class="lg:col-span-7">
+          <img src="{{ lead.image }}" alt="{{ lead.title }}" class="w-full h-80 sm:h-[420px] object-cover">
         </div>
-
-        <div class="border border-stone-200 bg-stone-50 rounded-xl h-60 flex items-center justify-center text-stone-400 font-bold text-xs uppercase tracking-widest notranslate">
-          Ad Space (300x250)
-        </div>
-      </aside>
-
-    </div>
-
-    <!-- ৬. সম্পূর্ণ ২৪ ঘণ্টার রোলিং লাইভ ফিড -->
-    <section class="mt-16">
-      <div class="flex items-center justify-between border-b-2 border-stone-900 pb-3 mb-8">
-        <h2 class="editorial-title text-2xl sm:text-3xl font-extrabold text-stone-900">
-          Continuous LIVE
-        </h2>
-        <span class="text-xs font-semibold text-stone-500 uppercase tracking-wider">
-          Chronological
-        </span>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {% for item in news_list %}
-        <article class="bg-white rounded-xl border border-stone-200/90 overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-md transition duration-200 flex flex-col justify-between group">
+        <div class="lg:col-span-5 p-6 sm:p-10 flex flex-col justify-between">
           <div>
-            <div class="relative overflow-hidden h-48 bg-stone-100">
-              <a href="/news/{{ item.id }}" class="block w-full h-full cursor-pointer">
-                <img src="{{ item.image }}" alt="{{ item.title }}" class="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300">
-              </a>
-              <span class="absolute top-3 left-3 bg-[#0f172a]/90 text-white text-[9px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded">
-                {{ item.category }}
-              </span>
+            <div class="flex items-center gap-2 mb-3">
+              <span class="bg-red-100 text-red-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">Top Story</span>
+              <span class="text-xs text-stone-400 font-medium">{{ lead.date }}</span>
             </div>
-            <div class="p-5">
-              <h3 class="editorial-title text-lg font-bold text-stone-900 group-hover:text-stone-700 leading-snug transition line-clamp-2">
-                <a href="/news/{{ item.id }}" class="cursor-pointer hover:underline">{{ item.title }}</a>
-              </h3>
-              <p class="text-xs text-stone-400 mt-2.5 flex items-center font-medium">
-                <span class="live-ago-time" data-time="{{ item.date }}">{{ item.date }}</span>
-              </p>
-            </div>
+            <h1 class="headline-font text-2xl sm:text-3xl font-extrabold text-stone-900 leading-tight mb-4">
+              <a href="/news/{{ lead.id }}" class="hover:text-red-700 transition">{{ lead.title }}</a>
+            </h1>
+            <p class="text-stone-600 text-sm sm:text-base leading-relaxed mb-6">{{ lead.summary }}</p>
           </div>
-          <div class="bg-stone-50 border-t border-stone-100 px-5 py-3 flex justify-between items-center text-xs">
-            <span class="text-stone-500 font-medium">Verified</span>
-            <a href="/news/{{ item.id }}" class="text-stone-900 font-bold hover:underline flex items-center gap-1 cursor-pointer">
-              Read &rarr;
+          <div class="flex items-center justify-between border-t border-stone-100 pt-4">
+            <a href="/news/{{ lead.id }}" class="bg-stone-900 text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-lg hover:bg-stone-800 transition flex items-center gap-2">
+              Read 3,500+ Words Deep Report <i class="fas fa-arrow-right"></i>
             </a>
+            <div class="flex items-center gap-3">
+              <button onclick="likeArticle({{ lead.id }}, this)" class="text-stone-500 hover:text-red-600 transition flex items-center gap-1 text-sm font-semibold">
+                <i class="far fa-heart text-red-500"></i> <span>{{ lead.likes }}</span>
+              </button>
+            </div>
           </div>
-        </article>
-        {% endfor %}
+        </div>
       </div>
     </section>
+    {% endif %}
+
+    <!-- সর্বশেষ বিশ্ব সংবাদ গ্রিড -->
+    <div class="flex justify-between items-center mb-6 border-b border-stone-200 pb-3">
+      <h2 class="headline-font text-2xl font-bold text-stone-900 flex items-center gap-2">
+        <i class="fas fa-globe text-amber-600 text-xl"></i> Global 24-Hour Active Stream
+      </h2>
+      <span class="text-xs text-stone-500 font-medium"><i class="fas fa-sync-alt fa-spin mr-1"></i> Auto-Sync Active (Every 60s)</span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="newsGrid">
+      {% for item in news_list[1:] %}
+      <article class="bg-white border border-stone-200 rounded-xl overflow-hidden shadow-sm flex flex-col justify-between hover:border-stone-400 transition">
+        <div>
+          <img src="{{ item.image }}" alt="{{ item.title }}" class="w-full h-48 object-cover">
+          <div class="p-5">
+            <div class="flex items-center justify-between text-xs text-stone-400 mb-2">
+              <span class="text-amber-700 font-bold uppercase tracking-wider text-[10px]">{{ item.category }}</span>
+              <span>{{ item.date }}</span>
+            </div>
+            <h3 class="headline-font text-lg font-bold text-stone-900 leading-snug mb-3">
+              <a href="/news/{{ item.id }}" class="hover:text-red-700 transition">{{ item.title }}</a>
+            </h3>
+            <p class="text-stone-600 text-xs sm:text-sm leading-relaxed mb-4">{{ item.summary }}</p>
+          </div>
+        </div>
+        <div class="px-5 pb-5 pt-3 border-t border-stone-100 flex items-center justify-between">
+          <a href="/news/{{ item.id }}" class="text-xs font-bold text-stone-900 hover:text-red-700 flex items-center gap-1">Full Dispatch &rarr;</a>
+          <div class="flex items-center gap-3">
+            <button onclick="likeArticle({{ item.id }}, this)" class="text-xs font-semibold text-stone-500 hover:text-red-600 transition flex items-center gap-1">
+              <i class="far fa-heart text-red-500"></i> <span>{{ item.likes }}</span>
+            </button>
+            <button onclick="shareLink('{{ item.title }}', 'https://news-portal-6alq.onrender.com/news/{{ item.id }}')" class="text-xs text-stone-400 hover:text-stone-700">
+              <i class="fas fa-share-alt"></i>
+            </button>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+
   </main>
 
-  <!-- ৭. ক্লাসিক প্রিমিয়াম ফুটার -->
-  <footer class="bg-[#0f172a] text-slate-400 text-xs py-12 mt-20 border-t border-slate-800">
-    <div class="max-w-7xl mx-auto px-4 text-center space-y-4">
-      <p class="editorial-title text-white font-bold text-2xl tracking-normal">24 Early News</p>
-      <div class="flex flex-wrap justify-center gap-6 text-slate-300 font-medium text-xs">
-        <a href="/privacy-policy" class="hover:text-white transition">Privacy Policy</a>
-        <a href="/terms" class="hover:text-white transition">Terms of Service</a>
-        <a href="/disclaimer" class="hover:text-white transition">Disclaimer</a>
-        <a href="/about" class="hover:text-white transition">About Us</a>
-        <a href="/contact" class="hover:text-white transition">Contact Us</a>
+  <footer class="bg-[#0f172a] text-slate-400 text-xs py-10 mt-16 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+      <p class="mb-3 font-semibold text-slate-300">&copy; 2026 24 Early News Worldwide Wire. Founded by <strong>DWIPRAJ MALLICK</strong>.</p>
+      <div class="flex justify-center gap-6 text-[11px] text-slate-400 mb-4">
+        <a href="/privacy-policy" class="hover:underline">Privacy Policy</a>
+        <a href="/terms" class="hover:underline">Terms of Service</a>
+        <a href="/disclaimer" class="hover:underline">Disclaimer</a>
+        <a href="/about" class="hover:underline">About Us</a>
+        <a href="/contact" class="hover:underline">Contact Us</a>
       </div>
-      <p class="text-slate-500 text-[11px] pt-3">
-        &copy; 2026 <strong>24 Early News</strong>. Founded by <strong>DWIPRAJ MALLICK</strong>. All Rights Reserved.
-      </p>
+      <p class="text-[10px] text-slate-600">Updated automatically every 60 seconds with strict editorial verification.</p>
     </div>
   </footer>
 
-  <!-- জাভাস্ক্রিপ্ট ইঞ্জিন -->
-  <script type="text/javascript">
-    function updateLiveClock() {
-      const now = new Date();
-      const options = { 
-        weekday: 'short', 
-        year: 'numeric', 
-        month: 'short', 
-        day: 'numeric', 
-        hour: '2-digit', 
-        minute: '2-digit', 
-        second: '2-digit', 
-        hour12: true 
-      };
-      const formatted = now.toLocaleString('en-US', options);
-      const clockEl = document.getElementById('liveClockDisplay');
-      if (clockEl) clockEl.innerText = formatted;
-    }
-    setInterval(updateLiveClock, 1000);
-    updateLiveClock();
-
-    function updateLiveAgoTimes() {
-      document.querySelectorAll('.live-ago-time').forEach(el => {
-        const raw = el.getAttribute('data-time');
-        const dt = new Date(raw);
-        if (!isNaN(dt.getTime())) {
-          const diffSec = Math.floor((new Date() - dt) / 1000);
-          if (diffSec < 60) el.innerText = "Just now";
-          else if (diffSec < 3600) el.innerText = Math.floor(diffSec / 60) + "m ago";
-          else if (diffSec < 86400) el.innerText = Math.floor(diffSec / 3600) + "h ago";
-          else el.innerText = "Today";
-        }
-      });
-    }
-    document.addEventListener("DOMContentLoaded", updateLiveAgoTimes);
-    setInterval(updateLiveAgoTimes, 30000);
-
-    const globalLanguages = [
-      { code: 'en', name: 'English (Default)' },
-      { code: 'bn', name: 'Bengali (বাংলা)' },
-      { code: 'hi', name: 'Hindi (हिन्दी)' },
-      { code: 'ur', name: 'Urdu (اردو)' },
-      { code: 'ar', name: 'Arabic (العربية)' },
-      { code: 'es', name: 'Spanish (Español)' },
-      { code: 'fr', name: 'French (Français)' },
-      { code: 'de', name: 'German (Deutsch)' },
-      { code: 'ru', name: 'Russian (Русский)' },
-      { code: 'zh-CN', name: 'Chinese (中文)' },
-      { code: 'ja', name: 'Japanese (日本語)' },
-      { code: 'pt', name: 'Portuguese (Português)' },
-      { code: 'ta', name: 'Tamil (தமிழ்)' },
-      { code: 'te', name: 'Telugu (తెలుగు)' },
-      { code: 'mr', name: 'Marathi (मরাঠী)' },
-      { code: 'gu', name: 'Gujarati (ગુજરાતી)' },
-      { code: 'pa', name: 'Punjabi (ਪੰਜਾਬੀ)' },
-      { code: 'tr', name: 'Turkish (Türkçe)' }
-    ];
-
-    function renderLangList(items) {
-      const list = document.getElementById('langDropdownList');
-      if (!list) return;
-      list.innerHTML = '';
-      if (items.length === 0) {
-        list.innerHTML = '<div class="p-2 text-slate-400 text-[11px] text-center">No language found</div>';
-        return;
-      }
-      items.forEach(lang => {
-        const itemBtn = document.createElement('button');
-        itemBtn.type = 'button';
-        itemBtn.className = 'w-full text-left px-3 py-1.5 hover:bg-slate-800 text-slate-200 hover:text-white rounded-lg transition text-[11px] flex items-center justify-between';
-        itemBtn.innerHTML = `<span>${lang.name}</span>`;
-        itemBtn.onclick = () => selectLanguage(lang.code, lang.name);
-        list.appendChild(itemBtn);
-      });
-    }
-
-    function filterGlobalLanguages() {
-      const input = document.getElementById('langSearchInput');
-      const dropdown = document.getElementById('langDropdownList');
-      const val = input.value.toLowerCase().trim();
-      dropdown.classList.remove('hidden');
-      const filtered = globalLanguages.filter(l => l.name.toLowerCase().includes(val) || l.code.toLowerCase().includes(val));
-      renderLangList(filtered);
-    }
-
-    function selectLanguage(langCode, langName) {
-      if (langCode === 'en') {
-        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" + window.location.hostname;
-      } else {
-        document.cookie = `googtrans=/en/${langCode}; path=/; domain=${window.location.hostname}`;
-        document.cookie = `googtrans=/en/${langCode}; path=/;`;
-      }
-      window.location.reload();
-    }
-
-    document.addEventListener('click', function(e) {
-      const dropdown = document.getElementById('langDropdownList');
-      const input = document.getElementById('langSearchInput');
-      if (dropdown && input && !input.contains(e.target) && !dropdown.contains(e.target)) {
-        dropdown.classList.add('hidden');
-      }
-    });
-
-    document.addEventListener('DOMContentLoaded', () => {
-      renderLangList(globalLanguages);
-    });
-
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({
-        pageLanguage: 'en',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-        autoDisplay: false
-      }, 'google_translate_element');
-    }
-  </script>
-  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
-  <!-- ১ মিনিটের অটো-রোটেটর -->
   <script>
-    async function fetchFreshLeadNews() {
-      try {
-        const response = await fetch('/api/latest-lead?t=' + Date.now(), { cache: 'no-store' });
-        const data = await response.json();
-        if (data.status === 'success' && data.news) {
-          const s = data.news;
-          const card = document.getElementById('mainLeadCard');
-          if (!card) return;
-          card.style.opacity = '0.3';
-          setTimeout(() => {
-            document.getElementById('leadImg').src = s.image;
-            document.getElementById('leadImgLink').href = '/news/' + s.id;
-            document.getElementById('leadCat').innerText = s.category;
-            document.getElementById('leadTitleLink').innerText = s.title;
-            document.getElementById('leadTitleLink').href = '/news/' + s.id;
-            document.getElementById('leadDate').innerText = s.date;
-            document.getElementById('leadDate').setAttribute('data-time', s.date);
-            document.getElementById('leadReadMore').href = '/news/' + s.id;
-            card.style.opacity = '1';
-            updateLiveAgoTimes();
-          }, 350);
-        }
-      } catch (err) {}
+    // লাইভ আন্তর্জাতিক ঘড়ি
+    setInterval(() => {
+      document.getElementById('liveClock').innerText = new Date().toUTCString();
+    }, 1000);
+
+    // লাইক ফাংশনালিটি
+    function likeArticle(id, btn) {
+      fetch(`/api/like/${id}`, { method: 'POST' })
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === 'success') {
+            btn.querySelector('span').innerText = data.likes;
+            btn.querySelector('i').classList.replace('far', 'fas');
+          }
+        });
     }
-    setInterval(fetchFreshLeadNews, 60000);
-      function filterByCountry(code) {
-      if (code === 'ALL') {
-        window.location.href = '/';
+
+    // সোশ্যাল শেয়ার
+    function shareLink(title, url) {
+      if (navigator.share) {
+        navigator.share({ title: title, url: url });
       } else {
-        window.location.href = '/?country=' + code;
+        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(title + " " + url)}`, '_blank');
       }
-    }
-      // লাইভ খবর সার্চ ফিল্টার
-    function filterLiveNewsCards() {
-      const q = document.getElementById('liveNewsSearchInput').value.toLowerCase().trim();
-      document.querySelectorAll('main article').forEach(card => {
-        const text = card.innerText.toLowerCase();
-        card.style.display = text.includes(q) ? '' : 'none';
-      });
     }
 
-    // সোশ্যাল শেয়ার ইঞ্জিন (WhatsApp, Facebook, Twitter)
-    function shareArticle(platform, titleElId) {
-      const el = document.getElementById(titleElId);
-      const title = el ? el.innerText : document.title;
-      const url = window.location.href;
-      let shareUrl = '';
-      if (platform === 'wa') shareUrl = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(title + ' - ' + url);
-      else if (platform === 'fb') shareUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url);
-      else if (platform === 'x') shareUrl = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(title) + '&url=' + encodeURIComponent(url);
-      if (shareUrl) window.open(shareUrl, '_blank', 'width=600,height=450');
-    }
-
-    // টেক্সট-টু-স্পিচ অডিও রিডার (Listen to News)
-    let isSpeaking = false;
-    function speakArticle(titleElId) {
-      if (!('speechSynthesis' in window)) {
-        alert('Text-to-speech is not supported on this browser.');
-        return;
-      }
-      const btnText = document.getElementById('leadListenText');
-      if (isSpeaking) {
-        window.speechSynthesis.cancel();
-        isSpeaking = false;
-        if (btnText) btnText.innerText = 'Listen';
-        return;
-      }
-      const el = document.getElementById(titleElId);
-      if (!el) return;
-      const utterance = new SpeechSynthesisUtterance(el.innerText);
-      utterance.rate = 0.95;
-      utterance.onend = () => {
-        isSpeaking = false;
-        if (btnText) btnText.innerText = 'Listen';
-      };
-      window.speechSynthesis.speak(utterance);
-      isSpeaking = true;
-      if (btnText) btnText.innerText = 'Pause';
-    }
-
-    // এডিটোরিয়াল ডার্ক মোড সুইচ
-    function toggleEditorialDarkMode() {
-      const isDark = document.body.classList.toggle('dark-editorial-mode');
-      const icon = document.getElementById('themeToggleIcon');
-      if (isDark) {
-        document.body.style.backgroundColor = '#0b0f19';
-        document.body.style.color = '#e2e8f0';
-        if (icon) icon.className = 'fas fa-sun text-amber-400';
-      } else {
-        document.body.style.backgroundColor = '';
-        document.body.style.color = '';
-        if (icon) icon.className = 'fas fa-moon';
-      }
-    }
+    // প্রতি ৬০ সেকেন্ডে পেজ অটো-রিফ্রেশ হয়ে নতুন খবর ফেচ হওয়া
+    setTimeout(() => {
+      window.location.reload();
+    }, 60000);
   </script>
 </body>
 </html>
