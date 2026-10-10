@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Journalist Access & Payment | 24 Early News</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
+    .headline-font { font-family: 'Playfair Display', Georgia, serif; }
+  </style>
+</head>
+<body class="text-slate-800 antialiased selection:bg-amber-500 selection:text-white">
+
+  <!-- হেডার -->
+  <header class="bg-white border-b border-stone-200 sticky top-0 z-40 shadow-xs px-6 py-4 flex justify-between items-center">
+    <a href="/" class="flex items-center gap-2 headline-font text-xl font-bold text-slate-900 hover:text-amber-800 transition">
+      <span>24 EARLY NEWS</span>
+    </a>
+    <a href="/login" class="text-xs font-bold bg-slate-900 text-white px-4 py-2 rounded-xl hover:bg-slate-800 transition">
+      Already have ID? Login
+    </a>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 py-12">
+    <div class="text-center max-w-xl mx-auto mb-12">
+      <span class="text-amber-600 font-bold text-xs uppercase tracking-widest bg-amber-50 border border-amber-200 px-3 py-1 rounded-full">Official Press Accreditation</span>
+      <h1 class="headline-font text-3xl sm:text-4xl font-black text-slate-900 mt-3 mb-3">Get Your Press ID & Publishing Account</h1>
+      <p class="text-slate-600 text-xs sm:text-sm">আমাদের পোর্টালে প্রতিদিন সরাসরি খবর ও প্রেস রিলিজ প্রকাশ করার জন্য মেম্বারশিপ প্ল্যান নির্বাচন করে পেমেন্ট সম্পন্ন করুন। পেমেন্ট কনফার্ম হলেই আপনার নিজস্ব ইউজার আইডি ও পাসওয়ার্ড অ্যাক্টিভ হবে।</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+      
+      <!-- প্ল্যান ১ -->
+      <div class="bg-white border-2 border-slate-200 rounded-3xl p-8 flex flex-col justify-between shadow-sm hover:border-slate-400 transition">
+        <div>
+          <h3 class="font-bold text-lg text-slate-900 mb-1">Standard Contributor</h3>
+          <p class="text-xs text-slate-500 mb-6">ফ্রিল্যান্স সাংবাদিক ও প্রেস রিলিজের জন্য</p>
+          <div class="text-3xl font-black text-slate-900 mb-6">₹499 <span class="text-xs font-normal text-slate-500">/ মাস</span></div>
+          <ul class="text-xs text-slate-700 space-y-3 mb-8">
+            <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-600"></i> নিজস্ব ইউনিক লগইন আইডি ও পাসওয়ার্ড</li>
+            <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-600"></i> আনলিমিটেড নিউজ পাবলিশিং সুবিধা</li>
+            <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-600"></i> অটোমেটিক এআই এসইও এনহ্যান্সমেন্ট</li>
+            <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-600"></i> সরাসরি ছবি আপলোড অ্যাক্সেস</li>
+          </ul>
+        </div>
+        <a href="#payment-box" onclick="selectPlan('Standard Contributor - ₹499')" class="w-full text-center bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl text-xs transition">
+          Choose Standard Plan
+        </a>
+      </div>
+
+      <!-- প্ল্যান ২ -->
+      <div class="bg-gradient-to-b from-amber-50 to-white border-2 border-amber-500 rounded-3xl p-8 flex flex-col justify-between shadow-xl relative">
+        <span class="absolute -top-3 right-8 bg-amber-500 text-slate-950 font-black text-[10px] uppercase tracking-widest px-3 py-1 rounded-full shadow-md">Popular</span>
+        <div>
+          <h3 class="font-bold text-lg text-slate-900 mb-1">Verified Bureau Correspondent</h3>
+          <p class="text-xs text-slate-500 mb-6">বিশেষ প্রতিনিধি ও প্রাতিষ্ঠানিক রিপোর্টারদের জন্য</p>
+          <div class="text-3xl font-black text-slate-900 mb-6">₹999 <span class="text-xs font-normal text-slate-500">/ মাস</span></div>
+          <ul class="text-xs text-slate-700 space-y-3 mb-8">
+            <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-600"></i> হাই-প্রায়োরিটি ভেরিফায়েড প্রেস একাউন্ট</li>
+            <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-600"></i> টপ স্পটলাইটে খবর প্রকাশের অগ্রাধিকার</li>
+            <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-600"></i> দ্রুত গুগল ইনডেক্সিং সাপোর্ট</li>
+            <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-600"></i> ২৪/৭ ডেডিকেটেড সাপোর্ট</li>
+          </ul>
+        </div>
+        <a href="#payment-box" onclick="selectPlan('Verified Bureau Correspondent - ₹999')" class="w-full text-center bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-3 rounded-xl text-xs transition shadow-md">
+          Choose Verified Plan
+        </a>
+      </div>
+
+    </div>
+
+    <!-- পেমেন্ট ও অ্যাকাউন্ট রিকোয়েস্ট ফর্ম -->
+    <div id="payment-box" class="max-w-xl mx-auto bg-white border border-slate-200 rounded-3xl p-8 mt-12 shadow-md">
+      <h3 class="font-bold text-lg text-slate-900 mb-2 flex items-center gap-2">
+        <i class="fas fa-qrcode text-amber-600"></i> Pay & Request Access Credentials
+      </h3>
+      <p class="text-xs text-slate-500 mb-6">পেমেন্ট সম্পন্ন করে নিচের ফর্মটি জমা দিন। কয়েক মিনিটের মধ্যে আপনার ইমেইল বা হোয়াটসঅ্যাপে নিজস্ব আইডি ও পাসওয়ার্ড পাঠিয়ে দেওয়া হবে।</p>
+
+      <!-- UPI QR / ব্যাংক তথ্য বক্স -->
+      <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-center mb-6">
+        <div class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Official UPI ID for Payment</div>
+        <div class="text-base font-black text-slate-900 font-mono bg-white inline-block px-4 py-1.5 rounded-lg border border-slate-300">
+          dwipraj@upi  <!-- আপনার সুবিধামতো UPI পরিবর্তন করতে পারেন -->
+        </div>
+        <div class="text-[11px] text-slate-500 mt-2">GPay / PhonePe / Paytm / Any UPI App Supported</div>
+      </div>
+
+      <form action="/contact" method="POST" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Selected Plan</label>
+          <input type="text" id="selectedPlan" name="subject" value="Payment: Standard Contributor - ₹499" readonly class="w-full bg-slate-100 border border-slate-300 rounded-xl p-2.5 text-xs text-slate-800 font-bold">
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Your Name *</label>
+            <input type="text" name="name" required placeholder="Full Name" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs">
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Email (To receive ID & Pass) *</label>
+            <input type="email" name="email" required placeholder="name@email.com" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs">
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Transaction ID / UTR Number *</label>
+          <input type="text" name="message" required placeholder="Enter UPI Transaction / UTR Number after payment..." class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs font-mono">
+        </div>
+        <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl text-xs transition">
+          Submit Payment Proof & Request ID
+        </button>
+      </form>
+    </div>
+
+  </main>
+
+  <footer class="bg-[#0f172a] text-slate-400 text-xs py-10 mt-16 text-center border-t border-slate-800">
+    &copy; 2026 24 Early News. Founder & Director: DWIPRAJ MALLICK.
+  </footer>
+
+  <script>
+    function selectPlan(plan) {
+      document.getElementById('selectedPlan').value = 'Payment: ' + plan;
+      document.getElementById('payment-box').scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>

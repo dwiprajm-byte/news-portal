@@ -347,25 +347,81 @@ def like_news(news_id):
 
 ADMIN_SECRET_KEY = "admin2026"  # আপনার ব্যক্তিগত অ্যাডমিন পাসওয়ার্ড
 
+from flask import session, redirect, url_for
+
+app.secret_key = "early_news_secret_master_key_2026"
+
+# ব্যবহারকারীদের ডাটাবেজ (যাদের পেমেন্ট ভেরিফাই হবে তাদের আলাদা আলাদা আইডি-পাসওয়ার্ড এখানে থাকবে)
+REGISTERED_USERS = {
+    # প্রতিষ্ঠাতা ও পরিচালক (মাস্টার অ্যাকাউন্ট)
+    "admin": {
+        "password": "adminpassword2026",
+        "name": "DWIPRAJ MALLICK",
+        "role": "Chief Editor"
+    },
+    # পেইড ক্লায়েন্ট / কাস্টমার ১
+    "client1": {
+        "password": "passclient123",
+        "name": "Special Bureau Reporter",
+        "role": "Paid Contributor"
+    },
+    # পেইড ক্লায়েন্ট / কাস্টমার ২
+    "press02": {
+        "password": "newsaccess456",
+        "name": "Verified Press Agency",
+        "role": "Paid Contributor"
+    }
+}
+
+@app.route('/login', methods=['GET', 'POST'])
+def login_page():
+    error = None
+    if request.method == 'POST':
+        username = request.form.get('username', '').strip()
+        password = request.form.get('password', '').strip()
+        
+        user = REGISTERED_USERS.get(username)
+        if user and user['password'] == password:
+            session['logged_in'] = True
+            session['username'] = username
+            session['user_name'] = user['name']
+            return redirect('/submit-news')
+        else:
+            error = "ভুল ইউজার আইডি বা পাসওয়ার্ড! নতুন অ্যাকাউন্টের জন্য সাবস্ক্রিপশন নিন।"
+            
+    return render_template('login.html', error=error)
+
+@app.route('/logout')
+def logout_page():
+    session.clear()
+    return redirect('/')
+
+@app.route('/pricing')
+def pricing_page():
+    return render_template('pricing.html')
+
 @app.route('/submit-news', methods=['GET', 'POST'])
 def submit_news():
-    if request.method == 'POST':
-        admin_key = request.form.get('admin_key', '').strip()
-        
-        # পাসওয়ার্ড চেক: সঠিক না হলে সরাসরি রিজেক্ট
-        if admin_key != ADMIN_SECRET_KEY:
-            return jsonify({'status': 'error', 'message': 'অ্যাক্সেস ডিনাইড: ভুল অ্যাডমিন পাসওয়ার্ড!'}), 403
+    # লগইন না থাকলে সরাসরি লগইন পেজে রিডাইরেক্ট করবে
+    if not session.get('logged_in'):
+        return redirect('/login')
 
+    current_user = {
+        'username': session.get('username'),
+        'name': session.get('user_name', 'Verified Journalist')
+    }
+
+    if request.method == 'POST':
         title = request.form.get('title', '').strip()
         summary = request.form.get('summary', '').strip()
-        author = request.form.get('author', '').strip() or 'DWIPRAJ MALLICK'
+        author = current_user['name']
         category = request.form.get('category', 'National').strip()
         image_url = request.form.get('image_url', '').strip()
         
         if len(title) < 5 or len(summary) < 15:
             return jsonify({'status': 'error', 'message': 'Title and summary are too short.'}), 400
 
-        # ১. ছবি আপলোড
+        # ১. সরাসরি ছবি আপলোড
         final_image = None
         if 'image_file' in request.files:
             file = request.files['image_file']
@@ -378,17 +434,17 @@ def submit_news():
                     file.save(os.path.join(upload_folder, filename))
                     final_image = f"/static/uploads/{filename}"
 
-        # ২. অনলাইন ইমেজ লিঙ্ক
+        # ২. অনলাইন ছবির লিঙ্ক
         if not final_image and image_url and image_url.startswith('http'):
             final_image = image_url
 
-        # ৩. ফলব্যাক ছবি
+        # ৩. কোনো ছবি না দিলে ক্যাটাগরিভিত্তিক ফলব্যাক ছবি
         if not final_image:
             cat = category if category in CATEGORY_FALLBACK_IMAGES else 'National'
             pool = CATEGORY_FALLBACK_IMAGES[cat]
             final_image = pool[abs(hash(title)) % len(pool)]
 
-        # ৪. স্বয়ংক্রিয় এসইও আর্টিকেল তৈরি
+        # ৪. স্বয়ংক্রিয় এআই এসইও প্রতিবেদন
         clean_content = generate_clean_article(title, summary, category)
         article_id = int(time.time() * 1000)
 
@@ -411,7 +467,7 @@ def submit_news():
 
         return jsonify({'status': 'success', 'redirect': f'/news/{article_id}'})
 
-    return render_template('submit_news.html')
+    return render_template('submit_news.html', current_user=current_user)
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))

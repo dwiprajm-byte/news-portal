@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Editorial Desk | 24 Early News</title>
+  <title>Journalist Desk | 24 Early News</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -14,51 +14,42 @@
 </head>
 <body class="text-slate-800 antialiased selection:bg-amber-500 selection:text-white">
 
-  <!-- হেডার ও হোম বাটন -->
+  <!-- হেডার -->
   <header class="bg-white border-b border-stone-200 sticky top-0 z-40 shadow-xs">
     <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
       <a href="/" class="flex items-center gap-2 font-bold text-slate-900 headline-font text-xl hover:text-amber-800 transition">
         <span>24 EARLY NEWS</span>
       </a>
-      <a href="/" class="cat-btn font-bold px-3 py-1.5 rounded-md bg-stone-900 text-white text-xs hover:bg-stone-800 transition flex items-center gap-1.5">
-        <i class="fas fa-home text-amber-400"></i> Home / Front Page
-      </a>
+      <div class="flex items-center gap-3">
+        <span class="text-xs bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold px-3 py-1 rounded-full flex items-center gap-1.5">
+          <i class="fas fa-check-circle text-emerald-600"></i> Logged In: {{ current_user.name }}
+        </span>
+        <a href="/logout" class="text-xs font-bold text-rose-600 hover:text-rose-800 border border-rose-200 hover:bg-rose-50 px-3 py-1 rounded-full transition">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+      </div>
     </div>
   </header>
 
   <main class="max-w-3xl mx-auto px-4 py-10">
     <div class="bg-white rounded-3xl p-6 sm:p-10 shadow-lg border border-slate-200/80">
       
-      <div class="border-b border-slate-100 pb-5 mb-6 flex justify-between items-start">
-        <div>
-          <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-amber-600 mb-1">
-            <i class="fas fa-user-shield"></i> Founder & Director Private Access
-          </div>
-          <h1 class="headline-font text-2xl sm:text-3xl font-black text-slate-900">Chief Editor Desk</h1>
+      <div class="border-b border-slate-100 pb-5 mb-6">
+        <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-amber-600 mb-1">
+          <i class="fas fa-feather-alt"></i> Verified Publishing Desk
         </div>
-        <span class="bg-red-100 text-red-800 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider border border-red-200">
-          <i class="fas fa-lock"></i> Protected
-        </span>
+        <h1 class="headline-font text-2xl sm:text-3xl font-black text-slate-900">Publish News Dispatch</h1>
+        <p class="text-xs text-slate-500 mt-1">খবরের শিরোনাম ও সারসংক্ষেপ লিখুন; আমাদের ইঞ্জিন স্বয়ংক্রিয়ভাবে সেটিকে এসইও-বান্ধব প্রতিবেদনে সাজিয়ে লাইভ পোস্ট করবে।</p>
       </div>
 
       <form id="newsForm" enctype="multipart/form-data" class="space-y-6">
         
-        <!-- সিক্রেট অ্যাডমিন পাসওয়ার্ড -->
-        <div class="bg-slate-900 text-white p-4 rounded-2xl shadow-inner">
-          <label class="block text-xs font-bold uppercase tracking-wider text-amber-400 mb-2 flex items-center gap-2">
-            <i class="fas fa-key"></i> Secret Admin Password / আপনার সিক্রেট পাসওয়ার্ড *
-          </label>
-          <input type="password" id="admin_key" name="admin_key" required placeholder="Enter Secret Passkey..." class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-mono">
-        </div>
-
-        <!-- শিরোনাম -->
         <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">News Headline / খবরের শিরোনাম *</label>
-          <input type="text" id="title" name="title" required placeholder="খবরের মূল শিরোনাম লিখুন..." class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white font-medium">
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Headline / শিরোনাম *</label>
+          <input type="text" id="title" name="title" required placeholder="খবরের মূল শিরোনামটি লিখুন..." class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white font-medium">
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <!-- ক্যাটাগরি -->
           <div>
             <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Category / বিভাগ *</label>
             <select id="category" name="category" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white font-medium">
@@ -72,10 +63,9 @@
             </select>
           </div>
 
-          <!-- লেখক / সাংবাদিক -->
           <div>
-            <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Author Name / সাংবাদিক</label>
-            <input type="text" id="author" name="author" value="DWIPRAJ MALLICK" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white font-medium">
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Author / সাংবাদিক</label>
+            <input type="text" id="author" name="author" value="{{ current_user.name }}" readonly class="w-full bg-slate-100 border border-slate-300 rounded-xl p-3 text-sm font-bold text-slate-700 cursor-not-allowed">
           </div>
         </div>
 
@@ -91,21 +81,19 @@
           </div>
 
           <div>
-            <span class="text-[11px] font-semibold text-slate-600 block mb-1">অথবা ছবির সরাসরি লিঙ্ক (URL):</span>
+            <span class="text-[11px] font-semibold text-slate-600 block mb-1">অথবা অনলাইন ছবির লিঙ্ক (URL):</span>
             <input type="url" id="image_url" name="image_url" placeholder="https://example.com/image.jpg" class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-amber-500">
           </div>
         </div>
 
-        <!-- সারসংক্ষেপ -->
         <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">News Summary / খবরের মূল তথ্য (২-৩ বাক্য) *</label>
-          <textarea id="summary" name="summary" rows="5" required placeholder="খবরের মূল ঘটনাটি লিখুন। সিস্টেম নিজে থেকেই সেটিকে ৮০০-১,২০০ শব্দের এসইও এডিটরিয়ালে সাজিয়ে সাইটে প্রকাশ করবে..." class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white font-normal leading-relaxed"></textarea>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Summary / খবরের মূল তথ্য (২-৩ বাক্য) *</label>
+          <textarea id="summary" name="summary" rows="5" required placeholder="খবরের মূল বিবরণ লিখুন। আমাদের এআই ইঞ্জিন স্বয়ংক্রিয়ভাবে পূর্ণাঙ্গ প্রতিবেদন তৈরি করবে..." class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white font-normal leading-relaxed"></textarea>
         </div>
 
-        <!-- বাটন -->
         <div class="pt-2">
           <button type="submit" id="submitBtn" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl transition flex items-center justify-center gap-2 shadow-md hover:shadow-lg">
-            <i class="fas fa-shield-alt text-amber-400"></i> <span>Verify Access, Enhance SEO & Publish Live</span>
+            <i class="fas fa-paper-plane text-amber-400"></i> <span>Auto SEO Enhance & Publish Live</span>
           </button>
         </div>
 
@@ -115,7 +103,7 @@
   </main>
 
   <footer class="bg-[#0f172a] text-slate-400 text-xs py-10 mt-16 text-center border-t border-slate-800">
-    <p class="text-slate-400">&copy; 2026 24 Early News. Founder & Director: DWIPRAJ MALLICK.</p>
+    &copy; 2026 24 Early News. Founder & Director: DWIPRAJ MALLICK.
   </footer>
 
   <script>
@@ -126,7 +114,7 @@
     form.addEventListener('submit', function(e) {
       e.preventDefault();
       btn.disabled = true;
-      btn.innerHTML = '<i class="fas fa-spinner fa-spin text-amber-400"></i> Verifying & Publishing...';
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin text-amber-400"></i> Generating SEO Article & Publishing...';
       
       const formData = new FormData(form);
 
@@ -138,22 +126,22 @@
       .then(data => {
         if(data.status === 'success') {
           msg.className = 'text-center text-xs font-semibold p-3 rounded-xl bg-emerald-100 text-emerald-800 block';
-          msg.innerText = 'News verified and published live! Redirecting...';
+          msg.innerText = 'News published successfully! Redirecting...';
           setTimeout(() => {
             window.location.href = data.redirect;
           }, 1000);
         } else {
           msg.className = 'text-center text-xs font-semibold p-3 rounded-xl bg-rose-100 text-rose-800 block';
-          msg.innerText = data.message || 'Access Denied: Incorrect secret password.';
+          msg.innerText = data.message || 'Error occurred while publishing.';
           btn.disabled = false;
-          btn.innerHTML = '<i class="fas fa-shield-alt text-amber-400"></i> Verify Access, Enhance SEO & Publish Live';
+          btn.innerHTML = '<i class="fas fa-paper-plane text-amber-400"></i> Auto SEO Enhance & Publish Live';
         }
       })
       .catch(err => {
         msg.className = 'text-center text-xs font-semibold p-3 rounded-xl bg-rose-100 text-rose-800 block';
         msg.innerText = 'Network error. Please try again.';
         btn.disabled = false;
-        btn.innerHTML = '<i class="fas fa-shield-alt text-amber-400"></i> Verify Access, Enhance SEO & Publish Live';
+        btn.innerHTML = '<i class="fas fa-paper-plane text-amber-400"></i> Auto SEO Enhance & Publish Live';
       });
     });
   </script>
