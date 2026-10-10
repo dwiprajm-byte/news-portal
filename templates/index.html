@@ -11,7 +11,6 @@
     body { font-family: 'Plus Jakarta Sans', sans-serif; }
     .headline-font { font-family: 'Playfair Display', Georgia, serif; }
     
-    /* ১২০ সেকেন্ডের অত্যন্ত ধীরগতির ও মসৃণ রানিং ব্রেকিং নিউজ */
     @keyframes ultraSlowTicker {
       0% { transform: translateX(100%); }
       100% { transform: translateX(-100%); }
@@ -36,7 +35,7 @@
 </head>
 <body class="bg-[#faf9f6] text-stone-800">
 
-  <!-- অত্যন্ত ধীরগতির ব্রেকিং নিউজ বার (BREAKING NEWS নামাঙ্কিত) -->
+  <!-- ধীরগতির রানিং ব্রেকিং নিউজ বার -->
   <div class="bg-red-700 text-white flex items-center overflow-hidden border-b border-red-800 shadow-sm">
     <div class="bg-red-900 px-5 py-2.5 font-black text-xs uppercase tracking-widest flex items-center gap-2.5 z-10 whitespace-nowrap shadow-md">
       <span class="inline-block w-2.5 h-2.5 bg-yellow-300 rounded-full animate-ping"></span>
@@ -51,7 +50,7 @@
     </div>
   </div>
 
-  <!-- লাইভ গোল্ড ও মেটাল রেট উইজেট -->
+  <!-- লাইভ গোল্ড ও প্রেশাস মেটালস রেট বার -->
   <div class="bg-amber-500/10 border-b border-amber-200 px-4 py-1.5 text-xs text-amber-950 flex flex-wrap justify-between items-center gap-2">
     <div class="flex items-center gap-4 flex-wrap font-semibold">
       <span class="text-amber-800 font-bold uppercase tracking-wider flex items-center gap-1.5"><i class="fas fa-coins text-amber-600"></i> Daily Precious Metals:</span>
@@ -63,7 +62,7 @@
     <a href="/metals" class="text-amber-900 hover:text-amber-700 font-bold underline flex items-center gap-1 text-[11px]">View All Country Rates &rarr;</a>
   </div>
 
-  <!-- হেডার, সার্চ বার ও অ্যাকশন প্যানেল -->
+  <!-- হেডার ও সার্চ বার -->
   <header class="bg-white border-b border-stone-200 sticky top-0 z-40 shadow-xs">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-wrap justify-between items-center gap-4">
       <div class="flex items-center gap-4">
@@ -71,7 +70,7 @@
         <span class="hidden md:inline-block bg-stone-100 text-stone-600 border border-stone-200 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Worldwide Live Wire</span>
       </div>
 
-      <!-- লাইভ সার্চ বার (যেকোনো খবর খুঁজে পাওয়ার জন্য) -->
+      <!-- লাইভ সার্চ বার -->
       <div class="flex-grow max-w-md mx-2">
         <div class="relative">
           <input type="text" id="searchInput" onkeyup="searchArticles()" placeholder="Search in 24-Hour Archive..." class="w-full bg-stone-50 border border-stone-300 rounded-full py-1.5 pl-9 pr-4 text-xs focus:outline-none focus:ring-2 focus:ring-amber-500">
@@ -79,6 +78,7 @@
         </div>
       </div>
 
+      <!-- নেভিগেশন বাটনসমূহ -->
       <div class="flex flex-wrap items-center gap-2">
         <a href="/metals" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold px-3 py-2 rounded-lg flex items-center gap-1.5 shadow-sm transition">
           <i class="fas fa-gem"></i> Gold & Metals
@@ -130,7 +130,9 @@
     <section id="leadSection" class="bg-white border border-stone-200 rounded-2xl overflow-hidden shadow-sm mb-12 hover:shadow-md transition">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-0">
         <div class="lg:col-span-7">
-          <img src="{{ lead.image }}" alt="{{ lead.title }}" class="w-full h-80 sm:h-[430px] object-cover">
+          <a href="/news/{{ lead.id }}" class="block overflow-hidden group">
+            <img src="{{ lead.image }}" alt="{{ lead.title }}" class="w-full h-80 sm:h-[430px] object-cover group-hover:scale-105 transition duration-500">
+          </a>
         </div>
         <div class="lg:col-span-5 p-6 sm:p-10 flex flex-col justify-between">
           <div>
@@ -163,12 +165,14 @@
       <span class="text-xs text-stone-500 font-medium"><i class="fas fa-sync-alt fa-spin mr-1"></i> Continuous Auto-Sync (Every 60s)</span>
     </div>
 
-    <!-- নিউজ গ্রিড (কোনো ডুপ্লিকেট ছাড়া) -->
+    <!-- নিউজ গ্রিড (ছবি ও লেখার প্রতিটিতে সরাসরি লিঙ্ক) -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="newsGrid">
       {% for item in news_list[1:] %}
       <article data-category="{{ item.category }}" class="news-card bg-white border border-stone-200 rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between hover:border-stone-400 hover:shadow-md transition">
         <div>
-          <img src="{{ item.image }}" alt="{{ item.title }}" class="w-full h-48 object-cover">
+          <a href="/news/{{ item.id }}" class="block overflow-hidden group">
+            <img src="{{ item.image }}" alt="{{ item.title }}" class="w-full h-48 object-cover group-hover:scale-105 transition duration-500">
+          </a>
           <div class="p-5">
             <div class="flex items-center justify-between text-xs text-stone-400 mb-2">
               <span class="text-amber-700 font-bold uppercase tracking-wider text-[10px]">{{ item.category }}</span>
@@ -196,7 +200,6 @@
   </footer>
 
   <script>
-    // লাইভ সার্চ ইঞ্জিন: খবরের শিরোনাম বা বিবরণ লিখে সার্চ করলেই তৎক্ষণাৎ ফিল্টার হবে
     function searchArticles() {
       const q = document.getElementById('searchInput').value.toLowerCase();
       const cards = document.querySelectorAll('.news-card');
@@ -256,7 +259,6 @@
         });
     }
 
-    // প্রতি ৬০ সেকেন্ডে নতুন খবর যোগ করার জন্য নিরাপদ রিলোড
     setTimeout(() => { window.location.reload(); }, 60000);
   </script>
 </body>
