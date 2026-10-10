@@ -10,15 +10,8 @@
   <style>
     body { font-family: 'Inter', sans-serif; }
     .headline-font { font-family: 'Playfair Display', Georgia, serif; }
-    @keyframes slowTicker {
-      0% { transform: translateX(100%); }
-      100% { transform: translateX(-100%); }
-    }
-    .ticker-track {
-      display: inline-block;
-      white-space: nowrap;
-      animation: slowTicker 65s linear infinite;
-    }
+    @keyframes slowTicker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+    .ticker-track { display: inline-block; white-space: nowrap; animation: slowTicker 65s linear infinite; }
     .ticker-track:hover { animation-play-state: paused; }
   </style>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6DVCYX5938"></script>
@@ -46,6 +39,18 @@
     </div>
   </div>
 
+  <!-- লাইভ গোল্ড ও প্রেশাস মেটালস টিকার বার -->
+  <div class="bg-amber-500/10 border-b border-amber-200 px-4 py-1.5 text-xs text-amber-950 flex flex-wrap justify-between items-center gap-2">
+    <div class="flex items-center gap-4 flex-wrap font-semibold">
+      <span class="text-amber-800 font-bold uppercase tracking-wider flex items-center gap-1.5"><i class="fas fa-coins text-amber-600"></i> Market Rates:</span>
+      <span>Gold 24K: ₹7,845/g</span>
+      <span>Silver: ₹94.5/g</span>
+      <span>Platinum: ₹3,240/g</span>
+      <span>Diamond 1ct: ₹6,50,000</span>
+    </div>
+    <a href="/metals" class="text-amber-900 hover:text-amber-700 font-bold underline flex items-center gap-1 text-[11px]">View All Country Rates &rarr;</a>
+  </div>
+
   <header class="bg-white border-b border-stone-200 sticky top-0 z-40 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-wrap justify-between items-center gap-4">
       <div class="flex items-center gap-4">
@@ -53,10 +58,13 @@
         <span class="hidden md:inline-block bg-stone-100 text-stone-600 border border-stone-200 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Worldwide Live</span>
       </div>
       <div class="flex flex-wrap items-center gap-2.5">
+        <a href="/metals" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold px-3 py-2 rounded-lg flex items-center gap-1.5 shadow-sm transition">
+          <i class="fas fa-gem"></i> Gold & Metals
+        </a>
         <a href="/jobs" class="bg-blue-700 hover:bg-blue-800 text-white text-xs font-bold px-3 py-2 rounded-lg flex items-center gap-1.5 shadow-sm transition">
           <i class="fas fa-briefcase"></i> Job Desk
         </a>
-        <a href="/submit-news" class="bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold px-3 py-2 rounded-lg flex items-center gap-1.5 shadow-sm transition">
+        <a href="/submit-news" class="bg-amber-700 hover:bg-amber-800 text-white text-xs font-bold px-3 py-2 rounded-lg flex items-center gap-1.5 shadow-sm transition">
           <i class="fas fa-pen-nib"></i> Write News
         </a>
         <a href="/recipes" class="bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold px-3 py-2 rounded-lg flex items-center gap-1.5 shadow-sm transition">

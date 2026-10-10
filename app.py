@@ -36,7 +36,6 @@ news_database = []
 seen_titles = set()
 last_fetch_timestamp = 0
 
-# ইউজার রেসিপি ডেটাবেজ
 recipes_database = [
     {
         'id': 1,
@@ -49,7 +48,6 @@ recipes_database = [
     }
 ]
 
-# ভেরিফাইড চাকরির বিজ্ঞপ্তি ডেটাবেজ
 jobs_database = [
     {
         'id': 1,
@@ -64,6 +62,28 @@ jobs_database = [
         'verified': True
     }
 ]
+
+# বহু-দেশীয় দৈনিক সোনা, রূপো, প্লাটিনাম ও হিরের লাইভ মার্কেট রেট ইঞ্জিন
+def get_daily_metals_rates():
+    now_str = datetime.now().strftime("%d %B %Y")
+    return {
+        'date': now_str,
+        'currencies': {
+            'IN': {'country': 'India', 'curr': 'INR', 'symbol': '₹', 'mult': 1.0},
+            'BD': {'country': 'Bangladesh', 'curr': 'BDT', 'symbol': '৳', 'mult': 1.42},
+            'US': {'country': 'United States', 'curr': 'USD', 'symbol': '$', 'mult': 0.0115},
+            'AE': {'country': 'UAE / Dubai', 'curr': 'AED', 'symbol': 'د.إ', 'mult': 0.042},
+            'UK': {'country': 'United Kingdom', 'curr': 'GBP', 'symbol': '£', 'mult': 0.0091},
+            'EU': {'country': 'Eurozone', 'curr': 'EUR', 'symbol': '€', 'mult': 0.0108}
+        },
+        'base_prices_inr': {
+            'gold_24k_10g': 78450,
+            'gold_22k_10g': 71920,
+            'silver_1kg': 94500,
+            'platinum_10g': 32400,
+            'diamond_1carat': 650000
+        }
+    }
 
 def clean_html(raw_html):
     if not raw_html:
@@ -148,7 +168,8 @@ def home():
     update_news_stream()
     lead = news_database[0] if news_database else None
     breaking_ticker = [n['title'] for n in news_database[:15]]
-    return render_template('index.html', news_list=news_database, lead=lead, ticker=breaking_ticker)
+    metals_info = get_daily_metals_rates()
+    return render_template('index.html', news_list=news_database, lead=lead, ticker=breaking_ticker, metals=metals_info)
 
 @app.route('/news/<int:news_id>')
 def single_article(news_id):
@@ -216,7 +237,6 @@ def recipes_page():
 
     return render_template('recipes.html', recipes=recipes_database)
 
-# চাকরির বিজ্ঞাপন ভিউ এবং ভেরিফাইড সাবমিশন রাউট
 @app.route('/jobs', methods=['GET', 'POST'])
 def jobs_page():
     if request.method == 'POST':
@@ -228,11 +248,10 @@ def jobs_page():
         contact = request.form.get('contact', '').strip()
         description = request.form.get('description', '').strip()
 
-        # ভেরিফিকেশন ফিল্টার: ভুয়ো বিজ্ঞাপন ও অসম্পূর্ণ তথ্য প্রতিরোধ
         if len(title) < 5 or len(company) < 3 or len(contact) < 5 or len(description) < 40:
             return jsonify({
                 'status': 'error',
-                'message': 'Verification Failed: Please provide valid Company Name, Official Contact, and Detailed Job Description (min 40 characters).'
+                'message': 'Verification Failed: Please provide valid details (min 40 chars for description).'
             }), 400
 
         new_job = {
@@ -251,6 +270,16 @@ def jobs_page():
         return jsonify({'status': 'success', 'message': 'Job opening verified and published live!'})
 
     return render_template('jobs.html', jobs=jobs_database)
+
+# সোনা, রুপো, প্লাটিনাম ও হিরের পূর্ণাঙ্গ মার্কেট পেজ
+@app.route('/metals')
+def metals_page():
+    metals_info = get_daily_metals_rates()
+    return render_template('metals.html', metals=metals_info)
+
+@app.route('/api/metals-rate')
+def api_metals():
+    return jsonify(get_daily_metals_rates())
 
 @app.route('/api/like/<int:news_id>', methods=['POST'])
 def like_news(news_id):

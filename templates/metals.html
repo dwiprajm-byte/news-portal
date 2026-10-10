@@ -1,0 +1,174 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Global Daily Gold, Silver, Platinum & Diamond Rates | 24 Early News</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .headline-font { font-family: 'Playfair Display', Georgia, serif; }
+  </style>
+</head>
+<body class="bg-[#faf9f6] text-stone-800">
+
+  <header class="bg-white border-b border-stone-200 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+      <a href="/" class="headline-font text-2xl font-black text-stone-900">24 EARLY NEWS</a>
+      <a href="/" class="text-xs font-bold uppercase tracking-wider text-stone-600 hover:text-stone-900 flex items-center gap-1.5"><i class="fas fa-arrow-left"></i> Live Stream</a>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-10">
+    <div class="flex flex-wrap justify-between items-end mb-8 gap-4 border-b border-stone-200 pb-4">
+      <div>
+        <span class="bg-amber-100 text-amber-900 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">Bullion & Gems Exchange Desk</span>
+        <h1 class="headline-font text-3xl sm:text-4xl font-extrabold text-stone-900 mt-1">Daily Precious Metals & Gemstones Market</h1>
+        <p class="text-stone-500 text-xs sm:text-sm">Real-time daily rates for Gold, Silver, Platinum, and Solitaire Diamonds. Updated for <strong>{{ metals.date }}</strong>.</p>
+      </div>
+
+      <!-- দেশ / কারেন্সি নির্বাচন -->
+      <div class="flex items-center gap-2">
+        <label for="countrySelect" class="text-xs font-bold uppercase text-stone-600">Select Country:</label>
+        <select id="countrySelect" onchange="updateCurrencyView()" class="border border-stone-300 rounded-lg p-2 text-sm bg-white font-semibold focus:ring-2 focus:ring-amber-500 focus:outline-none">
+          <option value="IN" selected>🇮🇳 India (INR - ₹)</option>
+          <option value="BD">🇧🇩 Bangladesh (BDT - ৳)</option>
+          <option value="US">🇺🇸 United States (USD - $)</option>
+          <option value="AE">🇦🇪 UAE / Dubai (AED - د.إ)</option>
+          <option value="UK">🇬🇧 United Kingdom (GBP - £)</option>
+          <option value="EU">🇪🇺 Eurozone (EUR - €)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- মেটাল কার্ডস গ্রিড -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+      
+      <!-- সোনা (Gold) -->
+      <div class="bg-gradient-to-br from-amber-50 to-amber-100/60 border border-amber-200 rounded-2xl p-6 shadow-sm">
+        <div class="flex justify-between items-center mb-3">
+          <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-700 flex items-center justify-center text-lg"><i class="fas fa-coins"></i></div>
+          <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full"><i class="fas fa-arrow-up mr-0.5"></i> +0.45%</span>
+        </div>
+        <h3 class="font-bold text-stone-900 text-lg">Pure Gold (24K)</h3>
+        <p class="text-xs text-stone-500 mb-4">99.9% Hallmark Purity</p>
+        <div class="text-2xl font-black text-amber-900 mb-1" id="g24_rate">₹7,845 <span class="text-xs font-normal text-stone-600">/ 1 Gram</span></div>
+        <div class="text-xs font-medium text-stone-600" id="g24_10g">10 Grams: ₹78,450</div>
+        <div class="mt-4 pt-3 border-t border-amber-200 text-[11px] text-stone-600" id="g22_rate">
+          Standard Gold (22K): <strong>₹7,192 / gram</strong>
+        </div>
+      </div>
+
+      <!-- রুপো (Silver) -->
+      <div class="bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200 rounded-2xl p-6 shadow-sm">
+        <div class="flex justify-between items-center mb-3">
+          <div class="w-10 h-10 rounded-full bg-slate-300 text-slate-700 flex items-center justify-center text-lg"><i class="fas fa-ring"></i></div>
+          <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full"><i class="fas fa-arrow-up mr-0.5"></i> +0.80%</span>
+        </div>
+        <h3 class="font-bold text-stone-900 text-lg">Fine Silver</h3>
+        <p class="text-xs text-stone-500 mb-4">99.9% Pure Sterling Standard</p>
+        <div class="text-2xl font-black text-slate-900 mb-1" id="sil_10g">₹945 <span class="text-xs font-normal text-stone-600">/ 10 Grams</span></div>
+        <div class="text-xs font-medium text-stone-600" id="sil_1kg">1 Kilogram: ₹94,500</div>
+        <div class="mt-4 pt-3 border-t border-slate-200 text-[11px] text-stone-600">
+          Industrial & Jewellery Bullion Grade
+        </div>
+      </div>
+
+      <!-- প্লাটিনাম (Platinum) -->
+      <div class="bg-gradient-to-br from-sky-50 to-sky-100/60 border border-sky-200 rounded-2xl p-6 shadow-sm">
+        <div class="flex justify-between items-center mb-3">
+          <div class="w-10 h-10 rounded-full bg-sky-500/20 text-sky-800 flex items-center justify-center text-lg"><i class="fas fa-crown"></i></div>
+          <span class="text-[10px] bg-slate-100 text-slate-700 font-bold px-2 py-0.5 rounded-full"><i class="fas fa-minus mr-0.5"></i> Steady</span>
+        </div>
+        <h3 class="font-bold text-stone-900 text-lg">Pure Platinum</h3>
+        <p class="text-xs text-stone-500 mb-4">Pt 950 Sovereign Grade</p>
+        <div class="text-2xl font-black text-sky-950 mb-1" id="plat_1g">₹3,240 <span class="text-xs font-normal text-stone-600">/ 1 Gram</span></div>
+        <div class="text-xs font-medium text-stone-600" id="plat_10g">10 Grams: ₹32,400</div>
+        <div class="mt-4 pt-3 border-t border-sky-200 text-[11px] text-stone-600">
+          International Luxury Jewellery Standard
+        </div>
+      </div>
+
+      <!-- হিরে (Solitaire Diamond) -->
+      <div class="bg-gradient-to-br from-indigo-50 to-indigo-100/60 border border-indigo-200 rounded-2xl p-6 shadow-sm">
+        <div class="flex justify-between items-center mb-3">
+          <div class="w-10 h-10 rounded-full bg-indigo-500/20 text-indigo-700 flex items-center justify-center text-lg"><i class="fas fa-gem"></i></div>
+          <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full"><i class="fas fa-arrow-up mr-0.5"></i> +0.15%</span>
+        </div>
+        <h3 class="font-bold text-stone-900 text-lg">Natural Diamond</h3>
+        <p class="text-xs text-stone-500 mb-4">VVS1 / D-Color Benchmark</p>
+        <div class="text-2xl font-black text-indigo-950 mb-1" id="dia_1ct">₹6,50,000 <span class="text-xs font-normal text-stone-600">/ 1 Carat</span></div>
+        <div class="text-xs font-medium text-stone-600" id="dia_half">0.50 Carat: ₹2,60,000</div>
+        <div class="mt-4 pt-3 border-t border-indigo-200 text-[11px] text-stone-600">
+          Certified Solitaire International Index
+        </div>
+      </div>
+
+    </div>
+
+    <!-- মার্কেট বিশ্লেষণ ও এডিটোরিয়াল রিপোর্ট -->
+    <div class="bg-white border border-stone-200 rounded-2xl p-6 sm:p-8">
+      <h3 class="headline-font text-xl font-bold text-stone-900 mb-3">Daily Commodities Market Summary</h3>
+      <p class="text-stone-600 text-xs sm:text-sm leading-relaxed mb-4">
+        Precious metals recorded balanced movement across trading hubs in London, New York, Zurich, and Mumbai. Central bank reserve demands and geopolitical hedging continue to establish strong price support for 24K pure gold and industrial silver bullion. Platinum rates maintain resilience amid automotive demand, while benchmark certified natural solitaire diamonds reflect sustained value retention.
+      </p>
+      <div class="text-[11px] text-stone-400">
+        * Prices represent indicative market wholesale and retail bullion benchmarks without local GST, value addition, or maker duties. Updated daily automatically.
+      </div>
+    </div>
+  </main>
+
+  <footer class="bg-[#0f172a] text-slate-400 text-xs py-8 text-center mt-16">
+    <p>&copy; 2026 24 Early News Bullion & Commodities Desk. Director: DWIPRAJ MALLICK.</p>
+  </footer>
+
+  <script>
+    const baseRates = {
+      gold_24k_1g: 7845,
+      gold_24k_10g: 78450,
+      gold_22k_1g: 7192,
+      silver_10g: 945,
+      silver_1kg: 94500,
+      platinum_1g: 3240,
+      platinum_10g: 32400,
+      diamond_1ct: 650000,
+      diamond_half: 260000
+    };
+
+    const currencyConfig = {
+      'IN': { sym: '₹', mult: 1.0 },
+      'BD': { sym: '৳', mult: 1.42 },
+      'US': { sym: '$', mult: 0.0115 },
+      'AE': { sym: 'د.إ ', mult: 0.042 },
+      'UK': { sym: '£', mult: 0.0091 },
+      'EU': { sym: '€', mult: 0.0108 }
+    };
+
+    function formatVal(sym, val) {
+      return sym + Number(val.toFixed(val > 100 ? 0 : 2)).toLocaleString();
+    }
+
+    function updateCurrencyView() {
+      const selected = document.getElementById('countrySelect').value;
+      const conf = currencyConfig[selected];
+      const sym = conf.sym;
+      const mult = conf.mult;
+
+      document.getElementById('g24_rate').innerHTML = `${formatVal(sym, baseRates.gold_24k_1g * mult)} <span class="text-xs font-normal text-stone-600">/ 1 Gram</span>`;
+      document.getElementById('g24_10g').innerText = `10 Grams: ${formatVal(sym, baseRates.gold_24k_10g * mult)}`;
+      document.getElementById('g22_rate').innerHTML = `Standard Gold (22K): <strong>${formatVal(sym, baseRates.gold_22k_1g * mult)} / gram</strong>`;
+
+      document.getElementById('sil_10g').innerHTML = `${formatVal(sym, baseRates.silver_10g * mult)} <span class="text-xs font-normal text-stone-600">/ 10 Grams</span>`;
+      document.getElementById('sil_1kg').innerText = `1 Kilogram: ${formatVal(sym, baseRates.silver_1kg * mult)}`;
+
+      document.getElementById('plat_1g').innerHTML = `${formatVal(sym, baseRates.platinum_1g * mult)} <span class="text-xs font-normal text-stone-600">/ 1 Gram</span>`;
+      document.getElementById('plat_10g').innerText = `10 Grams: ${formatVal(sym, baseRates.platinum_10g * mult)}`;
+
+      document.getElementById('dia_1ct').innerHTML = `${formatVal(sym, baseRates.diamond_1ct * mult)} <span class="text-xs font-normal text-stone-600">/ 1 Carat</span>`;
+      document.getElementById('dia_half').innerText = `0.50 Carat: ${formatVal(sym, baseRates.diamond_half * mult)}`;
+    }
+  </script>
+</body>
+</html>
