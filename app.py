@@ -11,17 +11,18 @@ socket.setdefaulttimeout(7)
 
 app = Flask(__name__)
 
+# ক্যাটাগরিভিত্তিক আন্তর্জাতিক ও জাতীয় মাল্টি-সোর্স ফিড
 GLOBAL_NEWS_FEEDS = [
-    'https://feeds.bbci.co.uk/news/world/rss.xml',
-    'https://rss.nytimes.com/services/xml/rss/nyt/World.xml',
-    'https://www.aljazeera.com/xml/rss/all.xml',
-    'https://rss.dw.com/rdf/rss-en-all',
-    'https://www.france24.com/en/rss',
-    'https://timesofindia.indiatimes.com/rssfeedstopstories.cms',
-    'https://www.cbc.ca/cmlink/rss-topstories',
-    'https://www.abc.net.au/news/feed/51120/rss.xml',
-    'https://feeds.bbci.co.uk/news/technology/rss.xml',
-    'https://feeds.bbci.co.uk/news/business/rss.xml'
+    ('World', 'https://feeds.bbci.co.uk/news/world/rss.xml'),
+    ('World', 'https://rss.nytimes.com/services/xml/rss/nyt/World.xml'),
+    ('World', 'https://www.aljazeera.com/xml/rss/all.xml'),
+    ('National', 'https://timesofindia.indiatimes.com/rssfeedstopstories.cms'),
+    ('National', 'https://www.thedailystar.net/frontpage/rss.xml'),
+    ('Business', 'https://feeds.bbci.co.uk/news/business/rss.xml'),
+    ('Business', 'https://www.cnbc.com/id/100003114/device/rss/rss.html'),
+    ('Sports', 'https://feeds.bbci.co.uk/sport/rss.xml'),
+    ('Technology', 'https://feeds.bbci.co.uk/news/technology/rss.xml'),
+    ('Entertainment', 'https://feeds.bbci.co.uk/news/entertainment_and_arts/rss.xml')
 ]
 
 CURATED_HD_IMAGES = [
@@ -63,7 +64,6 @@ jobs_database = [
     }
 ]
 
-# বহু-দেশীয় দৈনিক সোনা, রূপো, প্লাটিনাম ও হিরের লাইভ মার্কেট রেট ইঞ্জিন
 def get_daily_metals_rates():
     now_str = datetime.now().strftime("%d %B %Y")
     return {
@@ -119,7 +119,7 @@ def update_news_stream():
     new_articles = []
     image_idx = 0
 
-    for feed_url in GLOBAL_NEWS_FEEDS:
+    for cat_hint, feed_url in GLOBAL_NEWS_FEEDS:
         try:
             parsed = feedparser.parse(feed_url)
             for entry in parsed.entries[:3]:
@@ -137,9 +137,11 @@ def update_news_stream():
                 image_idx += 1
 
                 article_id = int(time.time() * 1000) + len(new_articles)
-                category = "World & Breaking"
+                category = cat_hint
                 if hasattr(entry, 'tags') and len(entry.tags) > 0:
-                    category = entry.tags[0].get('term', 'World')
+                    tag_candidate = entry.tags[0].get('term', '')
+                    if tag_candidate and len(tag_candidate) < 20:
+                        category = tag_candidate
 
                 long_content = generate_deep_seo_article(raw_title, summary_raw, category)
 
@@ -185,7 +187,7 @@ def submit_news():
         title = request.form.get('title', '').strip()
         summary = request.form.get('summary', '').strip()
         author = request.form.get('author', 'Community Journalist').strip()
-        category = request.form.get('category', 'Global Public Wire').strip()
+        category = request.form.get('category', 'National').strip()
         
         if len(title) < 10 or len(summary) < 25:
             return jsonify({'status': 'error', 'message': 'Title must be 10+ characters and summary 25+ characters.'}), 400
@@ -198,7 +200,7 @@ def submit_news():
             'title': title,
             'summary': summary[:220] + "...",
             'content': deep_content,
-            'category': f"User Dispatch: {category}",
+            'category': category,
             'image': CURATED_HD_IMAGES[0],
             'date': datetime.now().strftime("%a, %d %b %Y %H:%M:%S GMT"),
             'created_at': datetime.now(),
@@ -249,10 +251,7 @@ def jobs_page():
         description = request.form.get('description', '').strip()
 
         if len(title) < 5 or len(company) < 3 or len(contact) < 5 or len(description) < 40:
-            return jsonify({
-                'status': 'error',
-                'message': 'Verification Failed: Please provide valid details (min 40 chars for description).'
-            }), 400
+            return jsonify({'status': 'error', 'message': 'Verification Failed: Please fill details accurately.'}), 400
 
         new_job = {
             'id': len(jobs_database) + 1,
@@ -271,15 +270,10 @@ def jobs_page():
 
     return render_template('jobs.html', jobs=jobs_database)
 
-# সোনা, রুপো, প্লাটিনাম ও হিরের পূর্ণাঙ্গ মার্কেট পেজ
 @app.route('/metals')
 def metals_page():
     metals_info = get_daily_metals_rates()
     return render_template('metals.html', metals=metals_info)
-
-@app.route('/api/metals-rate')
-def api_metals():
-    return jsonify(get_daily_metals_rates())
 
 @app.route('/api/like/<int:news_id>', methods=['POST'])
 def like_news(news_id):
