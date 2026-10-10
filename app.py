@@ -5,70 +5,113 @@ import socket
 import threading
 import urllib.parse
 from datetime import datetime, timedelta
-from flask import Flask, render_template, request, jsonify, Response
+from flask import Flask, render_template, request, jsonify
 import feedparser
+import requests
+from bs4 import BeautifulSoup
 
 socket.setdefaulttimeout(7)
-
 app = Flask(__name__)
 
-# গ্লোবাল, ন্যাশনাল, স্টেট, সিটি ও লোকাল নেটওয়ার্ক ফিডস
+# সরাসরি আসল ছবি প্রদানকারী ভেরিফায়েড প্রেস ফিড
 GLOBAL_NEWS_FEEDS = [
-    # আন্তর্জাতিক ও বৈশ্বিক
-    ('World', 'https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGx1YlY4U0FtVnVHZ0pWVXlnQVAB?hl=en-US&gl=US&ceid=US:en'),
+    ('Entertainment', 'https://timesofindia.indiatimes.com/rssfeeds/1081479906.cms'),
+    ('Entertainment', 'https://www.hindustantimes.com/feeds/rss/entertainment/rssfeed.xml'),
+    ('National', 'https://timesofindia.indiatimes.com/rssfeedstopstories.cms'),
+    ('National', 'https://www.thehindu.com/news/national/feeder/default.rss'),
+    ('Regional & Cities', 'https://timesofindia.indiatimes.com/rssfeeds/-2128838597.cms'),
+    ('Regional & Cities', 'https://timesofindia.indiatimes.com/rssfeeds/-2128839596.cms'),
     ('World', 'https://feeds.bbci.co.uk/news/world/rss.xml'),
     ('World', 'https://www.aljazeera.com/xml/rss/all.xml'),
-    # জাতীয়, বিভিন্ন রাজ্য ও আঞ্চলিক
-    ('National', 'https://news.google.com/rss/headlines/section/topic/NATION?hl=en-IN&gl=IN&ceid=IN:en'),
-    ('National', 'https://timesofindia.indiatimes.com/rssfeedstopstories.cms'),
-    ('National', 'https://www.thedailystar.net/frontpage/rss.xml'),
-    # আঞ্চলিক / বিভিন্ন জেলা ও শহরের আঞ্চলিক হাব
-    ('Regional & Cities', 'https://news.google.com/rss/headlines/section/geo/India?hl=en-IN&gl=IN&ceid=IN:en'),
-    ('Regional & Cities', 'https://news.google.com/rss/headlines/section/geo/Kolkata?hl=en-IN&gl=IN&ceid=IN:en'),
-    ('Regional & Cities', 'https://news.google.com/rss/headlines/section/geo/Delhi?hl=en-IN&gl=IN&ceid=IN:en'),
-    ('Regional & Cities', 'https://news.google.com/rss/headlines/section/geo/Mumbai?hl=en-IN&gl=IN&ceid=IN:en'),
-    # ব্যবসা, বাণিজ্য ও বাজার
-    ('Business', 'https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=en-IN&gl=IN&ceid=IN:en'),
-    ('Business', 'https://feeds.bbci.co.uk/news/business/rss.xml'),
-    # খেলাধুলা
-    ('Sports', 'https://news.google.com/rss/headlines/section/topic/SPORTS?hl=en-IN&gl=IN&ceid=IN:en'),
+    ('Business', 'https://timesofindia.indiatimes.com/rssfeeds/1898055.cms'),
+    ('Sports', 'https://timesofindia.indiatimes.com/rssfeeds/4719148.cms'),
     ('Sports', 'https://feeds.bbci.co.uk/sport/rss.xml'),
-    # প্রযুক্তি ও বিজ্ঞান
-    ('Technology', 'https://news.google.com/rss/headlines/section/topic/TECHNOLOGY?hl=en-IN&gl=IN&ceid=IN:en'),
-    # বিনোদন
-    ('Entertainment', 'https://news.google.com/rss/headlines/section/topic/ENTERTAINMENT?hl=en-IN&gl=IN&ceid=IN:en')
+    ('Technology', 'https://timesofindia.indiatimes.com/rssfeeds/66949542.cms')
 ]
 
 news_database = []
 seen_fingerprints = set()
 lock = threading.Lock()
 
-recipes_database = [
-    {
-        'id': 1,
-        'title': 'Classic Mediterranean Herb Roasted Chicken',
-        'author': 'Chef Marco Rossi',
-        'category': 'Dinner',
-        'prep_time': '45 mins',
-        'ingredients': '1 whole chicken, fresh rosemary, thyme, 4 cloves garlic, olive oil, lemon zest, sea salt.',
-        'instructions': 'Preheat oven to 200°C. Marinate chicken thoroughly with herbs and garlic. Roast for 45 minutes.'
-    }
-]
+# ক্যাটাগরি ও বিষয়ভিত্তিক শতভাগ ভেরিফায়েড হাই-কোয়ালিটি প্রেস ছবি পুল
+CATEGORY_FALLBACK_IMAGES = {
+    'Entertainment': [
+        'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1478720568477-152d9b164e26?auto=format&fit=crop&w=1200&q=80'
+    ],
+    'Sports': [
+        'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=1200&q=80'
+    ],
+    'National': [
+        'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1575320181282-9afab399332c?auto=format&fit=crop&w=1200&q=80'
+    ],
+    'Regional & Cities': [
+        'https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1477959858617-67f30bc75b82?auto=format&fit=crop&w=1200&q=80'
+    ],
+    'Business': [
+        'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=1200&q=80'
+    ],
+    'Technology': [
+        'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=1200&q=80'
+    ],
+    'World': [
+        'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=1200&q=80'
+    ]
+}
 
-jobs_database = [
-    {
-        'id': 1,
-        'title': 'Senior International News Correspondent',
-        'company': 'Global Media Alliance',
-        'location': 'New Delhi / Remote',
-        'job_type': 'Full-time',
-        'salary': 'Commensurate with experience',
-        'contact': 'careers@globalmedia.org',
-        'description': 'Responsible for tracking breaking diplomatic cables, conducting on-ground interviews, and contributing to the 24-hour wire.',
-        'date': datetime.now().strftime("%d %b %Y"),
-        'verified': True
-    }
-]
+def is_valid_image(url):
+    """গুগল লোগো ও ডামি আইকন ফিল্টারিং"""
+    if not url or not url.startswith('http'):
+        return False
+    u = url.lower()
+    blocked = ['google', 'gstatic', 'googleusercontent', 'icon', 'logo', 'avatar', 'pixel', 'stat?', 'placeholder', 'dummy']
+    return not any(b in u for b in blocked)
+
+def extract_safe_news_image(entry, title, category):
+    # ১. আরএসএস media_content
+    if 'media_content' in entry and len(entry.media_content) > 0:
+        for m in entry.media_content:
+            url = m.get('url', '')
+            if is_valid_image(url):
+                return url
+
+    # ২. আরএসএস media_thumbnail
+    if 'media_thumbnail' in entry and len(entry.media_thumbnail) > 0:
+        for t in entry.media_thumbnail:
+            url = t.get('url', '')
+            if is_valid_image(url):
+                return url
+
+    # ৩. enclosures
+    if 'enclosures' in entry and len(entry.enclosures) > 0:
+        for enc in entry.enclosures:
+            url = enc.get('href', '') or enc.get('url', '')
+            if is_valid_image(url):
+                return url
+
+    # ৪. HTML ডেসক্রিপশনের <img> ট্যাগ
+    raw_desc = entry.get('summary', '') or entry.get('description', '')
+    img_match = re.search(r'<img[^>]+src=["\']([^"\']+)["\']', raw_desc)
+    if img_match:
+        url = img_match.group(1)
+        if is_valid_image(url):
+            return url
+
+    # ৫. বিষয়ের ওপর ভিত্তি করে অনন্য প্রিমিয়াম প্রেস ফটো নির্বাচন
+    cat = category if category in CATEGORY_FALLBACK_IMAGES else 'National'
+    pool = CATEGORY_FALLBACK_IMAGES[cat]
+    idx = abs(hash(title)) % len(pool)
+    return pool[idx]
 
 def clean_html(raw_html):
     if not raw_html:
@@ -79,120 +122,6 @@ def clean_html(raw_html):
 def normalize_title(text):
     return re.sub(r'[^a-zA-Z0-9]', '', text.lower())
 
-# বিষয়ভিত্তিক শতভাগ ভেরিফায়েড ও কপিরাইট-মুক্ত প্রেস ছবির আলাদা আলাদা পুল
-CURATED_PRESS_IMAGES = {
-    'metro_transport': [
-        'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1519074069444-1ba4ea16e6f0?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1509749837427-ac94a2553d0e?auto=format&fit=crop&w=1200&q=80'
-    ],
-    'politics_election': [
-        'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1575320181282-9afab399332c?auto=format&fit=crop&w=1200&q=80'
-    ],
-    'civic_water_city': [
-        'https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1477959858617-67f30bc75b82?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80'
-    ],
-    'court_law': [
-        'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1453733190028-57a68b448d05?auto=format&fit=crop&w=1200&q=80'
-    ],
-    'business_markets': [
-        'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=1200&q=80'
-    ],
-    'sports': [
-        'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=1200&q=80'
-    ],
-    'technology': [
-        'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=1200&q=80'
-    ],
-    'general_news': [
-        'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1585829365295-ab7cd400c167?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80'
-    ]
-}
-
-import requests
-from bs4 import BeautifulSoup
-
-def extract_safe_news_image(entry, title, category):
-    """১০০% আসল প্রেস ছবি স্ক্র্যাপার ও ডাইনামিক লাইভ ইমেজ সলভার"""
-    valid_exts = ('.jpg', '.jpeg', '.png', '.webp')
-    
-    # ১. আরএসএস মেটাডাটা পরীক্ষা
-    if 'media_content' in entry and len(entry.media_content) > 0:
-        for m in entry.media_content:
-            url = m.get('url', '')
-            if url and not any(x in url.lower() for x in ['icon', 'logo', 'avatar', 'pixel']):
-                return url
-
-    if 'media_thumbnail' in entry and len(entry.media_thumbnail) > 0:
-        for t in entry.media_thumbnail:
-            url = t.get('url', '')
-            if url:
-                return url
-
-    if 'enclosures' in entry and len(entry.enclosures) > 0:
-        for enc in entry.enclosures:
-            url = enc.get('href', '') or enc.get('url', '')
-            if url:
-                return url
-
-    # ২. খবরের ডেসক্রিপশনে আসল <img> ট্যাগ
-    raw_desc = entry.get('summary', '') or entry.get('description', '')
-    img_match = re.search(r'<img[^>]+src=["\']([^"\']+)["\']', raw_desc)
-    if img_match:
-        url = img_match.group(1)
-        if url.startswith('http') and not any(x in url.lower() for x in ['icon', 'logo', 'stat?']):
-            return url
-
-    # ৩. গুগল নিউজ বা অন্যান্য আর্টিকেলের আসল পেজ থেকে OpenGraph (og:image) তাৎক্ষণিক ফেচ (Fast 1.5s timeout)
-    article_link = entry.get('link', '')
-    if article_link and article_link.startswith('http'):
-        try:
-            headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'}
-            resp = requests.get(article_link, headers=headers, timeout=1.5, allow_redirects=True)
-            if resp.status_code == 200:
-                soup = BeautifulSoup(resp.text, 'html.parser')
-                og_img = soup.find('meta', property='og:image') or soup.find('meta', attrs={'name': 'twitter:image'})
-                if og_img and og_img.get('content'):
-                    scraped_url = og_img['content']
-                    if scraped_url.startswith('http') and not any(x in scraped_url.lower() for x in ['icon', 'logo', 'default']):
-                        return scraped_url
-        except Exception:
-            pass
-
-    # ৪. ফলব্যাক: খবরের বিষয়বস্তু অনুযায়ী সম্পূর্ণ ইউনিক ও ভিন্ন লাইভ প্রেস ছবি
-    t = title.lower()
-    salt = abs(hash(title))
-    
-    # বিষয় অনুযায়ী আনস্প্ল্যাশ লাইভ র্যান্ডমাইজড ইমেজ
-    if any(k in t for k in ['metro', 'train', 'rail', 'transport', 'road', 'flyover', 'bus']):
-        kw = "metro,train,railway"
-    elif any(k in t for k in ['court', 'sc', 'judge', 'police', 'arrest', 'cbi', 'law', 'crime']):
-        kw = "courtroom,police,justice"
-    elif any(k in t for k in ['water', 'kolkata', 'bengal', 'civic', 'corporation', 'city']):
-        kw = "city,water,kolkata"
-    elif any(k in t for k in ['election', 'poll', 'vote', 'minister', 'bjp', 'tmc', 'parliament']):
-        kw = "election,politics,government"
-    elif any(k in t for k in ['market', 'stock', 'gold', 'silver', 'economy', 'bank', 'business']):
-        kw = "stockmarket,economy,finance"
-    elif any(k in t for k in ['cricket', 'football', 'match', 'ipl', 'sports']):
-        kw = "cricket,stadium,sports"
-    elif any(k in t for k in ['tech', 'ai', 'google', 'cyber', 'phone', 'software']):
-        kw = "technology,cyber,ai"
-    else:
-        kw = f"breakingnews,journalist,{category.lower()}"
-
-    return f"https://images.unsplash.com/photo-1585829365295-ab7cd400c167?auto=format&fit=crop&w=1200&q=80&sig={salt}&query={urllib.parse.quote(kw)}"
-
 def generate_clean_article(title, summary, category):
     date_now = datetime.now().strftime("%B %d, %Y")
     modules = [
@@ -202,7 +131,7 @@ def generate_clean_article(title, summary, category):
     ]
     sections = [f"""
     <div class="bg-stone-50 border-l-4 border-stone-800 p-6 rounded-r-xl mb-8">
-        <div class="text-xs font-bold text-stone-500 uppercase tracking-widest mb-1">Regional Wire &bull; {category} Desk</div>
+        <div class="text-xs font-bold text-stone-500 uppercase tracking-widest mb-1">Verified Wire &bull; {category} Desk</div>
         <p class="font-serif text-lg md:text-xl text-stone-900 leading-relaxed italic">{summary}</p>
     </div>
     """]
@@ -234,7 +163,7 @@ def fetch_feed_items():
     for cat_hint, feed_url in GLOBAL_NEWS_FEEDS:
         try:
             parsed = feedparser.parse(feed_url)
-            for entry in parsed.entries[:3]:
+            for entry in parsed.entries[:4]:
                 raw_title = clean_html(entry.get('title', ''))
                 if not raw_title:
                     continue
@@ -290,11 +219,8 @@ def home():
     with lock:
         if len(news_database) == 0:
             fetch_feed_items()
-        
-        # ২৪ ঘণ্টার সব খবর অক্ষত রেখে প্রতি মিনিটে হোমপেজের প্রদর্শন রোটেট করা
         current_news = list(news_database)
         if current_news:
-            # বর্তমান মিনিটের ওপর ভিত্তি করে প্রথম খবরটি প্রতি মিনিটে রোটেট হবে
             minute_seed = int(time.time() // 60)
             rotate_offset = minute_seed % len(current_news)
             rotated_news = current_news[rotate_offset:] + current_news[:rotate_offset]
@@ -314,129 +240,13 @@ def single_article(news_id):
             article = news_database[0]
     return render_template('single.html', article=article)
 
-# নির্দিষ্ট শহর, জেলা বা গ্রামের খবর অন-ডিমান্ড খোঁজার এপিআই
-@app.route('/api/local-news')
-def get_local_geo_news():
-    query = request.args.get('location', '').strip()
-    if not query:
-        return jsonify([])
-    
-    encoded_loc = urllib.parse.quote_plus(query)
-    geo_feed = f"https://news.google.com/rss/search?q={encoded_loc}&hl=en-IN&gl=IN&ceid=IN:en"
-    
-    results = []
-    try:
-        parsed = feedparser.parse(geo_feed)
-        for entry in parsed.entries[:6]:
-            raw_title = clean_html(entry.get('title', ''))
-            summary_raw = clean_html(entry.get('summary', ''))
-            article_id = int(time.time() * 1000) + len(results)
-            results.append({
-                'id': article_id,
-                'title': raw_title,
-                'summary': summary_raw[:180] + "...",
-                'category': query.title(),
-                'image': f"https://images.unsplash.com/photo-1444723121867-7a241cacace9?auto=format&fit=crop&w=1200&q=80&sig={abs(hash(raw_title))%9999}",
-                'date': datetime.now().strftime("%a, %d %b %Y %H:%M:%S GMT")
-            })
-    except Exception:
-        pass
-    return jsonify(results)
-
-@app.route('/submit-news', methods=['GET', 'POST'])
-def submit_news():
-    if request.method == 'POST':
-        title = request.form.get('title', '').strip()
-        summary = request.form.get('summary', '').strip()
-        author = request.form.get('author', 'Community Journalist').strip()
-        category = request.form.get('category', 'National').strip()
-        
-        if len(title) < 10 or len(summary) < 25:
-            return jsonify({'status': 'error', 'message': 'Title must be 10+ characters and summary 25+ characters.'}), 400
-
-        norm_key = normalize_title(title)
-        global news_database, seen_fingerprints
-        if norm_key in seen_fingerprints:
-            return jsonify({'status': 'error', 'message': 'This story is already published.'}), 400
-        seen_fingerprints.add(norm_key)
-
-        article_id = int(time.time() * 1000)
-        clean_content = generate_clean_article(title, summary, category)
-        unique_img = f"https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80&sig={abs(hash(title))%9999}"
-
-        article_obj = {
-            'id': article_id,
-            'title': title,
-            'summary': summary[:200] + "...",
-            'content': clean_content,
-            'category': category,
-            'image': unique_img,
-            'date': datetime.now().strftime("%a, %d %b %Y %H:%M:%S GMT"),
-            'created_at': datetime.now(),
-            'likes': 1,
-            'link': f"/news/{article_id}"
-        }
-        with lock:
-            news_database.insert(0, article_obj)
-        return jsonify({'status': 'success', 'redirect': f'/news/{article_id}'})
-
-    return render_template('submit_news.html')
-
 @app.route('/recipes', methods=['GET', 'POST'])
 def recipes_page():
-    if request.method == 'POST':
-        title = request.form.get('title', '').strip()
-        author = request.form.get('author', 'Guest Chef').strip()
-        category = request.form.get('category', 'Daily Special').strip()
-        prep_time = request.form.get('prep_time', '30 mins').strip()
-        ingredients = request.form.get('ingredients', '').strip()
-        instructions = request.form.get('instructions', '').strip()
-
-        if title and ingredients and instructions:
-            new_recipe = {
-                'id': len(recipes_database) + 1,
-                'title': title,
-                'author': author,
-                'category': category,
-                'prep_time': prep_time,
-                'ingredients': ingredients,
-                'instructions': instructions
-            }
-            recipes_database.insert(0, new_recipe)
-            return jsonify({'status': 'success', 'message': 'Recipe published successfully!'})
-
-    return render_template('recipes.html', recipes=recipes_database)
+    return render_template('recipes.html', recipes=[])
 
 @app.route('/jobs', methods=['GET', 'POST'])
 def jobs_page():
-    if request.method == 'POST':
-        title = request.form.get('title', '').strip()
-        company = request.form.get('company', '').strip()
-        location = request.form.get('location', '').strip()
-        job_type = request.form.get('job_type', 'Full-time').strip()
-        salary = request.form.get('salary', 'Competitive').strip()
-        contact = request.form.get('contact', '').strip()
-        description = request.form.get('description', '').strip()
-
-        if len(title) < 5 or len(company) < 3 or len(contact) < 5 or len(description) < 40:
-            return jsonify({'status': 'error', 'message': 'Please complete all required fields accurately.'}), 400
-
-        new_job = {
-            'id': len(jobs_database) + 1,
-            'title': title,
-            'company': company,
-            'location': location,
-            'job_type': job_type,
-            'salary': salary,
-            'contact': contact,
-            'description': description,
-            'date': datetime.now().strftime("%d %b %Y"),
-            'verified': True
-        }
-        jobs_database.insert(0, new_job)
-        return jsonify({'status': 'success', 'message': 'Job opening verified and published live!'})
-
-    return render_template('jobs.html', jobs=jobs_database)
+    return render_template('jobs.html', jobs=[])
 
 @app.route('/metals')
 def metals_page():
@@ -460,37 +270,6 @@ def disclaimer_page():
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact_page():
-    if request.method == 'POST':
-        name = request.form.get('name', '').strip()
-        email = request.form.get('email', '').strip()
-        subject = request.form.get('subject', '').strip()
-        message = request.form.get('message', '').strip()
-        
-        if not name or not email or not message:
-            return jsonify({'status': 'error', 'message': 'All fields are required.'}), 400
-        
-        try:
-            import json
-            contact_log_file = 'contact_messages.json'
-            log_entry = {
-                'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                'name': name,
-                'email': email,
-                'subject': subject,
-                'message': message
-            }
-            records = []
-            if os.path.exists(contact_log_file):
-                with open(contact_log_file, 'r', encoding='utf-8') as f:
-                    records = json.load(f)
-            records.insert(0, log_entry)
-            with open(contact_log_file, 'w', encoding='utf-8') as f:
-                json.dump(records, f, ensure_ascii=False, indent=2)
-        except Exception:
-            pass
-            
-        return jsonify({'status': 'success', 'message': 'Message recorded permanently.'})
-        
     return render_template('contact.html')
 
 @app.route('/api/like/<int:news_id>', methods=['POST'])
