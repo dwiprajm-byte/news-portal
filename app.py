@@ -24,6 +24,35 @@ GLOBAL_NEWS_FEEDS = [
     ('Entertainment', 'https://feeds.bbci.co.uk/news/entertainment_and_arts/rss.xml')
 ]
 
+# ক্যাটাগরি অনুযায়ী শতভাগ কপিরাইট-মুক্ত ও নিখুঁত আল্ট্রা-এইচডি প্রেস ছবি
+CATEGORY_HD_IMAGES = {
+    'World': [
+        "https://images.unsplash.com/photo-1526470608268-f674ce90ebd4?auto=format&fit=crop&w=1600&q=80",
+        "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1600&q=80",
+        "https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1600&q=80"
+    ],
+    'National': [
+        "https://images.unsplash.com/photo-1532375810709-75b1da00537c?auto=format&fit=crop&w=1600&q=80",
+        "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1600&q=80"
+    ],
+    'Business': [
+        "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=1600&q=80",
+        "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1600&q=80"
+    ],
+    'Sports': [
+        "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=1600&q=80",
+        "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1600&q=80"
+    ],
+    'Technology': [
+        "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=1600&q=80",
+        "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1600&q=80"
+    ],
+    'Entertainment': [
+        "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1600&q=80",
+        "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1600&q=80"
+    ]
+}
+
 news_database = []
 seen_fingerprints = set()
 last_fetch_timestamp = 0
@@ -61,10 +90,10 @@ def clean_html(raw_html):
     return re.sub(r'<.*?>', '', raw_html).strip()
 
 def normalize_title(text):
-    """ডুপ্লিকেট শনাক্তকরণের জন্য টেক্সট ক্লিন ইঞ্জিন"""
     return re.sub(r'[^a-zA-Z0-9]', '', text.lower())
 
-def extract_original_image(entry, title):
+def extract_original_image(entry, title, category):
+    """যেকোনো খবরে নিখুঁত ও ক্যাটাগরি-ম্যাচড ছবি পাওয়ার শতভাগ নিরাপদ ইঞ্জিন"""
     if 'media_content' in entry and len(entry.media_content) > 0:
         for m in entry.media_content:
             url = m.get('url', '')
@@ -82,8 +111,12 @@ def extract_original_image(entry, title):
         found_url = img_match.group(1)
         if found_url.startswith('http'):
             return found_url
-    safe_topic = urllib.parse.quote_plus(title[:30])
-    return f"https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1600&q=80&sig={abs(hash(title)) % 1000}"
+
+    # ক্যাটাগরি মিলিয়ে সঠিক কপিরাইট-মুক্ত প্রেস ইমেজ নির্বাচন
+    cat_key = category if category in CATEGORY_HD_IMAGES else 'World'
+    img_pool = CATEGORY_HD_IMAGES[cat_key]
+    idx = abs(hash(title)) % len(img_pool)
+    return img_pool[idx]
 
 def generate_10000_words_seo_masterpiece(title, summary, category, author="Editorial Investigative Bureau"):
     date_now = datetime.now().strftime("%B %d, %Y")
@@ -107,8 +140,8 @@ def generate_10000_words_seo_masterpiece(title, summary, category, author="Edito
 
     sections = [f"""
     <div class="bg-amber-50/70 border-l-4 border-amber-600 p-6 rounded-r-xl mb-8">
-        <h3 class="text-sm font-black text-amber-900 uppercase tracking-widest mb-1">Executive Editorial Fact Sheet & SEO Indexation</h3>
-        <p class="text-xs text-stone-600 mb-3">Topic: <strong>{title}</strong> | Category: <strong>{category}</strong> | Date: <strong>{date_now}</strong> | Certified Standard: <strong>10,000+ Words Deep Investigation</strong></p>
+        <h3 class="text-sm font-black text-amber-900 uppercase tracking-widest mb-1">Executive Editorial Fact Sheet</h3>
+        <p class="text-xs text-stone-600 mb-3">Topic: <strong>{title}</strong> | Category: <strong>{category}</strong> | Date: <strong>{date_now}</strong></p>
         <p class="font-serif text-lg md:text-xl text-stone-900 leading-relaxed italic">{summary}</p>
     </div>
     """]
@@ -138,15 +171,12 @@ def get_daily_metals_rates():
     }
 
 def update_news_stream():
-    """১ মিনিট পরপর আপডেট, ২৪ ঘণ্টা স্থায়ী এবং ডুপ্লিকেট ফিল্টারিং ইঞ্জিন"""
     global news_database, seen_fingerprints, last_fetch_timestamp
     current_time = time.time()
     
-    # ৬০ সেকেন্ডের ভেতর নতুন রিকোয়েস্ট আসলে পুরনো মেমোরি থেকেই সার্ভ করবে
     if current_time - last_fetch_timestamp < 60 and len(news_database) > 0:
         return
 
-    # ২৪ ঘণ্টার বেশি পুরনো খবর নিরাপদে সরানো
     cutoff_time = datetime.now() - timedelta(hours=24)
     news_database = [item for item in news_database if item['created_at'] > cutoff_time]
 
@@ -160,16 +190,17 @@ def update_news_stream():
                 if not raw_title:
                     continue
                 
-                # সম্পূর্ণ ডুপ্লিকেট প্রতিরোধ ফিল্টার
                 norm_key = normalize_title(raw_title)
                 if norm_key in seen_fingerprints:
                     continue
                 seen_fingerprints.add(norm_key)
 
                 summary_raw = clean_html(entry.get('summary', entry.get('description', 'Comprehensive global news report.')))
-                original_img = extract_original_image(entry, raw_title)
-                article_id = int(time.time() * 1000) + len(new_articles)
                 category = cat_hint
+                
+                # পারফেক্ট ক্যাটাগরি-ম্যাচড ছবি নিশ্চিতকরণ
+                original_img = extract_original_image(entry, raw_title, category)
+                article_id = int(time.time() * 1000) + len(new_articles)
 
                 long_content = generate_10000_words_seo_masterpiece(raw_title, summary_raw, category)
 
@@ -182,14 +213,13 @@ def update_news_stream():
                     'image': original_img,
                     'date': datetime.now().strftime("%a, %d %b %Y %H:%M:%S GMT"),
                     'created_at': datetime.now(),
-                    'likes': 24,
+                    'likes': 28,
                     'link': f"/news/{article_id}"
                 })
         except Exception:
             continue
 
     if new_articles:
-        # নতুন খবর সবার উপরে বসবে, পুরোনো খবর নিচে থাকবে কিন্তু ২৪ ঘণ্টা মুছবে না
         news_database = new_articles + news_database
 
     last_fetch_timestamp = current_time
@@ -230,13 +260,15 @@ def submit_news():
         article_id = int(time.time() * 1000)
         deep_content = generate_10000_words_seo_masterpiece(title, summary, category, author)
         
+        chosen_img = CATEGORY_HD_IMAGES.get(category, CATEGORY_HD_IMAGES['National'])[0]
+        
         article_obj = {
             'id': article_id,
             'title': title,
             'summary': summary[:220] + "...",
             'content': deep_content,
             'category': category,
-            'image': "https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1600&q=80",
+            'image': chosen_img,
             'date': datetime.now().strftime("%a, %d %b %Y %H:%M:%S GMT"),
             'created_at': datetime.now(),
             'likes': 1,
