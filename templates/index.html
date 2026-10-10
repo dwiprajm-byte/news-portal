@@ -24,7 +24,37 @@
       animation-play-state: paused;
     }
     .cat-btn.active { background-color: #0f172a; color: #ffffff; border-color: #0f172a; }
+
+    /* গুগল ট্রান্সলেট উইজেট স্টাইলিং */
+    .goog-te-gadget-simple {
+      background-color: #f8fafc !important;
+      border: 1px solid #cbd5e1 !important;
+      padding: 4px 8px !important;
+      border-radius: 8px !important;
+      font-size: 11px !important;
+      font-weight: 600 !important;
+      color: #334155 !important;
+      display: flex !important;
+      align-items: center !important;
+      cursor: pointer !important;
+    }
+    .goog-te-gadget-simple img { display: none !important; }
+    .goog-te-banner-frame { display: none !important; }
+    body { top: 0px !important; }
   </style>
+  
+  <!-- গুগল ক্লাউড ট্রান্সলেশন ইঞ্জিন -->
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false
+      }, 'google_translate_element');
+    }
+  </script>
+  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6DVCYX5938"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -50,7 +80,7 @@
     </div>
   </div>
 
-  <!-- লাইভ গোল্ড ও প্রেশাস মেটালস রেট বার -->
+  <!-- লাইভ গোল্ড ও মেটাল রেট বার -->
   <div class="bg-amber-500/10 border-b border-amber-200 px-4 py-1.5 text-xs text-amber-950 flex flex-wrap justify-between items-center gap-2">
     <div class="flex items-center gap-4 flex-wrap font-semibold">
       <span class="text-amber-800 font-bold uppercase tracking-wider flex items-center gap-1.5"><i class="fas fa-coins text-amber-600"></i> Daily Precious Metals:</span>
@@ -62,7 +92,7 @@
     <a href="/metals" class="text-amber-900 hover:text-amber-700 font-bold underline flex items-center gap-1 text-[11px]">View All Country Rates &rarr;</a>
   </div>
 
-  <!-- হেডার ও সার্চ বার -->
+  <!-- হেডার, সার্চ ও গ্লোবাল ভাষা নির্বাচক -->
   <header class="bg-white border-b border-stone-200 sticky top-0 z-40 shadow-xs">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-wrap justify-between items-center gap-4">
       <div class="flex items-center gap-4">
@@ -78,8 +108,14 @@
         </div>
       </div>
 
-      <!-- নেভিগেশন বাটনসমূহ -->
+      <!-- গ্লোবাল ল্যাঙ্গুয়েজ ড্রপডাউন এবং অ্যাকশন বাটনসমূহ -->
       <div class="flex flex-wrap items-center gap-2">
+        <!-- বিশ্বের যেকোনো ভাষা নির্বাচন উইজেট -->
+        <div class="flex items-center gap-1 border border-stone-200 rounded-lg p-1 bg-stone-50">
+          <i class="fas fa-language text-stone-600 text-sm ml-1.5"></i>
+          <div id="google_translate_element"></div>
+        </div>
+
         <a href="/metals" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold px-3 py-2 rounded-lg flex items-center gap-1.5 shadow-sm transition">
           <i class="fas fa-gem"></i> Gold & Metals
         </a>
@@ -165,7 +201,7 @@
       <span class="text-xs text-stone-500 font-medium"><i class="fas fa-sync-alt fa-spin mr-1"></i> Continuous Auto-Sync (Every 60s)</span>
     </div>
 
-    <!-- নিউজ গ্রিড (ছবি ও লেখার প্রতিটিতে সরাসরি লিঙ্ক) -->
+    <!-- নিউজ গ্রিড -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="newsGrid">
       {% for item in news_list[1:] %}
       <article data-category="{{ item.category }}" class="news-card bg-white border border-stone-200 rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between hover:border-stone-400 hover:shadow-md transition">
