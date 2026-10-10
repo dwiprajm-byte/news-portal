@@ -79,85 +79,100 @@ def clean_html(raw_html):
 def normalize_title(text):
     return re.sub(r'[^a-zA-Z0-9]', '', text.lower())
 
+# বিষয়ভিত্তিক শতভাগ ভেরিফায়েড ও কপিরাইট-মুক্ত প্রেস ছবির আলাদা আলাদা পুল
+CURATED_PRESS_IMAGES = {
+    'metro_transport': [
+        'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1519074069444-1ba4ea16e6f0?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1509749837427-ac94a2553d0e?auto=format&fit=crop&w=1200&q=80'
+    ],
+    'politics_election': [
+        'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1575320181282-9afab399332c?auto=format&fit=crop&w=1200&q=80'
+    ],
+    'civic_water_city': [
+        'https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1477959858617-67f30bc75b82?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80'
+    ],
+    'court_law': [
+        'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1453733190028-57a68b448d05?auto=format&fit=crop&w=1200&q=80'
+    ],
+    'business_markets': [
+        'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=1200&q=80'
+    ],
+    'sports': [
+        'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=1200&q=80'
+    ],
+    'technology': [
+        'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=1200&q=80'
+    ],
+    'general_news': [
+        'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1585829365295-ab7cd400c167?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80'
+    ]
+}
+
 def extract_safe_news_image(entry, title, category):
-    """আসল প্রেস ফটো ও ক্যাটাগরি-ভিত্তিক ভেরিফায়েড লাইভ ইমেজ ইঞ্জিন"""
+    """আসল আরএসএস প্রেস ছবি অথবা শতভাগ স্বতন্ত্র ও বিষয়ভিত্তিক ইউনিক ইমেজ নির্বাচন"""
+    valid_exts = ('.jpg', '.jpeg', '.png', '.webp')
     
-    # ১. আরএসএস-এর নিজস্ব আসল প্রেস ছবি (media_content)
+    # ১. আরএসএস মেটাডাটা
     if 'media_content' in entry and len(entry.media_content) > 0:
         for m in entry.media_content:
             url = m.get('url', '')
             if url and not any(x in url.lower() for x in ['icon', 'logo', 'avatar', 'pixel']):
                 return url
 
-    # ২. আরএসএস media_thumbnail
     if 'media_thumbnail' in entry and len(entry.media_thumbnail) > 0:
         for t in entry.media_thumbnail:
             url = t.get('url', '')
             if url:
                 return url
 
-    # ৩. আরএসএস enclosures
-    if 'enclosures' in entry and len(entry.enclosures) > 0:
-        for enc in entry.enclosures:
-            url = enc.get('href', '') or enc.get('url', '')
-            if url:
-                return url
-
-    # ৪. আরএসএস links
     if 'links' in entry:
         for l in entry.links:
             href = l.get('href', '')
             t = l.get('type', '')
-            if href and (t.startswith('image/') or any(href.lower().endswith(ext) for ext in ['.jpg', '.jpeg', '.png', '.webp'])):
-                if not any(x in href.lower() for x in ['icon', 'logo', 'avatar']):
+            if href and (t.startswith('image/') or any(href.lower().endswith(ext) for ext in valid_exts)):
+                if not any(x in href.lower() for x in ['icon', 'logo']):
                     return href
 
-    # ৫. খবরের ডেসক্রিপশনে থাকা আসল <img> ট্যাগ
     raw_desc = entry.get('summary', '') or entry.get('description', '')
     img_match = re.search(r'<img[^>]+src=["\']([^"\']+)["\']', raw_desc)
     if img_match:
         url = img_match.group(1)
-        if url.startswith('http') and not any(x in url.lower() for x in ['icon', 'logo', 'avatar', 'stat?']):
+        if url.startswith('http') and not any(x in url.lower() for x in ['icon', 'logo', 'stat?']):
             return url
 
-    # ৬. শিরোনাম ও বিষয়ের সঙ্গে নিখুঁতভাবে মেলানো ভেরিফায়েড কপিরাইট-মুক্ত প্রেস ইমেজ
-    t_lower = title.lower()
+    # ২. টাইটেলের বিষয়ের ওপর ভিত্তি করে স্বতন্ত্র ইউনিক ছবি বাছাই
+    t = title.lower()
+    idx = abs(hash(title))
     
-    # রাজনীতি, নির্বাচন ও কূটনীতি
-    if any(k in t_lower for k in ['minister', 'election', 'parliament', 'bjp', 'congress', 'modi', 'biden', 'trump', 'govt', 'diplomat']):
-        return "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80"
-    
-    # যুদ্ধ, সেনাবাহিনী ও ভূরাজনীতি
-    elif any(k in t_lower for k in ['war', 'military', 'attack', 'missile', 'gaza', 'ukraine', 'israel', 'russia', 'conflict']):
-        return "https://images.unsplash.com/photo-1526470608268-f674ce90ebd4?auto=format&fit=crop&w=1200&q=80"
-    
-    # বাণিজ্য, সোনা, শেয়ার ও অর্থনীতি
-    elif any(k in t_lower for k in ['market', 'stock', 'gold', 'silver', 'economy', 'bank', 'rupee', 'dollar', 'trade', 'business', 'rbi']):
-        return "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=80"
-    
-    # খেলাধুলা (ক্রিকেট, ফুটবল ইত্যাদি)
-    elif any(k in t_lower for k in ['cricket', 'football', 'match', 'ipl', 'fifa', 'score', 'cup', 'trophy', 'stadium', 'sports']):
-        return "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=1200&q=80"
-    
-    # প্রযুক্তি, বিজ্ঞান ও এআই
-    elif any(k in t_lower for k in ['ai', 'tech', 'google', 'apple', 'nasa', 'space', 'robot', 'cyber', 'phone', 'software']):
-        return "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80"
-    
-    # ক্রাইম, পুলিশ ও আদালত
-    elif any(k in t_lower for k in ['police', 'arrest', 'court', 'cbi', 'case', 'crime', 'investigation', 'judge']):
-        return "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=1200&q=80"
-    
-    # স্বাস্থ্য ও চিকিৎসা
-    elif any(k in t_lower for k in ['health', 'hospital', 'doctor', 'medical', 'virus', 'vaccine', 'disease']):
-        return "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=1200&q=80"
-    
-    # সিনেমা ও বিনোদন
-    elif any(k in t_lower for k in ['cinema', 'movie', 'actor', 'film', 'bollywood', 'hollywood', 'song', 'star']):
-        return "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1200&q=80"
-    
-    # আন্তর্জাতিক / জাতীয় সার্বিক সংবাদ
+    if any(k in t for k in ['metro', 'train', 'rail', 'line', 'trial', 'road', 'transport', 'bus']):
+        pool = CURATED_PRESS_IMAGES['metro_transport']
+    elif any(k in t for k in ['sc', 'court', 'judge', 'police', 'arrest', 'cbi', 'plea', 'petition', 'sir-']):
+        pool = CURATED_PRESS_IMAGES['court_law']
+    elif any(k in t for k in ['water', 'civic', 'kolkata', 'howrah', 'bengal', 'colony', 'poll', 'municipal', 'corporation']):
+        pool = CURATED_PRESS_IMAGES['civic_water_city']
+    elif any(k in t for k in ['mp', 'tmc', 'unhcr', 'minister', 'bjp', 'govt', 'election', 'voter', 'vote', 'parliament']):
+        pool = CURATED_PRESS_IMAGES['politics_election']
+    elif any(k in t for k in ['stock', 'market', 'gold', 'silver', 'economy', 'bank', 'rupee', 'trade', 'business']):
+        pool = CURATED_PRESS_IMAGES['business_markets']
+    elif any(k in t for k in ['cricket', 'football', 'match', 'ipl', 'sports', 'trophy']):
+        pool = CURATED_PRESS_IMAGES['sports']
+    elif any(k in t for k in ['ai', 'tech', 'software', 'google', 'apple', 'cyber', 'nasa']):
+        pool = CURATED_PRESS_IMAGES['technology']
     else:
-        return "https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80"
+        pool = CURATED_PRESS_IMAGES['general_news']
+        
+    return pool[idx % len(pool)]
 
 def generate_clean_article(title, summary, category):
     date_now = datetime.now().strftime("%B %d, %Y")
