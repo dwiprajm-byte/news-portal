@@ -114,6 +114,16 @@
         <a href="/category/technology" class="hover:text-amber-300 transition text-slate-300">Technology</a>
         <a href="/horoscope" class="text-amber-300 hover:text-white transition">Horoscope</a>
         <a href="/recipes" class="text-amber-300 hover:text-white transition">Recipes</a>
+              <!-- কন্ট্রি ফিল্টার ড্রপডাউন -->
+        <div class="inline-flex items-center notranslate ml-auto">
+          <label for="countryFilterSelect" class="text-stone-300 text-[11px] font-bold mr-2 hidden md:inline">EDITION:</label>
+          <select id="countryFilterSelect" onchange="filterByCountry(this.value)" class="bg-slate-900 text-amber-300 border border-slate-700 text-[11px] font-semibold rounded-lg px-2.5 py-1 focus:outline-none focus:border-amber-400">
+            <option value="ALL" {% if selected_country == 'ALL' %}selected{% endif %}>🌍 All Countries</option>
+            {% for code, data in countries.items() %}
+            <option value="{{ code }}" {% if selected_country == code %}selected{% endif %}>{{ data.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
       </div>
     </nav>
   </header>
