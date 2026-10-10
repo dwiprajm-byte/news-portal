@@ -154,9 +154,7 @@
           {{ lead.summary }}
         </p>
         <div class="flex items-center justify-between pt-4 border-t border-slate-800">
-          <a href="/news/{{ lead.id }}" class="bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-black uppercase tracking-wider px-5 py-2.5 rounded-xl transition flex items-center gap-2">
-            Read Full Dispatch <i class="fas fa-arrow-right"></i>
-          </a>
+<!-- Dispatch Link Removed -->
           <button onclick="likeArticle({{ lead.id }}, this)" class="text-xs font-bold text-slate-400 hover:text-rose-400 flex items-center gap-1.5 transition">
             <i class="fas fa-heart text-rose-500"></i> <span>{{ lead.likes }}</span>
           </button>
@@ -188,9 +186,7 @@
             </p>
           </div>
           <div class="flex items-center justify-between pt-3 border-t border-slate-100 text-xs">
-            <a href="/news/{{ item.id }}" class="font-bold text-amber-700 hover:text-amber-900 flex items-center gap-1">
-              Dispatch Wire &rarr;
-            </a>
+<div></div>
             <button onclick="likeArticle({{ item.id }}, this)" class="text-slate-600 hover:text-rose-500 flex items-center gap-1 transition">
               <i class="fas fa-heart text-rose-500"></i> <span>{{ item.likes }}</span>
             </button>
