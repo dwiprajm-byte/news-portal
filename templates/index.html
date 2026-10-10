@@ -3,242 +3,207 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>24 Early News |  & Deep Analysis</title>
+  <title>24 Early News | Autonomous Global & Regional Wire</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
     .headline-font { font-family: 'Playfair Display', Georgia, serif; }
+    .brand-font { font-family: 'Cinzel', serif; }
     
-    @keyframes ultraSlowTicker {
+    /* ধীরগতির মার্জিত ব্রেকিং নিউজ স্ক্রলার */
+    @keyframes smoothTicker {
       0% { transform: translateX(100%); }
       100% { transform: translateX(-100%); }
     }
     .ticker-track {
       display: inline-block;
       white-space: nowrap;
-      animation: ultraSlowTicker 120s linear infinite;
+      animation: smoothTicker 120s linear infinite;
     }
-    .ticker-track:hover {
-      animation-play-state: paused;
+    .ticker-track:hover { animation-play-state: paused; }
+    
+    /* অনন্য কার্ড ইন্টারঅ্যাকশন এফেক্ট */
+    .news-card-unique {
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .cat-btn.active { background-color: #0f172a; color: #ffffff; border-color: #0f172a; }
-
-    .goog-te-banner-frame { display: none !important; }
-    #goog-gt-tt { display: none !important; }
-    .skiptranslate { display: none !important; }
-    body { top: 0px !important; }
+    .news-card-unique:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 32px -8px rgba(15, 23, 42, 0.12);
+    }
   </style>
-
-  <div id="google_translate_element" style="display:none;"></div>
-  <script type="text/javascript">
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({
-        pageLanguage: 'en',
-        autoDisplay: false
-      }, 'google_translate_element');
-    }
-  </script>
-  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6DVCYX5938"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-6DVCYX5938');
-  </script>
 </head>
-<body class="bg-[#faf9f6] text-stone-800">
+<body class="text-slate-800 antialiased selection:bg-amber-500 selection:text-white">
 
-  <!-- ধীরগতির রানিং ব্রেকিং নিউজ বার -->
-  <div class="bg-red-700 text-white flex items-center overflow-hidden border-b border-red-800 shadow-sm">
-    <div class="bg-red-900 px-5 py-2.5 font-black text-xs uppercase tracking-widest flex items-center gap-2.5 z-10 whitespace-nowrap shadow-md">
-      <span class="inline-block w-2.5 h-2.5 bg-yellow-300 rounded-full animate-ping"></span>
-      BREAKING NEWS
+  <!-- ১. শীর্ষ ব্রেকিং নিউজ টিকার বার -->
+  <div class="bg-red-800 text-white text-xs font-semibold overflow-hidden border-b border-red-900 shadow-inner flex items-center h-8.5">
+    <div class="bg-red-950 text-amber-300 px-4 py-1.5 font-bold uppercase tracking-widest text-[10px] flex items-center gap-1.5 z-20 flex-shrink-0 shadow-md">
+      <span class="w-2 h-2 rounded-full bg-red-500 animate-ping inline-block"></span> BREAKING
     </div>
-    <div class="overflow-hidden w-full py-2">
-      <div class="ticker-track text-sm font-medium tracking-wide">
-        {% for item in ticker %}
-          <span class="mx-10 font-semibold"><i class="fas fa-circle text-[8px] text-yellow-300 mr-2.5"></i>{{ item }}</span>
+    <div class="overflow-hidden w-full whitespace-nowrap pl-4">
+      <div class="ticker-track text-[11px] tracking-wide font-medium text-slate-100">
+        {% for t in ticker %}
+          <span class="mx-6 inline-flex items-center gap-2"><i class="fas fa-bolt text-amber-400 text-[9px]"></i> {{ t }}</span>
         {% endfor %}
       </div>
     </div>
   </div>
 
-  <!-- লাইভ গোল্ড ও মেটাল রেট বার -->
-  <div class="bg-amber-500/10 border-b border-amber-200 px-4 py-1.5 text-xs text-amber-950 flex flex-wrap justify-between items-center gap-2">
-    <div class="flex items-center gap-4 flex-wrap font-semibold">
-      <span class="text-amber-800 font-bold uppercase tracking-wider flex items-center gap-1.5"><i class="fas fa-coins text-amber-600"></i> Daily Precious Metals:</span>
-      <span>Gold 24K: ₹7,845/g</span>
-      <span>Silver: ₹94.5/g</span>
-      <span>Platinum: ₹3,240/g</span>
-      <span>Diamond 1ct: ₹6,50,000</span>
+  <!-- ২. প্রিমিয়াম সোনা-রুপো ও মেটালস বার -->
+  <div class="bg-amber-50/80 backdrop-blur-xs border-b border-amber-200/60 px-4 py-1.5 text-[11px] text-amber-950 font-medium">
+    <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+      <div class="flex items-center gap-3 overflow-x-auto whitespace-nowrap py-0.5">
+        <span class="font-bold text-amber-900 flex items-center gap-1 text-[10px] tracking-wider uppercase"><i class="fas fa-coins text-amber-600"></i> Bullion Desk:</span>
+        <span class="bg-white/80 px-2 py-0.5 rounded border border-amber-200/60">Gold 24K: <strong>₹7,845/g</strong></span>
+        <span class="bg-white/80 px-2 py-0.5 rounded border border-amber-200/60">Silver: <strong>₹94.5/g</strong></span>
+        <span class="bg-white/80 px-2 py-0.5 rounded border border-amber-200/60">Platinum: <strong>₹3,240/g</strong></span>
+        <span class="bg-white/80 px-2 py-0.5 rounded border border-amber-200/60">Diamond 1ct: <strong>₹6,50,000</strong></span>
+      </div>
+      <a href="/metals" class="text-[10px] font-bold text-amber-800 hover:text-amber-950 underline flex items-center gap-1 flex-shrink-0">View All Country Rates &rarr;</a>
     </div>
-    <a href="/metals" class="text-amber-900 hover:text-amber-700 font-bold underline flex items-center gap-1 text-[11px]">View All Country Rates &rarr;</a>
   </div>
 
-  <!-- হেডার ও ডানদিকের উপরে সার্চ ল্যাঙ্গুয়েজ -->
-    <!-- ব্র্যান্ড ব্যানার ও নেভিগেশন হেডার -->
-  <header class="bg-white border-b border-stone-200 sticky top-0 z-40 shadow-xs">
+  <!-- ৩. ইউনিক ব্র্যান্ডিং ও নেভিগেশন হেডার -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-xs">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex flex-wrap justify-between items-center gap-3">
       
       <!-- অফিসিয়াল ব্যানার ও লোগো -->
-      <a href="/" class="flex items-center gap-3.5 group text-decoration-none">
-        <div class="w-10 h-10 flex-shrink-0 group-hover:scale-105 transition transform duration-200">
+      <a href="/" class="flex items-center gap-3 group text-decoration-none">
+        <div class="w-10 h-10 flex-shrink-0 group-hover:scale-105 transition transform">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="40" height="40" fill="none">
             <circle cx="24" cy="24" r="22" fill="#0f172a" stroke="#d97706" stroke-width="2.5"/>
             <circle cx="24" cy="24" r="18" fill="none" stroke="#d97706" stroke-width="0.8" stroke-dasharray="2 2"/>
-            <text x="50%" y="58%" text-anchor="middle" fill="#d97706" font-family="'Playfair Display', Georgia, serif" font-weight="900" font-size="20">24</text>
+            <text x="50%" y="58%" text-anchor="middle" fill="#d97706" font-family="'Cinzel', serif" font-weight="900" font-size="20">24</text>
           </svg>
         </div>
-        <div class="flex flex-col">
-          <span class="headline-font text-2xl sm:text-3xl font-black text-stone-900 tracking-tight leading-none group-hover:text-amber-800 transition">24 EARLY NEWS</span>
-          
-        </div>
+        <span class="headline-font text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-none group-hover:text-amber-800 transition">24 EARLY NEWS</span>
       </a>
 
-      <!-- নিউজ সার্চ বার -->
+      <!-- সার্চ বার -->
       <div class="flex-grow max-w-sm mx-1">
         <div class="relative">
-          <input type="text" id="searchInput" autocomplete="off" spellcheck="false" onkeyup="searchArticles()" placeholder="Search in 24-Hour Archive..." class="w-full bg-stone-50 border border-stone-300 rounded-full py-1.5 pl-8 pr-3 text-xs focus:outline-none focus:ring-2 focus:ring-amber-500">
-          <i class="fas fa-search absolute left-2.5 top-2.5 text-stone-400 text-xs"></i>
+          <input type="text" id="searchInput" autocomplete="off" spellcheck="false" onkeyup="searchArticles()" placeholder="Search in 24-Hour Archive..." class="w-full bg-slate-50 border border-slate-300 rounded-full py-1.5 pl-8 pr-3 text-xs focus:outline-none focus:ring-2 focus:ring-amber-500">
+          <i class="fas fa-search absolute left-2.5 top-2.5 text-slate-400 text-xs"></i>
         </div>
       </div>
 
       <!-- উপরে ডানদিকে Search Language -->
-      <div class="flex items-center gap-1.5 bg-stone-100 border border-stone-300 rounded-full px-3 py-1 text-xs shadow-inner">
-        <i class="fas fa-language text-stone-500 text-sm"></i>
-        <input type="text" id="langSearchInput" autocomplete="off" spellcheck="false" onkeydown="if(event.key==='Enter') executeLanguageSearch()" placeholder="Search Language (e.g. Bengali, Hindi)..." class="bg-transparent border-none text-xs w-44 sm:w-56 focus:outline-none font-medium text-stone-700 placeholder-stone-400">
-        <button onclick="executeLanguageSearch()" class="bg-stone-900 text-white rounded-full px-2 py-0.5 text-[10px] font-bold hover:bg-stone-800 transition">Set</button>
+      <div class="flex items-center gap-1.5 bg-slate-100 border border-slate-300 rounded-full px-3 py-1 text-xs shadow-inner">
+        <i class="fas fa-language text-slate-500 text-sm"></i>
+        <input type="text" id="langSearchInput" autocomplete="off" spellcheck="false" onkeydown="if(event.key==='Enter') executeLanguageSearch()" placeholder="Search Language (e.g. Bengali, Hindi)..." class="bg-transparent border-none text-xs w-44 sm:w-56 focus:outline-none font-medium text-slate-700 placeholder-slate-400">
+        <button onclick="executeLanguageSearch()" class="bg-slate-900 text-white rounded-full px-2 py-0.5 text-[10px] font-bold hover:bg-slate-800 transition">Set</button>
       </div>
 
     </div>
 
     <!-- টাস্কবার (All Stories-এর এক সারিতে সব বাটন) -->
-    <nav class="bg-stone-100/95 border-t border-stone-200 px-4 sm:px-6 py-2 overflow-x-auto shadow-inner">
-      <div class="max-w-7xl mx-auto flex items-center gap-2 whitespace-nowrap text-xs">
-        
-        <a href="/" class="cat-btn font-bold px-3 py-1.5 rounded-md bg-stone-900 text-white border border-stone-900 hover:bg-stone-800 transition flex items-center gap-1 shadow-xs"><i class="fas fa-home text-amber-400"></i> Home</a>
-        <button onclick="filterNews('ALL', this)" class="cat-btn active font-bold px-3 py-1.5 rounded-md border border-stone-300 transition shadow-xs">
-          <i class="fas fa-layer-group mr-1"></i> All Stories
-        </button>
-
-        <button onclick="filterNews('Regional & Cities', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-stone-200 hover:border-stone-400 transition"><i class="fas fa-map-marker-alt mr-1 text-emerald-600"></i> Regional & Cities</button>
-        <button onclick="filterNews('National', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-stone-200 hover:border-stone-400 transition">
-          <i class="fas fa-flag mr-1 text-orange-600"></i> National
-        </button>
-
-        <button onclick="filterNews('World', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-stone-200 hover:border-stone-400 transition">
-          <i class="fas fa-globe-americas mr-1 text-blue-600"></i> International / World
-        </button>
-
-        <button onclick="filterNews('Business', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-stone-200 hover:border-stone-400 transition">
-          <i class="fas fa-chart-line mr-1 text-emerald-600"></i> Markets
-        </button>
-
-        <button onclick="filterNews('Sports', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-stone-200 hover:border-stone-400 transition">
-          <i class="fas fa-futbol mr-1 text-rose-600"></i> Sports
-        </button>
-
-        <button onclick="filterNews('Technology', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-stone-200 hover:border-stone-400 transition">
-          <i class="fas fa-microchip mr-1 text-purple-600"></i> Tech & AI
-        </button>
-
-        <button onclick="filterNews('Entertainment', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-stone-200 hover:border-stone-400 transition">
-          <i class="fas fa-film mr-1 text-amber-600"></i> Entertainment
-        </button>
-
-        <a href="/metals" class="font-bold px-3 py-1.5 rounded-md bg-amber-500 hover:bg-amber-600 text-white transition flex items-center gap-1 shadow-xs">
-          <i class="fas fa-coins text-yellow-200"></i> Gold & Metals
-        </a>
-
-        <a href="/jobs" class="font-bold px-3 py-1.5 rounded-md bg-blue-700 hover:bg-blue-800 text-white transition flex items-center gap-1 shadow-xs">
-          <i class="fas fa-briefcase"></i> Job Desk
-        </a>
-
-        <a href="/submit-news" class="font-bold px-3 py-1.5 rounded-md bg-amber-700 hover:bg-amber-800 text-white transition flex items-center gap-1 shadow-xs">
-          <i class="fas fa-pen-nib"></i> Write News
-        </a>
-
-        <a href="/recipes" class="font-bold px-3 py-1.5 rounded-md bg-stone-900 hover:bg-stone-800 text-white transition flex items-center gap-1 shadow-xs">
-          <i class="fas fa-utensils text-orange-300"></i> Recipes
-        </a>
-
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 py-2 overflow-x-auto border-t border-slate-100 flex items-center justify-between gap-2 text-xs">
+      <div class="flex items-center gap-2 whitespace-nowrap">
+        <a href="/" class="cat-btn font-bold px-3 py-1.5 rounded-md bg-slate-900 text-white border border-slate-900 hover:bg-slate-800 transition flex items-center gap-1 shadow-xs"><i class="fas fa-home text-amber-400"></i> Home</a>
+        <button onclick="filterNews('ALL', this)" class="cat-btn active font-bold px-3 py-1.5 rounded-md bg-slate-800 text-white transition flex items-center gap-1"><i class="fas fa-layer-group"></i> All Stories</button>
+        <button onclick="filterNews('Regional & Cities', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-slate-200 hover:border-slate-400 transition"><i class="fas fa-map-marker-alt text-emerald-600"></i> Regional & Cities</button>
+        <button onclick="filterNews('National', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-slate-200 hover:border-slate-400 transition"><i class="fas fa-flag text-rose-600"></i> National</button>
+        <button onclick="filterNews('World', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-slate-200 hover:border-slate-400 transition"><i class="fas fa-globe-americas text-blue-600"></i> International / World</button>
+        <button onclick="filterNews('Business', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-slate-200 hover:border-slate-400 transition"><i class="fas fa-chart-line text-emerald-700"></i> Markets</button>
+        <button onclick="filterNews('Sports', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-slate-200 hover:border-slate-400 transition"><i class="fas fa-futbol text-orange-600"></i> Sports</button>
+        <button onclick="filterNews('Technology', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-slate-200 hover:border-slate-400 transition"><i class="fas fa-microchip text-indigo-600"></i> Tech & AI</button>
+        <button onclick="filterNews('Entertainment', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-slate-200 hover:border-slate-400 transition"><i class="fas fa-film text-purple-600"></i> Entertainment</button>
+      </div>
+      <div class="flex items-center gap-2 whitespace-nowrap pl-4 border-l border-slate-200">
+        <a href="/metals" class="font-bold px-3 py-1.5 rounded-md bg-amber-500 hover:bg-amber-600 text-white transition flex items-center gap-1 shadow-xs"><i class="fas fa-coins"></i> Gold & Metals</a>
+        <a href="/jobs" class="font-bold px-3 py-1.5 rounded-md bg-blue-600 hover:bg-blue-700 text-white transition flex items-center gap-1 shadow-xs"><i class="fas fa-briefcase"></i> Job Desk</a>
+        <a href="/submit-news" class="font-bold px-3 py-1.5 rounded-md bg-stone-700 hover:bg-stone-800 text-white transition flex items-center gap-1 shadow-xs"><i class="fas fa-pen-nib"></i> Write News</a>
+        <a href="/recipes" class="font-bold px-3 py-1.5 rounded-md bg-orange-700 hover:bg-orange-800 text-white transition flex items-center gap-1 shadow-xs"><i class="fas fa-utensils"></i> Recipes</a>
       </div>
     </nav>
   </header>
 
+  <!-- ৪. মূল কন্টেন্ট ও অনন্য আর্কিটেকচার লেআউট -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
     
-    <!-- লিড স্টোরি -->
-    {% if lead %}
-    <section id="leadSection" class="bg-white border border-stone-200 rounded-2xl overflow-hidden shadow-sm mb-12 hover:shadow-md transition">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-0">
-        <div class="lg:col-span-7">
-          <a href="/news/{{ lead.id }}" class="block overflow-hidden group">
-            <img src="{{ lead.image }}" alt="{{ lead.title }}" class="w-full h-80 sm:h-[430px] object-cover group-hover:scale-105 transition duration-500">
-          </a>
-        </div>
-        <div class="lg:col-span-5 p-6 sm:p-10 flex flex-col justify-between">
-          <div>
-            <div class="flex items-center gap-2 mb-3">
-              <span class="bg-red-100 text-red-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">Top Story</span>
-              <span class="text-xs text-stone-400 font-medium">{{ lead.date }}</span>
-            </div>
-            <h1 class="headline-font text-2xl sm:text-3xl font-extrabold text-stone-900 leading-tight mb-4">
-              <a href="/news/{{ lead.id }}" class="hover:text-red-700 transition">{{ lead.title }}</a>
-            </h1>
-            <p class="text-stone-600 text-sm sm:text-base leading-relaxed mb-6">{{ lead.summary }}</p>
-          </div>
-          <div class="flex items-center justify-end border-t border-stone-100 pt-4">
-            <button onclick="likeArticle({{ lead.id }}, this)" class="text-stone-500 hover:text-red-600 transition flex items-center gap-1 text-sm font-semibold">
-              <i class="far fa-heart text-red-500"></i> <span>{{ lead.likes }}</span>
-            </button>
-          </div>
-        </div>
+    <!-- সেকশন টাইটেল -->
+    <div class="flex items-center justify-between border-b-2 border-slate-900 pb-3 mb-8">
+      <div class="flex items-center gap-3">
+        <span class="w-3.5 h-3.5 bg-amber-600 rounded-sm inline-block"></span>
+        <h2 class="headline-font text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Active 24-Hour Verified News</h2>
       </div>
-    </section>
-    {% endif %}
-
-    <div class="flex justify-between items-center mb-6 border-b border-stone-200 pb-3">
-      <h2 id="currentCategoryTitle" class="headline-font text-2xl font-bold text-stone-900 flex items-center gap-2">
-        <i class="fas fa-globe text-amber-600 text-xl"></i> Active 24-Hour Verified News
-      </h2>
-      <span class="text-xs text-stone-500 font-medium"><i class="fas fa-sync-alt fa-spin mr-1"></i> Continuous Auto-Sync (Every 60s)</span>
+      <span class="text-xs font-semibold text-slate-500 flex items-center gap-1.5">
+        <i class="fas fa-sync-alt animate-spin text-amber-600"></i> 60-Second Auto-Rotation Active
+      </span>
     </div>
 
-    <!-- নিউজ গ্রিড ('Read Full Story' ছাড়া সম্পূর্ণ পরিচ্ছন্ন কার্ড) -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="newsGrid">
-      {% for item in news_list[1:] %}
-      <article data-category="{{ item.category }}" class="news-card bg-white border border-stone-200 rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between hover:border-stone-400 hover:shadow-md transition">
-        <div>
-          <a href="/news/{{ item.id }}" class="block overflow-hidden group">
-            <img src="{{ item.image }}" alt="{{ item.title }}" class="w-full h-48 object-cover group-hover:scale-105 transition duration-500">
-          </a>
-          <div class="p-5">
-            <div class="flex items-center justify-between text-xs text-stone-400 mb-2">
-              <span class="text-amber-700 font-bold uppercase tracking-wider text-[10px]">{{ item.category }}</span>
-              <span>{{ item.date }}</span>
-            </div>
-            <h3 class="headline-font text-lg font-bold text-stone-900 leading-snug mb-3">
-              <a href="/news/{{ item.id }}" class="hover:text-red-700 transition title-text">{{ item.title }}</a>
-            </h3>
-            <p class="text-stone-600 text-xs sm:text-sm leading-relaxed mb-4 summary-text">{{ item.summary }}</p>
-          </div>
+    <!-- অনন্য লিড হিরো ডিসপ্লে (Architectural Spotlight Showcase) -->
+    {% if lead %}
+    <div class="mb-10 bg-gradient-to-br from-slate-950 via-slate-900 to-stone-900 rounded-3xl overflow-hidden shadow-2xl border border-slate-800 grid grid-cols-1 lg:grid-cols-12 group">
+      <div class="lg:col-span-7 relative h-72 sm:h-96 lg:h-auto overflow-hidden">
+        <img src="{{ lead.image }}" alt="{{ lead.title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700 opacity-90">
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent lg:hidden"></div>
+        <span class="absolute top-4 left-4 bg-amber-500 text-slate-950 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full shadow-lg">
+          Top Spotlight
+        </span>
+      </div>
+      <div class="lg:col-span-5 p-6 sm:p-10 flex flex-col justify-center text-white">
+        <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-amber-400 mb-3">
+          <span>{{ lead.category }}</span> &bull; <span>{{ lead.date }}</span>
         </div>
-        <div class="px-5 pb-4 pt-2 flex items-center justify-end border-t border-stone-100">
-          <button onclick="likeArticle({{ item.id }}, this)" class="text-xs font-semibold text-stone-500 hover:text-red-600 transition flex items-center gap-1">
-            <i class="far fa-heart text-red-500"></i> <span>{{ item.likes }}</span>
+        <h3 class="headline-font text-2xl sm:text-3xl font-extrabold leading-snug mb-4 group-hover:text-amber-200 transition">
+          <a href="/news/{{ lead.id }}">{{ lead.title }}</a>
+        </h3>
+        <p class="text-slate-300 text-xs sm:text-sm leading-relaxed mb-6 line-clamp-3">
+          {{ lead.summary }}
+        </p>
+        <div class="flex items-center justify-between pt-4 border-t border-slate-800">
+          <a href="/news/{{ lead.id }}" class="bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-black uppercase tracking-wider px-5 py-2.5 rounded-xl transition flex items-center gap-2">
+            Read Full Dispatch <i class="fas fa-arrow-right"></i>
+          </a>
+          <button onclick="likeArticle({{ lead.id }}, this)" class="text-xs font-bold text-slate-400 hover:text-rose-400 flex items-center gap-1.5 transition">
+            <i class="fas fa-heart text-rose-500"></i> <span>{{ lead.likes }}</span>
           </button>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- ৫. অনন্য কার্ড গ্রিড (Modern Glass Card Layout) -->
+    <div id="newsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for item in news_list[1:] %}
+      <article class="news-card-unique bg-white border border-slate-200/80 rounded-2xl overflow-hidden flex flex-col shadow-xs" data-category="{{ item.category }}">
+        <div class="relative h-48 overflow-hidden bg-slate-100">
+          <img src="{{ item.image }}" alt="{{ item.title }}" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition duration-500">
+          <span class="absolute top-3 left-3 bg-slate-900/90 backdrop-blur-xs text-amber-300 text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-md shadow-sm">
+            {{ item.category }}
+          </span>
+        </div>
+        <div class="p-5 flex flex-col flex-grow justify-between">
+          <div>
+            <div class="text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+              <i class="far fa-clock"></i> {{ item.date }}
+            </div>
+            <h4 class="headline-font text-lg font-bold text-slate-900 leading-snug hover:text-amber-700 transition mb-2">
+              <a href="/news/{{ item.id }}">{{ item.title }}</a>
+            </h4>
+            <p class="text-xs text-slate-700 leading-relaxed line-clamp-2 mb-4 font-normal">
+              {{ item.summary }}
+            </p>
+          </div>
+          <div class="flex items-center justify-between pt-3 border-t border-slate-100 text-xs">
+            <a href="/news/{{ item.id }}" class="font-bold text-amber-700 hover:text-amber-900 flex items-center gap-1">
+              Dispatch Wire &rarr;
+            </a>
+            <button onclick="likeArticle({{ item.id }}, this)" class="text-slate-600 hover:text-rose-500 flex items-center gap-1 transition">
+              <i class="fas fa-heart text-rose-500"></i> <span>{{ item.likes }}</span>
+            </button>
+          </div>
         </div>
       </article>
       {% endfor %}
     </div>
+
   </main>
 
-      <footer class="bg-[#0f172a] text-slate-400 text-xs py-10 mt-16 text-center border-t border-slate-800">
+  <!-- ৬. ফুটার (সম্পূর্ণ সংবিধিবদ্ধ ৫টি লিগ্যাল পেজ সহ) -->
+  <footer class="bg-[#0f172a] text-slate-400 text-xs py-10 mt-16 text-center border-t border-slate-800">
     <div class="max-w-7xl mx-auto px-4 flex flex-wrap justify-center gap-6 mb-4 font-semibold text-slate-300">
       <a href="/about-us" class="hover:text-white transition">About Us</a>
       <a href="/contact" class="hover:text-white transition">Contact Us</a>
@@ -251,50 +216,19 @@
     <p class="text-slate-400">&copy; 2026 24 Early News. Founder & Director: DWIPRAJ MALLICK.</p>
   </footer>
 
+  <!-- জাভাস্ক্রিপ্ট কন্ট্রোলার (সার্চ, ফিল্টার, লাইক এবং ৬০ সেকেন্ড রোটেশন) -->
   <script>
-    const languageCodeMap = {
-      'bengali': 'bn', 'bangla': 'bn', 'বাংলা': 'bn',
-      'hindi': 'hi', 'हिन्दी': 'hi',
-      'english': 'en',
-      'spanish': 'es', 'espanol': 'es',
-      'french': 'fr', 'francais': 'fr',
-      'arabic': 'ar', 'العربية': 'ar',
-      'german': 'de', 'deutsch': 'de',
-      'japanese': 'ja', 'nihongo': 'ja',
-      'russian': 'ru',
-      'chinese': 'zh-CN',
-      'portuguese': 'pt',
-      'urdu': 'ur',
-      'italian': 'it'
-    };
+    function filterNews(cat, btn) {
+      document.querySelectorAll('.cat-btn').forEach(b => {
+        b.classList.remove('bg-slate-800', 'text-white', 'active');
+        b.classList.add('bg-white', 'text-slate-800');
+      });
+      btn.classList.add('bg-slate-800', 'text-white', 'active');
+      btn.classList.remove('bg-white');
 
-    function executeLanguageSearch() {
-      const input = document.getElementById('langSearchInput').value.trim().toLowerCase();
-      if (!input) return;
-
-      let targetCode = languageCodeMap[input] || input;
-
-      const selectElem = document.querySelector('.goog-te-combo');
-      if (selectElem) {
-        selectElem.value = targetCode;
-        selectElem.dispatchEvent(new Event('change'));
-      } else {
-        window.location.hash = `#googtrans(en|${targetCode})`;
-        window.location.reload();
-      }
-    }
-
-    function searchArticles() {
-      const q = document.getElementById('searchInput').value.toLowerCase();
-      const cards = document.querySelectorAll('.news-card');
-      const lead = document.getElementById('leadSection');
-
-      if (lead) lead.style.display = q === '' ? 'block' : 'none';
-
+      const cards = document.querySelectorAll('.news-card-unique');
       cards.forEach(card => {
-        const title = card.querySelector('.title-text').innerText.toLowerCase();
-        const summary = card.querySelector('.summary-text').innerText.toLowerCase();
-        if (title.includes(q) || summary.includes(q)) {
+        if (cat === 'ALL' || card.getAttribute('data-category') === cat) {
           card.style.display = 'flex';
         } else {
           card.style.display = 'none';
@@ -302,34 +236,19 @@
       });
     }
 
-    function filterNews(cat, btn) {
-      document.querySelectorAll('.cat-btn').forEach(b => {
-        b.classList.remove('active');
-        b.classList.add('bg-white');
+    function searchArticles() {
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      const cards = document.querySelectorAll('.news-card-unique');
+      cards.forEach(card => {
+        const text = card.innerText.toLowerCase();
+        card.style.display = text.includes(q) ? 'flex' : 'none';
       });
-      btn.classList.add('active');
-      btn.classList.remove('bg-white');
+    }
 
-      const cards = document.querySelectorAll('.news-card');
-      const title = document.getElementById('currentCategoryTitle');
-      const lead = document.getElementById('leadSection');
-
-      if (cat === 'ALL') {
-        title.innerHTML = '<i class="fas fa-globe text-amber-600 text-xl"></i> Active 24-Hour Verified News';
-        cards.forEach(c => c.style.display = 'flex');
-        if (lead) lead.style.display = 'block';
-      } else {
-        title.innerHTML = `<i class="fas fa-folder-open text-amber-600 text-xl"></i> Category: ${cat}`;
-        if (lead) lead.style.display = 'none';
-        cards.forEach(c => {
-          const itemCat = c.getAttribute('data-category').toLowerCase();
-          if (itemCat.includes(cat.toLowerCase())) {
-            c.style.display = 'flex';
-          } else {
-            c.style.display = 'none';
-          }
-        });
-      }
+    function executeLanguageSearch() {
+      const q = document.getElementById('langSearchInput').value.trim();
+      if (!q) return;
+      window.open(`https://translate.google.com/translate?sl=auto&tl=bn&u=${encodeURIComponent(window.location.href)}`, '_blank');
     }
 
     function likeArticle(id, btn) {
@@ -338,12 +257,14 @@
         .then(data => {
           if (data.status === 'success') {
             btn.querySelector('span').innerText = data.likes;
-            btn.querySelector('i').classList.replace('far', 'fas');
           }
         });
     }
 
-    setTimeout(() => { window.location.reload(); }, 60000);
+    // প্রতি ৬০ সেকেন্ডে স্বয়ংক্রিয়ভাবে খবরের রোটেশন চালু রাখা
+    setTimeout(() => {
+      window.location.reload();
+    }, 60000);
   </script>
 </body>
 </html>
