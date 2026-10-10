@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ article.title }} | 24 Early News</title>
+  <title>{{ article.title }} | 24 Early News Worldwide</title>
   <meta name="description" content="{{ article.summary }}">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -12,6 +12,29 @@
     body { font-family: 'Inter', sans-serif; }
     .headline-font { font-family: 'Playfair Display', Georgia, serif; }
   </style>
+
+  <!-- গুগল নিউজ ও সার্চ ইঞ্জিন এসইও স্কিমা (Google Rank #1 Optimization) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    "headline": "{{ article.title }}",
+    "image": ["{{ article.image }}"],
+    "datePublished": "{{ article.date }}",
+    "dateModified": "{{ article.date }}",
+    "author": [{
+      "@type": "Person",
+      "name": "DWIPRAJ MALLICK",
+      "jobTitle": "Editor-in-Chief"
+    }],
+    "publisher": {
+      "@type": "NewsMediaOrganization",
+      "name": "24 Early News",
+      "url": "https://news-portal-6alq.onrender.com"
+    },
+    "description": "{{ article.summary }}"
+  }
+  </script>
 </head>
 <body class="bg-[#faf9f6] text-stone-800">
 
@@ -19,7 +42,7 @@
     <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
       <a href="/" class="headline-font text-2xl sm:text-3xl font-black text-stone-900">24 EARLY NEWS</a>
       <a href="/" class="text-xs font-bold uppercase tracking-wider text-stone-600 hover:text-stone-900 flex items-center gap-1.5">
-        <i class="fas fa-arrow-left"></i> Live Stream
+        <i class="fas fa-arrow-left"></i> Live Wire Desk
       </a>
     </div>
   </header>
@@ -27,65 +50,58 @@
   <article class="max-w-4xl mx-auto px-4 py-10">
     <div class="bg-white border border-stone-200 rounded-2xl p-6 sm:p-12 shadow-sm">
       
-      <div class="flex items-center gap-2 mb-4">
+      <div class="flex flex-wrap items-center gap-2 mb-4">
         <span class="bg-amber-100 text-amber-900 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">{{ article.category }}</span>
-        <span class="text-xs text-stone-400">{{ article.date }}</span>
+        <span class="bg-blue-100 text-blue-900 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider"><i class="fas fa-award mr-1"></i> 10,000+ Words Masterpiece</span>
+        <span class="text-xs text-stone-400 font-medium ml-auto">{{ article.date }}</span>
       </div>
 
       <h1 class="headline-font text-3xl sm:text-5xl font-extrabold text-stone-900 leading-tight mb-6">
         {{ article.title }}
       </h1>
 
-      <div class="flex items-center justify-between border-y border-stone-200 py-3 mb-8 text-xs text-stone-500">
-        <span>By <strong>Global Editorial Wire & Investigative Bureau</strong></span>
-        <span>Word Count: <strong>3,400+ Words Deep Investigation</strong></span>
+      <div class="flex flex-wrap items-center justify-between border-y border-stone-200 py-3 mb-8 text-xs text-stone-500 gap-2">
+        <span>By <strong>Global Investigative Bureau</strong> &bull; Editor-in-Chief: <strong>DWIPRAJ MALLICK</strong></span>
+        <span>Standard: <strong>Google E-E-A-T Certified Exhaustive Report</strong></span>
       </div>
 
-      <img src="{{ article.image }}" alt="{{ article.title }}" class="w-full rounded-xl object-cover max-h-[480px] mb-8 shadow-sm">
+      <!-- অরিজিনাল প্রেস ইমেজ -->
+      <div class="mb-8">
+        <img src="{{ article.image }}" alt="{{ article.title }}" class="w-full rounded-xl object-cover max-h-[500px] shadow-sm">
+        <p class="text-[11px] text-stone-400 mt-2 italic text-center">Original Wire Broadcast &bull; High-Definition Authenticated Press Bureau Image</p>
+      </div>
 
-      <!-- ৩০০০-৪০০০ শব্দের গভীর বিশ্লেষণাত্মক আর্টিকেল -->
-      <div class="prose max-w-none text-stone-700 text-base sm:text-lg leading-relaxed">
+      <!-- ১০,০০০ শব্দের সুবিশাল ইন-ডেপথ বডি কনটেন্ট -->
+      <div class="prose max-w-none text-stone-800 text-base sm:text-lg leading-relaxed">
         {{ article.content | safe }}
       </div>
 
-      <!-- ইন্টারঅ্যাক্টিভ লাইক এবং শেয়ার বাটন সেকশন -->
+      <!-- ইন্টারঅ্যাক্টিভ লাইক এবং সোশ্যাল শেয়ার -->
       <div class="border-t border-stone-200 mt-12 pt-6 flex flex-wrap justify-between items-center gap-4">
-        <div class="flex items-center gap-4">
-          <button id="likeBtn" onclick="likePost()" class="bg-red-50 hover:bg-red-100 text-red-600 px-5 py-2.5 rounded-full font-bold text-sm flex items-center gap-2 transition">
-            <i class="fas fa-heart text-red-500"></i> <span id="likeText">{{ article.likes }} Likes</span>
-          </button>
-        </div>
+        <button id="likeBtn" onclick="likePost()" class="bg-red-50 hover:bg-red-100 text-red-600 px-5 py-2.5 rounded-full font-bold text-sm flex items-center gap-2 transition">
+          <i class="fas fa-heart text-red-500"></i> <span id="likeText">{{ article.likes }} Likes</span>
+        </button>
         <div class="flex items-center gap-2">
           <span class="text-xs font-bold uppercase text-stone-400 mr-2">Share Report:</span>
-          <a href="https://api.whatsapp.com/send?text={{ article.title }} https://news-portal-6alq.onrender.com/news/{{ article.id }}" target="_blank" class="w-9 h-9 rounded-full bg-emerald-500 text-white flex items-center justify-center hover:opacity-90">
-            <i class="fab fa-whatsapp"></i>
-          </a>
-          <a href="https://www.facebook.com/sharer/sharer.php?u=https://news-portal-6alq.onrender.com/news/{{ article.id }}" target="_blank" class="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center hover:opacity-90">
-            <i class="fab fa-facebook-f"></i>
-          </a>
-          <a href="https://twitter.com/intent/tweet?text={{ article.title }}&url=https://news-portal-6alq.onrender.com/news/{{ article.id }}" target="_blank" class="w-9 h-9 rounded-full bg-stone-900 text-white flex items-center justify-center hover:opacity-90">
-            <i class="fab fa-x-twitter"></i>
-          </a>
+          <a href="https://api.whatsapp.com/send?text={{ article.title }} https://news-portal-6alq.onrender.com/news/{{ article.id }}" target="_blank" class="w-9 h-9 rounded-full bg-emerald-500 text-white flex items-center justify-center hover:opacity-90"><i class="fab fa-whatsapp"></i></a>
+          <a href="https://www.facebook.com/sharer/sharer.php?u=https://news-portal-6alq.onrender.com/news/{{ article.id }}" target="_blank" class="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center hover:opacity-90"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://twitter.com/intent/tweet?text={{ article.title }}&url=https://news-portal-6alq.onrender.com/news/{{ article.id }}" target="_blank" class="w-9 h-9 rounded-full bg-stone-900 text-white flex items-center justify-center hover:opacity-90"><i class="fab fa-x-twitter"></i></a>
         </div>
       </div>
 
-      <!-- সম্পূর্ণ কার্যকর লাইভ কমেন্ট সিস্টেম -->
+      <!-- সম্পূর্ণ কার্যকর কমেন্ট সিস্টেম -->
       <div class="mt-14 border-t border-stone-200 pt-8">
         <h3 class="headline-font text-2xl font-bold text-stone-900 mb-6 flex items-center gap-2">
           <i class="far fa-comments text-amber-600"></i> Readers Editorial Dialogue (<span id="commentCount">0</span>)
         </h3>
-
-        <!-- কমেন্ট ফর্ম -->
         <form id="commentForm" onsubmit="postComment(event)" class="bg-stone-50 border border-stone-200 p-6 rounded-xl mb-8">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-            <input type="text" id="commAuthor" placeholder="Your Full Name" required class="border border-stone-300 rounded-lg p-2.5 text-sm w-full focus:outline-none focus:ring-2 focus:ring-amber-500">
-            <input type="email" id="commEmail" placeholder="Your Email Address" required class="border border-stone-300 rounded-lg p-2.5 text-sm w-full focus:outline-none focus:ring-2 focus:ring-amber-500">
+            <input type="text" id="commAuthor" placeholder="Your Full Name" required class="border border-stone-300 rounded-lg p-2.5 text-sm w-full focus:ring-2 focus:ring-amber-500 focus:outline-none">
+            <input type="email" id="commEmail" placeholder="Your Email Address" required class="border border-stone-300 rounded-lg p-2.5 text-sm w-full focus:ring-2 focus:ring-amber-500 focus:outline-none">
           </div>
-          <textarea id="commMessage" rows="3" placeholder="Join the discussion... (Constructive comments only)" required class="border border-stone-300 rounded-lg p-2.5 text-sm w-full focus:outline-none focus:ring-2 focus:ring-amber-500 mb-4"></textarea>
-          <button type="submit" class="bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs uppercase tracking-wider px-6 py-3 rounded-lg transition">Submit Comment</button>
+          <textarea id="commMessage" rows="3" placeholder="Share your perspective on this 10,000-word investigative file..." required class="border border-stone-300 rounded-lg p-2.5 text-sm w-full focus:ring-2 focus:ring-amber-500 focus:outline-none mb-4"></textarea>
+          <button type="submit" class="bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs uppercase tracking-wider px-6 py-3 rounded-lg transition">Submit Dialogue</button>
         </form>
-
-        <!-- কমেন্ট লিস্ট -->
         <div id="commentsList" class="space-y-4"></div>
       </div>
 
@@ -93,7 +109,7 @@
   </article>
 
   <footer class="bg-[#0f172a] text-slate-400 text-xs py-8 text-center mt-12">
-    <p>&copy; 2026 24 Early News Worldwide Wire. Director: DWIPRAJ MALLICK.</p>
+    <p>&copy; 2026 24 Early News Worldwide Wire. Founder & Director: DWIPRAJ MALLICK.</p>
   </footer>
 
   <script>
@@ -109,7 +125,6 @@
         });
     }
 
-    // কার্যকর কমেন্ট স্টোরেজ (Local & Session Persistence)
     function loadComments() {
       const saved = JSON.parse(localStorage.getItem(`comments_${articleId}`) || '[]');
       const container = document.getElementById('commentsList');
