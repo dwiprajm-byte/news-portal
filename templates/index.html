@@ -459,6 +459,13 @@
       } catch (err) {}
     }
     setInterval(fetchFreshLeadNews, 60000);
+      function filterByCountry(code) {
+      if (code === 'ALL') {
+        window.location.href = '/';
+      } else {
+        window.location.href = '/?country=' + code;
+      }
+    }
   </script>
 </body>
 </html>
