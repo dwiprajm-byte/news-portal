@@ -12,17 +12,31 @@ socket.setdefaulttimeout(7)
 
 app = Flask(__name__)
 
+# গ্লোবাল, ন্যাশনাল, স্টেট, সিটি ও লোকাল নেটওয়ার্ক ফিডস
 GLOBAL_NEWS_FEEDS = [
+    # আন্তর্জাতিক ও বৈশ্বিক
+    ('World', 'https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGx1YlY4U0FtVnVHZ0pWVXlnQVAB?hl=en-US&gl=US&ceid=US:en'),
     ('World', 'https://feeds.bbci.co.uk/news/world/rss.xml'),
-    ('World', 'https://rss.nytimes.com/services/xml/rss/nyt/World.xml'),
     ('World', 'https://www.aljazeera.com/xml/rss/all.xml'),
+    # জাতীয়, বিভিন্ন রাজ্য ও আঞ্চলিক
+    ('National', 'https://news.google.com/rss/headlines/section/topic/NATION?hl=en-IN&gl=IN&ceid=IN:en'),
     ('National', 'https://timesofindia.indiatimes.com/rssfeedstopstories.cms'),
     ('National', 'https://www.thedailystar.net/frontpage/rss.xml'),
+    # আঞ্চলিক / বিভিন্ন জেলা ও শহরের আঞ্চলিক হাব
+    ('Regional & Cities', 'https://news.google.com/rss/headlines/section/geo/India?hl=en-IN&gl=IN&ceid=IN:en'),
+    ('Regional & Cities', 'https://news.google.com/rss/headlines/section/geo/Kolkata?hl=en-IN&gl=IN&ceid=IN:en'),
+    ('Regional & Cities', 'https://news.google.com/rss/headlines/section/geo/Delhi?hl=en-IN&gl=IN&ceid=IN:en'),
+    ('Regional & Cities', 'https://news.google.com/rss/headlines/section/geo/Mumbai?hl=en-IN&gl=IN&ceid=IN:en'),
+    # ব্যবসা, বাণিজ্য ও বাজার
+    ('Business', 'https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=en-IN&gl=IN&ceid=IN:en'),
     ('Business', 'https://feeds.bbci.co.uk/news/business/rss.xml'),
-    ('Business', 'https://www.cnbc.com/id/100003114/device/rss/rss.html'),
+    # খেলাধুলা
+    ('Sports', 'https://news.google.com/rss/headlines/section/topic/SPORTS?hl=en-IN&gl=IN&ceid=IN:en'),
     ('Sports', 'https://feeds.bbci.co.uk/sport/rss.xml'),
-    ('Technology', 'https://feeds.bbci.co.uk/news/technology/rss.xml'),
-    ('Entertainment', 'https://feeds.bbci.co.uk/news/entertainment_and_arts/rss.xml')
+    # প্রযুক্তি ও বিজ্ঞান
+    ('Technology', 'https://news.google.com/rss/headlines/section/topic/TECHNOLOGY?hl=en-IN&gl=IN&ceid=IN:en'),
+    # বিনোদন
+    ('Entertainment', 'https://news.google.com/rss/headlines/section/topic/ENTERTAINMENT?hl=en-IN&gl=IN&ceid=IN:en')
 ]
 
 news_database = []
@@ -66,25 +80,18 @@ def normalize_title(text):
     return re.sub(r'[^a-zA-Z0-9]', '', text.lower())
 
 def extract_safe_news_image(entry, title, category):
-    """আসল আরএসএস প্রেস ছবি এক্সট্র্যাক্ট করা - কোনো মিসিং বা ফাঁকা ছাড়া"""
     valid_exts = ('.jpg', '.jpeg', '.png', '.webp')
-    
-    # ১. Media Content প্রেস ছবি
     if 'media_content' in entry and len(entry.media_content) > 0:
         for m in entry.media_content:
             url = m.get('url', '')
             if url and any(ext in url.lower() for ext in valid_exts) and not 'icon' in url.lower():
                 return url
-
-    # ২. Enclosures ছবি
     if 'links' in entry:
         for l in entry.links:
             href = l.get('href', '')
             if href and (l.get('type', '').startswith('image/') or any(ext in href.lower() for ext in valid_exts)):
                 if not 'icon' in href.lower() and not 'logo' in href.lower():
                     return href
-
-    # ৩. ডেসক্রিপশনের <img> ট্যাগ
     raw_desc = entry.get('summary', '') or entry.get('description', '')
     img_match = re.search(r'<img[^>]+src=["\']([^"\']+)["\']', raw_desc)
     if img_match:
@@ -92,7 +99,6 @@ def extract_safe_news_image(entry, title, category):
         if url.startswith('http') and not 'icon' in url.lower():
             return url
 
-    # ৪. টপিক-ভিত্তিক ভেরিফায়েড ইউনিক প্রেস ছবি (কখনো একই ছবি রিপিট হবে না)
     words = re.findall(r'[a-zA-Z]{4,}', title)
     kw = words[0] if words else category
     sig = abs(hash(title)) % 9999
@@ -101,13 +107,13 @@ def extract_safe_news_image(entry, title, category):
 def generate_clean_article(title, summary, category):
     date_now = datetime.now().strftime("%B %d, %Y")
     modules = [
-        ("Situation Overview", f"Field correspondents report developing dynamics surrounding <strong>{title}</strong>. As recorded on {date_now}, institutional observers are monitoring key developments closely across jurisdictions."),
-        ("Strategic & Economic Implications", "Market desks and cross-border commercial corridors continue to evaluate the secondary effects of these developments. Authorities emphasize sustained operational transparency."),
-        ("Editorial Perspective", "The editorial wire will maintain continuous 24-hour verification. Ground updates will be incorporated as further validated intelligence is confirmed.")
+        ("Situation Overview", f"Field dispatches report verified local and regional dynamics concerning <strong>{title}</strong>. As recorded on {date_now}, administrative and public observers are monitoring key updates."),
+        ("Regional Impact & Public Advisory", "Local administrative desks and civic observers continue tracking field conditions. Public channels emphasize compliance with official advisories."),
+        ("Editorial Perspective", "The regional newsroom continues 24-hour verification. Updates will be incorporated as further validated statements are released by ground authorities.")
     ]
     sections = [f"""
     <div class="bg-stone-50 border-l-4 border-stone-800 p-6 rounded-r-xl mb-8">
-        <div class="text-xs font-bold text-stone-500 uppercase tracking-widest mb-1">Editorial Briefing &bull; {category} Desk</div>
+        <div class="text-xs font-bold text-stone-500 uppercase tracking-widest mb-1">Regional Wire &bull; {category} Desk</div>
         <p class="font-serif text-lg md:text-xl text-stone-900 leading-relaxed italic">{summary}</p>
     </div>
     """]
@@ -134,7 +140,6 @@ def get_daily_metals_rates():
     }
 
 def fetch_feed_items():
-    """একযোগে সব ফিড থেকে দ্রুত ও নিরাপদ খবর সংগ্রহ"""
     global news_database, seen_fingerprints
     new_articles = []
     for cat_hint, feed_url in GLOBAL_NEWS_FEEDS:
@@ -149,7 +154,7 @@ def fetch_feed_items():
                     continue
                 seen_fingerprints.add(norm_key)
 
-                summary_raw = clean_html(entry.get('summary', entry.get('description', 'Comprehensive global news report.')))
+                summary_raw = clean_html(entry.get('summary', entry.get('description', 'Verified regional dispatch.')))
                 category = cat_hint
                 img_url = extract_safe_news_image(entry, raw_title, category)
                 article_id = int(time.time() * 1000) + len(new_articles)
@@ -175,7 +180,6 @@ def fetch_feed_items():
             cutoff = datetime.now() - timedelta(hours=24)
             news_database = [item for item in (new_articles + news_database) if item['created_at'] > cutoff]
 
-# সার্ভার অন হওয়ার সঙ্গে সঙ্গে ইনস্ট্যান্ট ফেচ (যাতে পেজ কখনো ফাঁকা না থাকে)
 try:
     fetch_feed_items()
 except Exception:
@@ -195,7 +199,6 @@ crawler_thread.start()
 @app.route('/')
 def home():
     with lock:
-        # যদি কোনো কারণে মেমোরি খালি থাকে, তৎক্ষণাৎ অন-ডিমান্ড ফেচ
         if len(news_database) == 0:
             fetch_feed_items()
         current_news = list(news_database)
@@ -212,6 +215,35 @@ def single_article(news_id):
         if not article and news_database:
             article = news_database[0]
     return render_template('single.html', article=article)
+
+# নির্দিষ্ট শহর, জেলা বা গ্রামের খবর অন-ডিমান্ড খোঁজার এপিআই
+@app.route('/api/local-news')
+def get_local_geo_news():
+    query = request.args.get('location', '').strip()
+    if not query:
+        return jsonify([])
+    
+    encoded_loc = urllib.parse.quote_plus(query)
+    geo_feed = f"https://news.google.com/rss/search?q={encoded_loc}&hl=en-IN&gl=IN&ceid=IN:en"
+    
+    results = []
+    try:
+        parsed = feedparser.parse(geo_feed)
+        for entry in parsed.entries[:6]:
+            raw_title = clean_html(entry.get('title', ''))
+            summary_raw = clean_html(entry.get('summary', ''))
+            article_id = int(time.time() * 1000) + len(results)
+            results.append({
+                'id': article_id,
+                'title': raw_title,
+                'summary': summary_raw[:180] + "...",
+                'category': query.title(),
+                'image': f"https://images.unsplash.com/photo-1444723121867-7a241cacace9?auto=format&fit=crop&w=1200&q=80&sig={abs(hash(raw_title))%9999}",
+                'date': datetime.now().strftime("%a, %d %b %Y %H:%M:%S GMT")
+            })
+    except Exception:
+        pass
+    return jsonify(results)
 
 @app.route('/submit-news', methods=['GET', 'POST'])
 def submit_news():
@@ -312,16 +344,6 @@ def jobs_page():
 def metals_page():
     return render_template('metals.html', metals=get_daily_metals_rates())
 
-@app.route('/api/like/<int:news_id>', methods=['POST'])
-def like_news(news_id):
-    with lock:
-        for n in news_database:
-            if n['id'] == news_id:
-                n['likes'] += 1
-                return jsonify({'status': 'success', 'likes': n['likes']})
-    return jsonify({'status': 'not_found', 'likes': 0})
-
-# সংবিধিবদ্ধ আইনি ও নীতিগত রুটসমূহ
 @app.route('/privacy-policy')
 def privacy_policy():
     return render_template('policies.html', page_title='Privacy Policy', page_type='privacy')
@@ -372,6 +394,15 @@ def contact_page():
         return jsonify({'status': 'success', 'message': 'Message recorded permanently.'})
         
     return render_template('contact.html')
+
+@app.route('/api/like/<int:news_id>', methods=['POST'])
+def like_news(news_id):
+    with lock:
+        for n in news_database:
+            if n['id'] == news_id:
+                n['likes'] += 1
+                return jsonify({'status': 'success', 'likes': n['likes']})
+    return jsonify({'status': 'not_found', 'likes': 0})
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
