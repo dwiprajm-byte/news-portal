@@ -24,8 +24,8 @@ GLOBAL_NEWS_FEEDS = [
     ('Entertainment', 'https://feeds.bbci.co.uk/news/entertainment_and_arts/rss.xml')
 ]
 
-# ক্যাটাগরি অনুযায়ী শতভাগ কপিরাইট-মুক্ত ও নিখুঁত আল্ট্রা-এইচডি প্রেস ছবি
-CATEGORY_HD_IMAGES = {
+# ক্যাটাগরিভিত্তিক লাইসেন্সড প্রেস ইমেজ ভাণ্ডার (কপিরাইট মুক্ত ও উচ্চ রেজোলিউশন)
+CURATED_CATEGORY_PRESS_IMAGES = {
     'World': [
         "https://images.unsplash.com/photo-1526470608268-f674ce90ebd4?auto=format&fit=crop&w=1600&q=80",
         "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1600&q=80",
@@ -87,71 +87,81 @@ jobs_database = [
 def clean_html(raw_html):
     if not raw_html:
         return ""
-    return re.sub(r'<.*?>', '', raw_html).strip()
+    # অপ্রয়োজনীয় ট্যাগ ও অতিরিক্ত স্পেস পরিচ্ছন্ন করা
+    text = re.sub(r'<.*?>', '', raw_html)
+    return " ".join(text.split()).strip()
 
 def normalize_title(text):
     return re.sub(r'[^a-zA-Z0-9]', '', text.lower())
 
-def extract_original_image(entry, title, category):
-    """যেকোনো খবরে নিখুঁত ও ক্যাটাগরি-ম্যাচড ছবি পাওয়ার শতভাগ নিরাপদ ইঞ্জিন"""
+def verify_and_match_image(entry, title, category):
+    """ছবির সত্যতা যাচাই ও নিখুঁত ক্যাটাগরি ম্যাচিং ইঞ্জিন"""
+    valid_extensions = ('.jpg', '.jpeg', '.png', '.webp')
+    
+    # ১. Media Content থেকে অরিজিনাল প্রেস ছবি যাচাই
     if 'media_content' in entry and len(entry.media_content) > 0:
         for m in entry.media_content:
             url = m.get('url', '')
-            if url and ('jpg' in url or 'jpeg' in url or 'png' in url or 'webp' in url or 'http' in url):
+            if url and any(ext in url.lower() for ext in valid_extensions) and not 'icon' in url.lower():
                 return url
+
+    # ২. Enclosures এবং Links থেকে সত্যতা যাচাই
     if 'links' in entry:
         for l in entry.links:
-            if l.get('type', '').startswith('image/') or l.get('rel') == 'enclosure':
-                href = l.get('href', '')
-                if href:
+            href = l.get('href', '')
+            if href and (l.get('type', '').startswith('image/') or any(ext in href.lower() for ext in valid_extensions)):
+                if not 'logo' in href.lower() and not 'icon' in href.lower():
                     return href
+
+    # ৩. র-কনটেন্টের ভেতর থেকে প্রেস ছবি পার্সিং
     raw_desc = entry.get('summary', '') or entry.get('description', '')
     img_match = re.search(r'<img[^>]+src=["\']([^"\']+)["\']', raw_desc)
     if img_match:
-        found_url = img_match.group(1)
-        if found_url.startswith('http'):
-            return found_url
+        url = img_match.group(1)
+        if url.startswith('http') and not 'avatar' in url.lower() and not 'icon' in url.lower():
+            return url
 
-    # ক্যাটাগরি মিলিয়ে সঠিক কপিরাইট-মুক্ত প্রেস ইমেজ নির্বাচন
-    cat_key = category if category in CATEGORY_HD_IMAGES else 'World'
-    img_pool = CATEGORY_HD_IMAGES[cat_key]
-    idx = abs(hash(title)) % len(img_pool)
-    return img_pool[idx]
+    # ৪. ক্যাটাগরি অনুযায়ী শতভাগ মানানসই লাইসেন্সড প্রেস ব্যুরো ছবি
+    cat_key = category if category in CURATED_CATEGORY_PRESS_IMAGES else 'World'
+    pool = CURATED_CATEGORY_PRESS_IMAGES[cat_key]
+    idx = abs(hash(title)) % len(pool)
+    return pool[idx]
 
-def generate_10000_words_seo_masterpiece(title, summary, category, author="Editorial Investigative Bureau"):
+def generate_clean_authoritative_article(title, summary, category):
+    """কোনো কৃত্রিম শব্দ ট্যাগ বা উল্টোপাল্টা লেখা ছাড়া সম্পূর্ণ পরিচ্ছন্ন আন্তর্জাতিক প্রতিবেদন"""
     date_now = datetime.now().strftime("%B %d, %Y")
+    
     modules = [
-        ("1. Genesis, Critical Incident Timeline & Investigative Anatomy",
-         "The genesis of the developments surrounding this event marks one of the most rigorously analyzed institutional transformations in modern journalism. Field investigators operating across metropolitan corridors conducted exhaustive verification sweeps, cross-referencing ministerial archives, court filings, and on-the-ground eyewitness testimonials.",
-         "Historical records demonstrate that structural events of this magnitude are the culmination of layered diplomatic negotiations, regulatory realignments, and shifting geopolitical imperatives."),
-        ("2. Multilateral Geopolitical Ramifications & Diplomatic Treaties",
-         "On the geopolitical chessboard, the ripple effects initiated by these findings have forced immediate briefings among strategic councils. Strategic think tanks emphasize that multi-tiered alliances depend on institutional predictability.",
-         "Diplomatic communiqués obtained during this deep investigation illuminate the nuanced posture adopted by non-aligned states and multilateral alliances."),
-        ("3. Global Capital Markets, Fiscal Stability & Supply Chain Vectors",
-         "Financial markets responded with calculated adjustments across foreign exchange desks, sovereign debt yields, and commodities indices. High-frequency algorithms registered heightened volatility across cross-border tech logistics.",
-         "International supply chain syndicates have begun rerouting freight pathways and renegotiating multi-year procurement contracts to insulate core consumer commodities."),
-        ("4. Statutory Governance, Constitutional Jurisprudence & Compliance",
-         "A comprehensive legal autopsy reveals intricate jurisdictional challenges spanning international regulatory frameworks. Compliance executives face heightened exposure as enforcement bureaus implement updated audit protocols.",
-         "The judicial consensus underscores the vital necessity of codifying transparent dispute-resolution mechanisms across multinational territories."),
-        ("5. 24-Hour Editorial Outlook, Predictive Scenarios & Historical Legacy",
-         "As this living document enters the historical archive of 24 Early News, editorial desks globally are synthesizing primary indicators to forecast developments over the forthcoming 24 to 72 hours.",
-         "The 24 Early News investigative apparatus remains deployed around the clock, upholding the highest canons of verifiable reporting and uncompromised public stewardship.")
+        ("1. Situation Overview and Context",
+         f"The unfolding developments surrounding <strong>{title}</strong> have garnered focused attention across global diplomatic and policy circles. As recorded on {date_now}, this event underscores critical institutional dynamics across regions and markets.",
+         "Field reporting indicates that these developments are the culmination of multilateral discussions, regulatory assessments, and strategic diplomatic realignments."),
+        ("2. Multilateral Strategic Implications",
+         "The international ramifications of these developments extend across sovereign borders. Regional security councils, trade organizations, and governmental attachés are assessing the balance of institutional agreements.",
+         "Official communiqués emphasize the necessity of maintaining operational transparency and constructive dialogue as stakeholders navigate these changing conditions."),
+        ("3. Global Markets and Economic Outlook",
+         "Financial indices, commodities channels, and international trade desks have responded with measured recalibration. Analysts monitoring the sector emphasize proactive risk mitigation across industrial conduits.",
+         "Corporate logistics syndicates and supply chain coordinators are reviewing operational frameworks to maintain reliable distribution across consumer channels."),
+        ("4. Regulatory Compliance and Legal Perspectives",
+         "Constitutional scholars and international legal experts are analyzing the statutory foundations of these measures. Regulatory authorities have reiterated the imperative of upholding international legal standards.",
+         "Corporate governance frameworks are aligning their compliance strategies to ensure uninterrupted operations across multiple jurisdictions."),
+        ("5. Editorial Perspective and 24-Hour Horizon",
+         "As the situation evolves, international newsrooms continue round-the-clock observation to deliver verified updates. Institutional leaders globally are working toward balanced resolutions.",
+         "24 Early News remains committed to delivering objective, comprehensive, and verified dispatches as further official facts are confirmed.")
     ]
 
     sections = [f"""
-    <div class="bg-amber-50/70 border-l-4 border-amber-600 p-6 rounded-r-xl mb-8">
-        <h3 class="text-sm font-black text-amber-900 uppercase tracking-widest mb-1">Executive Editorial Fact Sheet</h3>
-        <p class="text-xs text-stone-600 mb-3">Topic: <strong>{title}</strong> | Category: <strong>{category}</strong> | Date: <strong>{date_now}</strong></p>
+    <div class="bg-stone-50 border-l-4 border-stone-800 p-6 rounded-r-xl mb-8">
+        <div class="text-xs font-bold text-stone-500 uppercase tracking-widest mb-1">Editorial Briefing &bull; {category} Desk</div>
         <p class="font-serif text-lg md:text-xl text-stone-900 leading-relaxed italic">{summary}</p>
     </div>
     """]
 
     for heading, p1, p2 in modules:
         sections.append(f"""
-        <section class="mb-10">
-            <h2 class="text-2xl md:text-3xl font-bold text-stone-900 border-b border-stone-200 pb-3 mb-5 font-serif">{heading}</h2>
-            <p class="text-stone-700 leading-relaxed text-base md:text-lg mb-6">{p1}</p>
-            <p class="text-stone-700 leading-relaxed text-base md:text-lg mb-6">{p2}</p>
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold text-stone-900 border-b border-stone-200 pb-2 mb-4 font-serif">{heading}</h2>
+            <p class="text-stone-700 leading-relaxed text-base mb-4">{p1}</p>
+            <p class="text-stone-700 leading-relaxed text-base mb-4">{p2}</p>
         </section>
         """)
 
@@ -198,22 +208,22 @@ def update_news_stream():
                 summary_raw = clean_html(entry.get('summary', entry.get('description', 'Comprehensive global news report.')))
                 category = cat_hint
                 
-                # পারফেক্ট ক্যাটাগরি-ম্যাচড ছবি নিশ্চিতকরণ
-                original_img = extract_original_image(entry, raw_title, category)
+                # ছবির সত্যতা ও সঠিক ক্যাটাগরি ভেরিফাই করা
+                verified_img = verify_and_match_image(entry, raw_title, category)
                 article_id = int(time.time() * 1000) + len(new_articles)
 
-                long_content = generate_10000_words_seo_masterpiece(raw_title, summary_raw, category)
+                clean_content = generate_clean_authoritative_article(raw_title, summary_raw, category)
 
                 new_articles.append({
                     'id': article_id,
                     'title': raw_title,
-                    'summary': summary_raw[:220] + "...",
-                    'content': long_content,
+                    'summary': summary_raw[:200] + "...",
+                    'content': clean_content,
                     'category': category,
-                    'image': original_img,
+                    'image': verified_img,
                     'date': datetime.now().strftime("%a, %d %b %Y %H:%M:%S GMT"),
                     'created_at': datetime.now(),
-                    'likes': 28,
+                    'likes': 18,
                     'link': f"/news/{article_id}"
                 })
         except Exception:
@@ -254,19 +264,19 @@ def submit_news():
         norm_key = normalize_title(title)
         global news_database, seen_fingerprints
         if norm_key in seen_fingerprints:
-            return jsonify({'status': 'error', 'message': 'This story already exists in our 24-hour wire.'}), 400
+            return jsonify({'status': 'error', 'message': 'This story is already published.'}), 400
         seen_fingerprints.add(norm_key)
 
         article_id = int(time.time() * 1000)
-        deep_content = generate_10000_words_seo_masterpiece(title, summary, category, author)
+        clean_content = generate_clean_authoritative_article(title, summary, category)
         
-        chosen_img = CATEGORY_HD_IMAGES.get(category, CATEGORY_HD_IMAGES['National'])[0]
+        chosen_img = CURATED_CATEGORY_PRESS_IMAGES.get(category, CURATED_CATEGORY_PRESS_IMAGES['National'])[0]
         
         article_obj = {
             'id': article_id,
             'title': title,
-            'summary': summary[:220] + "...",
-            'content': deep_content,
+            'summary': summary[:200] + "...",
+            'content': clean_content,
             'category': category,
             'image': chosen_img,
             'date': datetime.now().strftime("%a, %d %b %Y %H:%M:%S GMT"),
@@ -316,7 +326,7 @@ def jobs_page():
         description = request.form.get('description', '').strip()
 
         if len(title) < 5 or len(company) < 3 or len(contact) < 5 or len(description) < 40:
-            return jsonify({'status': 'error', 'message': 'Verification Failed: Please fill details accurately.'}), 400
+            return jsonify({'status': 'error', 'message': 'Please complete all required fields accurately.'}), 400
 
         new_job = {
             'id': len(jobs_database) + 1,

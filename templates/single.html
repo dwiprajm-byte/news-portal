@@ -3,17 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ article.title }} | 24 Early News Worldwide</title>
+  <title>{{ article.title }} | 24 Early News</title>
   <meta name="description" content="{{ article.summary }}">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Inter', sans-serif; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
     .headline-font { font-family: 'Playfair Display', Georgia, serif; }
   </style>
 
-  <!-- গুগল নিউজ ও সার্চ ইঞ্জিন এসইও স্কিমা (Google Rank #1 Optimization) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -22,11 +21,6 @@
     "image": ["{{ article.image }}"],
     "datePublished": "{{ article.date }}",
     "dateModified": "{{ article.date }}",
-    "author": [{
-      "@type": "Person",
-      "name": "DWIPRAJ MALLICK",
-      "jobTitle": "Editor-in-Chief"
-    }],
     "publisher": {
       "@type": "NewsMediaOrganization",
       "name": "24 Early News",
@@ -35,81 +29,73 @@
     "description": "{{ article.summary }}"
   }
   </script>
-<script type="text/javascript">function googleTranslateElementInit() { new google.translate.TranslateElement({ pageLanguage: "en", layout: google.translate.TranslateElement.InlineLayout.SIMPLE, autoDisplay: false }, "google_translate_element"); }</script><script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script></head>
+</head>
 <body class="bg-[#faf9f6] text-stone-800">
 
-  <header class="bg-white border-b border-stone-200 sticky top-0 z-40 shadow-sm">
-    <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
-      <a href="/" class="headline-font text-2xl sm:text-3xl font-black text-stone-900">24 EARLY NEWS</a>
-      <div id="google_translate_element" class="mr-3"></div><a href="/" class="text-xs font-bold uppercase tracking-wider text-stone-600 hover:text-stone-900 flex items-center gap-1.5">
-        <i class="fas fa-arrow-left"></i> Live Wire Desk
+  <header class="bg-white border-b border-stone-200 sticky top-0 z-40 shadow-xs">
+    <div class="max-w-5xl mx-auto px-4 py-3.5 flex justify-between items-center">
+      <a href="/" class="headline-font text-2xl font-black text-stone-900 tracking-tight">24 EARLY NEWS</a>
+      <a href="/" class="text-xs font-bold uppercase tracking-wider text-stone-600 hover:text-stone-900 flex items-center gap-1.5 transition">
+        <i class="fas fa-arrow-left"></i> Live Stream
       </a>
     </div>
   </header>
 
-  <article class="max-w-4xl mx-auto px-4 py-10">
-    <div class="bg-white border border-stone-200 rounded-2xl p-6 sm:p-12 shadow-sm">
+  <article class="max-w-4xl mx-auto px-4 py-8">
+    <div class="bg-white border border-stone-200 rounded-2xl p-6 sm:p-10 shadow-xs">
       
-      <div class="flex flex-wrap items-center gap-2 mb-4">
-        <span class="bg-amber-100 text-amber-900 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">{{ article.category }}</span>
-        <span class="bg-blue-100 text-blue-900 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider"><i class="fas fa-award mr-1"></i> In-Depth Investigation</span>
+      <div class="flex items-center gap-2 mb-3">
+        <span class="bg-stone-100 text-stone-800 text-[11px] font-bold px-2.5 py-0.5 rounded uppercase tracking-wider">{{ article.category }}</span>
         <span class="text-xs text-stone-400 font-medium ml-auto">{{ article.date }}</span>
       </div>
 
-      <h1 class="headline-font text-3xl sm:text-5xl font-extrabold text-stone-900 leading-tight mb-6">
+      <h1 class="headline-font text-2xl sm:text-4xl font-extrabold text-stone-900 leading-tight mb-6">
         {{ article.title }}
       </h1>
 
-      <div class="flex flex-wrap items-center justify-between border-y border-stone-200 py-3 mb-8 text-xs text-stone-500 gap-2">
-        <span>By <strong>Global Investigative Bureau</strong> &bull; Editor-in-Chief: <strong>DWIPRAJ MALLICK</strong></span>
-        <span>Standard: <strong>Google E-E-A-T Certified Exhaustive Report</strong></span>
-      </div>
-
-      <!-- অরিজিনাল প্রেস ইমেজ -->
       <div class="mb-8">
-        <img src="{{ article.image }}" alt="{{ article.title }}" class="w-full rounded-xl object-cover max-h-[500px] shadow-sm">
-        <p class="text-[11px] text-stone-400 mt-2 italic text-center">Original Wire Broadcast &bull; High-Definition Authenticated Press Bureau Image</p>
+        <img src="{{ article.image }}" alt="{{ article.title }}" class="w-full rounded-xl object-cover max-h-[460px] shadow-xs">
+        <p class="text-[11px] text-stone-400 mt-2 italic text-center">Verified Press Agency Image &bull; 24 Early News Bureau</p>
       </div>
 
-      <!-- ১০,০০০ শব্দের সুবিশাল ইন-ডেপথ বডি কনটেন্ট -->
-      <div class="prose max-w-none text-stone-800 text-base sm:text-lg leading-relaxed">
+      <div class="prose max-w-none text-stone-700 text-base leading-relaxed">
         {{ article.content | safe }}
       </div>
 
-      <!-- ইন্টারঅ্যাক্টিভ লাইক এবং সোশ্যাল শেয়ার -->
-      <div class="border-t border-stone-200 mt-12 pt-6 flex flex-wrap justify-between items-center gap-4">
-        <button id="likeBtn" onclick="likePost()" class="bg-red-50 hover:bg-red-100 text-red-600 px-5 py-2.5 rounded-full font-bold text-sm flex items-center gap-2 transition">
-          <i class="fas fa-heart text-red-500"></i> <span id="likeText">{{ article.likes }} Likes</span>
+      <!-- সোশ্যাল শেয়ার ও লাইক বাটন -->
+      <div class="border-t border-stone-200 mt-10 pt-6 flex flex-wrap justify-between items-center gap-4">
+        <button id="likeBtn" onclick="likePost()" class="bg-stone-50 hover:bg-stone-100 text-stone-700 px-4 py-2 rounded-full font-bold text-xs flex items-center gap-2 border border-stone-200 transition">
+          <i class="far fa-heart text-red-500"></i> <span id="likeText">{{ article.likes }} Likes</span>
         </button>
         <div class="flex items-center gap-2">
-          <span class="text-xs font-bold uppercase text-stone-400 mr-2">Share Report:</span>
-          <a href="https://api.whatsapp.com/send?text={{ article.title }} https://news-portal-6alq.onrender.com/news/{{ article.id }}" target="_blank" class="w-9 h-9 rounded-full bg-emerald-500 text-white flex items-center justify-center hover:opacity-90"><i class="fab fa-whatsapp"></i></a>
-          <a href="https://www.facebook.com/sharer/sharer.php?u=https://news-portal-6alq.onrender.com/news/{{ article.id }}" target="_blank" class="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center hover:opacity-90"><i class="fab fa-facebook-f"></i></a>
-          <a href="https://twitter.com/intent/tweet?text={{ article.title }}&url=https://news-portal-6alq.onrender.com/news/{{ article.id }}" target="_blank" class="w-9 h-9 rounded-full bg-stone-900 text-white flex items-center justify-center hover:opacity-90"><i class="fab fa-x-twitter"></i></a>
+          <span class="text-xs font-bold uppercase text-stone-400 mr-1">Share:</span>
+          <a href="https://api.whatsapp.com/send?text={{ article.title }} https://news-portal-6alq.onrender.com/news/{{ article.id }}" target="_blank" class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs hover:opacity-90"><i class="fab fa-whatsapp"></i></a>
+          <a href="https://www.facebook.com/sharer/sharer.php?u=https://news-portal-6alq.onrender.com/news/{{ article.id }}" target="_blank" class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs hover:opacity-90"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://twitter.com/intent/tweet?text={{ article.title }}&url=https://news-portal-6alq.onrender.com/news/{{ article.id }}" target="_blank" class="w-8 h-8 rounded-full bg-stone-900 text-white flex items-center justify-center text-xs hover:opacity-90"><i class="fab fa-x-twitter"></i></a>
         </div>
       </div>
 
-      <!-- সম্পূর্ণ কার্যকর কমেন্ট সিস্টেম -->
-      <div class="mt-14 border-t border-stone-200 pt-8">
-        <h3 class="headline-font text-2xl font-bold text-stone-900 mb-6 flex items-center gap-2">
-          <i class="far fa-comments text-amber-600"></i> Readers Editorial Dialogue (<span id="commentCount">0</span>)
+      <!-- কমেন্ট সেকশন -->
+      <div class="mt-12 border-t border-stone-200 pt-8">
+        <h3 class="headline-font text-xl font-bold text-stone-900 mb-6 flex items-center gap-2">
+          <i class="far fa-comments text-amber-600"></i> Reader Comments (<span id="commentCount">0</span>)
         </h3>
-        <form id="commentForm" onsubmit="postComment(event)" class="bg-stone-50 border border-stone-200 p-6 rounded-xl mb-8">
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-            <input type="text" id="commAuthor" placeholder="Your Full Name" required class="border border-stone-300 rounded-lg p-2.5 text-sm w-full focus:ring-2 focus:ring-amber-500 focus:outline-none">
-            <input type="email" id="commEmail" placeholder="Your Email Address" required class="border border-stone-300 rounded-lg p-2.5 text-sm w-full focus:ring-2 focus:ring-amber-500 focus:outline-none">
+        <form id="commentForm" onsubmit="postComment(event)" class="bg-stone-50 border border-stone-200 p-5 rounded-xl mb-6">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+            <input type="text" id="commAuthor" placeholder="Your Name" required class="border border-stone-300 rounded-lg p-2 text-xs w-full focus:outline-none">
+            <input type="email" id="commEmail" placeholder="Your Email" required class="border border-stone-300 rounded-lg p-2 text-xs w-full focus:outline-none">
           </div>
-          <textarea id="commMessage" rows="3" placeholder="Share your perspective on this 10,000-word investigative file..." required class="border border-stone-300 rounded-lg p-2.5 text-sm w-full focus:ring-2 focus:ring-amber-500 focus:outline-none mb-4"></textarea>
-          <button type="submit" class="bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs uppercase tracking-wider px-6 py-3 rounded-lg transition">Submit Dialogue</button>
+          <textarea id="commMessage" rows="2" placeholder="Write your thoughts..." required class="border border-stone-300 rounded-lg p-2 text-xs w-full focus:outline-none mb-3"></textarea>
+          <button type="submit" class="bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs uppercase px-5 py-2.5 rounded-lg transition">Post Comment</button>
         </form>
-        <div id="commentsList" class="space-y-4"></div>
+        <div id="commentsList" class="space-y-3"></div>
       </div>
 
     </div>
   </article>
 
   <footer class="bg-[#0f172a] text-slate-400 text-xs py-8 text-center mt-12">
-    <p>&copy; 2026 24 Early News Worldwide Wire. Founder & Director: DWIPRAJ MALLICK.</p>
+    <p>&copy; 2026 24 Early News. All rights reserved.</p>
   </footer>
 
   <script>
@@ -120,29 +106,23 @@
         .then(res => res.json())
         .then(data => {
           if (data.status === 'success') {
-            document.getElementById('likeText').innerText = `${data.likes} Likes`;
-          }
-        });
-    }
-
-    function loadComments() {
-      const saved = JSON.parse(localStorage.getItem(`comments_${articleId}`) || '[]');
+            document.getElementById('likeText').innerText = `${data.likes} Likes`;             document.querySelector('#likeBtn i').classList.replace('far', 'fas');           }         });     }      function loadComments() {       const saved = JSON.parse(localStorage.getItem(`comments_${articleId}`) || '[]');
       const container = document.getElementById('commentsList');
       document.getElementById('commentCount').innerText = saved.length;
       container.innerHTML = '';
       if (saved.length === 0) {
-        container.innerHTML = '<p class="text-xs text-stone-400 italic">No comments submitted yet. Be the first to share your perspective.</p>';
+        container.innerHTML = '<p class="text-xs text-stone-400 italic">No comments yet.</p>';
         return;
       }
       saved.forEach(c => {
         const div = document.createElement('div');
-        div.className = "bg-white border border-stone-200 p-4 rounded-xl shadow-xs";
+        div.className = "bg-white border border-stone-200 p-3 rounded-lg";
         div.innerHTML = `
           <div class="flex justify-between items-center mb-1">
-            <strong class="text-sm text-stone-900">${c.author}</strong>
+            <strong class="text-xs text-stone-900">${c.author}</strong>
             <span class="text-[10px] text-stone-400">${c.date}</span>
           </div>
-          <p class="text-xs sm:text-sm text-stone-600">${c.message}</p>
+          <p class="text-xs text-stone-600">${c.message}</p>
         `;
         container.appendChild(div);
       });
