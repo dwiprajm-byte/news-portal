@@ -345,6 +345,66 @@ def like_news(news_id):
                 return jsonify({'status': 'success', 'likes': n['likes']})
     return jsonify({'status': 'not_found', 'likes': 0})
 
+@app.route('/submit-news', methods=['GET', 'POST'])
+def submit_news():
+    if request.method == 'POST':
+        title = request.form.get('title', '').strip()
+        summary = request.form.get('summary', '').strip()
+        author = request.form.get('author', '').strip() or 'DWIPRAJ MALLICK'
+        category = request.form.get('category', 'National').strip()
+        image_url = request.form.get('image_url', '').strip()
+        
+        if len(title) < 5 or len(summary) < 15:
+            return jsonify({'status': 'error', 'message': 'Title and summary are too short.'}), 400
+
+        # ১. সরাসরি ছবি আপলোড হ্যান্ডলিং
+        final_image = None
+        if 'image_file' in request.files:
+            file = request.files['image_file']
+            if file and file.filename != '':
+                ext = os.path.splitext(file.filename)[1].lower()
+                if ext in ['.jpg', '.jpeg', '.png', '.webp']:
+                    filename = f"news_{int(time.time())}{ext}"
+                    upload_folder = os.path.join(app.root_path, 'static', 'uploads')
+                    os.makedirs(upload_folder, exist_ok=True)
+                    file.save(os.path.join(upload_folder, filename))
+                    final_image = f"/static/uploads/{filename}"
+
+        # ২. অনলাইন ইমেজ লিঙ্ক হ্যান্ডলিং
+        if not final_image and image_url and image_url.startswith('http'):
+            final_image = image_url
+
+        # ৩. কোনো ছবি না দিলে স্বয়ংক্রিয় প্রাসঙ্গিক ফলব্যাক ছবি নির্বাচন
+        if not final_image:
+            cat = category if category in CATEGORY_FALLBACK_IMAGES else 'National'
+            pool = CATEGORY_FALLBACK_IMAGES[cat]
+            final_image = pool[abs(hash(title)) % len(pool)]
+
+        # ৪. স্বয়ংক্রিয়ভাবে পূর্ণাঙ্গ এসইও-বান্ধব প্রতিবেদনে রূপান্তর
+        clean_content = generate_clean_article(title, summary, category)
+        article_id = int(time.time() * 1000)
+
+        article_obj = {
+            'id': article_id,
+            'title': title,
+            'summary': summary[:200] + "...",
+            'content': clean_content,
+            'category': category,
+            'image': final_image,
+            'date': datetime.now().strftime("%a, %d %b %Y %H:%M:%S GMT"),
+            'created_at': datetime.now(),
+            'likes': 25,
+            'link': f"/news/{article_id}"
+        }
+
+        with lock:
+            global news_database
+            news_database.insert(0, article_obj)
+
+        return jsonify({'status': 'success', 'redirect': f'/news/{article_id}'})
+
+    return render_template('submit_news.html')
+
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
