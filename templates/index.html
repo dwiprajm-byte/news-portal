@@ -25,28 +25,19 @@
     }
     .cat-btn.active { background-color: #0f172a; color: #ffffff; border-color: #0f172a; }
 
-    .goog-te-gadget-simple {
-      background-color: #f8fafc !important;
-      border: 1px solid #cbd5e1 !important;
-      padding: 4px 8px !important;
-      border-radius: 8px !important;
-      font-size: 11px !important;
-      font-weight: 600 !important;
-      color: #334155 !important;
-      display: flex !important;
-      align-items: center !important;
-      cursor: pointer !important;
-    }
-    .goog-te-gadget-simple img { display: none !important; }
+    /* গুগল ফ্রেম হাইড করে ব্যাকগ্রাউন্ডে মসৃণ রাখা */
     .goog-te-banner-frame { display: none !important; }
+    #goog-gt-tt { display: none !important; }
+    .skiptranslate { display: none !important; }
     body { top: 0px !important; }
   </style>
-  
+
+  <!-- গুগল ক্লাউড ট্রান্সলেশন ব্যাকএন্ড লিসেনার -->
+  <div id="google_translate_element" style="display:none;"></div>
   <script type="text/javascript">
     function googleTranslateElementInit() {
       new google.translate.TranslateElement({
         pageLanguage: 'en',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
         autoDisplay: false
       }, 'google_translate_element');
     }
@@ -90,67 +81,82 @@
     <a href="/metals" class="text-amber-900 hover:text-amber-700 font-bold underline flex items-center gap-1 text-[11px]">View All Country Rates &rarr;</a>
   </div>
 
-  <!-- হেডার ও সার্চ বার -->
+  <!-- হেডার: পরিচ্ছন্ন লোগো, নিউজ সার্চ এবং একদম ডানদিকের উপরে সার্চ ল্যাঙ্গুয়েজ -->
   <header class="bg-white border-b border-stone-200 sticky top-0 z-40 shadow-xs">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-wrap justify-between items-center gap-4">
-      <div class="flex items-center gap-4">
-        <a href="/" class="headline-font text-3xl sm:text-4xl font-black text-stone-900 tracking-tight">24 EARLY NEWS</a>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex flex-wrap justify-between items-center gap-3">
+      
+      <!-- বামে লোগো -->
+      <div class="flex items-center gap-3">
+        <a href="/" class="headline-font text-2xl sm:text-3xl font-black text-stone-900 tracking-tight">24 EARLY NEWS</a>
         <span class="hidden md:inline-block bg-stone-100 text-stone-600 border border-stone-200 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Worldwide Live Wire</span>
       </div>
 
-      <!-- লাইভ সার্চ বার -->
-      <div class="flex-grow max-w-md mx-2">
+      <!-- মাঝে নিউজ সার্চ বার -->
+      <div class="flex-grow max-w-sm mx-1">
         <div class="relative">
-          <input type="text" id="searchInput" onkeyup="searchArticles()" placeholder="Search in 24-Hour Archive..." class="w-full bg-stone-50 border border-stone-300 rounded-full py-1.5 pl-9 pr-4 text-xs focus:outline-none focus:ring-2 focus:ring-amber-500">
-          <i class="fas fa-search absolute left-3 top-2.5 text-stone-400 text-xs"></i>
+          <input type="text" id="searchInput" onkeyup="searchArticles()" placeholder="Search in 24-Hour Archive..." class="w-full bg-stone-50 border border-stone-300 rounded-full py-1.5 pl-8 pr-3 text-xs focus:outline-none focus:ring-2 focus:ring-amber-500">
+          <i class="fas fa-search absolute left-2.5 top-2.5 text-stone-400 text-xs"></i>
         </div>
       </div>
 
-      <div class="flex flex-wrap items-center gap-2">
-        <div class="flex items-center gap-1 border border-stone-200 rounded-lg p-1 bg-stone-50">
-          <i class="fas fa-language text-stone-600 text-sm ml-1.5"></i>
-          <div id="google_translate_element"></div>
-        </div>
-
-        <a href="/metals" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold px-3 py-2 rounded-lg flex items-center gap-1.5 shadow-sm transition">
-          <i class="fas fa-gem"></i> Gold & Metals
-        </a>
-        <a href="/jobs" class="bg-blue-700 hover:bg-blue-800 text-white text-xs font-bold px-3 py-2 rounded-lg flex items-center gap-1.5 shadow-sm transition">
-          <i class="fas fa-briefcase"></i> Job Desk
-        </a>
-        <a href="/submit-news" class="bg-amber-700 hover:bg-amber-800 text-white text-xs font-bold px-3 py-2 rounded-lg flex items-center gap-1.5 shadow-sm transition">
-          <i class="fas fa-pen-nib"></i> Write News
-        </a>
-        <a href="/recipes" class="bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold px-3 py-2 rounded-lg flex items-center gap-1.5 shadow-sm transition">
-          <i class="fas fa-utensils"></i> Recipes
-        </a>
+      <!-- একদম ডানদিকের উপরে স্মার্ট 'Search Language' বার -->
+      <div class="flex items-center gap-1.5 bg-stone-100 border border-stone-300 rounded-full px-3 py-1 text-xs shadow-inner">
+        <i class="fas fa-language text-stone-500 text-sm"></i>
+        <input type="text" id="langSearchInput" onkeydown="if(event.key==='Enter') executeLanguageSearch()" placeholder="Search Language (e.g. Bengali, Hindi, Arabic)..." class="bg-transparent border-none text-xs w-44 sm:w-56 focus:outline-none font-medium text-stone-700 placeholder-stone-400">
+        <button onclick="executeLanguageSearch()" class="bg-stone-900 text-white rounded-full px-2 py-0.5 text-[10px] font-bold hover:bg-stone-800 transition">Set</button>
       </div>
+
     </div>
 
-    <!-- ক্যাটাগরি টাস্কবার -->
-    <nav class="bg-stone-100/90 border-t border-stone-200 px-4 sm:px-6 py-2 overflow-x-auto">
+    <!-- মূল টাস্কবার: All Stories এবং তার সাথেই এক সারিতে Gold & Metals, Job Desk, Write News, Recipes -->
+    <nav class="bg-stone-100/95 border-t border-stone-200 px-4 sm:px-6 py-2 overflow-x-auto shadow-inner">
       <div class="max-w-7xl mx-auto flex items-center gap-2 whitespace-nowrap text-xs">
-        <button onclick="filterNews('ALL', this)" class="cat-btn active font-bold px-3 py-1.5 rounded-md border border-stone-300 transition">
+        
+        <button onclick="filterNews('ALL', this)" class="cat-btn active font-bold px-3 py-1.5 rounded-md border border-stone-300 transition shadow-xs">
           <i class="fas fa-layer-group mr-1"></i> All Stories
         </button>
+
         <button onclick="filterNews('National', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-stone-200 hover:border-stone-400 transition">
           <i class="fas fa-flag mr-1 text-orange-600"></i> National
         </button>
+
         <button onclick="filterNews('World', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-stone-200 hover:border-stone-400 transition">
           <i class="fas fa-globe-americas mr-1 text-blue-600"></i> International / World
         </button>
+
         <button onclick="filterNews('Business', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-stone-200 hover:border-stone-400 transition">
           <i class="fas fa-chart-line mr-1 text-emerald-600"></i> Markets
         </button>
+
         <button onclick="filterNews('Sports', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-stone-200 hover:border-stone-400 transition">
           <i class="fas fa-futbol mr-1 text-rose-600"></i> Sports
         </button>
+
         <button onclick="filterNews('Technology', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-stone-200 hover:border-stone-400 transition">
           <i class="fas fa-microchip mr-1 text-purple-600"></i> Tech & AI
         </button>
+
         <button onclick="filterNews('Entertainment', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-stone-200 hover:border-stone-400 transition">
           <i class="fas fa-film mr-1 text-amber-600"></i> Entertainment
         </button>
+
+        <!-- টাস্কবারে একীভূত করা নির্দিষ্ট বাটনসমূহ -->
+        <a href="/metals" class="font-bold px-3 py-1.5 rounded-md bg-amber-500 hover:bg-amber-600 text-white transition flex items-center gap-1 shadow-xs">
+          <i class="fas fa-coins text-yellow-200"></i> Gold & Metals
+        </a>
+
+        <a href="/jobs" class="font-bold px-3 py-1.5 rounded-md bg-blue-700 hover:bg-blue-800 text-white transition flex items-center gap-1 shadow-xs">
+          <i class="fas fa-briefcase"></i> Job Desk
+        </a>
+
+        <a href="/submit-news" class="font-bold px-3 py-1.5 rounded-md bg-amber-700 hover:bg-amber-800 text-white transition flex items-center gap-1 shadow-xs">
+          <i class="fas fa-pen-nib"></i> Write News
+        </a>
+
+        <a href="/recipes" class="font-bold px-3 py-1.5 rounded-md bg-stone-900 hover:bg-stone-800 text-white transition flex items-center gap-1 shadow-xs">
+          <i class="fas fa-utensils text-orange-300"></i> Recipes
+        </a>
+
       </div>
     </nav>
   </header>
@@ -197,7 +203,7 @@
       <span class="text-xs text-stone-500 font-medium"><i class="fas fa-sync-alt fa-spin mr-1"></i> Continuous Auto-Sync (Every 60s)</span>
     </div>
 
-    <!-- নিউজ গ্রিড (কোনো 'Full 10000w Analysis' লেখা নেই, পরিচ্ছন্ন ডিজাইন) -->
+    <!-- নিউজ গ্রিড -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="newsGrid">
       {% for item in news_list[1:] %}
       <article data-category="{{ item.category }}" class="news-card bg-white border border-stone-200 rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between hover:border-stone-400 hover:shadow-md transition">
@@ -232,6 +238,40 @@
   </footer>
 
   <script>
+    // বিশ্বের যেকোনো ভাষার নাম লিখলে তৎক্ষণাৎ ওয়েবসাইট ট্রান্সলেট হওয়ার ইঞ্জিন
+    const languageCodeMap = {
+      'bengali': 'bn', 'bangla': 'bn', 'বাংলা': 'bn',
+      'hindi': 'hi', 'हिन्दी': 'hi',
+      'english': 'en',
+      'spanish': 'es', 'espanol': 'es',
+      'french': 'fr', 'francais': 'fr',
+      'arabic': 'ar', 'العربية': 'ar',
+      'german': 'de', 'deutsch': 'de',
+      'japanese': 'ja', 'nihongo': 'ja',
+      'russian': 'ru',
+      'chinese': 'zh-CN',
+      'portuguese': 'pt',
+      'urdu': 'ur',
+      'italian': 'it'
+    };
+
+    function executeLanguageSearch() {
+      const input = document.getElementById('langSearchInput').value.trim().toLowerCase();
+      if (!input) return;
+
+      let targetCode = languageCodeMap[input] || input;
+
+      const selectElem = document.querySelector('.goog-te-combo');
+      if (selectElem) {
+        selectElem.value = targetCode;
+        selectElem.dispatchEvent(new Event('change'));
+      } else {
+        // ফলব্যাক গুগল ট্রান্সলেট ইউআরএল হ্যাশ মেথড
+        window.location.hash = `#googtrans(en|${targetCode})`;
+        window.location.reload();
+      }
+    }
+
     function searchArticles() {
       const q = document.getElementById('searchInput').value.toLowerCase();
       const cards = document.querySelectorAll('.news-card');
