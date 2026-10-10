@@ -94,8 +94,19 @@
         </div>
       </div>
 
-      <div class="flex items-center gap-3">
-        <a href="/sync-news" class="bg-stone-100 hover:bg-stone-200 text-stone-800 text-xs font-semibold px-3.5 py-2 rounded-lg transition border border-stone-300/80 flex items-center gap-1.5 shadow-sm">
+              <div class="flex items-center gap-2">
+          <!-- লাইভ সার্চ বার -->
+          <div class="relative notranslate hidden sm:block">
+            <input type="text" id="liveNewsSearchInput" onkeyup="filterLiveNewsCards()" placeholder="Search news..." class="bg-stone-100 text-stone-800 text-xs rounded-lg pl-8 pr-3 py-1.5 border border-stone-300 focus:outline-none focus:border-stone-500 w-36 md:w-48 transition">
+            <i class="fas fa-search absolute left-2.5 top-2.5 text-stone-400 text-xs"></i>
+          </div>
+
+          <!-- ডার্ক মোড টগল বাটন -->
+          <button id="themeToggleBtn" onclick="toggleEditorialDarkMode()" title="Toggle Dark/Light Mode" class="bg-stone-100 hover:bg-stone-200 text-stone-800 p-2 rounded-lg border border-stone-300 transition text-xs flex items-center justify-center w-8 h-8">
+            <i id="themeToggleIcon" class="fas fa-moon"></i>
+          </button>
+
+          <a href="/sync-news" class="bg-stone-100 hover:bg-stone-200 text-stone-800 text-xs font-semibold px-3.5 py-2 rounded-lg transition border border-stone-300/80 flex items-center gap-1.5 shadow-sm">
           <i class="fas fa-arrows-rotate text-stone-600 text-[11px]"></i>
           <span>Update</span>
         </a>
@@ -165,7 +176,24 @@
             <h1 class="editorial-title text-2xl sm:text-4xl font-extrabold text-stone-900 leading-tight group-hover:text-stone-700 transition">
               <a id="leadTitleLink" href="/news/{{ lead.id }}" class="cursor-pointer hover:underline">{{ lead.title }}</a>
             </h1>
-            <div class="mt-6 flex items-center justify-between text-xs text-stone-500 border-t border-stone-100 pt-4">
+                          <!-- সোশ্যাল শেয়ার ও অডিও রিডার টুলবার -->
+              <div class="mt-4 pt-3 border-t border-stone-100 flex flex-wrap items-center justify-between gap-3 text-xs">
+                <div class="flex items-center gap-2">
+                  <button id="leadListenBtn" onclick="speakArticle('leadTitleLink')" class="bg-stone-100 hover:bg-stone-200 text-stone-800 font-semibold px-2.5 py-1 rounded border border-stone-300 flex items-center gap-1.5 transition">
+                    <i class="fas fa-volume-up text-amber-700"></i>
+                    <span id="leadListenText">Listen</span>
+                  </button>
+                  <span class="text-[11px] text-stone-400 font-medium"><i class="far fa-hourglass mr-1"></i>2 min read</span>
+                </div>
+                <div class="flex items-center gap-1.5 text-stone-500">
+                  <span class="text-[10px] font-bold uppercase tracking-wider mr-1">Share:</span>
+                  <a href="#" onclick="shareArticle('wa', 'leadTitleLink'); return false;" class="w-6 h-6 rounded bg-emerald-50 text-emerald-600 flex items-center justify-center hover:bg-emerald-600 hover:text-white transition"><i class="fab fa-whatsapp"></i></a>
+                  <a href="#" onclick="shareArticle('fb', 'leadTitleLink'); return false;" class="w-6 h-6 rounded bg-blue-50 text-blue-600 flex items-center justify-center hover:bg-blue-600 hover:text-white transition"><i class="fab fa-facebook-f"></i></a>
+                  <a href="#" onclick="shareArticle('x', 'leadTitleLink'); return false;" class="w-6 h-6 rounded bg-stone-100 text-stone-800 flex items-center justify-center hover:bg-stone-900 hover:text-white transition"><i class="fab fa-x-twitter"></i></a>
+                </div>
+              </div>
+
+              <div class="mt-6 flex items-center justify-between text-xs text-stone-500 border-t border-stone-100 pt-4">
               <span class="flex items-center font-medium">
                 <span class="inline-flex items-center text-[10px] font-semibold text-rose-700 mr-2 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded">
                   <span class="w-1.5 h-1.5 rounded-full bg-rose-600 animate-pulse mr-1"></span>LIVE
@@ -464,6 +492,68 @@
         window.location.href = '/';
       } else {
         window.location.href = '/?country=' + code;
+      }
+    }
+      // লাইভ খবর সার্চ ফিল্টার
+    function filterLiveNewsCards() {
+      const q = document.getElementById('liveNewsSearchInput').value.toLowerCase().trim();
+      document.querySelectorAll('main article').forEach(card => {
+        const text = card.innerText.toLowerCase();
+        card.style.display = text.includes(q) ? '' : 'none';
+      });
+    }
+
+    // সোশ্যাল শেয়ার ইঞ্জিন (WhatsApp, Facebook, Twitter)
+    function shareArticle(platform, titleElId) {
+      const el = document.getElementById(titleElId);
+      const title = el ? el.innerText : document.title;
+      const url = window.location.href;
+      let shareUrl = '';
+      if (platform === 'wa') shareUrl = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(title + ' - ' + url);
+      else if (platform === 'fb') shareUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url);
+      else if (platform === 'x') shareUrl = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(title) + '&url=' + encodeURIComponent(url);
+      if (shareUrl) window.open(shareUrl, '_blank', 'width=600,height=450');
+    }
+
+    // টেক্সট-টু-স্পিচ অডিও রিডার (Listen to News)
+    let isSpeaking = false;
+    function speakArticle(titleElId) {
+      if (!('speechSynthesis' in window)) {
+        alert('Text-to-speech is not supported on this browser.');
+        return;
+      }
+      const btnText = document.getElementById('leadListenText');
+      if (isSpeaking) {
+        window.speechSynthesis.cancel();
+        isSpeaking = false;
+        if (btnText) btnText.innerText = 'Listen';
+        return;
+      }
+      const el = document.getElementById(titleElId);
+      if (!el) return;
+      const utterance = new SpeechSynthesisUtterance(el.innerText);
+      utterance.rate = 0.95;
+      utterance.onend = () => {
+        isSpeaking = false;
+        if (btnText) btnText.innerText = 'Listen';
+      };
+      window.speechSynthesis.speak(utterance);
+      isSpeaking = true;
+      if (btnText) btnText.innerText = 'Pause';
+    }
+
+    // এডিটোরিয়াল ডার্ক মোড সুইচ
+    function toggleEditorialDarkMode() {
+      const isDark = document.body.classList.toggle('dark-editorial-mode');
+      const icon = document.getElementById('themeToggleIcon');
+      if (isDark) {
+        document.body.style.backgroundColor = '#0b0f19';
+        document.body.style.color = '#e2e8f0';
+        if (icon) icon.className = 'fas fa-sun text-amber-400';
+      } else {
+        document.body.style.backgroundColor = '';
+        document.body.style.color = '';
+        if (icon) icon.className = 'fas fa-moon';
       }
     }
   </script>
