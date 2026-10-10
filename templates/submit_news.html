@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Write News Dispatch | 24 Early News</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .headline-font { font-family: 'Playfair Display', Georgia, serif; }
+  </style>
+</head>
+<body class="bg-[#faf9f6] text-stone-800">
+  <header class="bg-white border-b border-stone-200 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
+      <a href="/" class="headline-font text-2xl font-black text-stone-900">24 EARLY NEWS</a>
+      <a href="/" class="text-xs font-bold uppercase tracking-wider text-stone-600 hover:text-stone-900 flex items-center gap-1.5"><i class="fas fa-arrow-left"></i> Live Stream</a>
+    </div>
+  </header>
+
+  <main class="max-w-3xl mx-auto px-4 py-12">
+    <div class="bg-white border border-stone-200 rounded-2xl p-6 sm:p-10 shadow-sm">
+      <div class="mb-8 border-b border-stone-200 pb-4">
+        <span class="bg-amber-100 text-amber-800 text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Citizen Journalism & Open Wire</span>
+        <h1 class="headline-font text-3xl font-extrabold text-stone-900 mt-2">Publish Your Story to Global Wire</h1>
+        <p class="text-stone-500 text-xs sm:text-sm mt-1">Every submitted story undergoes automated editorial verification and SEO optimization before being published instantly.</p>
+      </div>
+
+      <form id="newsForm" onsubmit="submitStory(event)" class="space-y-6">
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-stone-700 mb-2">Headline / News Title</label>
+          <input type="text" id="title" required placeholder="E.g., Breakthrough Clean Energy Agreement Finalized Across 20 Nations" class="w-full border border-stone-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-stone-700 mb-2">Your Name / Pen Name</label>
+            <input type="text" id="author" required placeholder="DWIPRAJ MALLICK or Correspondent" class="w-full border border-stone-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-stone-700 mb-2">Category</label>
+            <select id="category" class="w-full border border-stone-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none bg-white">
+              <option>World & Politics</option>
+              <option>Technology & AI</option>
+              <option>Finance & Commerce</option>
+              <option>Science & Environment</option>
+              <option>Culture & Society</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-stone-700 mb-2">Core Summary & Verified Facts (Minimum 25 Characters)</label>
+          <textarea id="summary" rows="5" required placeholder="Write the core report, ground facts, and verified details here..." class="w-full border border-stone-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none"></textarea>
+        </div>
+
+        <button type="submit" id="submitBtn" class="w-full bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs uppercase tracking-wider py-4 rounded-xl shadow-md transition flex items-center justify-center gap-2">
+          <i class="fas fa-paper-plane"></i> Verify, Optimize & Publish Live
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <script>
+    function submitStory(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying facts & optimizing SEO...';
+      btn.disabled = true;
+
+      const formData = new FormData();
+      formData.append('title', document.getElementById('title').value);
+      formData.append('author', document.getElementById('author').value);
+      formData.append('category', document.getElementById('category').value);
+      formData.append('summary', document.getElementById('summary').value);
+
+      fetch('/submit-news', { method: 'POST', body: formData })
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === 'success') {
+            window.location.href = data.redirect;
+          } else {
+            alert(data.message);
+            btn.innerHTML = '<i class="fas fa-paper-plane"></i> Verify, Optimize & Publish Live';
+            btn.disabled = false;
+          }
+        });
+    }
+  </script>
+</body>
+</html>

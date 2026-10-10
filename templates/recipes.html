@@ -3,207 +3,89 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Today's 50 Special Recipes | 24 Early News</title>
+  <title>Global Culinary & Recipe Desk | 24 Early News</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Inter', sans-serif; }
-    .editorial-title { font-family: 'Playfair Display', Georgia, serif; }
+    .headline-font { font-family: 'Playfair Display', Georgia, serif; }
   </style>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6DVCYX5938"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-6DVCYX5938');
-  </script>
 </head>
-<body class="bg-[#faf9f6] text-stone-800 flex flex-col min-h-screen">
-
-  <!-- হেডার নেভিগেশন -->
+<body class="bg-[#faf9f6] text-stone-800">
   <header class="bg-white border-b border-stone-200 sticky top-0 z-40 shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
-      <a href="/" class="editorial-title text-2xl sm:text-3xl font-extrabold text-stone-900 tracking-tight">
-        24 Early News
-      </a>
-      <a href="/" class="text-xs font-semibold uppercase tracking-wider text-stone-600 hover:text-stone-900 flex items-center gap-1.5 transition">
-        <i class="fas fa-arrow-left"></i> Back to News
-      </a>
+    <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+      <a href="/" class="headline-font text-2xl font-black text-stone-900">24 EARLY NEWS</a>
+      <a href="/" class="text-xs font-bold uppercase tracking-wider text-stone-600 hover:text-stone-900 flex items-center gap-1.5"><i class="fas fa-arrow-left"></i> Live News Stream</a>
     </div>
   </header>
 
-  <!-- মূল কন্টেন্ট -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-10 flex-grow w-full">
-    <div class="text-center max-w-3xl mx-auto mb-10">
-      <span class="text-amber-700 bg-amber-50 border border-amber-200 text-[11px] font-bold uppercase tracking-widest px-3 py-1 rounded-full inline-block mb-3">
-        Culinary Desk
-      </span>
-      <h1 class="editorial-title text-3xl sm:text-5xl font-black text-stone-900 leading-tight">
-        Today's 50 Special Recipes
-      </h1>
-      <p class="text-stone-500 text-sm mt-3 font-medium">
-        Daily fresh morning-to-night curated recipes (Date: <span id="currentRecipeDate" class="font-bold text-stone-800"></span>)
-      </p>
-
-      <!-- ফিল্টার বাটনসমূহ -->
-      <div class="flex flex-wrap items-center justify-center gap-2 mt-8">
-        <button onclick="filterRecipes('all')" id="btn-all" class="recipe-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition bg-[#0f172a] text-white">
-          All (50)
-        </button>
-        <button onclick="filterRecipes('breakfast')" id="btn-breakfast" class="recipe-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition bg-white text-stone-700 border border-stone-200 hover:bg-stone-50">
-          Breakfast
-        </button>
-        <button onclick="filterRecipes('lunch')" id="btn-lunch" class="recipe-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition bg-white text-stone-700 border border-stone-200 hover:bg-stone-50">
-          Lunch
-        </button>
-        <button onclick="filterRecipes('snacks')" id="btn-snacks" class="recipe-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition bg-white text-stone-700 border border-stone-200 hover:bg-stone-50">
-          Snacks
-        </button>
-        <button onclick="filterRecipes('dinner')" id="btn-dinner" class="recipe-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition bg-white text-stone-700 border border-stone-200 hover:bg-stone-50">
-          Dinner
-        </button>
+  <main class="max-w-6xl mx-auto px-4 py-10">
+    <div class="flex flex-wrap justify-between items-center mb-8 gap-4 border-b border-stone-200 pb-4">
+      <div>
+        <h1 class="headline-font text-3xl font-extrabold text-stone-900">Culinary & Daily Recipe Library</h1>
+        <p class="text-stone-500 text-xs sm:text-sm">Authentic global dishes, curated instructions, and reader submissions.</p>
       </div>
+      <button onclick="document.getElementById('recipeFormModal').classList.toggle('hidden')" class="bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold px-4 py-2.5 rounded-lg flex items-center gap-2 shadow-sm transition">
+        <i class="fas fa-plus-circle"></i> Submit Your Recipe
+      </button>
     </div>
 
-    <!-- রেসিপি গ্রিড কনটেইনার -->
-    <div id="recipeGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+    <!-- রেসিপি সাবমিশন ফর্ম -->
+    <div id="recipeFormModal" class="hidden bg-white border border-amber-200 rounded-2xl p-6 mb-10 shadow-md">
+      <h3 class="headline-font text-xl font-bold text-stone-900 mb-4 flex items-center gap-2"><i class="fas fa-utensils text-amber-600"></i> Share Your Recipe</h3>
+      <form onsubmit="postRecipe(event)" class="space-y-4">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <input type="text" id="recTitle" placeholder="Recipe Name" required class="border border-stone-300 rounded-lg p-2.5 text-sm w-full">
+          <input type="text" id="recAuthor" placeholder="Chef / Your Name" required class="border border-stone-300 rounded-lg p-2.5 text-sm w-full">
+          <input type="text" id="recTime" placeholder="Prep Time (e.g. 30 mins)" required class="border border-stone-300 rounded-lg p-2.5 text-sm w-full">
+        </div>
+        <textarea id="recIngredients" rows="2" placeholder="List of ingredients..." required class="border border-stone-300 rounded-lg p-2.5 text-sm w-full"></textarea>
+        <textarea id="recInstructions" rows="3" placeholder="Step-by-step cooking instructions..." required class="border border-stone-300 rounded-lg p-2.5 text-sm w-full"></textarea>
+        <button type="submit" class="bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs uppercase px-6 py-2.5 rounded-lg transition">Publish Recipe</button>
+      </form>
+    </div>
+
+    <!-- রেসিপি গ্রিড -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="recipesList">
+      {% for rec in recipes %}
+      <div class="bg-white border border-stone-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition">
+        <div class="flex justify-between items-center mb-2">
+          <span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase">{{ rec.category }}</span>
+          <span class="text-xs text-stone-400 font-medium"><i class="far fa-clock mr-1"></i>{{ rec.prep_time }}</span>
+        </div>
+        <h3 class="headline-font text-xl font-bold text-stone-900 mb-1">{{ rec.title }}</h3>
+        <p class="text-xs text-stone-500 mb-4">Contributed by: <strong>{{ rec.author }}</strong></p>
+        
+        <div class="bg-stone-50 p-3.5 rounded-lg border border-stone-100 mb-4 text-xs text-stone-700">
+          <strong>Ingredients:</strong> {{ rec.ingredients }}
+        </div>
+        <div class="text-xs sm:text-sm text-stone-600 leading-relaxed">
+          <strong>Method:</strong> {{ rec.instructions }}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
   </main>
 
-  <!-- ফুটার -->
-  <footer class="bg-[#0f172a] text-slate-400 text-xs py-8 border-t border-slate-800 mt-16 text-center">
-    <p class="text-slate-500 text-[11px]">
-      &copy; 2026 <strong>24 Early News</strong>. Founded by <strong>DWIPRAJ MALLICK</strong>. All Rights Reserved.
-    </p>
-  </footer>
-
-  <!-- রেসিপি ডেটাসেট ও ফিল্টারিং স্ক্রিপ্ট -->
   <script>
-    // ১. আজকের স্বয়ংক্রিয় তারিখ বসানো
-    const today = new Date();
-    const dateFormatted = today.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-    document.getElementById('currentRecipeDate').innerText = dateFormatted;
+    function postRecipe(e) {
+      e.preventDefault();
+      const formData = new FormData();
+      formData.append('title', document.getElementById('recTitle').value);
+      formData.append('author', document.getElementById('recAuthor').value);
+      formData.append('prep_time', document.getElementById('recTime').value);
+      formData.append('ingredients', document.getElementById('recIngredients').value);
+      formData.append('instructions', document.getElementById('recInstructions').value);
 
-    // ২. ৫০টি বিশেষ রেসিপির ডেটাসেট
-    const rawRecipes = [
-      // Breakfast (12)
-      { id: 1, name: "Masala Dosa with Coconut Chutney", cat: "breakfast", time: "25 mins", cal: "320 kcal", img: "https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=600&auto=format&fit=crop&q=60" },
-      { id: 2, name: "Classic Fluffy Butter Pancakes", cat: "breakfast", time: "20 mins", cal: "380 kcal", img: "https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=600&auto=format&fit=crop&q=60" },
-      { id: 3, name: "Avocado & Poached Egg Toast", cat: "breakfast", time: "15 mins", cal: "290 kcal", img: "https://images.unsplash.com/photo-1525351484163-7529414344d8?w=600&auto=format&fit=crop&q=60" },
-      { id: 4, name: "Kanda Poha with Peanuts", cat: "breakfast", time: "15 mins", cal: "250 kcal", img: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=600&auto=format&fit=crop&q=60" },
-      { id: 5, name: "Steamed Idli with Sambar", cat: "breakfast", time: "20 mins", cal: "210 kcal", img: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=600&auto=format&fit=crop&q=60" },
-      { id: 6, name: "French Toast with Berries", cat: "breakfast", time: "18 mins", cal: "350 kcal", img: "https://images.unsplash.com/photo-1484723091739-0045e0d4c82d?w=600&auto=format&fit=crop&q=60" },
-      { id: 7, name: "Aloo Paratha with Fresh Curd", cat: "breakfast", time: "30 mins", cal: "420 kcal", img: "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=600&auto=format&fit=crop&q=60" },
-      { id: 8, name: "Belgian Waffles with Honey", cat: "breakfast", time: "22 mins", cal: "410 kcal", img: "https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=600&auto=format&fit=crop&q=60" },
-      { id: 9, name: "Oatmeal Porridge with Nuts & Apples", cat: "breakfast", time: "10 mins", cal: "220 kcal", img: "https://images.unsplash.com/photo-1584776296944-ab6fb57b0bdd?w=600&auto=format&fit=crop&q=60" },
-      { id: 10, name: "Spanish Potato Omelette", cat: "breakfast", time: "20 mins", cal: "310 kcal", img: "https://images.unsplash.com/photo-1510693206972-df098062cb71?w=600&auto=format&fit=crop&q=60" },
-      { id: 11, name: "Upma with Mixed Vegetables", cat: "breakfast", time: "15 mins", cal: "240 kcal", img: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=600&auto=format&fit=crop&q=60" },
-      { id: 12, name: "Shakshuka with Warm Pita", cat: "breakfast", time: "25 mins", cal: "330 kcal", img: "https://images.unsplash.com/photo-1590412200988-a436970781fa?w=600&auto=format&fit=crop&q=60" },
-
-      // Lunch (13)
-      { id: 13, name: "Shahi Chicken Dum Biryani", cat: "lunch", time: "50 mins", cal: "620 kcal", img: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=600&auto=format&fit=crop&q=60" },
-      { id: 14, name: "Paneer Butter Masala & Naan", cat: "lunch", time: "35 mins", cal: "540 kcal", img: "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=600&auto=format&fit=crop&q=60" },
-      { id: 15, name: "Classic Italian Creamy Fettuccine Alfredo", cat: "lunch", time: "25 mins", cal: "480 kcal", img: "https://images.unsplash.com/photo-1645112411341-6c4fd023714a?w=600&auto=format&fit=crop&q=60" },
-      { id: 16, name: "Bengali Style Fish Curry (Macher Jhol)", cat: "lunch", time: "30 mins", cal: "380 kcal", img: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=600&auto=format&fit=crop&q=60" },
-      { id: 17, name: "Hyderabadi Mutton Biryani", cat: "lunch", time: "60 mins", cal: "690 kcal", img: "https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=600&auto=format&fit=crop&q=60" },
-      { id: 18, name: "Dal Makhani with Jeera Rice", cat: "lunch", time: "40 mins", cal: "460 kcal", img: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=600&auto=format&fit=crop&q=60" },
-      { id: 19, name: "Grilled Salmon with Asparagus", cat: "lunch", time: "25 mins", cal: "420 kcal", img: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=600&auto=format&fit=crop&q=60" },
-      { id: 20, name: "Thai Green Curry with Jasmine Rice", cat: "lunch", time: "30 mins", cal: "490 kcal", img: "https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=600&auto=format&fit=crop&q=60" },
-      { id: 21, name: "Rajma Masala with Basmati Rice", cat: "lunch", time: "35 mins", cal: "410 kcal", img: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=600&auto=format&fit=crop&q=60" },
-      { id: 22, name: "Mediterranean Caesar Chicken Salad", cat: "lunch", time: "18 mins", cal: "320 kcal", img: "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=600&auto=format&fit=crop&q=60" },
-      { id: 23, name: "Kashmiri Dum Aloo with Poori", cat: "lunch", time: "35 mins", cal: "480 kcal", img: "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=600&auto=format&fit=crop&q=60" },
-      { id: 24, name: "Japanese Teriyaki Chicken Bowl", cat: "lunch", time: "25 mins", cal: "510 kcal", img: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&auto=format&fit=crop&q=60" },
-      { id: 25, name: "Chole Bhature Platter", cat: "lunch", time: "40 mins", cal: "590 kcal", img: "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=600&auto=format&fit=crop&q=60" },
-
-      // Snacks (12)
-      { id: 26, name: "Crispy Vegetable Spring Rolls", cat: "snacks", time: "20 mins", cal: "220 kcal", img: "https://images.unsplash.com/photo-1544025162-d76694265947?w=600&auto=format&fit=crop&q=60" },
-      { id: 27, name: "Crispy Samosa with Mint Chutney", cat: "snacks", time: "25 mins", cal: "260 kcal", img: "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=600&auto=format&fit=crop&q=60" },
-      { id: 28, name: "Crispy French Fries with Truffle Mayo", cat: "snacks", time: "15 mins", cal: "310 kcal", img: "https://images.unsplash.com/photo-1576107232684-1279f3908594?w=600&auto=format&fit=crop&q=60" },
-      { id: 29, name: "Mumbai Pav Bhaji with Butter", cat: "snacks", time: "30 mins", cal: "410 kcal", img: "https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=600&auto=format&fit=crop&q=60" },
-      { id: 30, name: "Chicken Tikka Skewers", cat: "snacks", time: "25 mins", cal: "280 kcal", img: "https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=600&auto=format&fit=crop&q=60" },
-      { id: 31, name: "Steamed Momos with Spicy Dip", cat: "snacks", time: "25 mins", cal: "190 kcal", img: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=600&auto=format&fit=crop&q=60" },
-      { id: 32, name: "Bruschetta with Fresh Tomato & Basil", cat: "snacks", time: "12 mins", cal: "160 kcal", img: "https://images.unsplash.com/photo-1572695157366-5e585ab2b69f?w=600&auto=format&fit=crop&q=60" },
-      { id: 33, name: "Loaded Cheese Nachos with Salsa", cat: "snacks", time: "15 mins", cal: "380 kcal", img: "https://images.unsplash.com/photo-1513456852971-30c0b8199d4d?w=600&auto=format&fit=crop&q=60" },
-      { id: 34, name: "Paneer 65 Crispy Bites", cat: "snacks", time: "20 mins", cal: "320 kcal", img: "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=600&auto=format&fit=crop&q=60" },
-      { id: 35, name: "Chicken Shawarma Roll", cat: "snacks", time: "20 mins", cal: "390 kcal", img: "https://images.unsplash.com/photo-1561758033-d89a9ad46330?w=600&auto=format&fit=crop&q=60" },
-      { id: 36, name: "Crispy Onion Pakoda", cat: "snacks", time: "15 mins", cal: "240 kcal", img: "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=600&auto=format&fit=crop&q=60" },
-      { id: 37, name: "Garlic Butter Stuffed Mushrooms", cat: "snacks", time: "18 mins", cal: "180 kcal", img: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&auto=format&fit=crop&q=60" },
-
-      // Dinner (13)
-      { id: 38, name: "Wood-Fired Margherita Pizza", cat: "dinner", time: "25 mins", cal: "560 kcal", img: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600&auto=format&fit=crop&q=60" },
-      { id: 39, name: "Creamy Butter Chicken with Garlic Naan", cat: "dinner", time: "40 mins", cal: "640 kcal", img: "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?w=600&auto=format&fit=crop&q=60" },
-      { id: 40, name: "Grilled Herb Ribeye Steak", cat: "dinner", time: "30 mins", cal: "680 kcal", img: "https://images.unsplash.com/photo-1544025162-d76694265947?w=600&auto=format&fit=crop&q=60" },
-      { id: 41, name: "Palak Paneer with Tandoori Roti", cat: "dinner", time: "30 mins", cal: "440 kcal", img: "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=600&auto=format&fit=crop&q=60" },
-      { id: 42, name: "Classic Italian Lasagna", cat: "dinner", time: "50 mins", cal: "580 kcal", img: "https://images.unsplash.com/photo-1574894709920-11b28e7367e3?w=600&auto=format&fit=crop&q=60" },
-      { id: 43, name: "Kadhai Chicken with Rumali Roti", cat: "dinner", time: "35 mins", cal: "520 kcal", img: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=600&auto=format&fit=crop&q=60" },
-      { id: 44, name: "Mushroom Truffle Risotto", cat: "dinner", time: "35 mins", cal: "470 kcal", img: "https://images.unsplash.com/photo-1633964913295-ceb43826e7c9?w=600&auto=format&fit=crop&q=60" },
-      { id: 45, name: "Fish Tikka Masala with Jeera Rice", cat: "dinner", time: "35 mins", cal: "490 kcal", img: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=600&auto=format&fit=crop&q=60" },
-      { id: 46, name: "Malai Kofta with Butter Kulcha", cat: "dinner", time: "45 mins", cal: "550 kcal", img: "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=600&auto=format&fit=crop&q=60" },
-      { id: 47, name: "Classic American Cheeseburger", cat: "dinner", time: "20 mins", cal: "620 kcal", img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&auto=format&fit=crop&q=60" },
-      { id: 48, name: "Prawn Malai Curry with Rice", cat: "dinner", time: "35 mins", cal: "480 kcal", img: "https://images.unsplash.com/photo-1559847844-5315695dadae?w=600&auto=format&fit=crop&q=60" },
-      { id: 49, name: "Crispy Veg Hakka Noodles with Manchurian", cat: "dinner", time: "25 mins", cal: "460 kcal", img: "https://images.unsplash.com/photo-1585032226651-759b368d7246?w=600&auto=format&fit=crop&q=60" },
-      { id: 50, name: "Tandoori Chicken Platter", cat: "dinner", time: "40 mins", cal: "530 kcal", img: "https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=600&auto=format&fit=crop&q=60" }
-    ];
-
-    // ৩. কার্ড রেন্ডার ফাংশন
-    function renderRecipes(items) {
-      const container = document.getElementById('recipeGrid');
-      container.innerHTML = '';
-      items.forEach(r => {
-        const card = document.createElement('div');
-        card.className = "bg-white rounded-xl border border-stone-200/90 overflow-hidden shadow-sm hover:shadow-md transition duration-300 flex flex-col justify-between group";
-        card.innerHTML = `
-          <div>
-            <div class="relative overflow-hidden h-44 bg-stone-100">
-              <img src="${r.img}" alt="${r.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-              <span class="absolute top-3 left-3 bg-[#0f172a]/90 text-white text-[9px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded">
-                ${r.cat}
-              </span>
-            </div>
-            <div class="p-4">
-              <h3 class="editorial-title text-base font-bold text-stone-900 group-hover:text-amber-800 transition leading-snug line-clamp-2">
-                ${r.name}
-              </h3>
-              <div class="flex items-center gap-3 text-stone-400 text-xs mt-3 font-medium">
-                <span><i class="far fa-clock mr-1"></i>${r.time}</span>
-                <span>•</span>
-                <span><i class="fas fa-fire-alt mr-1 text-amber-500"></i>${r.cal}</span>
-              </div>
-            </div>
-          </div>
-          <div class="p-4 pt-0">
-            <button onclick="alert('Recipe details for: ${r.name}\\n\\nPreparation time: ${r.time}\\nCalories: ${r.cal}')" class="w-full py-2 bg-stone-50 hover:bg-[#0f172a] hover:text-white text-stone-800 text-xs font-bold rounded-lg border border-stone-200 transition">
-              View Recipe
-            </button>
-          </div>
-        `;
-        container.appendChild(card);
-      });
+      fetch('/recipes', { method: 'POST', body: formData })
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === 'success') {
+            window.location.reload();
+          }
+        });
     }
-
-    // ৪. ক্যাটাগরি ফিল্টার ইঞ্জিন
-    function filterRecipes(category) {
-      document.querySelectorAll('.recipe-btn').forEach(btn => {
-        btn.className = "recipe-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition bg-white text-stone-700 border border-stone-200 hover:bg-stone-50";
-      });
-      const activeBtn = document.getElementById('btn-' + category);
-      if (activeBtn) {
-        activeBtn.className = "recipe-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition bg-[#0f172a] text-white";
-      }
-
-      if (category === 'all') {
-        renderRecipes(rawRecipes);
-      } else {
-        const filtered = rawRecipes.filter(r => r.cat.toLowerCase() === category.toLowerCase());
-        renderRecipes(filtered);
-      }
-    }
-
-    // প্রাথমিক লোড (সব ৫০টি রেসিপি)
-    document.addEventListener('DOMContentLoaded', () => {
-      renderRecipes(rawRecipes);
-    });
   </script>
 </body>
 </html>
