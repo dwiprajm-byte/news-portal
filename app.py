@@ -80,29 +80,51 @@ def normalize_title(text):
     return re.sub(r'[^a-zA-Z0-9]', '', text.lower())
 
 def extract_safe_news_image(entry, title, category):
+    """খবরের মূল বিষয়ের সাথে নিখুঁতভাবে মেলানো কপিরাইট-মুক্ত স্মার্ট প্রেস ইমেজ ইঞ্জিন"""
     valid_exts = ('.jpg', '.jpeg', '.png', '.webp')
+    
+    # ১. আরএসএস-এর নিজস্ব আসল প্রেস ছবি (যদি থাকে)
     if 'media_content' in entry and len(entry.media_content) > 0:
         for m in entry.media_content:
             url = m.get('url', '')
-            if url and any(ext in url.lower() for ext in valid_exts) and not 'icon' in url.lower():
+            if url and any(ext in url.lower() for ext in valid_exts) and not any(x in url.lower() for x in ['icon', 'logo', 'placeholder']):
                 return url
+
     if 'links' in entry:
         for l in entry.links:
             href = l.get('href', '')
             if href and (l.get('type', '').startswith('image/') or any(ext in href.lower() for ext in valid_exts)):
-                if not 'icon' in href.lower() and not 'logo' in href.lower():
+                if not any(x in href.lower() for x in ['icon', 'logo', 'placeholder']):
                     return href
+
     raw_desc = entry.get('summary', '') or entry.get('description', '')
     img_match = re.search(r'<img[^>]+src=["\']([^"\']+)["\']', raw_desc)
     if img_match:
         url = img_match.group(1)
-        if url.startswith('http') and not 'icon' in url.lower():
+        if url.startswith('http') and not any(x in url.lower() for x in ['icon', 'logo', 'placeholder']):
             return url
 
-    words = re.findall(r'[a-zA-Z]{4,}', title)
-    kw = words[0] if words else category
-    sig = abs(hash(title)) % 9999
-    return f"https://images.unsplash.com/photo-1585829365295-ab7cd400c167?auto=format&fit=crop&w=1200&q=80&sig={sig}&query={kw}"
+    # ২. অপ্রয়োজনীয় ইংরেজি শব্দ বাদ দিয়ে খবরের মূল বিষয়বস্তু (Entity/Keywords) ফিল্টারিং
+    stop_words = {
+        'this', 'that', 'with', 'from', 'have', 'were', 'been', 'their', 'there',
+        'what', 'when', 'where', 'which', 'after', 'about', 'over', 'into', 'under',
+        'says', 'said', 'will', 'more', 'most', 'some', 'than', 'them', 'they'
+    }
+    
+    # শিরোনাম থেকে মূল নাম, স্থান বা গুরুত্বপূর্ণ বিষয়বস্তু সনাক্তকরণ
+    words = re.findall(r'\b[A-Za-z]{4,}\b', title)
+    meaningful = [w.lower() for w in words if w.lower() not in stop_words]
+    
+    # মূল ২-৩টি কি-ওয়ার্ড দিয়ে সুনির্দিষ্ট সার্চ কুয়েরি তৈরি
+    if len(meaningful) >= 2:
+        subject_query = f"{meaningful[0]},{meaningful[1]}"
+    elif len(meaningful) == 1:
+        subject_query = f"{meaningful[0]},{category.lower()}"
+    else:
+        subject_query = category.lower()
+
+    # কপিরাইট-মুক্ত হাই-রেজোলিউশন প্রেস ইমেজ
+    return f"https://source.unsplash.com/1200x800/?{urllib.parse.quote_plus(subject_query)}"
 
 def generate_clean_article(title, summary, category):
     date_now = datetime.now().strftime("%B %d, %Y")
