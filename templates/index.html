@@ -94,7 +94,7 @@
       <!-- মাঝে নিউজ সার্চ বার -->
       <div class="flex-grow max-w-sm mx-1">
         <div class="relative">
-          <input type="text" id="searchInput" onkeyup="searchArticles()" placeholder="Search in 24-Hour Archive..." class="w-full bg-stone-50 border border-stone-300 rounded-full py-1.5 pl-8 pr-3 text-xs focus:outline-none focus:ring-2 focus:ring-amber-500">
+          <input type="text" id="searchInput" autocomplete="off" spellcheck="false" onkeyup="searchArticles()" placeholder="Search in 24-Hour Archive..." class="w-full bg-stone-50 border border-stone-300 rounded-full py-1.5 pl-8 pr-3 text-xs focus:outline-none focus:ring-2 focus:ring-amber-500">
           <i class="fas fa-search absolute left-2.5 top-2.5 text-stone-400 text-xs"></i>
         </div>
       </div>
@@ -102,7 +102,7 @@
       <!-- একদম ডানদিকের উপরে স্মার্ট 'Search Language' বার -->
       <div class="flex items-center gap-1.5 bg-stone-100 border border-stone-300 rounded-full px-3 py-1 text-xs shadow-inner">
         <i class="fas fa-language text-stone-500 text-sm"></i>
-        <input type="text" id="langSearchInput" onkeydown="if(event.key==='Enter') executeLanguageSearch()" placeholder="Search Language (e.g. Bengali, Hindi, Arabic)..." class="bg-transparent border-none text-xs w-44 sm:w-56 focus:outline-none font-medium text-stone-700 placeholder-stone-400">
+        <input type="text" id="langSearchInput" autocomplete="off" spellcheck="false" onkeydown="if(event.key==='Enter') executeLanguageSearch()" placeholder="Search Language (e.g. Bengali, Hindi, Arabic)..." class="bg-transparent border-none text-xs w-44 sm:w-56 focus:outline-none font-medium text-stone-700 placeholder-stone-400">
         <button onclick="executeLanguageSearch()" class="bg-stone-900 text-white rounded-full px-2 py-0.5 text-[10px] font-bold hover:bg-stone-800 transition">Set</button>
       </div>
 
