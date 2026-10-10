@@ -201,12 +201,21 @@ def home():
     with lock:
         if len(news_database) == 0:
             fetch_feed_items()
+        
+        # ২৪ ঘণ্টার সব খবর অক্ষত রেখে প্রতি মিনিটে হোমপেজের প্রদর্শন রোটেট করা
         current_news = list(news_database)
-    
-    lead = current_news[0] if current_news else None
-    breaking_ticker = [n['title'] for n in current_news[:15]]
+        if current_news:
+            # বর্তমান মিনিটের ওপর ভিত্তি করে প্রথম খবরটি প্রতি মিনিটে রোটেট হবে
+            minute_seed = int(time.time() // 60)
+            rotate_offset = minute_seed % len(current_news)
+            rotated_news = current_news[rotate_offset:] + current_news[:rotate_offset]
+        else:
+            rotated_news = []
+
+    lead = rotated_news[0] if rotated_news else None
+    breaking_ticker = [n['title'] for n in rotated_news[:15]]
     metals_info = get_daily_metals_rates()
-    return render_template('index.html', news_list=current_news, lead=lead, ticker=breaking_ticker, metals=metals_info)
+    return render_template('index.html', news_list=rotated_news, lead=lead, ticker=breaking_ticker, metals=metals_info)
 
 @app.route('/news/<int:news_id>')
 def single_article(news_id):
