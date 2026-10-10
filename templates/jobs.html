@@ -1,0 +1,160 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verified Job Desk & Careers | 24 Early News</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .headline-font { font-family: 'Playfair Display', Georgia, serif; }
+  </style>
+</head>
+<body class="bg-[#faf9f6] text-stone-800">
+
+  <header class="bg-white border-b border-stone-200 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+      <a href="/" class="headline-font text-2xl font-black text-stone-900">24 EARLY NEWS</a>
+      <a href="/" class="text-xs font-bold uppercase tracking-wider text-stone-600 hover:text-stone-900 flex items-center gap-1.5"><i class="fas fa-arrow-left"></i> Live News Stream</a>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-10">
+    <div class="flex flex-wrap justify-between items-center mb-8 gap-4 border-b border-stone-200 pb-4">
+      <div>
+        <span class="bg-blue-100 text-blue-900 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">Employment & Career Board</span>
+        <h1 class="headline-font text-3xl font-extrabold text-stone-900 mt-1">Verified Career Opportunities</h1>
+        <p class="text-stone-500 text-xs sm:text-sm">Authentic job openings verified against fraud guidelines. Postings undergo automatic screening.</p>
+      </div>
+      <button onclick="document.getElementById('jobModal').classList.toggle('hidden')" class="bg-blue-700 hover:bg-blue-800 text-white text-xs font-bold px-4 py-2.5 rounded-lg flex items-center gap-2 shadow-sm transition">
+        <i class="fas fa-plus-circle"></i> Post a Job Opening
+      </button>
+    </div>
+
+    <!-- চাকরির বিজ্ঞাপন ফর্ম (ভেরিফিকেশন সহ) -->
+    <div id="jobModal" class="hidden bg-white border border-blue-200 rounded-2xl p-6 sm:p-8 mb-10 shadow-lg">
+      <div class="border-b border-stone-200 pb-3 mb-6">
+        <h3 class="headline-font text-xl font-bold text-stone-900 flex items-center gap-2"><i class="fas fa-shield-alt text-blue-700"></i> Employer Verification & Job Submission</h3>
+        <p class="text-xs text-stone-500 mt-1">Spam detection active: Company Name, Official Contact, and Detailed Job Duties are mandatory.</p>
+      </div>
+
+      <form onsubmit="submitJob(event)" class="space-y-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold uppercase text-stone-600 mb-1">Job Designation / Role</label>
+            <input type="text" id="jTitle" placeholder="E.g., Senior Systems Engineer" required class="border border-stone-300 rounded-lg p-2.5 text-sm w-full focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase text-stone-600 mb-1">Company / Organization</label>
+            <input type="text" id="jCompany" placeholder="E.g., Apex Financial Services" required class="border border-stone-300 rounded-lg p-2.5 text-sm w-full focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-xs font-bold uppercase text-stone-600 mb-1">Location</label>
+            <input type="text" id="jLocation" placeholder="Kolkata / Remote / Hybrid" required class="border border-stone-300 rounded-lg p-2.5 text-sm w-full focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase text-stone-600 mb-1">Employment Type</label>
+            <select id="jType" class="border border-stone-300 rounded-lg p-2.5 text-sm w-full bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none">
+              <option>Full-time</option>
+              <option>Part-time</option>
+              <option>Contract</option>
+              <option>Internship</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase text-stone-600 mb-1">Salary / Compensation</label>
+            <input type="text" id="jSalary" placeholder="₹40,000 - ₹60,000 / Negotiable" class="border border-stone-300 rounded-lg p-2.5 text-sm w-full focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-stone-600 mb-1">Official Contact / Application Email or Phone</label>
+          <input type="text" id="jContact" placeholder="recruitment@company.com or +91 9876543210" required class="border border-stone-300 rounded-lg p-2.5 text-sm w-full focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-stone-600 mb-1">Detailed Job Responsibilities & Requirements (Min 40 chars)</label>
+          <textarea id="jDesc" rows="4" placeholder="Detail the duties, qualification criteria, and responsibilities for verification..." required class="border border-stone-300 rounded-lg p-2.5 text-sm w-full focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
+        </div>
+
+        <button type="submit" id="jobSubBtn" class="bg-blue-800 hover:bg-blue-900 text-white font-bold text-xs uppercase tracking-wider px-6 py-3 rounded-lg transition flex items-center justify-center gap-2">
+          <i class="fas fa-check-circle"></i> Verify Employer & Publish Live
+        </button>
+      </form>
+    </div>
+
+    <!-- চাকরির বিজ্ঞাপনের তালিকা -->
+    <div class="space-y-4" id="jobList">
+      {% for job in jobs %}
+      <div class="bg-white border border-stone-200 rounded-2xl p-6 shadow-sm hover:border-blue-300 transition">
+        <div class="flex flex-wrap justify-between items-start gap-2 mb-2">
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="headline-font text-xl font-bold text-stone-900">{{ job.title }}</h3>
+              <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                <i class="fas fa-check"></i> Verified
+              </span>
+            </div>
+            <p class="text-sm font-semibold text-blue-800 mt-0.5">{{ job.company }} &bull; <span class="text-stone-500 font-normal">{{ job.location }}</span></p>
+          </div>
+          <span class="text-xs text-stone-400 font-medium">{{ job.date }}</span>
+        </div>
+
+        <div class="flex flex-wrap gap-2 my-3">
+          <span class="bg-stone-100 text-stone-700 text-xs px-2.5 py-1 rounded-md font-medium"><i class="far fa-clock mr-1"></i>{{ job.job_type }}</span>
+          <span class="bg-stone-100 text-stone-700 text-xs px-2.5 py-1 rounded-md font-medium"><i class="fas fa-money-bill-wave mr-1"></i>{{ job.salary }}</span>
+        </div>
+
+        <p class="text-xs sm:text-sm text-stone-600 leading-relaxed mb-4 border-l-2 border-stone-200 pl-3">
+          {{ job.description }}
+        </p>
+
+        <div class="border-t border-stone-100 pt-3 flex flex-wrap justify-between items-center gap-2 text-xs">
+          <span class="text-stone-500">Apply Directly: <strong class="text-stone-800">{{ job.contact }}</strong></span>
+          <a href="mailto:{{ job.contact }}" class="bg-stone-900 text-white font-bold px-4 py-2 rounded-lg hover:bg-stone-800 transition">Contact Employer</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </main>
+
+  <footer class="bg-[#0f172a] text-slate-400 text-xs py-8 text-center mt-16">
+    <p>&copy; 2026 24 Early News Career Desk. Managing Director: DWIPRAJ MALLICK.</p>
+  </footer>
+
+  <script>
+    function submitJob(e) {
+      e.preventDefault();
+      const btn = document.getElementById('jobSubBtn');
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying listing credentials...';
+      btn.disabled = true;
+
+      const fd = new FormData();
+      fd.append('title', document.getElementById('jTitle').value);
+      fd.append('company', document.getElementById('jCompany').value);
+      fd.append('location', document.getElementById('jLocation').value);
+      fd.append('job_type', document.getElementById('jType').value);
+      fd.append('salary', document.getElementById('jSalary').value);
+      fd.append('contact', document.getElementById('jContact').value);
+      fd.append('description', document.getElementById('jDesc').value);
+
+      fetch('/jobs', { method: 'POST', body: fd })
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === 'success') {
+            window.location.reload();
+          } else {
+            alert(data.message);
+            btn.innerHTML = '<i class="fas fa-check-circle"></i> Verify Employer & Publish Live';
+            btn.disabled = false;
+          }
+        });
+    }
+  </script>
+</body>
+</html>

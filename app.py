@@ -11,7 +11,6 @@ socket.setdefaulttimeout(7)
 
 app = Flask(__name__)
 
-# বিশ্বের ছোট, বড়, মাঝারি সব ধরনের সংবাদের মাল্টি-টিয়ার ফিড সোর্স
 GLOBAL_NEWS_FEEDS = [
     'https://feeds.bbci.co.uk/news/world/rss.xml',
     'https://rss.nytimes.com/services/xml/rss/nyt/World.xml',
@@ -30,15 +29,14 @@ CURATED_HD_IMAGES = [
     "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?auto=format&fit=crop&w=1600&q=80",
     "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1600&q=80",
     "https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=1600&q=80",
-    "https://images.unsplash.com/photo-1526470608268-f674ce90ebd4?auto=format&fit=crop&w=1600&q=80",
-    "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1600&q=80"
+    "https://images.unsplash.com/photo-1526470608268-f674ce90ebd4?auto=format&fit=crop&w=1600&q=80"
 ]
 
 news_database = []
 seen_titles = set()
 last_fetch_timestamp = 0
 
-# ইউজার সাবমিটেড রেসিপি স্টোরেজ
+# ইউজার রেসিপি ডেটাবেজ
 recipes_database = [
     {
         'id': 1,
@@ -46,17 +44,24 @@ recipes_database = [
         'author': 'Chef Marco Rossi',
         'category': 'Dinner',
         'prep_time': '45 mins',
-        'ingredients': '1 whole chicken, fresh rosemary, thyme, 4 cloves garlic, olive oil, lemon zest, sea salt, cracked black pepper.',
-        'instructions': 'Preheat oven to 200°C. Marinate chicken thoroughly with crushed herbs, olive oil, and garlic. Roast for 45 minutes until golden crisp.'
-    },
+        'ingredients': '1 whole chicken, fresh rosemary, thyme, 4 cloves garlic, olive oil, lemon zest, sea salt.',
+        'instructions': 'Preheat oven to 200°C. Marinate chicken thoroughly with herbs and garlic. Roast for 45 minutes.'
+    }
+]
+
+# ভেরিফাইড চাকরির বিজ্ঞপ্তি ডেটাবেজ
+jobs_database = [
     {
-        'id': 2,
-        'title': 'Traditional Bengal Mustard Ilish Shorshe',
-        'author': 'Editorial Kitchen',
-        'category': 'Traditional',
-        'prep_time': '30 mins',
-        'ingredients': 'Hilsa steaks, yellow & black mustard paste, green chilies, turmeric, cold-pressed mustard oil, nigella seeds.',
-        'instructions': 'Gently simmer mustard paste with turmeric and green chilies in mustard oil. Slide in fish steaks and cook on medium flame for 12 minutes.'
+        'id': 1,
+        'title': 'Senior International News Correspondent',
+        'company': 'Global Media Alliance',
+        'location': 'New Delhi / Remote',
+        'job_type': 'Full-time',
+        'salary': 'Commensurate with experience',
+        'contact': 'careers@globalmedia.org',
+        'description': 'Responsible for tracking breaking diplomatic cables, conducting on-ground interviews, and contributing to the 24-hour wire.',
+        'date': datetime.now().strftime("%d %b %Y"),
+        'verified': True
     }
 ]
 
@@ -66,47 +71,20 @@ def clean_html(raw_html):
     return re.sub(r'<.*?>', '', raw_html).strip()
 
 def generate_deep_seo_article(title, summary, category, author="Global Wire"):
-    """গুগল এসইও উপযোগী ৩০০০-৪০০০ শব্দের গভীর বিশ্লেষণাত্মক আর্টিকেল ইঞ্জিন"""
     date_now = datetime.now().strftime("%B %d, %Y")
     return f"""
     <div class="article-lead-paragraph font-serif text-xl md:text-2xl leading-relaxed text-stone-900 border-l-4 border-amber-600 pl-6 my-8 italic">
         {summary}
     </div>
-
     <div class="bg-stone-100 p-4 rounded-lg my-6 text-xs text-stone-600 border border-stone-200">
-        <strong>SEO & Editorial Indexation:</strong> Verified by automated journalistic validator on {date_now}. Assigned Category: <em>{category}</em>. Contributed by: <em>{author}</em>.
+        <strong>SEO & Editorial Indexation:</strong> Verified by automated journalistic validator on {date_now}. Category: <em>{category}</em>. Contributed by: <em>{author}</em>.
     </div>
-
     <h2 class="text-2xl font-bold text-stone-900 mt-10 mb-4 border-b border-stone-200 pb-2">1. Definitive Context, Primary Genesis & Field Reporting</h2>
-    <p class="leading-relaxed mb-6">
-        As documented across verified news channels, the unfolding story surrounding <strong>{title}</strong> represents an essential update across international, institutional, and regional landscapes. The initial reports emerging on {date_now} outline strategic shifts that directly influence international trade agreements, regulatory statutes, and diplomatic engagements.
-    </p>
-    <p class="leading-relaxed mb-6">
-        A granular retrospective confirms that developments of this scale are deeply rooted in multi-tiered economic negotiations, domestic policy directives, and evolving bilateral agreements. Investigative observers highlight how historical precedents have set the foundation for today's developments, ensuring that public and private sector leadership evaluate the ramifications comprehensively.
-    </p>
-
+    <p class="leading-relaxed mb-6">As documented across verified news channels, the unfolding story surrounding <strong>{title}</strong> represents an essential update across international, institutional, and regional landscapes. The initial reports emerging on {date_now} outline strategic shifts that directly influence international trade agreements, regulatory statutes, and diplomatic engagements.</p>
     <h2 class="text-2xl font-bold text-stone-900 mt-10 mb-4 border-b border-stone-200 pb-2">2. Geopolitical Balance & Sovereign Policy Responses</h2>
-    <p class="leading-relaxed mb-6">
-        Cross-border institutions in London, Washington, Brussels, New Delhi, and Singapore are closely tracking the collateral dynamics initiated by this event. Multilateral regulatory bodies have emphasized the imperative need for strict transparency, logistical risk containment, and institutional consensus to prevent market divergence.
-    </p>
-    <blockquote class="bg-stone-50 border-l-4 border-stone-800 p-6 my-8 text-stone-700 italic rounded-r-lg">
-        "Global interconnected networks ensure that a strategic policy shift in any primary hub initiates structural realignments across capital flow, resource reserves, and regional governance."
-    </blockquote>
-
-    <h2 class="text-2xl font-bold text-stone-900 mt-10 mb-4 border-b border-stone-200 pb-2">3. Economic Ramifications, Capital Indices & Market Trends</h2>
-    <p class="leading-relaxed mb-6">
-        Financial terminals recorded notable indicators as secondary data was distributed. Commercial syndicates, venture portfolios, and global supply chain coordinators have activated tactical mitigation procedures to insulate operating logistics from short-term disruptions.
-    </p>
-
-    <h2 class="text-2xl font-bold text-stone-900 mt-10 mb-4 border-b border-stone-200 pb-2">4. Technological, Legal & Regulatory Compliance Insights</h2>
-    <p class="leading-relaxed mb-6">
-        Statutory review councils are scrutinizing regulatory guidelines to ensure full compliance with international standards. Digital media observatories and data-integrity networks remain deployed to verify dispatch accuracy in real time.
-    </p>
-
-    <h2 class="text-2xl font-bold text-stone-900 mt-10 mb-4 border-b border-stone-200 pb-2">5. 24-Hour Editorial Perspective & Future Trajectory</h2>
-    <p class="leading-relaxed mb-6">
-        The forthcoming 24 to 48 hours will be critical as regulatory frameworks align. The <strong>24 Early News</strong> global desk continues round-the-clock monitoring to incorporate verified stakeholder updates into this living archive.
-    </p>
+    <p class="leading-relaxed mb-6">Cross-border institutions in London, Washington, Brussels, New Delhi, and Singapore are closely tracking the collateral dynamics initiated by this event. Multilateral regulatory bodies have emphasized the imperative need for strict transparency, logistical risk containment, and institutional consensus.</p>
+    <h2 class="text-2xl font-bold text-stone-900 mt-10 mb-4 border-b border-stone-200 pb-2">3. Economic Ramifications & Capital Indices</h2>
+    <p class="leading-relaxed mb-6">Financial terminals recorded notable indicators as secondary data was distributed. Commercial syndicates, venture portfolios, and global supply chain coordinators have activated tactical mitigation procedures.</p>
     """
 
 def update_news_stream():
@@ -180,7 +158,6 @@ def single_article(news_id):
         article = news_database[0]
     return render_template('single.html', article=article)
 
-# ইউজার নিউজ রাইটিং এবং অটো এসইও ভেরিফিকেশন পোর্টাল
 @app.route('/submit-news', methods=['GET', 'POST'])
 def submit_news():
     if request.method == 'POST':
@@ -189,12 +166,10 @@ def submit_news():
         author = request.form.get('author', 'Community Journalist').strip()
         category = request.form.get('category', 'Global Public Wire').strip()
         
-        # অটোমেটেড ভেরিফিকেশন ও কোয়ালিটি ফিল্টার
         if len(title) < 10 or len(summary) < 25:
-            return jsonify({'status': 'error', 'message': 'Title must be 10+ characters and summary 25+ characters for SEO compliance.'}), 400
+            return jsonify({'status': 'error', 'message': 'Title must be 10+ characters and summary 25+ characters.'}), 400
 
         article_id = int(time.time() * 1000)
-        # অটো এসইও এনরিচমেন্ট ইঞ্জিন
         deep_content = generate_deep_seo_article(title, summary, category, author)
         
         article_obj = {
@@ -210,14 +185,12 @@ def submit_news():
             'link': f"/news/{article_id}"
         }
         
-        # সাইটের শীর্ষস্থানে লাইভ যুক্ত হওয়া
         global news_database
         news_database.insert(0, article_obj)
         return jsonify({'status': 'success', 'redirect': f'/news/{article_id}'})
 
     return render_template('submit_news.html')
 
-# রেসিপি ভিউ এবং ইউজার রেসিপি সাবমিশন পোর্টাল
 @app.route('/recipes', methods=['GET', 'POST'])
 def recipes_page():
     if request.method == 'POST':
@@ -243,6 +216,42 @@ def recipes_page():
 
     return render_template('recipes.html', recipes=recipes_database)
 
+# চাকরির বিজ্ঞাপন ভিউ এবং ভেরিফাইড সাবমিশন রাউট
+@app.route('/jobs', methods=['GET', 'POST'])
+def jobs_page():
+    if request.method == 'POST':
+        title = request.form.get('title', '').strip()
+        company = request.form.get('company', '').strip()
+        location = request.form.get('location', '').strip()
+        job_type = request.form.get('job_type', 'Full-time').strip()
+        salary = request.form.get('salary', 'Competitive').strip()
+        contact = request.form.get('contact', '').strip()
+        description = request.form.get('description', '').strip()
+
+        # ভেরিফিকেশন ফিল্টার: ভুয়ো বিজ্ঞাপন ও অসম্পূর্ণ তথ্য প্রতিরোধ
+        if len(title) < 5 or len(company) < 3 or len(contact) < 5 or len(description) < 40:
+            return jsonify({
+                'status': 'error',
+                'message': 'Verification Failed: Please provide valid Company Name, Official Contact, and Detailed Job Description (min 40 characters).'
+            }), 400
+
+        new_job = {
+            'id': len(jobs_database) + 1,
+            'title': title,
+            'company': company,
+            'location': location,
+            'job_type': job_type,
+            'salary': salary,
+            'contact': contact,
+            'description': description,
+            'date': datetime.now().strftime("%d %b %Y"),
+            'verified': True
+        }
+        jobs_database.insert(0, new_job)
+        return jsonify({'status': 'success', 'message': 'Job opening verified and published live!'})
+
+    return render_template('jobs.html', jobs=jobs_database)
+
 @app.route('/api/like/<int:news_id>', methods=['POST'])
 def like_news(news_id):
     for n in news_database:
@@ -250,14 +259,6 @@ def like_news(news_id):
             n['likes'] += 1
             return jsonify({'status': 'success', 'likes': n['likes']})
     return jsonify({'status': 'not_found', 'likes': 0})
-
-@app.route('/debug')
-def debug():
-    return jsonify({
-        'status': 'Engine running cleanly',
-        'news_count': len(news_database),
-        'recipe_count': len(recipes_database)
-    })
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
