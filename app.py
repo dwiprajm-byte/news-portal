@@ -2,12 +2,13 @@
 import re
 import time
 import socket
+import threading
 import urllib.parse
 from datetime import datetime, timedelta
 from flask import Flask, render_template, request, jsonify, Response
 import feedparser
 
-socket.setdefaulttimeout(8)
+socket.setdefaulttimeout(5)
 
 app = Flask(__name__)
 
@@ -26,7 +27,7 @@ GLOBAL_NEWS_FEEDS = [
 
 news_database = []
 seen_fingerprints = set()
-last_fetch_timestamp = 0
+lock = threading.Lock()
 
 recipes_database = [
     {
@@ -65,33 +66,24 @@ def normalize_title(text):
     return re.sub(r'[^a-zA-Z0-9]', '', text.lower())
 
 def extract_smart_unique_image(entry, title, category):
-    """আসল প্রেস ছবি এক্সট্র্যাক্ট করা এবং ডাইনামিক কি-ওয়ার্ড অনুযায়ী শতভাগ ইউনিক ছবি নিশ্চিত করা"""
     valid_extensions = ('.jpg', '.jpeg', '.png', '.webp')
-    
-    # ১. আরএসএস মিডিয়া কনটেন্ট থেকে ভেরিফায়েড ছবি
     if 'media_content' in entry and len(entry.media_content) > 0:
         for m in entry.media_content:
             url = m.get('url', '')
             if url and any(ext in url.lower() for ext in valid_extensions) and not 'icon' in url.lower():
                 return url
-
-    # ২. Enclosures থেকে ছবি
     if 'links' in entry:
         for l in entry.links:
             href = l.get('href', '')
             if href and (l.get('type', '').startswith('image/') or any(ext in href.lower() for ext in valid_extensions)):
                 if not 'logo' in href.lower() and not 'icon' in href.lower():
                     return href
-
-    # ৩. বডি ডেসক্রিপশনের <img> ট্যাগ
     raw_desc = entry.get('summary', '') or entry.get('description', '')
     img_match = re.search(r'<img[^>]+src=["\']([^"\']+)["\']', raw_desc)
     if img_match:
         url = img_match.group(1)
         if url.startswith('http') and not 'avatar' in url.lower() and not 'icon' in url.lower():
             return url
-
-    # ৪. শিরোনামের মূল কি-ওয়ার্ডভিত্তিক সম্পূর্ণ ভিন্ন ভিন্ন ডাইনামিক লাইসেন্সড প্রেস ইমেজ
     words = re.findall(r'[a-zA-Z]{4,}', title)
     keyword = words[0] if words else category
     safe_sig = abs(hash(title)) % 9999
@@ -100,18 +92,16 @@ def extract_smart_unique_image(entry, title, category):
 def generate_clean_article(title, summary, category):
     date_now = datetime.now().strftime("%B %d, %Y")
     modules = [
-        ("Situation Overview", f"Field correspondents report developing dynamics surrounding <strong>{title}</strong>. As recorded on {date_now}, institutional and multilateral observers are monitoring key developments closely across jurisdictions."),
-        ("Strategic & Economic Implications", "Market desks and cross-border commercial corridors continue to evaluate the secondary effects of these developments. Authorities emphasize sustained operational transparency and regulatory compliance."),
-        ("Editorial Perspective", "The editorial wire will maintain continuous 24-hour verification. Ground updates will be incorporated as further validated intelligence is confirmed by official bureaus.")
+        ("Situation Overview", f"Field correspondents report developing dynamics surrounding <strong>{title}</strong>. As recorded on {date_now}, institutional observers are monitoring key developments closely across jurisdictions."),
+        ("Strategic & Economic Implications", "Market desks and cross-border commercial corridors continue to evaluate the secondary effects of these developments. Authorities emphasize sustained operational transparency."),
+        ("Editorial Perspective", "The editorial wire will maintain continuous 24-hour verification. Ground updates will be incorporated as further validated intelligence is confirmed.")
     ]
-
     sections = [f"""
     <div class="bg-stone-50 border-l-4 border-stone-800 p-6 rounded-r-xl mb-8">
         <div class="text-xs font-bold text-stone-500 uppercase tracking-widest mb-1">Editorial Briefing &bull; {category} Desk</div>
         <p class="font-serif text-lg md:text-xl text-stone-900 leading-relaxed italic">{summary}</p>
     </div>
     """]
-
     for heading, p in modules:
         sections.append(f"""
         <section class="mb-6">
@@ -119,7 +109,6 @@ def generate_clean_article(title, summary, category):
             <p class="text-stone-700 leading-relaxed text-base mb-4">{p}</p>
         </section>
         """)
-
     return "".join(sections)
 
 def get_daily_metals_rates():
@@ -135,73 +124,76 @@ def get_daily_metals_rates():
         }
     }
 
-def update_news_stream():
-    global news_database, seen_fingerprints, last_fetch_timestamp
-    current_time = time.time()
-    
-    if current_time - last_fetch_timestamp < 60 and len(news_database) > 0:
-        return
-
-    cutoff_time = datetime.now() - timedelta(hours=24)
-    news_database = [item for item in news_database if item['created_at'] > cutoff_time]
-
-    new_articles = []
-
-    for cat_hint, feed_url in GLOBAL_NEWS_FEEDS:
+def background_news_crawler():
+    """ব্যাকগ্রাউন্ডে স্বাধীনভাবে খবর আপডেট করার লুপ - ব্রাউজার লোডিংয়ে কোনো দেরি হবে না"""
+    global news_database, seen_fingerprints
+    while True:
         try:
-            parsed = feedparser.parse(feed_url)
-            for entry in parsed.entries[:3]:
-                raw_title = clean_html(entry.get('title', ''))
-                if not raw_title:
-                    continue
-                
-                norm_key = normalize_title(raw_title)
-                if norm_key in seen_fingerprints:
-                    continue
-                seen_fingerprints.add(norm_key)
+            cutoff_time = datetime.now() - timedelta(hours=24)
+            with lock:
+                news_database = [item for item in news_database if item['created_at'] > cutoff_time]
+            
+            new_articles = []
+            for cat_hint, feed_url in GLOBAL_NEWS_FEEDS:
+                try:
+                    parsed = feedparser.parse(feed_url)
+                    for entry in parsed.entries[:3]:
+                        raw_title = clean_html(entry.get('title', ''))
+                        if not raw_title:
+                            continue
+                        norm_key = normalize_title(raw_title)
+                        if norm_key in seen_fingerprints:
+                            continue
+                        seen_fingerprints.add(norm_key)
 
-                summary_raw = clean_html(entry.get('summary', entry.get('description', 'Comprehensive global news report.')))
-                category = cat_hint
-                
-                # সম্পূর্ণ ইউনিক ছবি নির্ধারণ
-                unique_img = extract_smart_unique_image(entry, raw_title, category)
-                article_id = int(time.time() * 1000) + len(new_articles)
-                clean_content = generate_clean_article(raw_title, summary_raw, category)
+                        summary_raw = clean_html(entry.get('summary', entry.get('description', 'Comprehensive global news report.')))
+                        category = cat_hint
+                        unique_img = extract_smart_unique_image(entry, raw_title, category)
+                        article_id = int(time.time() * 1000) + len(new_articles)
+                        clean_content = generate_clean_article(raw_title, summary_raw, category)
 
-                new_articles.append({
-                    'id': article_id,
-                    'title': raw_title,
-                    'summary': summary_raw[:200] + "...",
-                    'content': clean_content,
-                    'category': category,
-                    'image': unique_img,
-                    'date': datetime.now().strftime("%a, %d %b %Y %H:%M:%S GMT"),
-                    'created_at': datetime.now(),
-                    'likes': 18,
-                    'link': f"/news/{article_id}"
-                })
+                        new_articles.append({
+                            'id': article_id,
+                            'title': raw_title,
+                            'summary': summary_raw[:200] + "...",
+                            'content': clean_content,
+                            'category': category,
+                            'image': unique_img,
+                            'date': datetime.now().strftime("%a, %d %b %Y %H:%M:%S GMT"),
+                            'created_at': datetime.now(),
+                            'likes': 18,
+                            'link': f"/news/{article_id}"
+                        })
+                except Exception:
+                    continue
+            
+            if new_articles:
+                with lock:
+                    news_database = new_articles + news_database
         except Exception:
-            continue
+            pass
+        time.sleep(60)
 
-    if new_articles:
-        news_database = new_articles + news_database
-
-    last_fetch_timestamp = current_time
+# ব্যাকগ্রাউন্ড ক্রলার চালু করা
+crawler_thread = threading.Thread(target=background_news_crawler, daemon=True)
+crawler_thread.start()
 
 @app.route('/')
 def home():
-    update_news_stream()
-    lead = news_database[0] if news_database else None
-    breaking_ticker = [n['title'] for n in news_database[:15]]
+    # পেজ লোড হবে ইনস্ট্যান্ট মেমোরি থেকে (জিরো ল্যাগ)
+    with lock:
+        current_news = list(news_database)
+    lead = current_news[0] if current_news else None
+    breaking_ticker = [n['title'] for n in current_news[:15]]
     metals_info = get_daily_metals_rates()
-    return render_template('index.html', news_list=news_database, lead=lead, ticker=breaking_ticker, metals=metals_info)
+    return render_template('index.html', news_list=current_news, lead=lead, ticker=breaking_ticker, metals=metals_info)
 
 @app.route('/news/<int:news_id>')
 def single_article(news_id):
-    update_news_stream()
-    article = next((n for n in news_database if n['id'] == news_id), None)
-    if not article and news_database:
-        article = news_database[0]
+    with lock:
+        article = next((n for n in news_database if n['id'] == news_id), None)
+        if not article and news_database:
+            article = news_database[0]
     return render_template('single.html', article=article)
 
 @app.route('/submit-news', methods=['GET', 'POST'])
@@ -237,7 +229,8 @@ def submit_news():
             'likes': 1,
             'link': f"/news/{article_id}"
         }
-        news_database.insert(0, article_obj)
+        with lock:
+            news_database.insert(0, article_obj)
         return jsonify({'status': 'success', 'redirect': f'/news/{article_id}'})
 
     return render_template('submit_news.html')
@@ -304,10 +297,11 @@ def metals_page():
 
 @app.route('/api/like/<int:news_id>', methods=['POST'])
 def like_news(news_id):
-    for n in news_database:
-        if n['id'] == news_id:
-            n['likes'] += 1
-            return jsonify({'status': 'success', 'likes': n['likes']})
+    with lock:
+        for n in news_database:
+            if n['id'] == news_id:
+                n['likes'] += 1
+                return jsonify({'status': 'success', 'likes': n['likes']})
     return jsonify({'status': 'not_found', 'likes': 0})
 
 if __name__ == '__main__':
