@@ -204,7 +204,7 @@
 
     <div class="flex justify-between items-center mb-6 border-b border-stone-200 pb-3">
       <h2 id="currentCategoryTitle" class="headline-font text-2xl font-bold text-stone-900 flex items-center gap-2">
-        <i class="fas fa-globe text-amber-600 text-xl"></i> Active 24-Hour Verified Wire
+        <i class="fas fa-globe text-amber-600 text-xl"></i> Active 24-Hour Verified News
       </h2>
       <span class="text-xs text-stone-500 font-medium"><i class="fas fa-sync-alt fa-spin mr-1"></i> Continuous Auto-Sync (Every 60s)</span>
     </div>
@@ -315,7 +315,7 @@
       const lead = document.getElementById('leadSection');
 
       if (cat === 'ALL') {
-        title.innerHTML = '<i class="fas fa-globe text-amber-600 text-xl"></i> Active 24-Hour Verified Wire';
+        title.innerHTML = '<i class="fas fa-globe text-amber-600 text-xl"></i> Active 24-Hour Verified News';
         cards.forEach(c => c.style.display = 'flex');
         if (lead) lead.style.display = 'block';
       } else {
