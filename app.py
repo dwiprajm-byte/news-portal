@@ -321,6 +321,58 @@ def like_news(news_id):
                 return jsonify({'status': 'success', 'likes': n['likes']})
     return jsonify({'status': 'not_found', 'likes': 0})
 
+# সংবিধিবদ্ধ আইনি ও নীতিগত রুটসমূহ
+@app.route('/privacy-policy')
+def privacy_policy():
+    return render_template('policies.html', page_title='Privacy Policy', page_type='privacy')
+
+@app.route('/about-us')
+def about_us():
+    return render_template('policies.html', page_title='About Us', page_type='about')
+
+@app.route('/terms')
+def terms_page():
+    return render_template('policies.html', page_title='Terms of Service', page_type='terms')
+
+@app.route('/disclaimer')
+def disclaimer_page():
+    return render_template('policies.html', page_title='Disclaimer', page_type='disclaimer')
+
+@app.route('/contact', methods=['GET', 'POST'])
+def contact_page():
+    if request.method == 'POST':
+        name = request.form.get('name', '').strip()
+        email = request.form.get('email', '').strip()
+        subject = request.form.get('subject', '').strip()
+        message = request.form.get('message', '').strip()
+        
+        if not name or not email or not message:
+            return jsonify({'status': 'error', 'message': 'All fields are required.'}), 400
+        
+        try:
+            import json
+            contact_log_file = 'contact_messages.json'
+            log_entry = {
+                'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                'name': name,
+                'email': email,
+                'subject': subject,
+                'message': message
+            }
+            records = []
+            if os.path.exists(contact_log_file):
+                with open(contact_log_file, 'r', encoding='utf-8') as f:
+                    records = json.load(f)
+            records.insert(0, log_entry)
+            with open(contact_log_file, 'w', encoding='utf-8') as f:
+                json.dump(records, f, ensure_ascii=False, indent=2)
+        except Exception:
+            pass
+            
+        return jsonify({'status': 'success', 'message': 'Message recorded permanently.'})
+        
+    return render_template('contact.html')
+
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
