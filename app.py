@@ -345,9 +345,17 @@ def like_news(news_id):
                 return jsonify({'status': 'success', 'likes': n['likes']})
     return jsonify({'status': 'not_found', 'likes': 0})
 
+ADMIN_SECRET_KEY = "admin2026"  # আপনার ব্যক্তিগত অ্যাডমিন পাসওয়ার্ড
+
 @app.route('/submit-news', methods=['GET', 'POST'])
 def submit_news():
     if request.method == 'POST':
+        admin_key = request.form.get('admin_key', '').strip()
+        
+        # পাসওয়ার্ড চেক: সঠিক না হলে সরাসরি রিজেক্ট
+        if admin_key != ADMIN_SECRET_KEY:
+            return jsonify({'status': 'error', 'message': 'অ্যাক্সেস ডিনাইড: ভুল অ্যাডমিন পাসওয়ার্ড!'}), 403
+
         title = request.form.get('title', '').strip()
         summary = request.form.get('summary', '').strip()
         author = request.form.get('author', '').strip() or 'DWIPRAJ MALLICK'
@@ -357,7 +365,7 @@ def submit_news():
         if len(title) < 5 or len(summary) < 15:
             return jsonify({'status': 'error', 'message': 'Title and summary are too short.'}), 400
 
-        # ১. সরাসরি ছবি আপলোড হ্যান্ডলিং
+        # ১. ছবি আপলোড
         final_image = None
         if 'image_file' in request.files:
             file = request.files['image_file']
@@ -370,17 +378,17 @@ def submit_news():
                     file.save(os.path.join(upload_folder, filename))
                     final_image = f"/static/uploads/{filename}"
 
-        # ২. অনলাইন ইমেজ লিঙ্ক হ্যান্ডলিং
+        # ২. অনলাইন ইমেজ লিঙ্ক
         if not final_image and image_url and image_url.startswith('http'):
             final_image = image_url
 
-        # ৩. কোনো ছবি না দিলে স্বয়ংক্রিয় প্রাসঙ্গিক ফলব্যাক ছবি নির্বাচন
+        # ৩. ফলব্যাক ছবি
         if not final_image:
             cat = category if category in CATEGORY_FALLBACK_IMAGES else 'National'
             pool = CATEGORY_FALLBACK_IMAGES[cat]
             final_image = pool[abs(hash(title)) % len(pool)]
 
-        # ৪. স্বয়ংক্রিয়ভাবে পূর্ণাঙ্গ এসইও-বান্ধব প্রতিবেদনে রূপান্তর
+        # ৪. স্বয়ংক্রিয় এসইও আর্টিকেল তৈরি
         clean_content = generate_clean_article(title, summary, category)
         article_id = int(time.time() * 1000)
 
