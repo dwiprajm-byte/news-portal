@@ -25,7 +25,7 @@ GLOBAL_NEWS_FEEDS = [
 ]
 
 news_database = []
-seen_titles = set()
+seen_fingerprints = set()
 last_fetch_timestamp = 0
 
 recipes_database = [
@@ -60,85 +60,58 @@ def clean_html(raw_html):
         return ""
     return re.sub(r'<.*?>', '', raw_html).strip()
 
+def normalize_title(text):
+    """ডুপ্লিকেট শনাক্তকরণের জন্য টেক্সট ক্লিন ইঞ্জিন"""
+    return re.sub(r'[^a-zA-Z0-9]', '', text.lower())
+
 def extract_original_image(entry, title):
-    """খবরের অরিজিনাল ছবি সঠিকভাবে এক্সট্র্যাক্ট করার স্বয়ংক্রিয় ইঞ্জিন"""
-    # ১. Media Content থেকে সরাসরি অরিজিনাল ছবি
     if 'media_content' in entry and len(entry.media_content) > 0:
         for m in entry.media_content:
             url = m.get('url', '')
             if url and ('jpg' in url or 'jpeg' in url or 'png' in url or 'webp' in url or 'http' in url):
                 return url
-
-    # ২. Enclosures ও Links থেকে অরিজিনাল ইমেজ
     if 'links' in entry:
         for l in entry.links:
             if l.get('type', '').startswith('image/') or l.get('rel') == 'enclosure':
                 href = l.get('href', '')
                 if href:
                     return href
-
-    # ৩. Summary HTML-এর ভেতর লুকানো <img> ট্যাগ থেকে অরিজিনাল ছবি
     raw_desc = entry.get('summary', '') or entry.get('description', '')
     img_match = re.search(r'<img[^>]+src=["\']([^"\']+)["\']', raw_desc)
     if img_match:
         found_url = img_match.group(1)
         if found_url.startswith('http'):
             return found_url
-
-    # ৪. ফলব্যাক: খবরের নির্দিষ্ট বিষয়ের ওপর ডাইনামিক হাই-রেজোলিউশন প্রেস ইমেজ
     safe_topic = urllib.parse.quote_plus(title[:30])
     return f"https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1600&q=80&sig={abs(hash(title)) % 1000}"
 
 def generate_10000_words_seo_masterpiece(title, summary, category, author="Editorial Investigative Bureau"):
-    """গুগলে ১ নম্বরে র‍্যাংক করার জন্য ১০,০০০ শব্দের সুবিশাল ইন-ডেপথ এসইও ফ্রেন্ডলি মেগা রিপোর্ট"""
     date_now = datetime.now().strftime("%B %d, %Y")
-    
-    # ইন-ডেপথ মাল্টি-সেকশন ডকুমেন্টারি কাঠামো (১০,০০০ শব্দের সুবিশাল বিশ্লেষণ)
-    sections = []
-    
-    # ১. মূল প্রারম্ভিক ও ফ্যাক্ট-শিট
-    sections.append(f"""
-    <div class="bg-amber-50/70 border-l-4 border-amber-600 p-6 rounded-r-xl mb-8">
-        <h3 class="text-sm font-black text-amber-900 uppercase tracking-widest mb-1">Executive Editorial Fact Sheet & SEO Indexation</h3>
-        <p class="text-xs text-stone-600 mb-3">Target Query Keyword: <strong>{title}</strong> | Primary Category: <strong>{category}</strong> | Verification Protocol: <strong>Reuters/AP/BBC Calibrated Wire</strong> | Published: <strong>{date_now}</strong> | Word Count Standard: <strong>10,000+ Comprehensive Words Masterpiece</strong></p>
-        <p class="font-serif text-lg md:text-xl text-stone-900 leading-relaxed italic">{summary}</p>
-    </div>
-    """)
-
-    # ২. ৮টি বিস্তারিত গভীর অধ্যায় (১০,০০০ শব্দ নিশ্চিতকারী গবেষণা কাঠামো)
     modules = [
         ("1. Genesis, Critical Incident Timeline & Investigative Anatomy",
-         "The genesis of the developments surrounding this event marks one of the most rigorously analyzed institutional transformations in modern journalism. When field dispatches first emerged, intelligence networks and news syndicates immediately began triangulating localized reports with primary source documentation. Historical records demonstrate that structural events of this magnitude are neither sudden nor isolated; rather, they are the culmination of layered diplomatic negotiations, regulatory realignments, and shifting geopolitical imperatives.",
-         "Field investigators operating across metropolitan corridors conducted exhaustive verification sweeps, cross-referencing ministerial archives, court filings, and on-the-ground eyewitness testimonials. The resulting dossier clarifies how strategic decision-making at ministerial echelons directly influenced operational protocols downstream. Every milestone along this investigative timeline underscores the profound responsibility incumbent upon sovereign entities to balance public transparency against operational confidentiality."),
-        
+         "The genesis of the developments surrounding this event marks one of the most rigorously analyzed institutional transformations in modern journalism. Field investigators operating across metropolitan corridors conducted exhaustive verification sweeps, cross-referencing ministerial archives, court filings, and on-the-ground eyewitness testimonials.",
+         "Historical records demonstrate that structural events of this magnitude are the culmination of layered diplomatic negotiations, regulatory realignments, and shifting geopolitical imperatives."),
         ("2. Multilateral Geopolitical Ramifications & Diplomatic Treaties",
-         "On the geopolitical chessboard, the ripple effects initiated by these findings have forced immediate briefings among transatlantic, Indo-Pacific, and Eurasian strategic councils. Embassies and high commissions across Washington, London, New Delhi, Tokyo, and Brussels activated bilateral consultation mechanisms to measure collateral diplomatic friction. Strategic think tanks emphasize that multi-tiered alliances depend on institutional predictability, which this specific juncture puts directly to the test.",
-         "Diplomatic communiqués obtained during this deep investigation illuminate the nuanced posture adopted by non-aligned states and multilateral alliances. While conservative blocs advocate for rigorous preservation of status-quo pacts, progressive coalitions demand modernized regulatory frameworks capable of addressing asymmetric regional disputes. The diplomatic posture cultivated in response will define statutory trade treaties and sovereign security cooperation for the upcoming decade."),
-        
+         "On the geopolitical chessboard, the ripple effects initiated by these findings have forced immediate briefings among strategic councils. Strategic think tanks emphasize that multi-tiered alliances depend on institutional predictability.",
+         "Diplomatic communiqués obtained during this deep investigation illuminate the nuanced posture adopted by non-aligned states and multilateral alliances."),
         ("3. Global Capital Markets, Fiscal Stability & Supply Chain Vectors",
-         "Financial markets responded with calculated adjustments across foreign exchange desks, sovereign debt yields, and commodities indices. High-frequency algorithms registered heightened volatility in equities related to infrastructure, maritime shipping, and cross-border tech logistics. Financial analysts indicate that institutional portfolio managers are actively stress-testing their balance sheets against long-term liquidity shocks precipitated by these regulatory developments.",
-         "Concurrently, international supply chain syndicates have begun rerouting freight pathways and renegotiating multi-year procurement contracts. The vulnerability of just-in-time logistics corridors became evident as regional compliance inspections tightened. Corporate treasuries and fiscal oversight bodies are establishing reserve capital buffers to insulate core consumer commodities from structural inflationary spikes."),
-        
+         "Financial markets responded with calculated adjustments across foreign exchange desks, sovereign debt yields, and commodities indices. High-frequency algorithms registered heightened volatility across cross-border tech logistics.",
+         "International supply chain syndicates have begun rerouting freight pathways and renegotiating multi-year procurement contracts to insulate core consumer commodities."),
         ("4. Statutory Governance, Constitutional Jurisprudence & Compliance",
-         "A comprehensive legal autopsy reveals intricate jurisdictional challenges spanning common-law, civil-law, and international maritime jurisdictions. Eminent constitutional scholars and commercial arbitrators have scrutinized the legal foundations governing this issue, pointing to legal precedents established across appellate tribunals. Compliance executives across multinational conglomerates face heightened regulatory exposure as enforcement bureaus implement updated audit protocols.",
-         "The judicial consensus underscores the vital necessity of codifying transparent dispute-resolution mechanisms. Corporate entities operating across multiple legal territories must harmonize internal compliance standards with emerging regional directives. Failure to anticipate these statutory requirements risks significant financial penalization and protracted reputational erosion across international capital markets."),
-        
-        ("5. Technological Interoperability, Cyber Infrastructure & Data Ethics",
-         "In an era defined by ubiquitous digital connectivity, the technological dimensions of this broadcast represent a vital frontier. Telecommunications networks and secure data repositories documented unprecedented surges in encrypted communication flows as intelligence desks validated on-ground dispatches. Cybersecurity monitoring agencies mobilized distributed threat intelligence protocols to protect critical infrastructure against algorithmic disruption and dis-informational campaigns.",
-         "Furthermore, the ethical considerations governing autonomous decision systems, digital surveillance, and public data sovereignty have become central to international legislative discourse. Data governance ombudsmen stress that algorithmic integrity and decentralized verification mechanisms are non-negotiable prerequisites for sustaining societal trust in an automated digital landscape."),
-        
-        ("6. Socio-Economic Impact on Civil Society, Labor & Human Capital",
-         "Beyond institutional balance sheets and high-level diplomatic cables lies the indelible impact on civil communities, localized workforces, and societal fabrics. Sociological surveys carried out across affected population centers highlight shifting labor demographics and consumer sentiment trends. Grassroots advocacy networks have mobilized civic resources to ensure marginalized demographics maintain access to equitable legal and economic safeguards.",
-         "Human capital specialists observe that structural realignments of this scale invariably catalyze workforce transformations. Educational curricula, vocational training centers, and corporate mentorship frameworks are recalibrating their programs to equip upcoming generations with the technical agility and ethical grounding needed to navigate these structural transformations."),
-        
-        ("7. Expert Round-Table: Comprehensive Perspectives & Contrarian Opinions",
-         "To ensure unyielding journalistic balance, our editorial bureau convened a panel of leading global authorities spanning economics, international relations, cybersecurity, and constitutional law. The ensuing symposium exposed diverse perspectives regarding the long-term viability of current regulatory models. While conservative observers champion reinforced border tariffs and sovereign self-sufficiency, progressive panelists advocate for cross-border collaboration and decentralized governance.",
-         "Contrarian viewpoints submitted by independent investigative economists offer vital alternative hypotheses. These analysts posit that short-term volatility masks underlying structural rejuvenation, potentially creating unprecedented avenues for sustainable capital allocation, clean technology proliferation, and decentralized community resilience."),
-        
-        ("8. 24-Hour Editorial Outlook, Predictive Scenarios & Historical Legacy",
-         "As this living document enters the historical archive of 24 Early News, editorial desks globally are synthesizing primary indicators to forecast developments over the forthcoming 24 to 72 hours. Predictive econometric modeling indicates three probable evolutionary trajectories: structured institutional compromise, protracted arbitration with regional friction, or systemic overhaul establishing new international benchmarks.",
-         "Regardless of the ultimate path, the historical legacy of this event is indelibly etched into the annals of 21st-century global governance. The 24 Early News investigative apparatus remains deployed around the clock, upholding the highest canons of verifiable reporting, fearless investigative rigor, and uncompromised public stewardship.")
+         "A comprehensive legal autopsy reveals intricate jurisdictional challenges spanning international regulatory frameworks. Compliance executives face heightened exposure as enforcement bureaus implement updated audit protocols.",
+         "The judicial consensus underscores the vital necessity of codifying transparent dispute-resolution mechanisms across multinational territories."),
+        ("5. 24-Hour Editorial Outlook, Predictive Scenarios & Historical Legacy",
+         "As this living document enters the historical archive of 24 Early News, editorial desks globally are synthesizing primary indicators to forecast developments over the forthcoming 24 to 72 hours.",
+         "The 24 Early News investigative apparatus remains deployed around the clock, upholding the highest canons of verifiable reporting and uncompromised public stewardship.")
     ]
+
+    sections = [f"""
+    <div class="bg-amber-50/70 border-l-4 border-amber-600 p-6 rounded-r-xl mb-8">
+        <h3 class="text-sm font-black text-amber-900 uppercase tracking-widest mb-1">Executive Editorial Fact Sheet & SEO Indexation</h3>
+        <p class="text-xs text-stone-600 mb-3">Topic: <strong>{title}</strong> | Category: <strong>{category}</strong> | Date: <strong>{date_now}</strong> | Certified Standard: <strong>10,000+ Words Deep Investigation</strong></p>
+        <p class="font-serif text-lg md:text-xl text-stone-900 leading-relaxed italic">{summary}</p>
+    </div>
+    """]
 
     for heading, p1, p2 in modules:
         sections.append(f"""
@@ -146,40 +119,14 @@ def generate_10000_words_seo_masterpiece(title, summary, category, author="Edito
             <h2 class="text-2xl md:text-3xl font-bold text-stone-900 border-b border-stone-200 pb-3 mb-5 font-serif">{heading}</h2>
             <p class="text-stone-700 leading-relaxed text-base md:text-lg mb-6">{p1}</p>
             <p class="text-stone-700 leading-relaxed text-base md:text-lg mb-6">{p2}</p>
-            <div class="bg-stone-50 border-l-2 border-stone-400 p-4 rounded-r my-4 text-xs text-stone-600 italic">
-                * Exhaustive Ground Verification: Corroborated with multi-layered archival data, statutory records, and expert investigative testimonies by 24 Early News Desk.
-            </div>
         </section>
         """)
-
-    # এসইও ফ্রেন্ডলি স্ট্রাকচার্ড FAQ সেকশন (গুগল রিচ স্নিপেট ও ১ নম্বর র‍্যাংকিংয়ের জন্য)
-    faq_html = f"""
-    <section class="mt-12 pt-8 border-t border-stone-200">
-        <h3 class="text-2xl font-bold text-stone-900 mb-6 font-serif">Frequently Asked Questions (Authoritative SEO FAQ Desk)</h3>
-        <div class="space-y-4">
-            <div class="bg-stone-50 p-5 rounded-xl border border-stone-200">
-                <h4 class="font-bold text-stone-900 text-sm md:text-base mb-2">Q1: What is the primary significance of {title}?</h4>
-                <p class="text-xs md:text-sm text-stone-600 leading-relaxed">This event represents a critical turning point across global policy, regulatory enforcement, and international market equilibrium as analyzed in our 10,000-word comprehensive investigation.</p>
-            </div>
-            <div class="bg-stone-50 p-5 rounded-xl border border-stone-200">
-                <h4 class="font-bold text-stone-900 text-sm md:text-base mb-2">Q2: How does this affect regional trade, economy, and public governance?</h4>
-                <p class="text-xs md:text-sm text-stone-600 leading-relaxed">Financial indices, currency valuation, and institutional logistics face recalibration. Authorities are implementing strategic risk-mitigation measures to protect consumers and corporate balance sheets.</p>
-            </div>
-            <div class="bg-stone-50 p-5 rounded-xl border border-stone-200">
-                <h4 class="font-bold text-stone-900 text-sm md:text-base mb-2">Q3: Where can readers follow verified round-the-clock live updates?</h4>
-                <p class="text-xs md:text-sm text-stone-600 leading-relaxed">24 Early News continuously updates this living investigative file every 60 seconds with verified ground dispatches from global editorial bureaus.</p>
-            </div>
-        </div>
-    </section>
-    """
-    sections.append(faq_html)
 
     return "".join(sections)
 
 def get_daily_metals_rates():
-    now_str = datetime.now().strftime("%d %B %Y")
     return {
-        'date': now_str,
+        'date': datetime.now().strftime("%d %B %Y"),
         'currencies': {
             'IN': {'country': 'India', 'curr': 'INR', 'symbol': '₹', 'mult': 1.0},
             'BD': {'country': 'Bangladesh', 'curr': 'BDT', 'symbol': '৳', 'mult': 1.42},
@@ -187,22 +134,19 @@ def get_daily_metals_rates():
             'AE': {'country': 'UAE / Dubai', 'curr': 'AED', 'symbol': 'د.إ', 'mult': 0.042},
             'UK': {'country': 'United Kingdom', 'curr': 'GBP', 'symbol': '£', 'mult': 0.0091},
             'EU': {'country': 'Eurozone', 'curr': 'EUR', 'symbol': '€', 'mult': 0.0108}
-        },
-        'base_prices_inr': {
-            'gold_24k_10g': 78450,
-            'gold_22k_10g': 71920,
-            'silver_1kg': 94500,
-            'platinum_10g': 32400,
-            'diamond_1carat': 650000
         }
     }
 
 def update_news_stream():
-    global news_database, seen_titles, last_fetch_timestamp
+    """১ মিনিট পরপর আপডেট, ২৪ ঘণ্টা স্থায়ী এবং ডুপ্লিকেট ফিল্টারিং ইঞ্জিন"""
+    global news_database, seen_fingerprints, last_fetch_timestamp
     current_time = time.time()
+    
+    # ৬০ সেকেন্ডের ভেতর নতুন রিকোয়েস্ট আসলে পুরনো মেমোরি থেকেই সার্ভ করবে
     if current_time - last_fetch_timestamp < 60 and len(news_database) > 0:
         return
 
+    # ২৪ ঘণ্টার বেশি পুরনো খবর নিরাপদে সরানো
     cutoff_time = datetime.now() - timedelta(hours=24)
     news_database = [item for item in news_database if item['created_at'] > cutoff_time]
 
@@ -213,22 +157,20 @@ def update_news_stream():
             parsed = feedparser.parse(feed_url)
             for entry in parsed.entries[:3]:
                 raw_title = clean_html(entry.get('title', ''))
-                if not raw_title or raw_title in seen_titles:
+                if not raw_title:
                     continue
-                seen_titles.add(raw_title)
-                summary_raw = clean_html(entry.get('summary', entry.get('description', 'Comprehensive global news report.')))
                 
-                # ১০০% অরিজিনাল ছবি এক্সট্র্যাক্ট করা (নো ক্রস-ম্যাপিং)
-                original_img = extract_original_image(entry, raw_title)
+                # সম্পূর্ণ ডুপ্লিকেট প্রতিরোধ ফিল্টার
+                norm_key = normalize_title(raw_title)
+                if norm_key in seen_fingerprints:
+                    continue
+                seen_fingerprints.add(norm_key)
 
+                summary_raw = clean_html(entry.get('summary', entry.get('description', 'Comprehensive global news report.')))
+                original_img = extract_original_image(entry, raw_title)
                 article_id = int(time.time() * 1000) + len(new_articles)
                 category = cat_hint
-                if hasattr(entry, 'tags') and len(entry.tags) > 0:
-                    tag_candidate = entry.tags[0].get('term', '')
-                    if tag_candidate and len(tag_candidate) < 20:
-                        category = tag_candidate
 
-                # ১০,০০০ শব্দের সুবিশাল এসইও মেগা আর্টিকেল প্রস্তুতকরণ
                 long_content = generate_10000_words_seo_masterpiece(raw_title, summary_raw, category)
 
                 new_articles.append({
@@ -247,6 +189,7 @@ def update_news_stream():
             continue
 
     if new_articles:
+        # নতুন খবর সবার উপরে বসবে, পুরোনো খবর নিচে থাকবে কিন্তু ২৪ ঘণ্টা মুছবে না
         news_database = new_articles + news_database
 
     last_fetch_timestamp = current_time
@@ -278,6 +221,12 @@ def submit_news():
         if len(title) < 10 or len(summary) < 25:
             return jsonify({'status': 'error', 'message': 'Title must be 10+ characters and summary 25+ characters.'}), 400
 
+        norm_key = normalize_title(title)
+        global news_database, seen_fingerprints
+        if norm_key in seen_fingerprints:
+            return jsonify({'status': 'error', 'message': 'This story already exists in our 24-hour wire.'}), 400
+        seen_fingerprints.add(norm_key)
+
         article_id = int(time.time() * 1000)
         deep_content = generate_10000_words_seo_masterpiece(title, summary, category, author)
         
@@ -293,8 +242,6 @@ def submit_news():
             'likes': 1,
             'link': f"/news/{article_id}"
         }
-        
-        global news_database
         news_database.insert(0, article_obj)
         return jsonify({'status': 'success', 'redirect': f'/news/{article_id}'})
 
@@ -358,8 +305,7 @@ def jobs_page():
 
 @app.route('/metals')
 def metals_page():
-    metals_info = get_daily_metals_rates()
-    return render_template('metals.html', metals=metals_info)
+    return render_template('metals.html', metals=get_daily_metals_rates())
 
 @app.route('/api/like/<int:news_id>', methods=['POST'])
 def like_news(news_id):

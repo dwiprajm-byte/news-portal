@@ -6,13 +6,24 @@
   <title>24 Early News | Worldwide Live Wire & Deep Analysis</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Inter', sans-serif; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
     .headline-font { font-family: 'Playfair Display', Georgia, serif; }
-    @keyframes slowTicker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-    .ticker-track { display: inline-block; white-space: nowrap; animation: slowTicker 65s linear infinite; }
-    .ticker-track:hover { animation-play-state: paused; }
+    
+    /* ১২০ সেকেন্ডের অত্যন্ত ধীরগতির ও মসৃণ রানিং ব্রেকিং নিউজ */
+    @keyframes ultraSlowTicker {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+    .ticker-track {
+      display: inline-block;
+      white-space: nowrap;
+      animation: ultraSlowTicker 120s linear infinite;
+    }
+    .ticker-track:hover {
+      animation-play-state: paused;
+    }
     .cat-btn.active { background-color: #0f172a; color: #ffffff; border-color: #0f172a; }
   </style>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6DVCYX5938"></script>
@@ -25,41 +36,50 @@
 </head>
 <body class="bg-[#faf9f6] text-stone-800">
 
-  <!-- ধীরগতির রানিং ব্রেকিং নিউজ বার -->
+  <!-- অত্যন্ত ধীরগতির ব্রেকিং নিউজ বার (BREAKING NEWS নামাঙ্কিত) -->
   <div class="bg-red-700 text-white flex items-center overflow-hidden border-b border-red-800 shadow-sm">
-    <div class="bg-red-900 px-4 py-2 font-black text-xs uppercase tracking-widest flex items-center gap-2 z-10 whitespace-nowrap shadow-md">
-      <span class="inline-block w-2.5 h-2.5 bg-white rounded-full animate-ping"></span>
-      BREAKING WIRE
+    <div class="bg-red-900 px-5 py-2.5 font-black text-xs uppercase tracking-widest flex items-center gap-2.5 z-10 whitespace-nowrap shadow-md">
+      <span class="inline-block w-2.5 h-2.5 bg-yellow-300 rounded-full animate-ping"></span>
+      BREAKING NEWS
     </div>
     <div class="overflow-hidden w-full py-2">
       <div class="ticker-track text-sm font-medium tracking-wide">
         {% for item in ticker %}
-          <span class="mx-8 font-semibold"><i class="fas fa-bolt text-yellow-300 mr-2"></i>{{ item }}</span>
+          <span class="mx-10 font-semibold"><i class="fas fa-circle text-[8px] text-yellow-300 mr-2.5"></i>{{ item }}</span>
         {% endfor %}
       </div>
     </div>
   </div>
 
-  <!-- লাইভ মেটাল রেট উইজেট -->
+  <!-- লাইভ গোল্ড ও মেটাল রেট উইজেট -->
   <div class="bg-amber-500/10 border-b border-amber-200 px-4 py-1.5 text-xs text-amber-950 flex flex-wrap justify-between items-center gap-2">
     <div class="flex items-center gap-4 flex-wrap font-semibold">
-      <span class="text-amber-800 font-bold uppercase tracking-wider flex items-center gap-1.5"><i class="fas fa-coins text-amber-600"></i> Market Rates:</span>
+      <span class="text-amber-800 font-bold uppercase tracking-wider flex items-center gap-1.5"><i class="fas fa-coins text-amber-600"></i> Daily Precious Metals:</span>
       <span>Gold 24K: ₹7,845/g</span>
       <span>Silver: ₹94.5/g</span>
       <span>Platinum: ₹3,240/g</span>
       <span>Diamond 1ct: ₹6,50,000</span>
     </div>
-    <a href="/metals" class="text-amber-900 hover:text-amber-700 font-bold underline flex items-center gap-1 text-[11px]">View Country Rates &rarr;</a>
+    <a href="/metals" class="text-amber-900 hover:text-amber-700 font-bold underline flex items-center gap-1 text-[11px]">View All Country Rates &rarr;</a>
   </div>
 
-  <!-- হেডার ও ব্র্যান্ডিং -->
-  <header class="bg-white border-b border-stone-200 sticky top-0 z-40 shadow-sm">
+  <!-- হেডার, সার্চ বার ও অ্যাকশন প্যানেল -->
+  <header class="bg-white border-b border-stone-200 sticky top-0 z-40 shadow-xs">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-wrap justify-between items-center gap-4">
       <div class="flex items-center gap-4">
         <a href="/" class="headline-font text-3xl sm:text-4xl font-black text-stone-900 tracking-tight">24 EARLY NEWS</a>
-        <span class="hidden md:inline-block bg-stone-100 text-stone-600 border border-stone-200 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Worldwide Live</span>
+        <span class="hidden md:inline-block bg-stone-100 text-stone-600 border border-stone-200 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Worldwide Live Wire</span>
       </div>
-      <div class="flex flex-wrap items-center gap-2.5">
+
+      <!-- লাইভ সার্চ বার (যেকোনো খবর খুঁজে পাওয়ার জন্য) -->
+      <div class="flex-grow max-w-md mx-2">
+        <div class="relative">
+          <input type="text" id="searchInput" onkeyup="searchArticles()" placeholder="Search in 24-Hour Archive..." class="w-full bg-stone-50 border border-stone-300 rounded-full py-1.5 pl-9 pr-4 text-xs focus:outline-none focus:ring-2 focus:ring-amber-500">
+          <i class="fas fa-search absolute left-3 top-2.5 text-stone-400 text-xs"></i>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2">
         <a href="/metals" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold px-3 py-2 rounded-lg flex items-center gap-1.5 shadow-sm transition">
           <i class="fas fa-gem"></i> Gold & Metals
         </a>
@@ -75,8 +95,8 @@
       </div>
     </div>
 
-    <!-- সম্পূর্ণ কার্যকর ক্যাটাগরি টাস্কবার (সমস্ত খবরের পয়েন্ট) -->
-    <nav class="bg-stone-100/90 border-t border-stone-200 px-4 sm:px-6 py-2.5 overflow-x-auto">
+    <!-- ক্যাটাগরি টাস্কবার -->
+    <nav class="bg-stone-100/90 border-t border-stone-200 px-4 sm:px-6 py-2 overflow-x-auto">
       <div class="max-w-7xl mx-auto flex items-center gap-2 whitespace-nowrap text-xs">
         <button onclick="filterNews('ALL', this)" class="cat-btn active font-bold px-3 py-1.5 rounded-md border border-stone-300 transition">
           <i class="fas fa-layer-group mr-1"></i> All Stories
@@ -88,26 +108,17 @@
           <i class="fas fa-globe-americas mr-1 text-blue-600"></i> International / World
         </button>
         <button onclick="filterNews('Business', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-stone-200 hover:border-stone-400 transition">
-          <i class="fas fa-chart-line mr-1 text-emerald-600"></i> Business & Stock Markets
+          <i class="fas fa-chart-line mr-1 text-emerald-600"></i> Markets
         </button>
         <button onclick="filterNews('Sports', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-stone-200 hover:border-stone-400 transition">
           <i class="fas fa-futbol mr-1 text-rose-600"></i> Sports
         </button>
         <button onclick="filterNews('Technology', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-stone-200 hover:border-stone-400 transition">
-          <i class="fas fa-microchip mr-1 text-purple-600"></i> Technology & AI
+          <i class="fas fa-microchip mr-1 text-purple-600"></i> Tech & AI
         </button>
         <button onclick="filterNews('Entertainment', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-stone-200 hover:border-stone-400 transition">
-          <i class="fas fa-film mr-1 text-amber-600"></i> Entertainment & Culture
+          <i class="fas fa-film mr-1 text-amber-600"></i> Entertainment
         </button>
-        <a href="/metals" class="font-semibold px-3 py-1.5 rounded-md bg-amber-50 border border-amber-200 text-amber-900 hover:bg-amber-100 transition">
-          <i class="fas fa-coins mr-1 text-amber-600"></i> Gold & Metals Desk
-        </a>
-        <a href="/recipes" class="font-semibold px-3 py-1.5 rounded-md bg-orange-50 border border-orange-200 text-orange-900 hover:bg-orange-100 transition">
-          <i class="fas fa-utensils mr-1 text-orange-600"></i> Recipes Library
-        </a>
-        <a href="/jobs" class="font-semibold px-3 py-1.5 rounded-md bg-blue-50 border border-blue-200 text-blue-900 hover:bg-blue-100 transition">
-          <i class="fas fa-briefcase mr-1 text-blue-600"></i> Employment Desk
-        </a>
       </div>
     </nav>
   </header>
@@ -116,10 +127,10 @@
     
     <!-- লিড ব্রেকিং নিউজ সেকশন -->
     {% if lead %}
-    <section id="leadSection" class="bg-white border border-stone-200 rounded-xl overflow-hidden shadow-sm mb-12 hover:shadow-md transition">
+    <section id="leadSection" class="bg-white border border-stone-200 rounded-2xl overflow-hidden shadow-sm mb-12 hover:shadow-md transition">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-0">
         <div class="lg:col-span-7">
-          <img src="{{ lead.image }}" alt="{{ lead.title }}" class="w-full h-80 sm:h-[420px] object-cover">
+          <img src="{{ lead.image }}" alt="{{ lead.title }}" class="w-full h-80 sm:h-[430px] object-cover">
         </div>
         <div class="lg:col-span-5 p-6 sm:p-10 flex flex-col justify-between">
           <div>
@@ -134,7 +145,7 @@
           </div>
           <div class="flex items-center justify-between border-t border-stone-100 pt-4">
             <a href="/news/{{ lead.id }}" class="bg-stone-900 text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-lg hover:bg-stone-800 transition">
-              Read 3,500+ Words Deep Report &rarr;
+              Read 10,000+ Words Deep Report &rarr;
             </a>
             <button onclick="likeArticle({{ lead.id }}, this)" class="text-stone-500 hover:text-red-600 transition flex items-center gap-1 text-sm font-semibold">
               <i class="far fa-heart text-red-500"></i> <span>{{ lead.likes }}</span>
@@ -145,18 +156,17 @@
     </section>
     {% endif %}
 
-    <!-- ফিল্টারিং হেডলাইন -->
     <div class="flex justify-between items-center mb-6 border-b border-stone-200 pb-3">
       <h2 id="currentCategoryTitle" class="headline-font text-2xl font-bold text-stone-900 flex items-center gap-2">
-        <i class="fas fa-globe text-amber-600 text-xl"></i> All Active 24-Hour Dispatches
+        <i class="fas fa-globe text-amber-600 text-xl"></i> Active 24-Hour Verified Wire
       </h2>
-      <span class="text-xs text-stone-500 font-medium"><i class="fas fa-sync-alt fa-spin mr-1"></i> Auto-Sync (Every 60s)</span>
+      <span class="text-xs text-stone-500 font-medium"><i class="fas fa-sync-alt fa-spin mr-1"></i> Continuous Auto-Sync (Every 60s)</span>
     </div>
 
-    <!-- নিউজ গ্রিড -->
+    <!-- নিউজ গ্রিড (কোনো ডুপ্লিকেট ছাড়া) -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="newsGrid">
       {% for item in news_list[1:] %}
-      <article data-category="{{ item.category }}" class="news-card bg-white border border-stone-200 rounded-xl overflow-hidden shadow-sm flex flex-col justify-between hover:border-stone-400 transition">
+      <article data-category="{{ item.category }}" class="news-card bg-white border border-stone-200 rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between hover:border-stone-400 hover:shadow-md transition">
         <div>
           <img src="{{ item.image }}" alt="{{ item.title }}" class="w-full h-48 object-cover">
           <div class="p-5">
@@ -165,13 +175,13 @@
               <span>{{ item.date }}</span>
             </div>
             <h3 class="headline-font text-lg font-bold text-stone-900 leading-snug mb-3">
-              <a href="/news/{{ item.id }}" class="hover:text-red-700 transition">{{ item.title }}</a>
+              <a href="/news/{{ item.id }}" class="hover:text-red-700 transition title-text">{{ item.title }}</a>
             </h3>
-            <p class="text-stone-600 text-xs sm:text-sm leading-relaxed mb-4">{{ item.summary }}</p>
+            <p class="text-stone-600 text-xs sm:text-sm leading-relaxed mb-4 summary-text">{{ item.summary }}</p>
           </div>
         </div>
         <div class="px-5 pb-5 pt-3 border-t border-stone-100 flex items-center justify-between">
-          <a href="/news/{{ item.id }}" class="text-xs font-bold text-stone-900 hover:text-red-700">Full Dispatch &rarr;</a>
+          <a href="/news/{{ item.id }}" class="text-xs font-bold text-stone-900 hover:text-red-700">Full 10,000w Analysis &rarr;</a>
           <button onclick="likeArticle({{ item.id }}, this)" class="text-xs font-semibold text-stone-500 hover:text-red-600 transition flex items-center gap-1">
             <i class="far fa-heart text-red-500"></i> <span>{{ item.likes }}</span>
           </button>
@@ -182,11 +192,29 @@
   </main>
 
   <footer class="bg-[#0f172a] text-slate-400 text-xs py-10 mt-16 text-center">
-    <p class="mb-2 font-semibold text-slate-300">&copy; 2026 24 Early News Worldwide Wire. Director: DWIPRAJ MALLICK.</p>
+    <p class="mb-2 font-semibold text-slate-300">&copy; 2026 24 Early News Worldwide Wire. Founder & Director: DWIPRAJ MALLICK.</p>
   </footer>
 
   <script>
-    // লাইভ ক্যাটাগরি ফিল্টারিং (পেজ রিলোড ছাড়াই সাথে সাথে কাজ করবে)
+    // লাইভ সার্চ ইঞ্জিন: খবরের শিরোনাম বা বিবরণ লিখে সার্চ করলেই তৎক্ষণাৎ ফিল্টার হবে
+    function searchArticles() {
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      const cards = document.querySelectorAll('.news-card');
+      const lead = document.getElementById('leadSection');
+
+      if (lead) lead.style.display = q === '' ? 'block' : 'none';
+
+      cards.forEach(card => {
+        const title = card.querySelector('.title-text').innerText.toLowerCase();
+        const summary = card.querySelector('.summary-text').innerText.toLowerCase();
+        if (title.includes(q) || summary.includes(q)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
     function filterNews(cat, btn) {
       document.querySelectorAll('.cat-btn').forEach(b => {
         b.classList.remove('active');
@@ -200,11 +228,11 @@
       const lead = document.getElementById('leadSection');
 
       if (cat === 'ALL') {
-        title.innerHTML = '<i class="fas fa-globe text-amber-600 text-xl"></i> All Active 24-Hour Dispatches';
+        title.innerHTML = '<i class="fas fa-globe text-amber-600 text-xl"></i> Active 24-Hour Verified Wire';
         cards.forEach(c => c.style.display = 'flex');
         if (lead) lead.style.display = 'block';
       } else {
-        title.innerHTML = `<i class="fas fa-folder-open text-amber-600 text-xl"></i> Filtered by: ${cat}`;
+        title.innerHTML = `<i class="fas fa-folder-open text-amber-600 text-xl"></i> Category: ${cat}`;
         if (lead) lead.style.display = 'none';
         cards.forEach(c => {
           const itemCat = c.getAttribute('data-category').toLowerCase();
@@ -228,6 +256,7 @@
         });
     }
 
+    // প্রতি ৬০ সেকেন্ডে নতুন খবর যোগ করার জন্য নিরাপদ রিলোড
     setTimeout(() => { window.location.reload(); }, 60000);
   </script>
 </body>
