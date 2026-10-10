@@ -80,14 +80,26 @@
   </div>
 
   <!-- হেডার ও ডানদিকের উপরে সার্চ ল্যাঙ্গুয়েজ -->
+    <!-- ব্র্যান্ড ব্যানার ও নেভিগেশন হেডার -->
   <header class="bg-white border-b border-stone-200 sticky top-0 z-40 shadow-xs">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex flex-wrap justify-between items-center gap-3">
       
-      <div class="flex items-center gap-3">
-        <a href="/" class="headline-font text-2xl sm:text-3xl font-black text-stone-900 tracking-tight">24 EARLY NEWS</a>
-        
-      </div>
+      <!-- অফিসিয়াল ব্যানার ও লোগো -->
+      <a href="/" class="flex items-center gap-3.5 group text-decoration-none">
+        <div class="w-10 h-10 flex-shrink-0 group-hover:scale-105 transition transform duration-200">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="40" height="40" fill="none">
+            <circle cx="24" cy="24" r="22" fill="#0f172a" stroke="#d97706" stroke-width="2.5"/>
+            <circle cx="24" cy="24" r="18" fill="none" stroke="#d97706" stroke-width="0.8" stroke-dasharray="2 2"/>
+            <text x="50%" y="58%" text-anchor="middle" fill="#d97706" font-family="'Playfair Display', Georgia, serif" font-weight="900" font-size="20">24</text>
+          </svg>
+        </div>
+        <div class="flex flex-col">
+          <span class="headline-font text-2xl sm:text-3xl font-black text-stone-900 tracking-tight leading-none group-hover:text-amber-800 transition">24 EARLY NEWS</span>
+          <span class="text-[9px] font-bold uppercase tracking-widest text-amber-700 mt-1">Independent Editorial Bureau</span>
+        </div>
+      </a>
 
+      <!-- নিউজ সার্চ বার -->
       <div class="flex-grow max-w-sm mx-1">
         <div class="relative">
           <input type="text" id="searchInput" autocomplete="off" spellcheck="false" onkeyup="searchArticles()" placeholder="Search in 24-Hour Archive..." class="w-full bg-stone-50 border border-stone-300 rounded-full py-1.5 pl-8 pr-3 text-xs focus:outline-none focus:ring-2 focus:ring-amber-500">
