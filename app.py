@@ -548,6 +548,15 @@ def contact_us():
 def editorial_charter():
     return render_template('charter.html')
 
+
+@app.route('/precious-metals')
+def precious_metals_page():
+    return render_template('metals.html')
+
+@app.route('/job-board')
+def job_board_page():
+    return render_template('jobs.html')
+
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
@@ -577,5 +586,6 @@ def handle_500_error(e):
 @app.errorhandler(Exception)
 def handle_general_exception(e):
     return handle_500_error(e)
+
 
 
