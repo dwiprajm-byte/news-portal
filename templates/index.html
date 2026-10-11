@@ -83,7 +83,7 @@
       <!-- সার্চ বার -->
       <div class="flex-grow max-w-sm mx-1">
         <div class="relative">
-          <input type="text" id="searchInput" autocomplete="off" spellcheck="false" onkeyup="searchArticles()" placeholder="Search in 24-Hour Archive..." class="w-full bg-slate-50 border border-slate-300 rounded-full py-1.5 pl-8 pr-3 text-xs focus:outline-none focus:ring-2 focus:ring-amber-500">
+          <input type="text" id="searchInput" autocomplete="off" spellcheck="false" onkeydown="handleCountrySearch(event)" placeholder="Search any of 195 Countries (e.g. Bangladesh, Japan, USA, Russia)..." class="w-full bg-slate-50 border border-slate-300 rounded-full py-1.5 pl-8 pr-3 text-xs focus:outline-none focus:ring-2 focus:ring-amber-500">
           <i class="fas fa-search absolute left-2.5 top-2.5 text-slate-400 text-xs"></i>
         </div>
       </div>
@@ -235,6 +235,74 @@
           card.style.display = 'none';
         }
       });
+    }
+
+        function handleCountrySearch(event) {
+      if (event.key === 'Enter') {
+        const query = document.getElementById('searchInput').value.trim();
+        if (!query) return;
+        fetchCountryNews(query);
+      } else {
+        searchArticles();
+      }
+    }
+
+    function fetchCountryNews(country) {
+      const grid = document.getElementById('newsGrid');
+      const originalHtml = grid.innerHTML;
+      
+      grid.innerHTML = `
+        <div class="col-span-full py-16 text-center">
+          <i class="fas fa-satellite-dish fa-spin text-3xl text-amber-600 mb-3"></i>
+          <h3 class="text-base font-bold text-slate-900">Connecting to Global Wire for ${country.toUpperCase()}...</h3>
+          <p class="text-xs text-slate-500 mt-1">Retrieving latest dispatches from all 195 sovereign nations...</p>
+        </div>
+      `;
+
+      fetch(`/api/country-news?country=${encodeURIComponent(country)}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === 'success' && data.articles.length > 0) {
+            let cardsHtml = '';
+            data.articles.forEach(item => {
+              cardsHtml += `
+                <article class="news-card-unique bg-white border border-slate-200/80 rounded-2xl overflow-hidden flex flex-col shadow-xs" data-category="${item.category}">
+                  <div class="relative h-48 overflow-hidden bg-slate-100">
+                    <img src="${item.image}" alt="${item.title}" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition duration-500">
+                    <span class="absolute top-3 left-3 bg-slate-900/90 backdrop-blur-xs text-amber-300 text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-md shadow-sm">
+                      ${item.category}
+                    </span>
+                  </div>
+                  <div class="p-5 flex flex-col flex-grow justify-between">
+                    <div>
+                      <div class="text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                        <i class="far fa-clock"></i> ${item.date}
+                      </div>
+                      <h4 class="headline-font text-lg font-bold text-slate-900 leading-snug hover:text-amber-700 transition mb-2">
+                        <a href="/news/${item.id}">${item.title}</a>
+                      </h4>
+                      <p class="text-xs text-slate-700 leading-relaxed line-clamp-2 mb-4 font-normal">
+                        ${item.summary}
+                      </p>
+                    </div>
+                    <div class="flex items-center justify-between pt-3 border-t border-slate-100 text-xs">
+                      <div></div>
+                      <button onclick="likeArticle(${item.id}, this)" class="text-slate-600 hover:text-rose-500 flex items-center gap-1 transition">
+                        <i class="fas fa-heart text-rose-500"></i> <span>${item.likes}</span>
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              `;
+            });
+            grid.innerHTML = cardsHtml;
+          } else {
+            searchArticles();
+          }
+        })
+        .catch(err => {
+          grid.innerHTML = originalHtml;
+        });
     }
 
     function searchArticles() {

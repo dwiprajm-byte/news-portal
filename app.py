@@ -469,6 +469,51 @@ def submit_news():
 
     return render_template('submit_news.html', current_user=current_user)
 
+@app.route('/api/country-news')
+def get_country_news():
+    country_query = request.args.get('country', '').strip().lower()
+    if not country_query:
+        return jsonify({'status': 'error', 'message': 'No country provided'}), 400
+
+    country_clean = urllib.parse.quote(country_query)
+    feed_url = f"https://news.google.com/rss/search?q={country_clean}+when:24h&hl=en-US&gl=US&ceid=US:en"
+    
+    country_articles = []
+    try:
+        parsed = feedparser.parse(feed_url)
+        for entry in parsed.entries[:12]:
+            t_raw = clean_html(entry.get('title', ''))
+            if not t_raw:
+                continue
+            
+            s_raw = clean_html(entry.get('summary', entry.get('description', 'Verified country dispatch.')))
+            img = extract_safe_news_image(entry, t_raw, country_query.title())
+            art_id = int(time.time() * 1000) + len(country_articles)
+            
+            clean_content = generate_clean_article(t_raw, s_raw, country_query.title())
+            
+            article_obj = {
+                'id': art_id,
+                'title': t_raw,
+                'summary': s_raw[:220] + "...",
+                'content': clean_content,
+                'category': f"World • {country_query.upper()}",
+                'image': img,
+                'date': datetime.now().strftime("%a, %d %b %Y %H:%M:%S GMT"),
+                'created_at': datetime.now(),
+                'likes': 18,
+                'link': f"/news/{art_id}"
+            }
+            country_articles.append(article_obj)
+            
+            # গ্লোবাল ডাটাবেজে সংরক্ষণ যাতে সিঙ্গেল আর্টিকেলে ক্লিক করলে পেজ ওপেন হয়
+            with lock:
+                news_database.insert(0, article_obj)
+    except Exception:
+        pass
+
+    return jsonify({'status': 'success', 'country': country_query.title(), 'articles': country_articles})
+
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
