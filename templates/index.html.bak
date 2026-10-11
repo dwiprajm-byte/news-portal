@@ -1,0 +1,502 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>24 Early News | Autonomous Global & Regional Wire</title>
+  <script src="https://cdn.tailwindcss.com">    // লাইভ ব্রেকিং নিউজ অটো-চেক এবং স্বয়ংক্রিয় বারে যুক্ত করা (প্রতি ২০ সেকেন্ড)
+    let knownTickerFirst = "";
+    function checkLiveBreakingNews() {
+      fetch('/api/live-ticker')
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === 'success' && data.ticker && data.ticker.length > 0) {
+            const latest = data.ticker[0];
+            if (knownTickerFirst && knownTickerFirst !== latest) {
+              let updatedHtml = "";
+              data.ticker.forEach(item => {
+                updatedHtml += `<span class="mx-6 inline-flex items-center gap-2"><i class="fas fa-bolt text-amber-400 text-xs"></i> ${item}</span>`;
+              });
+              const boxA = document.getElementById('tickerContentA');
+              const boxB = document.getElementById('tickerContentB');
+              if (boxA && boxB) {
+                boxA.innerHTML = updatedHtml;
+                boxB.innerHTML = updatedHtml;
+              }
+            }
+            knownTickerFirst = latest;
+          }
+        })
+        .catch(() => {});
+    }
+    setInterval(checkLiveBreakingNews, 20000);
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
+    .headline-font { font-family: 'Playfair Display', Georgia, serif; }
+    .brand-font { font-family: 'Cinzel', serif; }
+    
+    /* ধীরগতির মার্জিত ব্রেকিং নিউজ স্ক্রলার */
+        /* সীমাহীন অবিরাম ব্রেকিং নিউজ অ্যানিমেশন (কোনো বিরতি ছাড়া) */
+    @keyframes infiniteTicker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .ticker-wrapper {
+      display: inline-flex;
+      white-space: nowrap;
+      width: max-content;
+      animation: infiniteTicker 180s linear infinite;
+    }
+    .ticker-wrapper:hover {
+      animation-play-state: paused;
+    }
+    
+    /* অনন্য কার্ড ইন্টারঅ্যাকশন এফেক্ট */
+    .news-card-unique {
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .news-card-unique:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 32px -8px rgba(15, 23, 42, 0.12);
+    }
+  </style>
+</head>
+<body class="text-slate-800 antialiased selection:bg-amber-500 selection:text-white">
+
+    <!-- ১. শীর্ষ ব্রেকিং নিউজ টিকার বার (Infinite Non-Stop Live Loop) -->
+  <div class="bg-red-800 text-white text-xs font-semibold overflow-hidden border-b border-red-900 shadow-inner flex items-center h-10">
+    <div class="bg-red-950 text-amber-300 px-4 py-2 font-bold uppercase tracking-widest text-[11px] flex items-center gap-2 z-20 flex-shrink-0 shadow-md">
+      <span class="w-2.5 h-2.5 rounded-full bg-red-400 animate-ping inline-block"></span> BREAKING NEWS
+    </div>
+    <div class="overflow-hidden w-full whitespace-nowrap pl-2 relative">
+      <div id="tickerTrack" class="ticker-wrapper text-sm sm:text-base tracking-wide font-semibold text-white">
+        <div id="tickerContentA" class="inline-flex items-center">
+          {% for t in ticker %}
+            <span class="mx-6 inline-flex items-center gap-2"><i class="fas fa-bolt text-amber-400 text-xs"></i> {{ t }}</span>
+          {% endfor %}
+        </div>
+        <div id="tickerContentB" class="inline-flex items-center">
+          {% for t in ticker %}
+            <span class="mx-6 inline-flex items-center gap-2"><i class="fas fa-bolt text-amber-400 text-xs"></i> {{ t }}</span>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ২. প্রিমিয়াম সোনা-রুপো ও মেটালস বার -->
+  <div class="bg-amber-50/80 backdrop-blur-xs border-b border-amber-200/60 px-4 py-1.5 text-[11px] text-amber-950 font-medium">
+    <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+      <div class="flex items-center gap-3 overflow-x-auto whitespace-nowrap py-0.5">
+        <span class="font-bold text-amber-900 flex items-center gap-1 text-[10px] tracking-wider uppercase"><i class="fas fa-coins text-amber-600"></i> Bullion Desk:</span>
+        <span class="bg-white/80 px-2 py-0.5 rounded border border-amber-200/60">Gold 24K: <strong>₹7,845/g</strong></span>
+        <span class="bg-white/80 px-2 py-0.5 rounded border border-amber-200/60">Silver: <strong>₹94.5/g</strong></span>
+        <span class="bg-white/80 px-2 py-0.5 rounded border border-amber-200/60">Platinum: <strong>₹3,240/g</strong></span>
+        <span class="bg-white/80 px-2 py-0.5 rounded border border-amber-200/60">Diamond 1ct: <strong>₹6,50,000</strong></span>
+      </div>
+      <a href="/metals" class="text-[10px] font-bold text-amber-800 hover:text-amber-950 underline flex items-center gap-1 flex-shrink-0">View All Country Rates &rarr;</a>
+    </div>
+  </div>
+
+  <!-- ৩. ইউনিক ব্র্যান্ডিং ও নেভিগেশন হেডার -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex flex-wrap justify-between items-center gap-3">
+      
+      <!-- অফিসিয়াল ব্যানার ও লোগো -->
+      <a href="/" class="flex items-center gap-3 group text-decoration-none">
+        <div class="w-10 h-10 flex-shrink-0 group-hover:scale-105 transition transform">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="40" height="40" fill="none">
+            <circle cx="24" cy="24" r="22" fill="#0f172a" stroke="#d97706" stroke-width="2.5"/>
+            <circle cx="24" cy="24" r="18" fill="none" stroke="#d97706" stroke-width="0.8" stroke-dasharray="2 2"/>
+            <text x="50%" y="58%" text-anchor="middle" fill="#d97706" font-family="'Cinzel', serif" font-weight="900" font-size="20">24</text>
+          </svg>
+        </div>
+        <span class="headline-font text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-none group-hover:text-amber-800 transition">24 EARLY NEWS</span>
+      </a>
+
+      <!-- সার্চ বার -->
+      <div class="flex-grow max-w-sm mx-1">
+        <div class="relative">
+          <input type="text" id="searchInput" autocomplete="off" spellcheck="false" onkeydown="handleCountrySearch(event)" placeholder="Search any of 195 Countries (e.g. Bangladesh, Japan, USA, Russia)..." class="w-full bg-slate-50 border border-slate-300 rounded-full py-1.5 pl-8 pr-3 text-xs focus:outline-none focus:ring-2 focus:ring-amber-500">
+          <i class="fas fa-search absolute left-2.5 top-2.5 text-slate-400 text-xs"></i>
+        </div>
+      </div>
+
+      <!-- উপরে ডানদিকে Search Language (অটো-সাজেস্ট ড্রপডাউন সহ) -->
+      <div class="relative">
+        <div class="flex items-center gap-1.5 bg-slate-100 border border-slate-300 rounded-full px-3 py-1 text-xs shadow-inner">
+          <i class="fas fa-language text-slate-500 text-sm"></i>
+          <input type="text" id="langSearchInput" autocomplete="off" spellcheck="false" oninput="showLanguageSuggestions(this.value)" onkeydown="handleLangKey(event)" placeholder="Search Language (e.g. Bengali, Hindi)..." class="bg-transparent border-none text-xs w-44 sm:w-56 focus:outline-none font-medium text-slate-700 placeholder-slate-400">
+          <button onclick="executeLanguageSearch()" class="bg-slate-900 text-white rounded-full px-2 py-0.5 text-[10px] font-bold hover:bg-slate-800 transition">Set</button>
+        </div>
+        <!-- লাইভ সাজেশন ড্রপডাউন মেনু -->
+        <div id="langDropdown" class="hidden absolute right-0 mt-1 w-64 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 max-h-60 overflow-y-auto divide-y divide-slate-100 text-xs">
+        </div>
+      </div>
+
+    </div>
+
+    <!-- টাস্কবার (All Stories-এর এক সারিতে সব বাটন) -->
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 py-2 overflow-x-auto border-t border-slate-100 flex items-center justify-between gap-2 text-xs">
+      <div class="flex items-center gap-2 whitespace-nowrap">
+        <a href="/" class="cat-btn font-bold px-3 py-1.5 rounded-md bg-slate-900 text-white border border-slate-900 hover:bg-slate-800 transition flex items-center gap-1 shadow-xs"><i class="fas fa-home text-amber-400"></i> Home</a>
+        <button onclick="filterNews('ALL', this)" class="cat-btn active font-bold px-3 py-1.5 rounded-md bg-slate-800 text-white transition flex items-center gap-1"><i class="fas fa-layer-group"></i> All Stories</button>
+        <button onclick="filterNews('Regional & Cities', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-slate-200 hover:border-slate-400 transition"><i class="fas fa-map-marker-alt text-emerald-600"></i> Regional & Cities</button>
+        <button onclick="filterNews('National', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-slate-200 hover:border-slate-400 transition"><i class="fas fa-flag text-rose-600"></i> National</button>
+        <button onclick="filterNews('World', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-slate-200 hover:border-slate-400 transition"><i class="fas fa-globe-americas text-blue-600"></i> International / World</button>
+        <button onclick="filterNews('Business', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-slate-200 hover:border-slate-400 transition"><i class="fas fa-chart-line text-emerald-700"></i> Markets</button>
+        <button onclick="filterNews('Sports', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-slate-200 hover:border-slate-400 transition"><i class="fas fa-futbol text-orange-600"></i> Sports</button>
+        <button onclick="filterNews('Technology', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-slate-200 hover:border-slate-400 transition"><i class="fas fa-microchip text-indigo-600"></i> Tech & AI</button>
+        <button onclick="filterNews('Entertainment', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-slate-200 hover:border-slate-400 transition"><i class="fas fa-film text-purple-600"></i> Entertainment</button>
+      </div>
+      <div class="flex items-center gap-2 whitespace-nowrap pl-4 border-l border-slate-200">
+        <a href="/metals" class="font-bold px-3 py-1.5 rounded-md bg-amber-500 hover:bg-amber-600 text-white transition flex items-center gap-1 shadow-xs"><i class="fas fa-coins"></i> Gold & Metals</a>
+        <a href="/jobs" class="font-bold px-3 py-1.5 rounded-md bg-blue-600 hover:bg-blue-700 text-white transition flex items-center gap-1 shadow-xs"><i class="fas fa-briefcase"></i> Job Desk</a>
+        <a href="/submit-news" class="font-bold px-3 py-1.5 rounded-md bg-stone-700 hover:bg-stone-800 text-white transition flex items-center gap-1 shadow-xs"><i class="fas fa-pen-nib"></i> Write News</a>
+        <a href="/recipes" class="font-bold px-3 py-1.5 rounded-md bg-orange-700 hover:bg-orange-800 text-white transition flex items-center gap-1 shadow-xs"><i class="fas fa-utensils"></i> Recipes</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ৪. মূল কন্টেন্ট ও অনন্য আর্কিটেকচার লেআউট -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    
+    <!-- সেকশন টাইটেল -->
+    <div class="flex items-center justify-between border-b-2 border-slate-900 pb-3 mb-8">
+      <div class="flex items-center gap-3">
+        <span class="w-3.5 h-3.5 bg-amber-600 rounded-sm inline-block"></span>
+        <h2 class="headline-font text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Active 24-Hour Verified News</h2>
+      </div>
+      <span class="text-xs font-semibold text-slate-500 flex items-center gap-1.5">
+        <i class="fas fa-sync-alt animate-spin text-amber-600"></i> 60-Second Auto-Rotation Active
+      </span>
+    </div>
+
+    <!-- অনন্য লিড হিরো ডিসপ্লে (Architectural Spotlight Showcase) -->
+    {% if lead %}
+    <div class="mb-10 bg-gradient-to-br from-slate-950 via-slate-900 to-stone-900 rounded-3xl overflow-hidden shadow-2xl border border-slate-800 grid grid-cols-1 lg:grid-cols-12 group">
+      <div class="lg:col-span-7 relative h-72 sm:h-96 lg:h-auto overflow-hidden">
+        <img src="{{ lead.image }}" alt="{{ lead.title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700 opacity-90">
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent lg:hidden"></div>
+        <span class="absolute top-4 left-4 bg-amber-500 text-slate-950 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full shadow-lg">
+          Top Spotlight
+        </span>
+      </div>
+      <div class="lg:col-span-5 p-6 sm:p-10 flex flex-col justify-center text-white">
+        <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-amber-400 mb-3">
+          <span>{{ lead.category }}</span> &bull; <span>{{ lead.date }}</span>
+        </div>
+        <h3 class="headline-font text-2xl sm:text-3xl font-extrabold leading-snug mb-4 group-hover:text-amber-200 transition">
+          <a href="/news/{{ lead.id }}">{{ lead.title }}</a>
+        </h3>
+        <p class="text-slate-300 text-xs sm:text-sm leading-relaxed mb-6 line-clamp-3">
+          {{ lead.summary }}
+        </p>
+        <div class="flex items-center justify-between pt-4 border-t border-slate-800">
+<!-- Dispatch Link Removed -->
+          <button onclick="likeArticle({{ lead.id }}, this)" class="text-xs font-bold text-slate-400 hover:text-rose-400 flex items-center gap-1.5 transition">
+            <i class="fas fa-heart text-rose-500"></i> <span>{{ lead.likes }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- ৫. অনন্য কার্ড গ্রিড (Modern Glass Card Layout) -->
+    <div id="newsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for item in news_list[1:] %}
+      <article class="news-card-unique bg-white border border-slate-200/80 rounded-2xl overflow-hidden flex flex-col shadow-xs" data-category="{{ item.category }}">
+        <div class="relative h-48 overflow-hidden bg-slate-100">
+          <img src="{{ item.image }}" alt="{{ item.title }}" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition duration-500">
+          <span class="absolute top-3 left-3 bg-slate-900/90 backdrop-blur-xs text-amber-300 text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-md shadow-sm">
+            {{ item.category }}
+          </span>
+        </div>
+        <div class="p-5 flex flex-col flex-grow justify-between">
+          <div>
+            <div class="text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+              <i class="far fa-clock"></i> {{ item.date }}
+            </div>
+            <h4 class="headline-font text-lg font-bold text-slate-900 leading-snug hover:text-amber-700 transition mb-2">
+              <a href="/news/{{ item.id }}">{{ item.title }}</a>
+            </h4>
+            <p class="text-xs text-slate-700 leading-relaxed line-clamp-2 mb-4 font-normal">
+              {{ item.summary }}
+            </p>
+          </div>
+          <div class="flex items-center justify-between pt-3 border-t border-slate-100 text-xs">
+<div></div>
+            <button onclick="likeArticle({{ item.id }}, this)" class="text-slate-600 hover:text-rose-500 flex items-center gap-1 transition">
+              <i class="fas fa-heart text-rose-500"></i> <span>{{ item.likes }}</span>
+            </button>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+
+  </main>
+
+  <!-- ৬. ফুটার (সম্পূর্ণ সংবিধিবদ্ধ ৫টি লিগ্যাল পেজ সহ) -->
+  <footer class="bg-[#0f172a] text-slate-400 text-xs py-10 mt-16 text-center border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 flex flex-wrap justify-center gap-6 mb-4 font-semibold text-slate-300">
+      <a href="/about-us" class="hover:text-white transition">About Us</a>
+      <a href="/contact" class="hover:text-white transition">Contact Us</a>
+      <a href="/privacy-policy" class="hover:text-white transition">Privacy Policy</a>
+      <a href="/terms" class="hover:text-white transition">Terms of Service</a>
+      <a href="/disclaimer" class="hover:text-white transition">Disclaimer</a>
+      <a href="/metals" class="hover:text-white transition">Precious Metals</a>
+      <a href="/jobs" class="hover:text-white transition">Job Board</a>
+    </div>
+    <p class="text-slate-400">&copy; 2026 24 Early News. Founder & Director: DWIPRAJ MALLICK.</p>
+  </footer>
+
+  <!-- জাভাস্ক্রিপ্ট কন্ট্রোলার (সার্চ, ফিল্টার, লাইক এবং ৬০ সেকেন্ড রোটেশন) -->
+  <script>
+    function filterNews(cat, btn) {
+      document.querySelectorAll('.cat-btn').forEach(b => {
+        b.classList.remove('bg-slate-800', 'text-white', 'active');
+        b.classList.add('bg-white', 'text-slate-800');
+      });
+      btn.classList.add('bg-slate-800', 'text-white', 'active');
+      btn.classList.remove('bg-white');
+
+      const cards = document.querySelectorAll('.news-card-unique');
+      cards.forEach(card => {
+        if (cat === 'ALL' || card.getAttribute('data-category') === cat) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+        function handleCountrySearch(event) {
+      if (event.key === 'Enter') {
+        const query = document.getElementById('searchInput').value.trim();
+        if (!query) return;
+        fetchCountryNews(query);
+      } else {
+        searchArticles();
+      }
+    }
+
+    function fetchCountryNews(country) {
+      const grid = document.getElementById('newsGrid');
+      const originalHtml = grid.innerHTML;
+      
+      grid.innerHTML = `
+        <div class="col-span-full py-16 text-center">
+          <i class="fas fa-satellite-dish fa-spin text-3xl text-amber-600 mb-3"></i>
+          <h3 class="text-base font-bold text-slate-900">Connecting to Global Wire for ${country.toUpperCase()}...</h3>
+          <p class="text-xs text-slate-500 mt-1">Retrieving latest dispatches from all 195 sovereign nations...</p>
+        </div>
+      `;
+
+      fetch(`/api/country-news?country=${encodeURIComponent(country)}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === 'success' && data.articles.length > 0) {
+            let cardsHtml = '';
+            data.articles.forEach(item => {
+              cardsHtml += `
+                <article class="news-card-unique bg-white border border-slate-200/80 rounded-2xl overflow-hidden flex flex-col shadow-xs" data-category="${item.category}">
+                  <div class="relative h-48 overflow-hidden bg-slate-100">
+                    <img src="${item.image}" alt="${item.title}" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition duration-500">
+                    <span class="absolute top-3 left-3 bg-slate-900/90 backdrop-blur-xs text-amber-300 text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-md shadow-sm">
+                      ${item.category}
+                    </span>
+                  </div>
+                  <div class="p-5 flex flex-col flex-grow justify-between">
+                    <div>
+                      <div class="text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                        <i class="far fa-clock"></i> ${item.date}
+                      </div>
+                      <h4 class="headline-font text-lg font-bold text-slate-900 leading-snug hover:text-amber-700 transition mb-2">
+                        <a href="/news/${item.id}">${item.title}</a>
+                      </h4>
+                      <p class="text-xs text-slate-700 leading-relaxed line-clamp-2 mb-4 font-normal">
+                        ${item.summary}
+                      </p>
+                    </div>
+                    <div class="flex items-center justify-between pt-3 border-t border-slate-100 text-xs">
+                      <div></div>
+                      <button onclick="likeArticle(${item.id}, this)" class="text-slate-600 hover:text-rose-500 flex items-center gap-1 transition">
+                        <i class="fas fa-heart text-rose-500"></i> <span>${item.likes}</span>
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              `;
+            });
+            grid.innerHTML = cardsHtml;
+          } else {
+            searchArticles();
+          }
+        })
+        .catch(err => {
+          grid.innerHTML = originalHtml;
+        });
+    }
+
+    function searchArticles() {
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      const cards = document.querySelectorAll('.news-card-unique');
+      cards.forEach(card => {
+        const text = card.innerText.toLowerCase();
+        card.style.display = text.includes(q) ? 'flex' : 'none';
+      });
+    }
+
+        // বৈশ্বিক ও আঞ্চলিক ভাষার ডেটাবেজ ও কোড
+    const AVAILABLE_LANGUAGES = [
+      { name: "Bengali (বাংলা)", code: "bn", aliases: ["bangla", "bengali", "bn", "ba"] },
+      { name: "Hindi (हिन्दी)", code: "hi", aliases: ["hindi", "hi", "hin"] },
+      { name: "English", code: "en", aliases: ["english", "en", "eng"] },
+      { name: "Urdu (اردو)", code: "ur", aliases: ["urdu", "ur"] },
+      { name: "Tamil (தமிழ்)", code: "ta", aliases: ["tamil", "ta"] },
+      { name: "Telugu (తెలుగు)", code: "te", aliases: ["telugu", "te"] },
+      { name: "Marathi (मराठी)", code: "mr", aliases: ["marathi", "mr"] },
+      { name: "Gujarati (ગુજરાતી)", code: "gu", aliases: ["gujarati", "gu"] },
+      { name: "Punjabi (ਪੰਜਾਬੀ)", code: "pa", aliases: ["punjabi", "pa"] },
+      { name: "Malayalam (മലയാളം)", code: "ml", aliases: ["malayalam", "ml"] },
+      { name: "Kannada (ಕನ್ನಡ)", code: "kn", aliases: ["kannada", "kn"] },
+      { name: "Odia (ଓଡ଼ିଆ)", code: "or", aliases: ["odia", "oriya", "or"] },
+      { name: "Assamese (অসমীয়া)", code: "as", aliases: ["assamese", "as"] },
+      { name: "Arabic (العربية)", code: "ar", aliases: ["arabic", "ar"] },
+      { name: "Spanish (Español)", code: "es", aliases: ["spanish", "es", "espanol"] },
+      { name: "French (Français)", code: "fr", aliases: ["french", "fr"] },
+      { name: "German (Deutsch)", code: "de", aliases: ["german", "de"] },
+      { name: "Russian (Русский)", code: "ru", aliases: ["russian", "ru"] },
+      { name: "Chinese (中文)", code: "zh-CN", aliases: ["chinese", "zh", "mandarin"] },
+      { name: "Japanese (日本語)", code: "ja", aliases: ["japanese", "ja"] }
+    ];
+
+    function showLanguageSuggestions(query) {
+      const dropdown = document.getElementById('langDropdown');
+      const q = query.trim().toLowerCase();
+      
+      if (!q) {
+        dropdown.classList.add('hidden');
+        dropdown.innerHTML = '';
+        return;
+      }
+
+      // ১ বা ২টি অক্ষর মিললেই স্বয়ংক্রিয় ফিল্টার
+      const matches = AVAILABLE_LANGUAGES.filter(lang => {
+        return lang.name.toLowerCase().includes(q) || 
+               lang.code.toLowerCase().startsWith(q) || 
+               lang.aliases.some(a => a.startsWith(q) || a.includes(q));
+      });
+
+      if (matches.length === 0) {
+        dropdown.innerHTML = '<div class="p-3 text-slate-400 text-center italic text-[11px]">No matching language found</div>';
+        dropdown.classList.remove('hidden');
+        return;
+      }
+
+      let html = '';
+      matches.slice(0, 8).forEach(lang => {
+        html += `<div onclick="selectLanguage('${lang.code}', '${lang.name}')" class="px-3.5 py-2 hover:bg-amber-50 cursor-pointer flex items-center justify-between transition group">
+                  <span class="font-medium text-slate-800 group-hover:text-amber-900">${lang.name}</span>
+                  <span class="text-[10px] uppercase font-bold text-slate-400 group-hover:text-amber-700 bg-slate-100 group-hover:bg-amber-100 px-1.5 py-0.5 rounded">${lang.code}</span>
+                 </div>`;
+      });
+
+      dropdown.innerHTML = html;
+      dropdown.classList.remove('hidden');
+    }
+
+    function selectLanguage(code, name) {
+      document.getElementById('langSearchInput').value = name;
+      document.getElementById('langDropdown').classList.add('hidden');
+      applyTranslation(code);
+    }
+
+    function handleLangKey(event) {
+      if (event.key === 'Enter') {
+        executeLanguageSearch();
+      }
+    }
+
+    function executeLanguageSearch() {
+      const q = document.getElementById('langSearchInput').value.trim().toLowerCase();
+      if (!q) return;
+
+      const found = AVAILABLE_LANGUAGES.find(lang => 
+        lang.name.toLowerCase().includes(q) || 
+        lang.code.toLowerCase() === q || 
+        lang.aliases.some(a => a.toLowerCase() === q)
+      );
+
+      const targetCode = found ? found.code : (q.length === 2 ? q : "bn");
+      applyTranslation(targetCode);
+    }
+
+    function applyTranslation(code) {
+      document.getElementById('langDropdown').classList.add('hidden');
+      const cleanUrl = window.location.href.split('#')[0];
+      window.open(`https://translate.google.com/translate?sl=auto&tl=${code}&u=${encodeURIComponent(cleanUrl)}`, '_blank');
+    }
+
+    // ড্রপডাউনের বাইরে ক্লিক করলে স্বয়ংক্রিয় বন্ধ হয়ে যাওয়া
+    document.addEventListener('click', function(e) {
+      const box = document.getElementById('langSearchInput');
+      const dropdown = document.getElementById('langDropdown');
+      if (dropdown && !dropdown.contains(e.target) && e.target !== box) {
+        dropdown.classList.add('hidden');
+      }
+    });
+
+    function executeLanguageSearchLegacy() {
+      const q = document.getElementById('langSearchInput').value.trim();
+      if (!q) return;
+      window.open(`https://translate.google.com/translate?sl=auto&tl=bn&u=${encodeURIComponent(window.location.href)}`, '_blank');
+    }
+
+    function likeArticle(id, btn) {
+      fetch(`/api/like/${id}`, { method: 'POST' })
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === 'success') {
+            btn.querySelector('span').innerText = data.likes;
+          }
+        });
+    }
+
+    // প্রতি ৬০ সেকেন্ডে স্বয়ংক্রিয়ভাবে খবরের রোটেশন চালু রাখা
+    setTimeout(() => {
+      window.location.reload();
+    }, 60000);
+      // লাইভ ব্রেকিং নিউজ অটো-চেক এবং স্বয়ংক্রিয় বারে যুক্ত করা (প্রতি ২০ সেকেন্ড)
+    let knownTickerFirst = "";
+    function checkLiveBreakingNews() {
+      fetch('/api/live-ticker')
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === 'success' && data.ticker && data.ticker.length > 0) {
+            const latest = data.ticker[0];
+            if (knownTickerFirst && knownTickerFirst !== latest) {
+              let updatedHtml = "";
+              data.ticker.forEach(item => {
+                updatedHtml += `<span class="mx-6 inline-flex items-center gap-2"><i class="fas fa-bolt text-amber-400 text-xs"></i> ${item}</span>`;
+              });
+              const boxA = document.getElementById('tickerContentA');
+              const boxB = document.getElementById('tickerContentB');
+              if (boxA && boxB) {
+                boxA.innerHTML = updatedHtml;
+                boxB.innerHTML = updatedHtml;
+              }
+            }
+            knownTickerFirst = latest;
+          }
+        })
+        .catch(() => {});
+    }
+    setInterval(checkLiveBreakingNews, 20000);
+  </script>
+</body>
+</html>
