@@ -88,11 +88,16 @@
         </div>
       </div>
 
-      <!-- উপরে ডানদিকে Search Language -->
-      <div class="flex items-center gap-1.5 bg-slate-100 border border-slate-300 rounded-full px-3 py-1 text-xs shadow-inner">
-        <i class="fas fa-language text-slate-500 text-sm"></i>
-        <input type="text" id="langSearchInput" autocomplete="off" spellcheck="false" onkeydown="if(event.key==='Enter') executeLanguageSearch()" placeholder="Search Language (e.g. Bengali, Hindi)..." class="bg-transparent border-none text-xs w-44 sm:w-56 focus:outline-none font-medium text-slate-700 placeholder-slate-400">
-        <button onclick="executeLanguageSearch()" class="bg-slate-900 text-white rounded-full px-2 py-0.5 text-[10px] font-bold hover:bg-slate-800 transition">Set</button>
+      <!-- উপরে ডানদিকে Search Language (অটো-সাজেস্ট ড্রপডাউন সহ) -->
+      <div class="relative">
+        <div class="flex items-center gap-1.5 bg-slate-100 border border-slate-300 rounded-full px-3 py-1 text-xs shadow-inner">
+          <i class="fas fa-language text-slate-500 text-sm"></i>
+          <input type="text" id="langSearchInput" autocomplete="off" spellcheck="false" oninput="showLanguageSuggestions(this.value)" onkeydown="handleLangKey(event)" placeholder="Search Language (e.g. Bengali, Hindi)..." class="bg-transparent border-none text-xs w-44 sm:w-56 focus:outline-none font-medium text-slate-700 placeholder-slate-400">
+          <button onclick="executeLanguageSearch()" class="bg-slate-900 text-white rounded-full px-2 py-0.5 text-[10px] font-bold hover:bg-slate-800 transition">Set</button>
+        </div>
+        <!-- লাইভ সাজেশন ড্রপডাউন মেনু -->
+        <div id="langDropdown" class="hidden absolute right-0 mt-1 w-64 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 max-h-60 overflow-y-auto divide-y divide-slate-100 text-xs">
+        </div>
       </div>
 
     </div>
@@ -241,7 +246,107 @@
       });
     }
 
+        // বৈশ্বিক ও আঞ্চলিক ভাষার ডেটাবেজ ও কোড
+    const AVAILABLE_LANGUAGES = [
+      { name: "Bengali (বাংলা)", code: "bn", aliases: ["bangla", "bengali", "bn", "ba"] },
+      { name: "Hindi (हिन्दी)", code: "hi", aliases: ["hindi", "hi", "hin"] },
+      { name: "English", code: "en", aliases: ["english", "en", "eng"] },
+      { name: "Urdu (اردو)", code: "ur", aliases: ["urdu", "ur"] },
+      { name: "Tamil (தமிழ்)", code: "ta", aliases: ["tamil", "ta"] },
+      { name: "Telugu (తెలుగు)", code: "te", aliases: ["telugu", "te"] },
+      { name: "Marathi (मराठी)", code: "mr", aliases: ["marathi", "mr"] },
+      { name: "Gujarati (ગુજરાતી)", code: "gu", aliases: ["gujarati", "gu"] },
+      { name: "Punjabi (ਪੰਜਾਬੀ)", code: "pa", aliases: ["punjabi", "pa"] },
+      { name: "Malayalam (മലയാളം)", code: "ml", aliases: ["malayalam", "ml"] },
+      { name: "Kannada (ಕನ್ನಡ)", code: "kn", aliases: ["kannada", "kn"] },
+      { name: "Odia (ଓଡ଼ିଆ)", code: "or", aliases: ["odia", "oriya", "or"] },
+      { name: "Assamese (অসমীয়া)", code: "as", aliases: ["assamese", "as"] },
+      { name: "Arabic (العربية)", code: "ar", aliases: ["arabic", "ar"] },
+      { name: "Spanish (Español)", code: "es", aliases: ["spanish", "es", "espanol"] },
+      { name: "French (Français)", code: "fr", aliases: ["french", "fr"] },
+      { name: "German (Deutsch)", code: "de", aliases: ["german", "de"] },
+      { name: "Russian (Русский)", code: "ru", aliases: ["russian", "ru"] },
+      { name: "Chinese (中文)", code: "zh-CN", aliases: ["chinese", "zh", "mandarin"] },
+      { name: "Japanese (日本語)", code: "ja", aliases: ["japanese", "ja"] }
+    ];
+
+    function showLanguageSuggestions(query) {
+      const dropdown = document.getElementById('langDropdown');
+      const q = query.trim().toLowerCase();
+      
+      if (!q) {
+        dropdown.classList.add('hidden');
+        dropdown.innerHTML = '';
+        return;
+      }
+
+      // ১ বা ২টি অক্ষর মিললেই স্বয়ংক্রিয় ফিল্টার
+      const matches = AVAILABLE_LANGUAGES.filter(lang => {
+        return lang.name.toLowerCase().includes(q) || 
+               lang.code.toLowerCase().startsWith(q) || 
+               lang.aliases.some(a => a.startsWith(q) || a.includes(q));
+      });
+
+      if (matches.length === 0) {
+        dropdown.innerHTML = '<div class="p-3 text-slate-400 text-center italic text-[11px]">No matching language found</div>';
+        dropdown.classList.remove('hidden');
+        return;
+      }
+
+      let html = '';
+      matches.slice(0, 8).forEach(lang => {
+        html += `<div onclick="selectLanguage('${lang.code}', '${lang.name}')" class="px-3.5 py-2 hover:bg-amber-50 cursor-pointer flex items-center justify-between transition group">
+                  <span class="font-medium text-slate-800 group-hover:text-amber-900">${lang.name}</span>
+                  <span class="text-[10px] uppercase font-bold text-slate-400 group-hover:text-amber-700 bg-slate-100 group-hover:bg-amber-100 px-1.5 py-0.5 rounded">${lang.code}</span>
+                 </div>`;
+      });
+
+      dropdown.innerHTML = html;
+      dropdown.classList.remove('hidden');
+    }
+
+    function selectLanguage(code, name) {
+      document.getElementById('langSearchInput').value = name;
+      document.getElementById('langDropdown').classList.add('hidden');
+      applyTranslation(code);
+    }
+
+    function handleLangKey(event) {
+      if (event.key === 'Enter') {
+        executeLanguageSearch();
+      }
+    }
+
     function executeLanguageSearch() {
+      const q = document.getElementById('langSearchInput').value.trim().toLowerCase();
+      if (!q) return;
+
+      const found = AVAILABLE_LANGUAGES.find(lang => 
+        lang.name.toLowerCase().includes(q) || 
+        lang.code.toLowerCase() === q || 
+        lang.aliases.some(a => a.toLowerCase() === q)
+      );
+
+      const targetCode = found ? found.code : (q.length === 2 ? q : "bn");
+      applyTranslation(targetCode);
+    }
+
+    function applyTranslation(code) {
+      document.getElementById('langDropdown').classList.add('hidden');
+      const cleanUrl = window.location.href.split('#')[0];
+      window.open(`https://translate.google.com/translate?sl=auto&tl=${code}&u=${encodeURIComponent(cleanUrl)}`, '_blank');
+    }
+
+    // ড্রপডাউনের বাইরে ক্লিক করলে স্বয়ংক্রিয় বন্ধ হয়ে যাওয়া
+    document.addEventListener('click', function(e) {
+      const box = document.getElementById('langSearchInput');
+      const dropdown = document.getElementById('langDropdown');
+      if (dropdown && !dropdown.contains(e.target) && e.target !== box) {
+        dropdown.classList.add('hidden');
+      }
+    });
+
+    function executeLanguageSearchLegacy() {
       const q = document.getElementById('langSearchInput').value.trim();
       if (!q) return;
       window.open(`https://translate.google.com/translate?sl=auto&tl=bn&u=${encodeURIComponent(window.location.href)}`, '_blank');
