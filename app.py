@@ -543,3 +543,27 @@ if __name__ == '__main__':
     app.run(host='0.0.0.0', port=port)
 import keep_alive
 
+
+# --- Auto Crash Handler & Fallback ---
+@app.errorhandler(500)
+def handle_500_error(e):
+    try:
+        # যদি index.html ক্র্যাশ করে, তবে ক্যাশ করা বা সংরক্ষিত ভিউ প্রদর্শন করবে
+        return render_template('index.html.bak'), 200
+    except Exception:
+        # যদি ব্যাকআপ ফাইলও না মেলে, তবে সাইট ডাউন না দেখিয়ে সেফ মোড পেজ দেখাবে
+        return '''
+        <!DOCTYPE html>
+        <html lang="en">
+        <head><meta charset="UTF-8"><title>24 Early News</title></head>
+        <body style="font-family:sans-serif;text-align:center;padding:50px;">
+            <h2>24 Early News</h2>
+            <p>আমাদের সিস্টেম আপডেট হচ্ছে। কিছুক্ষণের মধ্যে স্বয়ংক্রিয়ভাবে লোড হবে...</p>
+            <script>setTimeout(function(){ location.reload(); }, 5000);</script>
+        </body>
+        </html>
+        ''', 200
+
+@app.errorhandler(Exception)
+def handle_general_exception(e):
+    return handle_500_error(e)
