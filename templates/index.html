@@ -4,7 +4,33 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>24 Early News | Autonomous Global & Regional Wire</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com">    // লাইভ ব্রেকিং নিউজ অটো-চেক এবং স্বয়ংক্রিয় বারে যুক্ত করা (প্রতি ২০ সেকেন্ড)
+    let knownTickerFirst = "";
+    function checkLiveBreakingNews() {
+      fetch('/api/live-ticker')
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === 'success' && data.ticker && data.ticker.length > 0) {
+            const latest = data.ticker[0];
+            if (knownTickerFirst && knownTickerFirst !== latest) {
+              let updatedHtml = "";
+              data.ticker.forEach(item => {
+                updatedHtml += `<span class="mx-6 inline-flex items-center gap-2"><i class="fas fa-bolt text-amber-400 text-xs"></i> ${item}</span>`;
+              });
+              const boxA = document.getElementById('tickerContentA');
+              const boxB = document.getElementById('tickerContentB');
+              if (boxA && boxB) {
+                boxA.innerHTML = updatedHtml;
+                boxB.innerHTML = updatedHtml;
+              }
+            }
+            knownTickerFirst = latest;
+          }
+        })
+        .catch(() => {});
+    }
+    setInterval(checkLiveBreakingNews, 20000);
+  </script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -13,16 +39,20 @@
     .brand-font { font-family: 'Cinzel', serif; }
     
     /* ধীরগতির মার্জিত ব্রেকিং নিউজ স্ক্রলার */
-    @keyframes smoothTicker {
-      0% { transform: translateX(100%); }
-      100% { transform: translateX(-100%); }
+        /* সীমাহীন অবিরাম ব্রেকিং নিউজ অ্যানিমেশন (কোনো বিরতি ছাড়া) */
+    @keyframes infiniteTicker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
     }
-    .ticker-track {
-      display: inline-block;
+    .ticker-wrapper {
+      display: inline-flex;
       white-space: nowrap;
-      animation: smoothTicker 240s linear infinite;
+      width: max-content;
+      animation: infiniteTicker 180s linear infinite;
     }
-    .ticker-track:hover { animation-play-state: paused; }
+    .ticker-wrapper:hover {
+      animation-play-state: paused;
+    }
     
     /* অনন্য কার্ড ইন্টারঅ্যাকশন এফেক্ট */
     .news-card-unique {
@@ -36,16 +66,23 @@
 </head>
 <body class="text-slate-800 antialiased selection:bg-amber-500 selection:text-white">
 
-  <!-- ১. শীর্ষ ব্রেকিং নিউজ টিকার বার -->
+    <!-- ১. শীর্ষ ব্রেকিং নিউজ টিকার বার (Infinite Non-Stop Live Loop) -->
   <div class="bg-red-800 text-white text-xs font-semibold overflow-hidden border-b border-red-900 shadow-inner flex items-center h-10">
-    <div class="bg-red-950 text-amber-300 px-4 py-1.5 font-bold uppercase tracking-widest text-[10px] flex items-center gap-1.5 z-20 flex-shrink-0 shadow-md">
+    <div class="bg-red-950 text-amber-300 px-4 py-2 font-bold uppercase tracking-widest text-[11px] flex items-center gap-2 z-20 flex-shrink-0 shadow-md">
       <span class="w-2.5 h-2.5 rounded-full bg-red-400 animate-ping inline-block"></span> BREAKING NEWS
     </div>
-    <div class="overflow-hidden w-full whitespace-nowrap pl-4">
-      <div class="ticker-track text-sm sm:text-base tracking-wide font-semibold text-white">
-        {% for t in ticker %}
-          <span class="mx-6 inline-flex items-center gap-2"><i class="fas fa-bolt text-amber-400 text-[9px]"></i> {{ t }}</span>
-        {% endfor %}
+    <div class="overflow-hidden w-full whitespace-nowrap pl-2 relative">
+      <div id="tickerTrack" class="ticker-wrapper text-sm sm:text-base tracking-wide font-semibold text-white">
+        <div id="tickerContentA" class="inline-flex items-center">
+          {% for t in ticker %}
+            <span class="mx-6 inline-flex items-center gap-2"><i class="fas fa-bolt text-amber-400 text-xs"></i> {{ t }}</span>
+          {% endfor %}
+        </div>
+        <div id="tickerContentB" class="inline-flex items-center">
+          {% for t in ticker %}
+            <span class="mx-6 inline-flex items-center gap-2"><i class="fas fa-bolt text-amber-400 text-xs"></i> {{ t }}</span>
+          {% endfor %}
+        </div>
       </div>
     </div>
   </div>
@@ -434,6 +471,32 @@
     setTimeout(() => {
       window.location.reload();
     }, 60000);
+      // লাইভ ব্রেকিং নিউজ অটো-চেক এবং স্বয়ংক্রিয় বারে যুক্ত করা (প্রতি ২০ সেকেন্ড)
+    let knownTickerFirst = "";
+    function checkLiveBreakingNews() {
+      fetch('/api/live-ticker')
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === 'success' && data.ticker && data.ticker.length > 0) {
+            const latest = data.ticker[0];
+            if (knownTickerFirst && knownTickerFirst !== latest) {
+              let updatedHtml = "";
+              data.ticker.forEach(item => {
+                updatedHtml += `<span class="mx-6 inline-flex items-center gap-2"><i class="fas fa-bolt text-amber-400 text-xs"></i> ${item}</span>`;
+              });
+              const boxA = document.getElementById('tickerContentA');
+              const boxB = document.getElementById('tickerContentB');
+              if (boxA && boxB) {
+                boxA.innerHTML = updatedHtml;
+                boxB.innerHTML = updatedHtml;
+              }
+            }
+            knownTickerFirst = latest;
+          }
+        })
+        .catch(() => {});
+    }
+    setInterval(checkLiveBreakingNews, 20000);
   </script>
 </body>
 </html>

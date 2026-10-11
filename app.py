@@ -514,6 +514,12 @@ def get_country_news():
 
     return jsonify({'status': 'success', 'country': country_query.title(), 'articles': country_articles})
 
+@app.route('/api/live-ticker')
+def get_live_ticker():
+    with lock:
+        current_titles = [n['title'] for n in news_database[:25]] if news_database else ["Live Wire Connecting..."]
+    return jsonify({'status': 'success', 'ticker': current_titles})
+
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
