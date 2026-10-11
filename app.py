@@ -1,4 +1,5 @@
-﻿import os
+﻿from social_dispatcher import trigger_social_pipeline
+import os
 import re
 import time
 import socket
@@ -394,7 +395,8 @@ def login_page():
 @app.route('/logout')
 def logout_page():
     session.clear()
-    return redirect('/')
+    trigger_social_pipeline(article)
+        return redirect('/')
 
 @app.route('/pricing')
 def pricing_page():
