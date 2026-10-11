@@ -543,6 +543,11 @@ def sitemap():
 def contact_us():
     return render_template('contact.html')
 
+
+@app.route('/editorial-charter')
+def editorial_charter():
+    return render_template('charter.html')
+
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
@@ -572,4 +577,5 @@ def handle_500_error(e):
 @app.errorhandler(Exception)
 def handle_general_exception(e):
     return handle_500_error(e)
+
 
