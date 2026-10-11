@@ -538,6 +538,11 @@ def sitemap():
 </urlset>'''
     return Response(xml, mimetype="application/xml")
 
+
+@app.route('/contact-us')
+def contact_us():
+    return render_template('contact.html')
+
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
@@ -567,3 +572,4 @@ def handle_500_error(e):
 @app.errorhandler(Exception)
 def handle_general_exception(e):
     return handle_500_error(e)
+
