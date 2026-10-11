@@ -20,7 +20,7 @@
     .ticker-track {
       display: inline-block;
       white-space: nowrap;
-      animation: smoothTicker 120s linear infinite;
+      animation: smoothTicker 240s linear infinite;
     }
     .ticker-track:hover { animation-play-state: paused; }
     
@@ -37,12 +37,12 @@
 <body class="text-slate-800 antialiased selection:bg-amber-500 selection:text-white">
 
   <!-- ১. শীর্ষ ব্রেকিং নিউজ টিকার বার -->
-  <div class="bg-red-800 text-white text-xs font-semibold overflow-hidden border-b border-red-900 shadow-inner flex items-center h-8.5">
+  <div class="bg-red-800 text-white text-xs font-semibold overflow-hidden border-b border-red-900 shadow-inner flex items-center h-10">
     <div class="bg-red-950 text-amber-300 px-4 py-1.5 font-bold uppercase tracking-widest text-[10px] flex items-center gap-1.5 z-20 flex-shrink-0 shadow-md">
-      <span class="w-2 h-2 rounded-full bg-red-500 animate-ping inline-block"></span> BREAKING
+      <span class="w-2.5 h-2.5 rounded-full bg-red-400 animate-ping inline-block"></span> BREAKING NEWS
     </div>
     <div class="overflow-hidden w-full whitespace-nowrap pl-4">
-      <div class="ticker-track text-[11px] tracking-wide font-medium text-slate-100">
+      <div class="ticker-track text-sm sm:text-base tracking-wide font-semibold text-white">
         {% for t in ticker %}
           <span class="mx-6 inline-flex items-center gap-2"><i class="fas fa-bolt text-amber-400 text-[9px]"></i> {{ t }}</span>
         {% endfor %}
