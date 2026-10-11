@@ -99,7 +99,7 @@
         <span class="bg-white/80 px-2 py-0.5 rounded border border-amber-200/60">Platinum: <strong>₹3,240/g</strong></span>
         <span class="bg-white/80 px-2 py-0.5 rounded border border-amber-200/60">Diamond 1ct: <strong>₹6,50,000</strong></span>
       </div>
-      <a href="/metals" class="text-[10px] font-bold text-amber-800 hover:text-amber-950 underline flex items-center gap-1 flex-shrink-0">View All Country Rates &rarr;</a>
+      
     </div>
   </div>
 
@@ -155,8 +155,8 @@
         <button onclick="filterNews('Entertainment', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-slate-200 hover:border-slate-400 transition"><i class="fas fa-film text-purple-600"></i> Entertainment</button>
       </div>
       <div class="flex items-center gap-2 whitespace-nowrap pl-4 border-l border-slate-200">
-        <a href="/metals" class="font-bold px-3 py-1.5 rounded-md bg-amber-500 hover:bg-amber-600 text-white transition flex items-center gap-1 shadow-xs"><i class="fas fa-coins"></i> Gold & Metals</a>
-        <a href="/jobs" class="font-bold px-3 py-1.5 rounded-md bg-blue-600 hover:bg-blue-700 text-white transition flex items-center gap-1 shadow-xs"><i class="fas fa-briefcase"></i> Job Desk</a>
+        
+        
         <a href="/submit-news" class="font-bold px-3 py-1.5 rounded-md bg-stone-700 hover:bg-stone-800 text-white transition flex items-center gap-1 shadow-xs"><i class="fas fa-pen-nib"></i> Write News</a>
         <a href="/recipes" class="font-bold px-3 py-1.5 rounded-md bg-orange-700 hover:bg-orange-800 text-white transition flex items-center gap-1 shadow-xs"><i class="fas fa-utensils"></i> Recipes</a>
       </div>
@@ -250,8 +250,8 @@
       <a href="/privacy-policy" class="hover:text-white transition">Privacy Policy</a>
       <a href="/terms" class="hover:text-white transition">Terms of Service</a>
       <a href="/disclaimer" class="hover:text-white transition">Disclaimer</a>
-      <a href="/metals" class="hover:text-white transition">Precious Metals</a>
-      <a href="/jobs" class="hover:text-white transition">Job Board</a>
+      
+      
     </div>
     <p class="text-slate-400">&copy; 2026 24 Early News. Founder & Director: DWIPRAJ MALLICK.</p>
   </footer>
@@ -268,7 +268,7 @@
 
       const cards = document.querySelectorAll('.news-card-unique');
       cards.forEach(card => {
-        if (cat === 'ALL' || card.getAttribute('data-category') === cat) {
+        if (cat === 'ALL' | card.getAttribute('data-category') === cat) {
           card.style.display = 'flex';
         } else {
           card.style.display = 'none';
@@ -389,9 +389,9 @@
 
       // ১ বা ২টি অক্ষর মিললেই স্বয়ংক্রিয় ফিল্টার
       const matches = AVAILABLE_LANGUAGES.filter(lang => {
-        return lang.name.toLowerCase().includes(q) || 
-               lang.code.toLowerCase().startsWith(q) || 
-               lang.aliases.some(a => a.startsWith(q) || a.includes(q));
+        return lang.name.toLowerCase().includes(q) | 
+               lang.code.toLowerCase().startsWith(q) | 
+               lang.aliases.some(a => a.startsWith(q) | a.includes(q));
       });
 
       if (matches.length === 0) {
@@ -429,8 +429,8 @@
       if (!q) return;
 
       const found = AVAILABLE_LANGUAGES.find(lang => 
-        lang.name.toLowerCase().includes(q) || 
-        lang.code.toLowerCase() === q || 
+        lang.name.toLowerCase().includes(q) | 
+        lang.code.toLowerCase() === q | 
         lang.aliases.some(a => a.toLowerCase() === q)
       );
 
@@ -502,5 +502,6 @@
   </script>
 </body>
 </html>
+
 
 

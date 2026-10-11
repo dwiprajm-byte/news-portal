@@ -132,7 +132,7 @@
           }, 1000);
         } else {
           msg.className = 'text-center text-xs font-semibold p-3 rounded-xl bg-rose-100 text-rose-800 block';
-          msg.innerText = data.message || 'Error occurred while publishing.';
+          msg.innerText = data.message | 'Error occurred while publishing.';
           btn.disabled = false;
           btn.innerHTML = '<i class="fas fa-paper-plane text-amber-400"></i> Auto SEO Enhance & Publish Live';
         }
