@@ -1,0 +1,10 @@
+[33m2e790b4[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m Permanently remove maintenance notice and activate Google sitemap
+[33mb70f8e8[m Route root /sitemap.xml cleanly from static folder
+[33m68f7ef5[m Restore stable app.py to clear deploy failure
+[33m527a192[m Bypass maintenance notice for sitemap.xml and sitemap.txt endpoints
+[33m2dd6721[m Implement native memory-based pure XML and TXT sitemap endpoints
+[33mfeed1f0[m Force pure XML response headers on /sitemap.xml to fix HTML error
+[33m4dc4222[m Fix sitemap.xml to serve valid XML format instead of HTML
+[33m943af62[m Remove Precious Metals and Job Board, keep 5 standard policy pages
+[33m8b632ff[m Completely remove Precious Metals and Job Board from navigation and routes
+[33m43340e0[m Completely configure 7 policy and institutional pages for full Google compliance
