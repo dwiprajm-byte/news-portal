@@ -575,7 +575,7 @@ def handle_500_error(e):
         <head><meta charset="UTF-8"><title>24 Early News</title></head>
         <body style="font-family:sans-serif;text-align:center;padding:50px;">
             <h2>24 Early News</h2>
-            <p>আমাদের সিস্টেম আপডেট হচ্ছে। কিছুক্ষণের মধ্যে স্বয়ংক্রিয়ভাবে লোড হবে...</p>
+            <p></p>
             <script>setTimeout(function(){ location.reload(); }, 5000);</script>
         </body>
         </html>
