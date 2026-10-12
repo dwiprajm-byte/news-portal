@@ -14,49 +14,6 @@ socket.setdefaulttimeout(7)
 app = Flask(__name__)
 
 # --- OFFICIAL SEARCH ENGINE SITEMAPS (HIGH PRIORITY) ---
-@app.route('/sitemap.xml', methods=['GET'])
-def serve_sitemap_xml():
-    from flask import Response
-    xml_data = """<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://24earlynews.com/</loc>
-    <changefreq>hourly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://24earlynews.com/about-us</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://24earlynews.com/contact-us</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://24earlynews.com/privacy-policy</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://24earlynews.com/terms</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://24earlynews.com/disclaimer</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://24earlynews.com/pricing</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-</urlset>"""
-    return Response(xml_data.strip(), mimetype='application/xml', content_type='application/xml; charset=utf-8')
-
 @app.route('/sitemap.txt', methods=['GET'])
 def serve_sitemap_txt():
     from flask import Response
@@ -628,4 +585,8 @@ def handle_500_error(e):
 def handle_general_exception(e):
     return handle_500_error(e)
 
-
+@app.route('/sitemap.xml')
+def root_sitemap():
+    from flask import send_from_directory
+    import os
+    return send_from_directory(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static'), 'sitemap.xml', mimetype='application/xml')
