@@ -12,12 +12,13 @@
         .top-nav a { text-decoration: none; color: #333; font-weight: 500; font-size: 14px; }
         .hero-section { padding: 35px 0 25px; border-bottom: 1px solid #f0f0f0; background: #fff; }
         .hero-title { font-family: Georgia, 'Times New Roman', serif; font-weight: bold; font-size: 34px; color: #1a1a1a; }
-        .btn-submit-recipe { background-color: #d3731a; color: #fff; font-weight: 600; border-radius: 6px; padding: 10px 22px; border: none; font-size: 15px; }
+        .btn-submit-recipe { background-color: #d3731a; color: #fff; font-weight: 600; border-radius: 6px; padding: 10px 22px; border: none; font-size: 15px; cursor: pointer; transition: background 0.2s; }
         .btn-submit-recipe:hover { background-color: #b85e0e; color: #fff; }
         .recipe-card { border: 1px solid #eaeaea; border-radius: 12px; background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.04); transition: transform 0.2s ease; height: 100%; display: flex; flex-direction: column; }
         .recipe-card:hover { transform: translateY(-4px); }
         .recipe-badge { background-color: #fff4e5; color: #d3731a; font-weight: 600; padding: 4px 10px; border-radius: 20px; font-size: 12px; }
         .recipe-category { background-color: #eef7ee; color: #2e7d32; font-weight: 600; padding: 4px 10px; border-radius: 20px; font-size: 12px; }
+        .user-tag { background-color: #e3f2fd; color: #0d47a1; font-weight: 600; padding: 4px 10px; border-radius: 20px; font-size: 12px; }
         .ingredient-box { background-color: #fafafa; border: 1px solid #f0f0f0; border-radius: 8px; padding: 12px; margin: 12px 0; }
         .step-box { background-color: #fff9f4; border-left: 4px solid #d3731a; border-radius: 0 8px 8px 0; padding: 12px 14px; margin-top: auto; }
     </style>
@@ -38,8 +39,9 @@
                 <p class="text-muted mb-0">Authentic global dishes, curated instructions, and reader submissions.</p>
             </div>
             <div>
-                <button class="btn btn-submit-recipe" onclick="alert('রেসিপি জমা দেওয়ার ফর্মটি শীঘ্রই যুক্ত করা হচ্ছে!')">
-                    <i class="far fa-play-circle me-1"></i> Submit Your Recipe
+                <!-- বাটনটি এখন সরাসরি ফর্মের মডাল ওপেন করবে -->
+                <button class="btn btn-submit-recipe" data-bs-toggle="modal" data-bs-target="#submitRecipeModal">
+                    <i class="fas fa-plus-circle me-1"></i> Submit Your Recipe
                 </button>
             </div>
         </div>
@@ -57,13 +59,74 @@
         </div>
 
         <div class="row g-4" id="recipeGrid">
-            <!-- জাভাস্ক্রিপ্ট দিয়ে ৫০টি রেসিপি স্বয়ংক্রিয়ভাবে লোড হবে -->
+            <!-- জাভাস্ক্রিপ্ট দিয়ে রেসিপি লোড হবে -->
+        </div>
+    </div>
+
+    <!-- ব্যবহারকারীদের রেসিপি জমা দেওয়ার পপআপ মডাল ফর্ম -->
+    <div class="modal fade" id="submitRecipeModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-warning bg-opacity-10">
+                    <h5 class="modal-title fw-bold" id="modalLabel"><i class="fas fa-hat-chef text-warning me-2"></i>আপনার নিজস্ব রেসিপি জমা দিন</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="userRecipeForm" onsubmit="handleRecipeSubmit(event)">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">আপনার নাম</label>
+                                <input type="text" class="form-control" id="authorName" placeholder="যেমন: আপনার নাম" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">খাবারের নাম</label>
+                                <input type="text" class="form-control" id="recipeName" placeholder="যেমন: স্পেশাল চিকেন রোস্ট" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">ক্যাটাগরি</label>
+                                <select class="form-select" id="recipeCategory" required>
+                                    <option value="ঐতিহ্যবাহী পদ">ঐতিহ্যবাহী পদ</option>
+                                    <option value="বিরিয়ানি">বিরিয়ানি</option>
+                                    <option value="মাংসের পদ">মাংসের পদ</option>
+                                    <option value="মাছের রেসিপি">মাছের রেসিপি</option>
+                                    <option value="নিরামিষ পদ">নিরামিষ পদ</option>
+                                    <option value="স্ন্যাক্স">স্ন্যাক্স</option>
+                                    <option value="মিষ্টি ও ডেজার্ট">মিষ্টি ও ডেজার্ট</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">রান্নার সময়</label>
+                                <input type="text" class="form-control" id="prepTime" placeholder="যেমন: ৩৫ মিনিট" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">ছোট বিবরণ</label>
+                                <input type="text" class="form-control" id="recipeDesc" placeholder="খাবারটির স্বাদ কেমন বা কেন এটি বিশেষ" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">প্রয়োজনীয় উপকরণ (কমা বা নতুন লাইন দিয়ে লিখুন)</label>
+                                <textarea class="form-control" id="recipeIngredients" rows="3" placeholder="যেমন: মুরগির মাংস ৫০০ গ্রাম, পেঁয়াজ বাটা ২ চামচ, ঘি ২ চামচ..." required></textarea>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">প্রস্তুত প্রণালী (A to Z ধাপে ধাপে নিয়ম)</label>
+                                <textarea class="form-control" id="recipeSteps" rows="4" placeholder="১. মাংস ম্যারিনেট করুন&#10;২. তেলে মশলা কষিয়ে নিন&#10;৩. কম আঁচে রান্না করুন..." required></textarea>
+                            </div>
+                        </div>
+                        <div class="mt-4 text-end">
+                            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">বাতিল</button>
+                            <button type="submit" class="btn btn-submit-recipe">রেসিপি পোস্ট করুন</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
     <footer class="bg-dark text-white text-center py-3 mt-5">
         <p class="small mb-0 opacity-75">© 2026 24 Early News | সর্বস্বত্ব সংরক্ষিত।</p>
     </footer>
+
+    <!-- Bootstrap Bundle with Popper (Modal-এর জন্য প্রয়োজনীয়) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
         const rawRecipes = [
@@ -87,7 +150,7 @@
         ];
 
         let fullList = [...rawRecipes];
-        moreNames.forEach((item, idx) => {
+        moreNames.forEach((item) => {
             fullList.push({
                 name: item,
                 cat: "ঐতিহ্যবাহী পদ",
@@ -98,40 +161,78 @@
             });
         });
 
-        // আজকের তারিখ সেট করা
+        // আজকের তারিখ প্রদর্শন
         const today = new Date();
         document.getElementById('currentDate').innerText = today.toLocaleDateString('bn-BD', { day: 'numeric', month: 'long', year: 'numeric' });
 
-        // ৫০টি কার্ড তৈরি করা
-        const grid = document.getElementById('recipeGrid');
-        fullList.slice(0, 50).forEach((item, index) => {
-            const col = document.createElement('div');
-            col.className = 'col-md-6 col-lg-4 recipe-item';
-            col.setAttribute('data-title', item.name);
-            col.innerHTML = `
-                <div class="recipe-card p-4">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <span class="recipe-category">${item.cat}</span>
-                        <span class="recipe-badge"><i class="far fa-clock me-1"></i>${item.time}</span>
+        function loadRecipes() {
+            const grid = document.getElementById('recipeGrid');
+            grid.innerHTML = "";
+
+            // লোকাল স্টোরেজ থেকে ব্যবহারকারীর জমা দেওয়া রেসিপি আনা
+            const userRecipes = JSON.parse(localStorage.getItem('user_recipes') || "[]");
+            const combinedList = [...userRecipes, ...fullList.slice(0, 50)];
+
+            combinedList.forEach((item, index) => {
+                const col = document.createElement('div');
+                col.className = 'col-md-6 col-lg-4 recipe-item';
+                col.setAttribute('data-title', item.name);
+                col.innerHTML = `
+                    <div class="recipe-card p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="${item.author ? 'user-tag' : 'recipe-category'}">${item.author ? 'লেখক: ' + item.author : item.cat}</span>
+                            <span class="recipe-badge"><i class="far fa-clock me-1"></i>${item.time}</span>
+                        </div>
+                        <h5 class="fw-bold text-dark mt-2 mb-2">${index + 1}.${item.name}</h5>
+                        <p class="text-muted small mb-2">${item.desc}</p>
+                        <div class="ingredient-box">
+                            <span class="fw-bold text-secondary small d-block mb-1"><i class="fas fa-list-check me-1"></i>উপকরণ:</span>
+                            <ul class="small mb-0 ps-3 text-secondary">
+                                ${item.ing.map(i => `<li>${i}</li>`).join('')}
+                            </ul>
+                        </div>
+                        <div class="step-box">
+                            <span class="fw-bold text-dark small d-block mb-1"><i class="fas fa-fire-burner me-1 text-danger"></i>প্রণালী (A to Z):</span>
+                            <ol class="small mb-0 ps-3 text-dark">
+                                ${item.steps.map(s => `<li class="mb-1">${s}</li>`).join('')}
+                            </ol>
+                        </div>
                     </div>
-                    <h5 class="fw-bold text-dark mt-2 mb-2">${index + 1}.${item.name}</h5>
-                    <p class="text-muted small mb-2">${item.desc}</p>
-                    <div class="ingredient-box">
-                        <span class="fw-bold text-secondary small d-block mb-1"><i class="fas fa-list-check me-1"></i>উপকরণ:</span>
-                        <ul class="small mb-0 ps-3 text-secondary">
-                            ${item.ing.map(i => `<li>${i}</li>`).join('')}
-                        </ul>
-                    </div>
-                    <div class="step-box">
-                        <span class="fw-bold text-dark small d-block mb-1"><i class="fas fa-fire-burner me-1 text-danger"></i>প্রণালী (A to Z):</span>
-                        <ol class="small mb-0 ps-3 text-dark">
-                            ${item.steps.map(s => `<li class="mb-1">${s}</li>`).join('')}
-                        </ol>
-                    </div>
-                </div>
-            `;
-            grid.appendChild(col);
-        });
+                `;
+                grid.appendChild(col);
+            });
+        }
+
+        // ফর্ম সাবমিশন হ্যান্ডলার
+        function handleRecipeSubmit(e) {
+            e.preventDefault();
+            const author = document.getElementById('authorName').value.trim();
+            const name = document.getElementById('recipeName').value.trim();
+            const cat = document.getElementById('recipeCategory').value;
+            const time = document.getElementById('prepTime').value.trim();
+            const desc = document.getElementById('recipeDesc').value.trim();
+            const ingText = document.getElementById('recipeIngredients').value.trim();
+            const stepsText = document.getElementById('recipeSteps').value.trim();
+
+            const ing = ingText.split(/[\n,]+/).map(s => s.trim()).filter(Boolean);
+            const steps = stepsText.split('\n').map(s => s.trim()).filter(Boolean);
+
+            const newRecipe = { author, name, cat, time, desc, ing, steps };
+
+            const existing = JSON.parse(localStorage.getItem('user_recipes') || "[]");
+            existing.unshift(newRecipe);
+            localStorage.setItem('user_recipes', JSON.stringify(existing));
+
+            // মডাল বন্ধ করা ও ফর্ম রিসেট করা
+            const modalEl = document.getElementById('submitRecipeModal');
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            if (modal) modal.hide();
+            document.getElementById('userRecipeForm').reset();
+
+            // পুনরায় রেন্ডার করা
+            loadRecipes();
+            alert('আপনার রেসিপিটি সফলভাবে যুক্ত হয়েছে!');
+        }
 
         function filterRecipes() {
             let q = document.getElementById('recipeSearch').value.toLowerCase();
@@ -140,6 +241,8 @@
                 card.style.display = card.getAttribute('data-title').toLowerCase().includes(q) ? "" : "none";
             }
         }
+
+        loadRecipes();
     </script>
 </body>
 </html>
