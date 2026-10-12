@@ -1,4 +1,4 @@
-import os
+﻿import os
 import re
 import time
 import socket
@@ -596,3 +596,14 @@ def root_sitemap():
     from flask import send_from_directory
     import os
     return send_from_directory(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static'), 'sitemap.xml', mimetype='application/xml')
+
+# ==================== DYNAMIC 50 RECIPES ROUTE ====================
+@app.route('/recipes')
+def recipes_page():
+    from flask import render_template
+    try:
+        from recipes_data import get_daily_50_recipes
+        recipes, today_date = get_daily_50_recipes()
+    except Exception as e:
+        recipes, today_date = [], "Today"
+    return render_template('recipes.html', recipes=recipes, today_date=today_date)
