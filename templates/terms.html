@@ -32,5 +32,20 @@
 
         <p style="margin-top: 35px;"><a href="/" style="color: #2b6cb0; text-decoration: none; font-weight: bold;">← Back to Home</a></p>
     </section>
+<!-- Global Multi-Language Switcher -->
+<div id="google_translate_element" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; background: #ffffff; padding: 6px 12px; border-radius: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.18); border: 1px solid #e0e0e0; display: flex; align-items: center;">
+    <span style="font-size: 13px; font-weight: 600; color: #333; margin-right: 8px;">🌐 Language:</span>
+</div>
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    includedLanguages: 'bn,hi,en,es,fr,de,ar,ur,zh-CN,ru,pt,ja',
+    layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+    autoDisplay: false
+  }, 'google_translate_element');
+}
+</script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
