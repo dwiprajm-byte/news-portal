@@ -13,6 +13,63 @@ from bs4 import BeautifulSoup
 socket.setdefaulttimeout(7)
 app = Flask(__name__)
 
+# --- OFFICIAL SEARCH ENGINE SITEMAPS (HIGH PRIORITY) ---
+@app.route('/sitemap.xml', methods=['GET'])
+def serve_sitemap_xml():
+    from flask import Response
+    xml_data = """<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://24earlynews.com/</loc>
+    <changefreq>hourly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://24earlynews.com/about-us</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://24earlynews.com/contact-us</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://24earlynews.com/privacy-policy</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://24earlynews.com/terms</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://24earlynews.com/disclaimer</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://24earlynews.com/pricing</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+</urlset>"""
+    return Response(xml_data.strip(), mimetype='application/xml', content_type='application/xml; charset=utf-8')
+
+@app.route('/sitemap.txt', methods=['GET'])
+def serve_sitemap_txt():
+    from flask import Response
+    txt_data = """https://24earlynews.com/
+https://24earlynews.com/about-us
+https://24earlynews.com/contact-us
+https://24earlynews.com/privacy-policy
+https://24earlynews.com/terms
+https://24earlynews.com/disclaimer
+https://24earlynews.com/pricing"""
+    return Response(txt_data.strip(), mimetype='text/plain', content_type='text/plain; charset=utf-8')
+# -----------------------------------------------------
+
 # সরাসরি আসল ছবি প্রদানকারী ভেরিফায়েড প্রেস ফিড
 GLOBAL_NEWS_FEEDS = [
     ('Entertainment', 'https://timesofindia.indiatimes.com/rssfeeds/1081479906.cms'),
@@ -540,49 +597,6 @@ def editorial_charter():
 
 
 
-
-@app.route('/sitemap.xml', methods=['GET'])
-def sitemap():
-    xml_data = """<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://24earlynews.com/</loc>
-    <changefreq>hourly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://24earlynews.com/about-us</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://24earlynews.com/contact-us</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://24earlynews.com/privacy-policy</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://24earlynews.com/terms</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://24earlynews.com/disclaimer</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://24earlynews.com/pricing</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-</urlset>"""
-    from flask import Response
-    return Response(xml_data.strip(), mimetype="application/xml", content_type="application/xml; charset=utf-8")
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
