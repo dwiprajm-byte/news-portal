@@ -526,19 +526,6 @@ def robots():
     content = "User-agent: *\nAllow: /\nSitemap: https://news-portal-6alq.onrender.com/sitemap.xml"
     return Response(content, mimetype="text/plain")
 
-@app.route('/sitemap.xml')
-def sitemap():
-    xml = '''<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    <url>
-        <loc>https://news-portal-6alq.onrender.com/</loc>
-        <changefreq>always</changefreq>
-        <priority>1.0</priority>
-    </url>
-</urlset>'''
-    return Response(xml, mimetype="application/xml")
-
-
 @app.route('/contact-us')
 def contact_us():
     return render_template('contact.html')
@@ -583,7 +570,8 @@ def handle_500_error(e):
 def handle_general_exception(e):
     return handle_500_error(e)
 
-
-
-
-
+@app.route('/sitemap.xml')
+def sitemap():
+    from flask import send_from_directory
+    import os
+    return send_from_directory(os.path.abspath(os.path.dirname(__file__)), 'sitemap.xml', mimetype='application/xml')
