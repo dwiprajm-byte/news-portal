@@ -2,4 +2,3 @@
 Allow: /
 
 Sitemap: https://24earlynews.com/static/sitemap.xml
-Sitemap: https://24earlynews.com/static/sitemap.txt
