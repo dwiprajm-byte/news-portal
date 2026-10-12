@@ -13,6 +13,40 @@ from bs4 import BeautifulSoup
 socket.setdefaulttimeout(7)
 app = Flask(__name__)
 
+
+# --- EXEMPTED SITEMAP ROUTES FOR SEARCH CONSOLE ---
+@app.route('/sitemap.xml', methods=['GET'])
+def serve_sitemap_xml():
+    from flask import Response
+    xml_data = """<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://24earlynews.com/</loc><priority>1.0</priority></url>
+  <url><loc>https://24earlynews.com/pricing</loc><priority>0.9</priority></url>
+  <url><loc>https://24earlynews.com/about-us</loc><priority>0.8</priority></url>
+  <url><loc>https://24earlynews.com/contact-us</loc><priority>0.8</priority></url>
+  <url><loc>https://24earlynews.com/privacy-policy</loc><priority>0.8</priority></url>
+  <url><loc>https://24earlynews.com/terms</loc><priority>0.8</priority></url>
+  <url><loc>https://24earlynews.com/disclaimer</loc><priority>0.8</priority></url>
+</urlset>"""
+    resp = Response(xml_data.strip(), mimetype='application/xml')
+    resp.headers['Content-Type'] = 'application/xml; charset=utf-8'
+    return resp
+
+@app.route('/sitemap.txt', methods=['GET'])
+def serve_sitemap_txt():
+    from flask import Response
+    txt_data = """https://24earlynews.com/
+https://24earlynews.com/pricing
+https://24earlynews.com/about-us
+https://24earlynews.com/contact-us
+https://24earlynews.com/privacy-policy
+https://24earlynews.com/terms
+https://24earlynews.com/disclaimer"""
+    resp = Response(txt_data.strip(), mimetype='text/plain')
+    resp.headers['Content-Type'] = 'text/plain; charset=utf-8'
+    return resp
+# --------------------------------------------------
+
 # --- OFFICIAL SEARCH ENGINE SITEMAPS (HIGH PRIORITY) ---
 @app.route('/sitemap.xml', methods=['GET'])
 def serve_sitemap_xml():
