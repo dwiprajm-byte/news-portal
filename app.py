@@ -540,6 +540,50 @@ def editorial_charter():
 
 
 
+
+@app.route('/sitemap.xml', methods=['GET'])
+def sitemap():
+    xml_data = """<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://24earlynews.com/</loc>
+    <changefreq>hourly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://24earlynews.com/about-us</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://24earlynews.com/contact-us</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://24earlynews.com/privacy-policy</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://24earlynews.com/terms</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://24earlynews.com/disclaimer</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://24earlynews.com/pricing</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+</urlset>"""
+    from flask import Response
+    return Response(xml_data.strip(), mimetype="application/xml", content_type="application/xml; charset=utf-8")
+
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
@@ -570,8 +614,4 @@ def handle_500_error(e):
 def handle_general_exception(e):
     return handle_500_error(e)
 
-@app.route('/sitemap.xml')
-def sitemap():
-    from flask import send_from_directory
-    import os
-    return send_from_directory(os.path.abspath(os.path.dirname(__file__)), 'sitemap.xml', mimetype='application/xml')
+
