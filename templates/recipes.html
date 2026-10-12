@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -39,7 +39,6 @@
                 <p class="text-muted mb-0">Authentic global dishes, curated instructions, and reader submissions.</p>
             </div>
             <div>
-                <!-- বাটনটি এখন সরাসরি ফর্মের মডাল ওপেন করবে -->
                 <button class="btn btn-submit-recipe" data-bs-toggle="modal" data-bs-target="#submitRecipeModal">
                     <i class="fas fa-plus-circle me-1"></i> Submit Your Recipe
                 </button>
@@ -50,70 +49,69 @@
     <div class="container py-4">
         <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
             <div>
-                <h4 class="fw-bold mb-1 text-dark"><i class="fas fa-utensils text-warning me-2"></i>আজকের বিশেষ ৫০টি বাছাইকৃত রেসিপি</h4>
-                <p class="text-muted small mb-0">তারিখ: <span id="currentDate" class="fw-bold text-dark"></span> | ঘরে বসেই সেরা স্বাদে রান্নার সম্পূর্ণ গাইড</p>
+                <h4 class="fw-bold mb-1 text-dark"><i class="fas fa-utensils text-warning me-2"></i>Today's Top 50 Curated Recipes</h4>
+                <p class="text-muted small mb-0">Date: <span id="currentDate" class="fw-bold text-dark"></span> | Complete Step-by-Step Cooking Guide</p>
             </div>
             <div class="mt-3 mt-md-0">
-                <input type="text" id="recipeSearch" class="form-control" placeholder="খাবারের নাম দিয়ে খুঁজুন..." onkeyup="filterRecipes()">
+                <input type="text" id="recipeSearch" class="form-control" placeholder="Search by recipe name..." onkeyup="filterRecipes()">
             </div>
         </div>
 
         <div class="row g-4" id="recipeGrid">
-            <!-- জাভাস্ক্রিপ্ট দিয়ে রেসিপি লোড হবে -->
+            <!-- Dynamically populated via JavaScript in English -->
         </div>
     </div>
 
-    <!-- ব্যবহারকারীদের রেসিপি জমা দেওয়ার পপআপ মডাল ফর্ম -->
+    <!-- Reader Submission Modal -->
     <div class="modal fade" id="submitRecipeModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-warning bg-opacity-10">
-                    <h5 class="modal-title fw-bold" id="modalLabel"><i class="fas fa-hat-chef text-warning me-2"></i>আপনার নিজস্ব রেসিপি জমা দিন</h5>
+                    <h5 class="modal-title fw-bold" id="modalLabel"><i class="fas fa-utensils text-warning me-2"></i>Submit Your Culinary Creation</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-4">
                     <form id="userRecipeForm" onsubmit="handleRecipeSubmit(event)">
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold">আপনার নাম</label>
-                                <input type="text" class="form-control" id="authorName" placeholder="যেমন: আপনার নাম" required>
+                                <label class="form-label fw-semibold">Your Name</label>
+                                <input type="text" class="form-control" id="authorName" placeholder="e.g. John Doe" required>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold">খাবারের নাম</label>
-                                <input type="text" class="form-control" id="recipeName" placeholder="যেমন: স্পেশাল চিকেন রোস্ট" required>
+                                <label class="form-label fw-semibold">Dish Name</label>
+                                <input type="text" class="form-control" id="recipeName" placeholder="e.g. Traditional Roast Chicken" required>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold">ক্যাটাগরি</label>
+                                <label class="form-label fw-semibold">Category</label>
                                 <select class="form-select" id="recipeCategory" required>
-                                    <option value="ঐতিহ্যবাহী পদ">ঐতিহ্যবাহী পদ</option>
-                                    <option value="বিরিয়ানি">বিরিয়ানি</option>
-                                    <option value="মাংসের পদ">মাংসের পদ</option>
-                                    <option value="মাছের রেসিপি">মাছের রেসিপি</option>
-                                    <option value="নিরামিষ পদ">নিরামিষ পদ</option>
-                                    <option value="স্ন্যাক্স">স্ন্যাক্স</option>
-                                    <option value="মিষ্টি ও ডেজার্ট">মিষ্টি ও ডেজার্ট</option>
+                                    <option value="Main Course">Main Course</option>
+                                    <option value="Biryani & Rice">Biryani & Rice</option>
+                                    <option value="Seafood">Seafood</option>
+                                    <option value="Vegetarian">Vegetarian</option>
+                                    <option value="Snacks & Appetizers">Snacks & Appetizers</option>
+                                    <option value="Desserts & Sweets">Desserts & Sweets</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold">রান্নার সময়</label>
-                                <input type="text" class="form-control" id="prepTime" placeholder="যেমন: ৩৫ মিনিট" required>
+                                <label class="form-label fw-semibold">Preparation Time</label>
+                                <input type="text" class="form-control" id="prepTime" placeholder="e.g. 45 Mins" required>
                             </div>
                             <div class="col-12">
-                                <label class="form-label fw-semibold">ছোট বিবরণ</label>
-                                <input type="text" class="form-control" id="recipeDesc" placeholder="খাবারটির স্বাদ কেমন বা কেন এটি বিশেষ" required>
+                                <label class="form-label fw-semibold">Short Summary</label>
+                                <input type="text" class="form-control" id="recipeDesc" placeholder="Brief note on taste, texture, and flavor profile..." required>
                             </div>
                             <div class="col-12">
-                                <label class="form-label fw-semibold">প্রয়োজনীয় উপকরণ (কমা বা নতুন লাইন দিয়ে লিখুন)</label>
-                                <textarea class="form-control" id="recipeIngredients" rows="3" placeholder="যেমন: মুরগির মাংস ৫০০ গ্রাম, পেঁয়াজ বাটা ২ চামচ, ঘি ২ চামচ..." required></textarea>
+                                <label class="form-label fw-semibold">Ingredients (separated by commas or new lines)</label>
+                                <textarea class="form-control" id="recipeIngredients" rows="3" placeholder="e.g. 500g Chicken, 2 tbsp Olive Oil, Garlic cloves..." required></textarea>
                             </div>
                             <div class="col-12">
-                                <label class="form-label fw-semibold">প্রস্তুত প্রণালী (A to Z ধাপে ধাপে নিয়ম)</label>
-                                <textarea class="form-control" id="recipeSteps" rows="4" placeholder="১. মাংস ম্যারিনেট করুন&#10;২. তেলে মশলা কষিয়ে নিন&#10;৩. কম আঁচে রান্না করুন..." required></textarea>
+                                <label class="form-label fw-semibold">Preparation Steps (A to Z Step-by-Step)</label>
+                                <textarea class="form-control" id="recipeSteps" rows="4" placeholder="1. Marinate the ingredients&#10;2. Heat pan and saute spices&#10;3. Cook on medium heat until tender..." required></textarea>
                             </div>
                         </div>
                         <div class="mt-4 text-end">
-                            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">বাতিল</button>
-                            <button type="submit" class="btn btn-submit-recipe">রেসিপি পোস্ট করুন</button>
+                            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-submit-recipe">Publish Recipe</button>
                         </div>
                     </form>
                 </div>
@@ -122,54 +120,52 @@
     </div>
 
     <footer class="bg-dark text-white text-center py-3 mt-5">
-        <p class="small mb-0 opacity-75">© 2026 24 Early News | সর্বস্বত্ব সংরক্ষিত।</p>
+        <p class="small mb-0 opacity-75">© 2026 24 Early News | All Rights Reserved.</p>
     </footer>
 
-    <!-- Bootstrap Bundle with Popper (Modal-এর জন্য প্রয়োজনীয়) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
         const rawRecipes = [
-            { name: "শাহী চিকেন বিরিয়ানি", cat: "বিরিয়ানি", time: "৪৫ মিনিট", desc: "সুগন্ধি বাসমতী চাল ও সুস্বাদু মশলায় রান্না করা রাজকীয় চিকেন বিরিয়ানি।", ing: ["বাসমতী চাল ৫০০ গ্রাম", "চিকেন ৭৫০ গ্রাম", "পেঁয়াজ বেরেস্তা ১ কাপ", "টক দই হাফ কাপ", "বিরিয়ানি মশলা ও ঘি ৩ চামচ"], steps: ["চাল ৮০% সেদ্ধ করে জল ঝরিয়ে রাখুন।", "চিকেন টক দই, আদা-রসুন ও মশলা দিয়ে ৩০ মিনিট ম্যারিনেট করুন।", "কড়াইতে ঘি গরম করে মাংস ভালো করে কষিয়ে রান্না করুন।", "হাঁড়িতে মাংস ও ভাতের লেয়ার দিয়ে বেরেস্তা ছড়িয়ে দিন।", "কম আঁচে ১৫ মিনিট দমে বসিয়ে গরম পরিবেশন করুন।"] },
-            { name: "খাঁটি সর্ষে ইলিশ", cat: "মাছের রেসিপি", time: "৩০ মিনিট", desc: "ঝাঁঝালো সর্ষে বাটা ও কাঁচা লঙ্কায় তৈরি ঐতিহ্যবাহী বাঙালি সর্ষে ইলিশ।", ing: ["ইলিশ মাছ ৫ টুকরো", "কালো ও হলুদ সর্ষে বাটা ৩ চামচ", "কাঁচা লঙ্কা চেরা ৬টি", "সর্ষের তেল ৪ চামচ", "কালো জিরে ও হলুদ গুঁড়ো"], steps: ["মাছে সামান্য নুন ও হলুদ মাখিয়ে ১০ মিনিট রাখুন।", "সর্ষে বাটার সাথে জল, নুন ও হলুদ গুলে ছেঁকে নিন।", "তেলে কালো জিরে ও কাঁচা লঙ্কা ফোড়ন দিন।", "সর্ষের মিশ্রণ ঢেলে ফুটে উঠলে মাছ দিয়ে ঢাকা দিন এবং ৮ মিনিট ফুটান।", "নামানোর আগে কাঁচা সর্ষের তেল ছড়িয়ে নামিয়ে নিন।"] },
-            { name: "পনির বাটার মসালা", cat: "নিরামিষ পদ", time: "২৫ মিনিট", desc: "মাখন, কাজুবাদাম পেস্ট ও ক্রিমে তৈরি মাখোমাখো সুস্বাদু পনির পদ।", ing: ["পনির ৩০০ গ্রাম", "মাখন ও তেল ৩ চামচ", "টমেটো ও কাজুবাদাম পেস্ট ১ কাপ", "আদা বাটা ১ চামচ", "ফ্রেশ ক্রিম ও কসৌরি মেথি"], steps: ["পনির হালকা গরম জলে ভিজিয়ে নরম রাখুন।", "প্যানে মাখন গরম করে টমেটো-কাজুর পেস্ট ভালো করে কষান।", "লঙ্কা গুঁড়ো, গরম মশলা ও স্বাদমতো নুন-মিষ্টি দিন।", "গ্রেভিতে পনির দিয়ে ৩ মিনিট রান্না করুন।", "কসৌরি মেথি ও ফ্রেশ ক্রিম ছড়িয়ে নামিয়ে নিন।"] },
-            { name: "বাঙালি মটন কষা", cat: "মাংসের পদ", time: "৬০ মিনিট", desc: "ডুমো ডুমো আলু ও ঝাঁঝালো মশলায় কষানো লাল টুকটুকে খাসির মাংস।", ing: ["খাসির মাংস ৫০০ গ্রাম", "ডুমো করে কাটা আলু ২টি", "পেঁয়াজ কুচি ২ কাপ", "রসুন ও আদা বাটা ২ চামচ", "সর্ষের তেল ও গরম মশলা"], steps: ["মাংস দই ও তেল দিয়ে ১ ঘণ্টা মেখে রাখুন। আলু ভেজে তুলুন।", "তেলে গোটা গরম মশলা ফোড়ন দিয়ে পেঁয়াজ লালচে করে ভাজুন।", "আদা-রসুন বাটা ও গুঁড়ো মশলা দিয়ে কষিয়ে মাংস যোগ করুন।", "ধীমে আঁচে ঢাকা দিয়ে ভালো করে কষাতে থাকুন।", "গরম জল ও আলু দিয়ে প্রেসার কুকারে ৪টি সিটি দিয়ে নামান।"] },
-            { name: "ডাল মাখানি", cat: "ডাল রেসিপি", time: "৪০ মিনিট", desc: "ধাবা স্টাইল ক্রিমি ও বাটারি সুস্বাদু কালো ডাল মাখানি।", ing: ["কালো বিউলির ডাল ১ কাপ", "রাজমা হাফ কাপ", "টমেটো পিউরি ১ কাপ", "মাখন ৪ চামচ", "ফ্রেশ ক্রিম"], steps: ["ডাল ও রাজমা সারারাত ভিজিয়ে নরম করে সেদ্ধ করুন।", "কড়াইতে মাখন গরম করে টমেটো পিউরি কষান।", "সেদ্ধ ডাল কড়াইতে দিয়ে ধীমে আঁচে ২০ মিনিট ফুটান।", "প্রচুর মাখন ও ক্রিম মিশিয়ে নামিয়ে নিন।"] }
+            { name: "Royal Shahi Chicken Biryani", cat: "Biryani & Rice", time: "45 Mins", desc: "Aromatic basmati rice layered with spiced marinated chicken and saffron infused milk.", ing: ["500g Aged Basmati Rice", "750g Fresh Chicken", "1 cup Fried Onions (Birista)", "1/2 cup Greek Yogurt", "3 tbsp Pure Ghee & Whole Spices"], steps: ["Boil basmati rice with whole spices until 80% cooked, drain and set aside.", "Marinate chicken in yogurt, ginger-garlic paste, and aromatic biryani spices for 30 minutes.", "Cook marinated chicken in pure ghee until flavorful and aromatic.", "Layer the cooked chicken and parboiled rice in a heavy-bottomed pot.", "Seal and cook on low dum heat for 15 minutes. Serve hot with raita."] },
+            { name: "Authentic Mustard Hilsa (Shorshe Ilish)", cat: "Seafood", time: "30 Mins", desc: "Signature Bengali fish delicacy gently simmered in a pungent mustard and green chili gravy.", ing: ["5 slices Fresh Hilsa Fish", "3 tbsp Mustard Seed Paste", "6 Slit Green Chilies", "4 tbsp Cold-pressed Mustard Oil", "1/2 tsp Turmeric & Nigella Seeds"], steps: ["Rub fish steaks lightly with salt and turmeric; set aside for 10 minutes.", "Mix mustard paste with water, salt, and turmeric, straining gently to ensure smooth texture.", "Heat mustard oil in a pan, tempering with nigella seeds and slit green chilies.", "Pour in mustard gravy, arrange fish steaks, cover and simmer on medium heat for 8 minutes.", "Drizzle raw mustard oil right before taking off the heat. Serve with steamed rice."] },
+            { name: "Creamy Paneer Butter Masala", cat: "Vegetarian", time: "25 Mins", desc: "Rich and silky cottage cheese cubes simmered in a luscious butter and tomato-cashew reduction.", ing: ["300g Fresh Paneer Cubes", "3 tbsp Butter & Oil blend", "1 cup Smooth Tomato-Cashew Puree", "1 tbsp Ginger Paste", "2 tbsp Fresh Heavy Cream & Kasuri Methi"], steps: ["Soak paneer cubes in warm water to keep them tender and soft.", "Melt butter in a pan, saute ginger paste, and cook tomato-cashew puree until oil separates.", "Add mild chili powder, garam masala, salt, and a pinch of sugar.", "Add paneer cubes into the simmering gravy and cook gently for 3 minutes.", "Crush roasted kasuri methi over the dish and finish with a swirl of fresh cream."] },
+            { name: "Traditional Slow-Cooked Mutton Kosha", cat: "Main Course", time: "60 Mins", desc: "Tender goat meat slow-roasted in caramelised onions, rich spices, and golden potatoes.", ing: ["500g Tender Goat Meat", "2 Halved Golden Potatoes", "2 cups Finely Sliced Onions", "2 tbsp Ginger & Garlic Paste", "Pure Mustard Oil & Whole Garam Masala"], steps: ["Marinate mutton in yogurt, mustard oil, and turmeric for at least an hour.", "Fry potato halves until golden and set aside.", "Temper hot mustard oil with bay leaves and whole spices; caramelise sliced onions.", "Add ginger-garlic paste, spices, and mutton; roast patiently over low heat until deeply browned.", "Add warm water and potatoes, pressure cook until meltingly tender."] },
+            { name: "Dhaba Style Dal Makhani", cat: "Vegetarian", time: "40 Mins", desc: "Whole black lentils and kidney beans slow-cooked overnight with creamy butter and tomatoes.", ing: ["1 cup Whole Black Lentils (Urad)", "1/2 cup Red Kidney Beans (Rajma)", "1 cup Tomato Puree", "4 tbsp Salted Butter", "Fresh Cream & Dried Fenugreek"], steps: ["Soak lentils and kidney beans overnight, then boil with salt until completely soft.", "Melt butter in a pan, cook tomato puree and Kashmiri chili until aromatic.", "Add cooked lentils, lightly mashing them to create a thick, velvety consistency.", "Simmer on low heat for 25 minutes to blend flavors.", "Finish with generous amounts of butter and cream. Serve with naan or roti."] }
         ];
 
         const moreNames = [
-            "রেস্তোরাঁ স্টাইল চিলি চিকেন", "ঘরোয়া ভেজিটেবল পোলাও", "গলদা চিংড়ির মালাইকারি", "মুচমুচে ভেজিটেবল চপ", "স্পেশাল আলু পরাঠা",
-            "কাশ্মীরি আলুর দম", "ভেটকি মাছের পাতুড়ি", "চিকেন কষা", "মিক্সড ফ্রাইড রাইস", "ধোকার ডালনা",
-            "রুই মাছের কালিয়া", "চিকেন মোমো", "ছোলে ভাটুরে", "পালং পনির", "ডিম কষা বা এগ কারি",
-            "পাবদা মাছের সর্ষে ঝোল", "চিকেন রেজালা", "পটল পোস্ত", "মটরশুঁটির কচুরি", "চিকেন স্যুপ",
-            "মাটন রোগন জোশ", "সুজির রসেভরা হালুয়া", "ফিশ ফিঙ্গার", "মুগ ডাল খিচুড়ি", "আমড়ার চাটনি",
-            "কড়াই পনির", "চিকেন পপকর্ন", "দই কাতলা", "চিকেন ফ্রাই", "ছানার ডালনা",
-            "হাঁসের মাংসের ভুনা", "শাহী টুকরা", "চিকেন কাটলেট", "মটর পনির", "লেমন রাইস",
-            "পায়েস বা পরমান্ন", "চিকেন ললিপপ", "বেগুন বাসন্তী", "চিকেন সাসলিক", "চিংড়ি পোস্ত",
-            "চিকেন চাপ", "লুচি ও সাদা আলুর চচ্চড়ি", "মাশরুম মাসালা", "স্পেশাল পাস্তা অ্যারাবিয়াটা", "রসমালাই"
+            "Crispy Chili Chicken", "Garden Vegetable Pulao", "Jumbo Prawn Malai Curry", "Crispy Beetroot Vegetable Cutlet", "Homestyle Stuffed Aloo Paratha",
+            "Kashmiri Dum Aloo", "Bhetki Fish Paturi in Banana Leaf", "Homestyle Chicken Curry", "Oriental Mixed Fried Rice", "Traditional Dhokar Dalna",
+            "Rich Katla Fish Kalia", "Steamed Chicken Momos", "Delhi Style Chole Bhature", "Healthy Palak Paneer", "Spicy Egg Roast Curry",
+            "Pabda Fish Light Broth", "Mughlai Chicken Rezala", "Bengali Potol Posto", "Crispy Peas Kachori", "Clear Chicken Herb Soup",
+            "Kashmiri Mutton Rogan Josh", "Golden Semolina Halwa", "Crispy Fried Fish Fingers", "Comforting Moong Dal Khichdi", "Sweet & Tangy Hog Plum Chutney",
+            "Restaurant Kadai Paneer", "Crunchy Spiced Popcorn Chicken", "Mild Dahi Katla", "Crispy Pan-Seared Chicken Fry", "Cottage Cheese Kofta Curry",
+            "Slow-Braised Duck Roast", "Royal Shahi Tukda Dessert", "Park Street Chicken Cutlet", "Classic Matar Paneer", "Fragrant South Indian Lemon Rice",
+            "Traditional Rice Kheer (Payesh)", "Crispy Chicken Lollipops", "Begun Basanti Mustard Eggplant", "Grilled Chicken Shashlik Skewers", "Fresh Prawns with Poppy Seeds",
+            "Mughlai Slow-Roasted Chicken Chaap", "Fluffy Luchi with Spiced Potato Curry", "Creamy Garlic Mushroom Masala", "Italian Pasta All'Arrabbiata", "Classic Chhena Rasmalai"
         ];
 
         let fullList = [...rawRecipes];
         moreNames.forEach((item) => {
             fullList.push({
                 name: item,
-                cat: "ঐতিহ্যবাহী পদ",
-                time: "৩০ মিনিট",
-                desc: `ঘরোয়া উপায়ে রেস্তোরাঁর স্বাদে সুস্বাদু ${item} তৈরির সহজ নিয়ম।`,
-                ing: [`${item}-এর প্রধান সামগ্রী ৫০০ গ্রাম`, "পেঁয়াজ, আদা ও রসুন বাটা ২ চামচ", "হলুদ, লঙ্কা ও জিরে গুঁড়ো ১ চামচ", "খাঁটি তেল বা ঘি এবং গরম মশলা"],
-                steps: ["সমস্ত উপকরণ পরিষ্কার করে রেডি করে নিন।", "কড়াইতে তেল গরম করে মশলা ভালো করে কষিয়ে নিন।", "মূল উপকরণ মশলায় দিয়ে মাঝারি আঁচে ঢাকনা দিয়ে রান্না করুন।", "গরম মশলা ছড়িয়ে গরম গরম পরিবেশন করুন।"]
+                cat: "Curated Classic",
+                time: "30 Mins",
+                desc: `Authentic restaurant-quality preparation guide for classic ${item}.`,
+                ing: [`500g Main Ingredients for ${item}`, "2 tbsp Onion, Ginger & Garlic Paste", "1 tsp Ground Turmeric, Cumin & Spices", "Pure Cooking Oil or Ghee & Seasoning"],
+                steps: ["Clean, wash, and prep all primary ingredients properly.", "Heat oil or ghee in a pan and saute aromatic spices until fragrant.", "Add primary ingredients, cover, and cook evenly on medium heat.", "Garnish with freshly ground spices or herbs and serve hot."]
             });
         });
 
-        // আজকের তারিখ প্রদর্শন
+        // Set English formatted date
         const today = new Date();
-        document.getElementById('currentDate').innerText = today.toLocaleDateString('bn-BD', { day: 'numeric', month: 'long', year: 'numeric' });
+        document.getElementById('currentDate').innerText = today.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
 
         function loadRecipes() {
             const grid = document.getElementById('recipeGrid');
             grid.innerHTML = "";
 
-            // লোকাল স্টোরেজ থেকে ব্যবহারকারীর জমা দেওয়া রেসিপি আনা
             const userRecipes = JSON.parse(localStorage.getItem('user_recipes') || "[]");
             const combinedList = [...userRecipes, ...fullList.slice(0, 50)];
 
@@ -180,19 +176,19 @@
                 col.innerHTML = `
                     <div class="recipe-card p-4">
                         <div class="d-flex justify-content-between align-items-center mb-2">
-                            <span class="${item.author ? 'user-tag' : 'recipe-category'}">${item.author ? 'লেখক: ' + item.author : item.cat}</span>
+                            <span class="${item.author ? 'user-tag' : 'recipe-category'}">${item.author ? 'Submitted by: ' + item.author : item.cat}</span>
                             <span class="recipe-badge"><i class="far fa-clock me-1"></i>${item.time}</span>
                         </div>
                         <h5 class="fw-bold text-dark mt-2 mb-2">${index + 1}.${item.name}</h5>
                         <p class="text-muted small mb-2">${item.desc}</p>
                         <div class="ingredient-box">
-                            <span class="fw-bold text-secondary small d-block mb-1"><i class="fas fa-list-check me-1"></i>উপকরণ:</span>
+                            <span class="fw-bold text-secondary small d-block mb-1"><i class="fas fa-list-check me-1"></i>Ingredients:</span>
                             <ul class="small mb-0 ps-3 text-secondary">
                                 ${item.ing.map(i => `<li>${i}</li>`).join('')}
                             </ul>
                         </div>
                         <div class="step-box">
-                            <span class="fw-bold text-dark small d-block mb-1"><i class="fas fa-fire-burner me-1 text-danger"></i>প্রণালী (A to Z):</span>
+                            <span class="fw-bold text-dark small d-block mb-1"><i class="fas fa-fire-burner me-1 text-danger"></i>Method (A to Z):</span>
                             <ol class="small mb-0 ps-3 text-dark">
                                 ${item.steps.map(s => `<li class="mb-1">${s}</li>`).join('')}
                             </ol>
@@ -203,7 +199,6 @@
             });
         }
 
-        // ফর্ম সাবমিশন হ্যান্ডলার
         function handleRecipeSubmit(e) {
             e.preventDefault();
             const author = document.getElementById('authorName').value.trim();
@@ -223,15 +218,13 @@
             existing.unshift(newRecipe);
             localStorage.setItem('user_recipes', JSON.stringify(existing));
 
-            // মডাল বন্ধ করা ও ফর্ম রিসেট করা
             const modalEl = document.getElementById('submitRecipeModal');
             const modal = bootstrap.Modal.getInstance(modalEl);
             if (modal) modal.hide();
             document.getElementById('userRecipeForm').reset();
 
-            // পুনরায় রেন্ডার করা
             loadRecipes();
-            alert('আপনার রেসিপিটি সফলভাবে যুক্ত হয়েছে!');
+            alert('Your recipe has been successfully published!');
         }
 
         function filterRecipes() {
@@ -244,6 +237,5 @@
 
         loadRecipes();
     </script>
-
 </body>
 </html>
