@@ -1,4 +1,4 @@
-﻿import os
+import os
 import re
 import time
 import socket
@@ -535,10 +535,16 @@ def get_live_ticker():
     return jsonify({'status': 'success', 'ticker': current_titles})
 
 
-@app.route('/robots.txt')
+@app.route('/robots.txt', methods=['GET'])
 def robots():
-    content = "User-agent: *\nAllow: /\nSitemap: https://news-portal-6alq.onrender.com/sitemap.xml"
-    return Response(content, mimetype="text/plain")
+    from flask import Response
+    body = (
+        "User-agent: *\n"
+        "Allow: /\n"
+        "\n"
+        "Sitemap: https://24earlynews.com/sitemap.xml\n"
+    )
+    return Response(body, status=200, content_type="text/plain; charset=utf-8")
 
 @app.route('/contact-us')
 def contact_us():
