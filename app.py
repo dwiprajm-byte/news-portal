@@ -1,4 +1,4 @@
-import os
+﻿import os
 import re
 import time
 import socket
@@ -596,3 +596,17 @@ def root_sitemap():
     from flask import send_from_directory
     import os
     return send_from_directory(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static'), 'sitemap.xml', mimetype='application/xml')
+
+# ==================== GOOGLE ADSENSE ADS.TXT ROUTE ====================
+@app.route('/ads.txt')
+def serve_ads_txt():
+    import os
+    from flask import send_from_directory, Response
+    try:
+        if os.path.exists('ads.txt'):
+            return send_from_directory('.', 'ads.txt', mimetype='text/plain')
+        elif os.path.exists('static/ads.txt'):
+            return send_from_directory('static', 'ads.txt', mimetype='text/plain')
+    except Exception:
+        pass
+    return Response("google.com, pub-9701604898518993, DIRECT, f08c47fec0942fa0", mimetype="text/plain")
