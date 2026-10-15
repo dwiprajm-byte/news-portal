@@ -605,3 +605,9 @@ def render_ads_txt():
     from flask import Response
     content = "google.com, pub-9701604898518993, DIRECT, f08c47fec0942fa0"
     return Response(content, mimetype='text/plain')
+
+# ==================== DIRECT BROWSER FAVICON ROUTE ====================
+@app.route('/favicon.ico')
+def serve_root_favicon():
+    from flask import send_from_directory
+    return send_from_directory('static', 'favicon.svg', mimetype='image/svg+xml')
