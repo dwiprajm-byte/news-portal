@@ -713,5 +713,65 @@ document.addEventListener("DOMContentLoaded", function() {
     renderPanchangUI(activeLang);
 });
 </script>
+<!-- Dedicated 3-Language Global Switcher -->
+<div id="custom-lang-wrapper" style="display:inline-flex; align-items:center; margin: 0 8px; vertical-align: middle;">
+    <select id="userLangSelect" onchange="applyGlobalLanguage(this.value)" style="padding: 4px 8px; border-radius: 6px; border: 1px solid #ced4da; font-size: 13px; font-weight: bold; background: #ffffff; color: #212529; cursor: pointer; outline: none; box-shadow: 0 1px 3px rgba(0,0,0,0.08);">
+        <option value="en">English</option>
+        <option value="bn">বাংলা (Bengali)</option>
+        <option value="hi">हिन्दी (Hindi)</option>
+    </select>
+</div>
+<div id="google_translate_element" style="display:none !important;"></div>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'en,bn,hi',
+        autoDisplay: false
+    }, 'google_translate_element');
+}
+
+function applyGlobalLanguage(lang) {
+    if (!['en', 'bn', 'hi'].includes(lang)) lang = 'en';
+    localStorage.setItem("selected_portal_lang", lang);
+
+    if (lang === 'en') {
+        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=" + window.location.hostname + "; path=/;";
+        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=." + window.location.hostname + "; path=/;";
+    } else {
+        document.cookie = "googtrans=/en/" + lang + "; path=/;";
+        document.cookie = "googtrans=/en/" + lang + "; domain=" + window.location.hostname + "; path=/;";
+        document.cookie = "googtrans=/en/" + lang + "; domain=." + window.location.hostname + "; path=/;";
+    }
+
+    // পঞ্জিকা মডাল থাকলে তার ভাষা সিঙ্ক
+    if (typeof switchPanchangLang === 'function') {
+        switchPanchangLang(lang);
+    }
+
+    window.location.reload();
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    const currentLang = localStorage.getItem("selected_portal_lang") || "en";
+    const dropdown = document.getElementById("userLangSelect");
+    if (dropdown) dropdown.value = currentLang;
+
+    // হেডার বারে পুরোনো ১৯৫ দেশের সিলেক্টর থাকলে তার জায়গায় সুন্দরভাবে প্রতিস্থাপন
+    const oldCountryBox = document.querySelector(".search-language, [placeholder*='195 Countries']");
+    const myWrapper = document.getElementById("custom-lang-wrapper");
+    if (oldCountryBox && myWrapper && oldCountryBox.parentElement) {
+        oldCountryBox.parentElement.style.display = "none";
+    }
+});
+</script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<style>
+/* গুগল অনুবাদের বাড়তি বার বা ফ্রেম যেন সাইটের ডিজাইন নষ্ট না করে */
+.goog-te-banner-frame.skiptranslate, .goog-te-gadget-simple { display: none !important; }
+body { top: 0px !important; }
+</style>
 </body>
 </html>
