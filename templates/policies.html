@@ -405,5 +405,88 @@ async function refreshLiveBullionDesk() {
 }
 document.addEventListener("DOMContentLoaded", refreshLiveBullionDesk);
 </script>
+<!-- Daily Vedic Panchang & Horoscope Button & Modal -->
+<div style="position:fixed; bottom:25px; right:25px; z-index:9999;">
+    <button onclick="togglePanchangModal()" style="background:#b71c1c; color:#fff; border:2px solid #ffc107; padding:10px 18px; border-radius:30px; font-weight:bold; box-shadow:0 6px 16px rgba(0,0,0,0.35); cursor:pointer; font-size:14px; display:flex; align-items:center; gap:8px;">
+        <span style="font-size:16px;">🕉️</span> নিত্য পঞ্জিকা ও রাশিফল
+    </button>
+</div>
+
+<div id="panchangModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.65); z-index:10000; justify-content:center; align-items:center;">
+    <div style="background:#fff; width:94%; max-width:720px; max-height:88vh; border-radius:12px; overflow-y:auto; padding:22px; position:relative; box-shadow:0 12px 30px rgba(0,0,0,0.5); font-family:sans-serif;">
+        <button onclick="togglePanchangModal()" style="position:absolute; top:15px; right:15px; border:none; background:#eee; width:32px; height:32px; border-radius:50%; font-weight:bold; cursor:pointer;">✕</button>
+        
+        <h3 style="margin-top:0; color:#b71c1c; font-size:21px; border-bottom:2px solid #ffc107; padding-bottom:8px;">
+            🕉️ নিত্য বৈদিক পঞ্জিকা — <span id="pjDate" style="font-size:16px; color:#444;"></span>
+        </h3>
+
+        <!-- পঞ্জিকা পঞ্চাঙ্গ টেবিল -->
+        <div style="background:#fff9e6; border:1px solid #ffe082; border-radius:8px; padding:14px; margin-bottom:18px;">
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:10px; font-size:14px; color:#333;">
+                <div><strong>বার:</strong> <span id="pjBar">--</span></div>
+                <div><strong>তিথি:</strong> <span id="pjTithi" style="color:#b71c1c; font-weight:bold;">--</span></div>
+                <div><strong>নক্ষত্র:</strong> <span id="pjNakshatra">--</span></div>
+                <div><strong>যোগ ও করণ:</strong> <span id="pjYogaKaran">--</span></div>
+                <div><strong>শুভ মুহূর্ত:</strong> <span id="pjShubha" style="color:#2e7d32; font-weight:bold;">--</span></div>
+                <div><strong>রাহুকাল (বর্জনীয়):</strong> <span id="pjRahu" style="color:#c62828;">--</span></div>
+            </div>
+            <div style="margin-top:10px; font-size:13px; color:#555; border-top:1px dashed #d7ccc8; padding-top:8px;">
+                <strong>মাস স্থিতি:</strong> <span id="pjAdhimas">--</span>
+            </div>
+            <div style="margin-top:6px; font-size:13px; color:#e65100; font-weight:bold;" id="pjEventsBox"></div>
+        </div>
+
+        <!-- ১২ রাশির দৈনিক ফল -->
+        <h4 style="margin:16px 0 10px 0; color:#333; font-size:17px; border-left:4px solid #b71c1c; padding-left:8px;">
+            🪐 আজকের ১২ রাশির ভাগ্যফল (পরাশর সংহিতা অনুসারে)
+        </h4>
+        <div id="pjRashiContainer" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px;">
+            <p style="font-size:14px; color:#777;">পঞ্জিকা ও রাশিফল লোড হচ্ছে...</p>
+        </div>
+    </div>
+</div>
+
+<script>
+function togglePanchangModal() {
+    var modal = document.getElementById("panchangModal");
+    if (modal.style.display === "none" || modal.style.display === "") {
+        modal.style.display = "flex";
+        loadPanchangData();
+    } else {
+        modal.style.display = "none";
+    }
+}
+
+async function loadPanchangData() {
+    try {
+        const res = await fetch('/api/panchang');
+        const data = await res.json();
+        
+        document.getElementById("pjDate").innerText = data.date_str;
+        document.getElementById("pjBar").innerText = data.bar;
+        document.getElementById("pjTithi").innerText = data.tithi;
+        document.getElementById("pjNakshatra").innerText = data.nakshatra;
+        document.getElementById("pjYogaKaran").innerText = `${data.yoga} যোগ / ${data.karan}`;
+        document.getElementById("pjShubha").innerText = data.shubha;
+        document.getElementById("pjRahu").innerText = data.rahu;
+        document.getElementById("pjAdhimas").innerText = data.adhimas;
+        
+        const evBox = document.getElementById("pjEventsBox");
+        evBox.innerHTML = `🚩 ব্রত ও উৎসব: ${data.events.join(" | ")}`;
+
+        const container = document.getElementById("pjRashiContainer");
+        container.innerHTML = "";
+        
+        data.rashifal.forEach(item => {
+            const card = document.createElement("div");
+            card.style = "background:#fbfbfb; border:1px solid #e0e0e0; border-radius:8px; padding:12px;";
+            card.innerHTML = `<div style="font-weight:bold; color:#b71c1c; margin-bottom:4px; font-size:15px;">${item.symbol} ${item.name}</div><div style="font-size:13px; color:#333; line-height:1.5;">${item.text}</div>`;
+            container.appendChild(card);
+        });
+    } catch(e) {
+        console.log("Panchang load error", e);
+    }
+}
+</script>
 </body>
 </html>
