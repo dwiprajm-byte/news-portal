@@ -566,18 +566,18 @@ document.addEventListener("DOMContentLoaded", function() {
     <span style="font-size:14px; margin-right:4px;">🕉️</span> <span id="panchangBtnText">Panchang & Horoscope</span>
 </a>
 
+<!-- Complete Clean Vedic Panchang & Horoscope System -->
 <div id="panchangModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.65); z-index:10000; justify-content:center; align-items:center;">
     <div style="background:#fff; width:94%; max-width:760px; max-height:88vh; border-radius:12px; overflow-y:auto; padding:22px; position:relative; box-shadow:0 12px 30px rgba(0,0,0,0.5); font-family:system-ui, -apple-system, sans-serif;">
         <button onclick="togglePanchangModal()" style="position:absolute; top:15px; right:15px; border:none; background:#f0f0f0; width:32px; height:32px; border-radius:50%; font-weight:bold; cursor:pointer; font-size:16px;">✕</button>
         
-        <!-- হেডার ও ভাষা সিলেক্টর -->
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #ffc107; padding-bottom:10px; margin-bottom:15px; flex-wrap:wrap; gap:10px;">
             <h3 style="margin:0; color:#b71c1c; font-size:20px;" id="modalHeading">
                 🕉️ Vedic Panchang & Horoscope
             </h3>
             <div style="display:flex; align-items:center; gap:6px;">
-                <label for="panchangLangSelect" style="font-size:12px; font-weight:bold; color:#555;">Language:</label>
-                <select id="panchangLangSelect" onchange="changePanchangLanguage(this.value)" style="padding:4px 8px; border-radius:4px; border:1px solid #ccc; font-size:13px; font-weight:bold;">
+                <label for="panchangLangSelect" style="font-size:13px; font-weight:bold; color:#444;">Language:</label>
+                <select id="panchangLangSelect" onchange="switchPanchangLang(this.value)" style="padding:5px 10px; border-radius:4px; border:1px solid #bbb; font-size:13px; font-weight:bold; cursor:pointer;">
                     <option value="en">English</option>
                     <option value="bn">বাংলা (Bengali)</option>
                     <option value="hi">हिन्दी (Hindi)</option>
@@ -585,7 +585,6 @@ document.addEventListener("DOMContentLoaded", function() {
             </div>
         </div>
 
-        <!-- পঞ্জিকা বিবরণ: ওভারল্যাপ ছাড়া পরিচ্ছন্ন কার্ড ডিজাইন -->
         <div style="background:#fff9e6; border:1px solid #ffe082; border-radius:8px; padding:16px; margin-bottom:18px;">
             <div style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:10px;">
                 <div style="flex:1 1 45%; min-width:240px; background:#fff; padding:8px 12px; border-radius:6px; border:1px solid #f0e6c8; box-sizing:border-box;">
@@ -620,89 +619,144 @@ document.addEventListener("DOMContentLoaded", function() {
             <div style="background:#fff; padding:8px 12px; border-radius:6px; border:1px solid #f0e6c8; font-size:13px; color:#e65100; font-weight:bold;" id="pjEventsBox"></div>
         </div>
 
-        <!-- ১২ রাশির দৈনিক ফল -->
         <h4 style="margin:18px 0 12px 0; color:#333; font-size:16px; border-left:4px solid #b71c1c; padding-left:8px;" id="lblHoroscopeHead">
             🪐 Daily Horoscope (12 Zodiac Signs)
         </h4>
-        <div id="pjRashiContainer" style="display:flex; flex-wrap:wrap; gap:12px;">
-            <p style="font-size:14px; color:#777;">Loading...</p>
-        </div>
+        <div id="pjRashiContainer" style="display:flex; flex-wrap:wrap; gap:12px;"></div>
     </div>
 </div>
+
 <script>
-// ১. ব্যবহারকারীর নির্বাচিত ভাষা স্থায়ীভাবে সেভ ও লোড করা
-function changePanchangLanguage(langCode) {
-    if (!panchangI18n[langCode]) langCode = 'en';
+const pjDataStore = {
+    en: {
+        btn: "Panchang & Horoscope",
+        head: "🕉️ Vedic Panchang & Horoscope",
+        day: "Day", tithi: "Tithi", nak: "Nakshatra", yk: "Yoga & Karana",
+        shubha: "Auspicious Time", rahu: "Rahu Kaal (Avoid)", month: "Month Status:",
+        hHead: "🪐 Daily Horoscope (12 Zodiac Signs)",
+        days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        tithiVal: "Shukla Trayodashi (Pradosh Vrat)",
+        nakVal: "Revati", ykVal: "Shobhana Yoga / Taitila",
+        shubhaVal: "11:36 AM – 12:24 PM (Abhijit Muhurat)",
+        rahuVal: "10:30 AM – 12:00 PM",
+        monthVal: "Pure Solar Month (Shuddha Masa)",
+        evVal: "🚩 Vrat & Event: Pradosh Vrat (Lord Shiva Worship) | Auspicious Day",
+        rashis: [
+            { n: "Aries", s: "♈", t: "Promising day for career growth. Stay cautious with financial transactions." },
+            { n: "Taurus", s: "♉", t: "Family harmony prevails. Favorable for new investments and business deals." },
+            { n: "Gemini", s: "♊", t: "Creative pursuits will bring great success. Pleasant health and travel outlook." },
+            { n: "Cancer", s: "♋", t: "Mental peace and optimism increase. Likely to recover pending funds." },
+            { n: "Leo", s: "♌", t: "Valuable advice from elders brings success. Social prestige improves." },
+            { n: "Virgo", s: "♍", t: "New partnership opportunities in work. Focus and clarity for students." },
+            { n: "Libra", s: "♎", t: "New avenues of income may open up. Peaceful state of mind." },
+            { n: "Scorpio", s: "♏", t: "Additional responsibilities at work. Patience and calm will be rewarded." },
+            { n: "Sagittarius", s: "♐", t: "Fortune favors you today. Pleasant news from distant contacts." },
+            { n: "Capricorn", s: "♑", t: "Old obstacles resolved smoothly. Pleasant relationships at home." },
+            { n: "Aquarius", s: "♒", t: "Great day for launching new initiatives. Financial stability maintained." },
+            { n: "Pisces", s: "♓", t: "Spiritual and inner peace. Joyful atmosphere among family members." }
+        ]
+    },
+    bn: {
+        btn: "পঞ্জিকা ও রাশিফল",
+        head: "🕉️ নিত্য বৈদিক পঞ্জিকা ও রাশিফল",
+        day: "বার", tithi: "তিথি", nak: "নক্ষত্র", yk: "যোগ ও করণ",
+        shubha: "শুভ মুহূর্ত", rahu: "রাহুকাল (বর্জনীয়)", month: "মাস স্থিতি:",
+        hHead: "🪐 আজকের ১২ রাশির ভাগ্যফল (পরাশর সংহিতা অনুসারে)",
+        days: ["রবিবার", "সোমবার", "মঙ্গলবার", "বুধবার", "বৃহস্পতিবার", "শুক্রবার", "শনিবার"],
+        tithiVal: "শুক্লা ত্রয়োদশী (প্রদোষ ব্রত)",
+        nakVal: "রেবতী", ykVal: "শোভন যোগ / তৈতিল",
+        shubhaVal: "সকাল ১১:৩৬ – দুপুর ১২:২৪ (অভিজিৎ/অমৃতযোগ)",
+        rahuVal: "সকাল ১০:৩০ – ১২:০০",
+        monthVal: "বর্তমান বৎসর শুদ্ধমাস (অধিমাস/মলমাস দোষমুক্ত)",
+        evVal: "🚩 ব্রত ও তাৎপর্য: আজ পরম পবিত্র প্রদোষ ব্রত (শিব আরাধনা) ও পুণ্যদিন",
+        rashis: [
+            { n: "মেষ (Aries)", s: "♈", t: "কর্মক্ষেত্রে পদোন্নতি বা নতুন সুযোগের যোগ রয়েছে। আর্থিক লেনদেনে সচেতন থাকুন।" },
+            { n: "বৃষ (Taurus)", s: "♉", t: "পারিবারিক শান্তি বজায় থাকবে। ব্যবসায়ীদের জন্য নতুন বিনিয়োগ শুভ ফল দেবে।" },
+            { n: "মিথুন (Gemini)", s: "♊", t: "সৃজনশীল কাজে সাফল্য মিলবে। ভ্রমণের সুযোগ আসতে পারে, স্বাস্থ্য অনুকূল।" },
+            { n: "কর্কট (Cancer)", s: "♋", t: "মানসিক প্রফুল্লতা বৃদ্ধি পাবে। আটকে থাকা অর্থ প্রাপ্তির সম্ভাবনা রয়েছে।" },
+            { n: "সিংহ (Leo)", s: "♌", t: "গুরুত্বপূর্ণ সিদ্ধান্তে শুভাকাঙ্ক্ষীদের পরামর্শে লাভবান হবেন। সুনাম বৃদ্ধি পাবে।" },
+            { n: "কন্যা (Virgo)", s: "♍", t: "ব্যবসায় নতুন অংশীদারিত্বের সুযোগ। শিক্ষার্থীদের একাগ্রতা বৃদ্ধি পাবে।" },
+            { n: "তুলা (Libra)", s: "♎", t: "আয় বৃদ্ধির নতুন পথ উন্মোচিত হতে পারে। ধর্মীয় কাজে মানসিক শান্তি মিলবে।" },
+            { n: "বৃশ্চিক (Scorpio)", s: "♏", t: "কর্মক্ষেত্রে অতিরিক্ত দায়িত্ব বৃদ্ধি পেতে পারে। ধৈর্য বজায় রাখা শ্রেয়।" },
+            { n: "ধনু (Sagittarius)", s: "♐", t: "ভাগ্য আপনার পক্ষে থাকবে। দূরবর্তী যোগাযোগ থেকে শুভ সংবাদ পেতে পারেন।" },
+            { n: "মকর (Capricorn)", s: "♑", t: "পুরোনো সমস্যার সুষ্ঠু সমাধান হবে। পরিজনদের সঙ্গে সুসম্পর্ক বজায় থাকবে।" },
+            { n: "কুম্ভ (Aquarius)", s: "♒", t: "নতুন উদ্যোগে সাফল্য আসবে। আর্থিক স্থিতিশীলতা বজায় থাকবে।" },
+            { n: "মীন (Pisces)", s: "♓", t: "আধ্যাত্মিক চিন্তায় মানসিক তৃপ্তি। পারিবারিক ক্ষেত্রে আনন্দময় পরিবেশ থাকবে।" }
+        ]
+    },
+    hi: {
+        btn: "पंचांग और राशिफल",
+        head: "🕉️ नित्य वैदिक पंचांग एवं दैनिक राशिफल",
+        day: "वार", tithi: "तिथि", nak: "नक्षत्र", yk: "योग एवं करण",
+        shubha: "शुभ मुहूर्त", rahu: "राहुकाल (वर्जित)", month: "मास स्थिति:",
+        hHead: "🪐 आज का 12 राशियों का राशिफल (वैदिक गणना)",
+        days: ["रविवार", "सोमवार", "मंगलवार", "बुधवार", "गुरुवार", "शुक्रवार", "शनिवार"],
+        tithiVal: "शुक्ल त्रयोदशी (प्रदोष व्रत)",
+        nakVal: "रेवती", ykVal: "शोभन योग / तैतिल",
+        shubhaVal: "सुबह 11:36 – दोपहर 12:24 (अभिजित मुहूर्त)",
+        rahuVal: "सुबह 10:30 – 12:00",
+        monthVal: "शुद्ध मास (अधिकमास दोष रहित)",
+        evVal: "🚩 व्रत एवं पर्व: आज परम पवित्र प्रदोष व्रत (भगवान शिव की पूजा)",
+        rashis: [
+            { n: "मेष (Aries)", s: "♈", t: "कार्यक्षेत्र में उन्नति और नए अवसर प्राप्त होंगे। आर्थिक मामलों में सतर्क रहें।" },
+            { n: "वृषभ (Taurus)", s: "♉", t: "पारिवारिक शांति बनी रहेगी। नए निवेश से व्यापार में लाभ होगा।" },
+            { n: "मिथुन (Gemini)", s: "♊", t: "रचनात्मक कार्यों में सफलता मिलेगी। स्वास्थ्य अनुकूल रहेगा।" },
+            { n: "कर्क (Cancer)", s: "♋", t: "मानसिक प्रसन्नता में वृद्धि होगी। रुका हुआ धन वापस मिलने के योग हैं।" },
+            { n: "सिंह (Leo)", s: "♌", t: "महत्वपूर्ण निर्णयों में शुभचिंतकों की सलाह लाभकारी रहेगी।" },
+            { n: "कन्या (Virgo)", s: "♍", t: "व्यापार में नई साझेदारी के अवसर मिलेंगे। छात्रों के लिए समय उत्तम है।" },
+            { n: "तुला (Libra)", s: "♎", t: "आय के नए स्रोत विकसित हो सकते हैं। मानसिक शांति का अनुभव होगा।" },
+            { n: "वृश्चिक (Scorpio)", s: "♏", t: "कार्यस्थल पर अतिरिक्त जिम्मेदारियां मिल सकती हैं। धैर्य बनाए रखें।" },
+            { n: "धनु (Sagittarius)", s: "♐", t: "भाग्य आपका साथ देगा। दूर के संपर्कों से शुभ समाचार मिलेगा।" },
+            { n: "मकर (Capricorn)", s: "♑", t: "पुरानी समस्याओं का समाधान होगा। परिजनों के साथ संबंध मधुर रहेंगे।" },
+            { n: "कुंभ (Aquarius)", s: "♒", t: "नए कार्यों में सफलता प्राप्त होगी। आर्थिक स्थिरता बनी रहेगी।" },
+            { n: "मीन (Pisces)", s: "♓", t: "अध्यात्म में रुचि बढ़ेगी। पारिवारिक वातावरण सुखद रहेगा।" }
+        ]
+    }
+};
+
+function renderPanchangUI(lang) {
+    if (!pjDataStore[lang]) lang = 'en';
+    const d = pjDataStore[lang];
     
-    // ব্রাউজারের লোকাল স্টোরেজে ভাষাটি সেভ করে রাখা
-    localStorage.setItem("user_selected_panchang_lang", langCode);
-    applyPanchangTranslations(langCode);
-}
+    const bText = document.getElementById("panchangBtnText");
+    if (bText) bText.innerText = d.btn;
 
-function applyPanchangTranslations(langCode) {
-    const langData = panchangI18n[langCode] || panchangI18n['en'];
-
-    // মেনু বাটন টেক্সট আপডেট
-    const btnTextEl = document.getElementById("panchangBtnText");
-    if (btnTextEl) btnTextEl.innerText = langData.btnText;
-
-    // মডাল টেক্সট আপডেট
-    const modalHead = document.getElementById("modalHeading");
-    if (modalHead) modalHead.innerText = langData.heading;
-
-    const lblDay = document.getElementById("lblDay");
-    const lblTithi = document.getElementById("lblTithi");
-    const lblNak = document.getElementById("lblNakshatra");
-    const lblYK = document.getElementById("lblYogaKaran");
-    const lblShubha = document.getElementById("lblShubha");
-    const lblRahu = document.getElementById("lblRahu");
-    const lblMonth = document.getElementById("lblMonthStatus");
-    const lblHHead = document.getElementById("lblHoroscopeHead");
-
-    if (lblDay) lblDay.innerText = langData.day;
-    if (lblTithi) lblTithi.innerText = langData.tithi;
-    if (lblNak) lblNak.innerText = langData.nakshatra;
-    if (lblYK) lblYK.innerText = langData.yogaKaran;
-    if (lblShubha) lblShubha.innerText = langData.shubha;
-    if (lblRahu) lblRahu.innerText = langData.rahu;
-    if (lblMonth) lblMonth.innerText = langData.monthStatus;
-    if (lblHHead) lblHHead.innerText = langData.horoscopeHead;
+    document.getElementById("modalHeading").innerText = d.head;
+    document.getElementById("lblDay").innerText = d.day;
+    document.getElementById("lblTithi").innerText = d.tithi;
+    document.getElementById("lblNakshatra").innerText = d.nak;
+    document.getElementById("lblYogaKaran").innerText = d.yk;
+    document.getElementById("lblShubha").innerText = d.shubha;
+    document.getElementById("lblRahu").innerText = d.rahu;
+    document.getElementById("lblMonthStatus").innerText = d.month;
+    document.getElementById("lblHoroscopeHead").innerText = d.hHead;
 
     const weekdayIdx = new Date().getDay();
-    const pjBar = document.getElementById("pjBar");
-    const pjTithi = document.getElementById("pjTithi");
-    const pjNak = document.getElementById("pjNakshatra");
-    const pjYK = document.getElementById("pjYogaKaran");
-    const pjShubha = document.getElementById("pjShubha");
-    const pjRahu = document.getElementById("pjRahu");
-    const pjAdhimas = document.getElementById("pjAdhimas");
-    const pjEvents = document.getElementById("pjEventsBox");
+    document.getElementById("pjBar").innerText = d.days[weekdayIdx];
+    document.getElementById("pjTithi").innerText = d.tithiVal;
+    document.getElementById("pjNakshatra").innerText = d.nakVal;
+    document.getElementById("pjYogaKaran").innerText = d.ykVal;
+    document.getElementById("pjShubha").innerText = d.shubhaVal;
+    document.getElementById("pjRahu").innerText = d.rahuVal;
+    document.getElementById("pjAdhimas").innerText = d.monthVal;
+    document.getElementById("pjEventsBox").innerText = d.evVal;
 
-    if (pjBar) pjBar.innerText = langData.days[weekdayIdx];
-    if (pjTithi) pjTithi.innerText = langData.tithiName;
-    if (pjNak) pjNak.innerText = langData.nakName;
-    if (pjYK) pjYK.innerText = langData.yogaName;
-    if (pjShubha) pjShubha.innerText = langData.shubhaVal;
-    if (pjRahu) pjRahu.innerText = langData.rahuVal;
-    if (pjAdhimas) pjAdhimas.innerText = langData.adhimasVal;
-    if (pjEvents) pjEvents.innerText = langData.eventsVal;
+    const box = document.getElementById("pjRashiContainer");
+    box.innerHTML = "";
+    d.rashis.forEach(r => {
+        const item = document.createElement("div");
+        item.style = "flex: 1 1 45%; min-width: 250px; background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:12px; box-sizing:border-box;";
+        item.innerHTML = `<div style="font-weight:bold; color:#b71c1c; margin-bottom:5px; font-size:15px;">${r.s}${r.n}</div><div style="font-size:13px; color:#333; line-height:1.5;">${r.t}</div>`;
+        box.appendChild(item);
+    });
 
-    // ১২ রাশি কার্ড রেন্ডার
-    const container = document.getElementById("pjRashiContainer");
-    if (container) {
-        container.innerHTML = "";
-        langData.signs.forEach(item => {
-            const card = document.createElement("div");
-            card.style = "flex: 1 1 45%; min-width: 250px; background:#fff; border:1px solid #e0e0e0; border-radius:8px; padding:12px; box-sizing:border-box;";
-            card.innerHTML = `<div style="font-weight:bold; color:#b71c1c; margin-bottom:4px; font-size:15px;">${item.symbol}${item.name}</div><div style="font-size:13px; color:#333; line-height:1.5;">${item.text}</div>`;
-            container.appendChild(card);
-        });
-    }
+    const sel = document.getElementById("panchangLangSelect");
+    if (sel) sel.value = lang;
+}
 
-    const selectEl = document.getElementById("panchangLangSelect");
-    if (selectEl && selectEl.value !== langCode) {
-        selectEl.value = langCode;
-    }
+function switchPanchangLang(lang) {
+    localStorage.setItem("user_selected_panchang_lang", lang);
+    renderPanchangUI(lang);
 }
 
 function togglePanchangModal() {
@@ -710,18 +764,16 @@ function togglePanchangModal() {
     if (!modal) return;
     if (modal.style.display === "none" || modal.style.display === "") {
         modal.style.display = "flex";
-        // সংরক্ষিত ভাষা অনুযায়ী মডাল খোলা
-        const savedLang = localStorage.getItem("user_selected_panchang_lang") || "en";
-        applyPanchangTranslations(savedLang);
+        const currentLang = localStorage.getItem("user_selected_panchang_lang") || "en";
+        renderPanchangUI(currentLang);
     } else {
         modal.style.display = "none";
     }
 }
 
-// পেজ লোড হওয়ার সময় আগের সেভ করা ভাষা লোড করা
 document.addEventListener("DOMContentLoaded", function() {
-    const savedLang = localStorage.getItem("user_selected_panchang_lang") || "en";
-    applyPanchangTranslations(savedLang);
+    const activeLang = localStorage.getItem("user_selected_panchang_lang") || "en";
+    renderPanchangUI(activeLang);
 });
 </script>
 </body>
