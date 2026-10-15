@@ -33,5 +33,165 @@
         <p style="margin-top: 35px;"><a href="/" style="color: #2b6cb0; text-decoration: none; font-weight: bold;">← Back to Home</a></p>
     </section>
 
+<!-- Interactive Like, Share & Comment Engine -->
+<style>
+    .news-engagement-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 12px;
+        margin-top: 12px;
+        border-top: 1px solid #f0f0f0;
+        background: #fafafa;
+        border-radius: 6px;
+        font-size: 13px;
+    }
+    .engagement-btn {
+        background: none;
+        border: none;
+        color: #555;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-weight: 500;
+        transition: color 0.2s;
+        padding: 4px 8px;
+    }
+    .engagement-btn:hover { color: #e11900; }
+    .engagement-btn.liked { color: #e11900; font-weight: 700; }
+    .comments-drawer {
+        display: none;
+        background: #ffffff;
+        border: 1px solid #e5e5e5;
+        border-radius: 6px;
+        padding: 12px;
+        margin-top: 8px;
+    }
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // সংবাদের কার্ডগুলো খুঁজে সেগুলোতে অ্যাকশন বার যুক্ত করা
+    const articleCards = document.querySelectorAll(".recipe-card, .ndtv-card, .big-story-card, [class*='news-card'], .card, article");
+    
+    articleCards.forEach((card, idx) => {
+        if (card.querySelector(".news-engagement-bar")) return;
+
+        const titleEl = card.querySelector("h1, h2, h3, h4, h5, h6, .big-story-title, a");
+        const titleText = titleEl ? titleEl.innerText.trim() : ("News Article " + (idx + 1));
+        const articleId = "art_" + Math.abs(titleText.split("").reduce((a, b) => { a = ((a << 5) - a) + b.charCodeAt(0); return a & a }, 0));
+        const currentUrl = encodeURIComponent(window.location.origin + window.location.pathname);
+        const encodedTitle = encodeURIComponent(titleText);
+
+        // লাইক কাউন্ট
+        let likes = parseInt(localStorage.getItem("likes_" + articleId) || Math.floor(Math.random() * 15 + 12));
+        let isLiked = localStorage.getItem("user_liked_" + articleId) === "true";
+
+        const bar = document.createElement("div");
+        bar.className = "news-engagement-bar";
+        bar.innerHTML = `
+            <div class="d-flex align-items-center gap-2">
+                <button class="engagement-btn ${isLiked ? 'liked' : ''}" onclick="handleLikeClick('${articleId}', this)">
+                    <i class="${isLiked ? 'fas' : 'far'} fa-heart"></i> <span class="like-num">${likes}</span>
+                </button>
+                <button class="engagement-btn" onclick="toggleCommentBox('${articleId}')">
+                    <i class="far fa-comment-dots"></i> <span class="comment-num" id="count_${articleId}">0</span>
+                </button>
+            </div>
+            <div class="d-flex align-items-center gap-1">
+                <a href="https://api.whatsapp.com/send?text=${encodedTitle}%20${currentUrl}" target="_blank" class="engagement-btn text-success" title="Share on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u=${currentUrl}" target="_blank" class="engagement-btn text-primary" title="Share on Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://twitter.com/intent/tweet?text=${encodedTitle}&url=${currentUrl}" target="_blank" class="engagement-btn text-dark" title="Share on X"><i class="fab fa-x-twitter"></i></a>
+                <button class="engagement-btn" onclick="copyNewsLink(this)" title="Copy Link"><i class="far fa-clone"></i></button>
+            </div>
+        `;
+
+        // কমেন্ট ড্রয়ার
+        const commentBox = document.createElement("div");
+        commentBox.className = "comments-drawer";
+        commentBox.id = "drawer_" + articleId;
+        commentBox.innerHTML = `
+            <div class="comment-list mb-2" id="list_${articleId}" style="max-height: 140px; overflow-y: auto; font-size: 13px;"></div>
+            <form onsubmit="submitComment(event, '${articleId}')" class="d-flex gap-2">
+                <input type="text" class="form-control form-control-sm" placeholder="Your Name" id="name_${articleId}" style="width: 30%;" required>
+                <input type="text" class="form-control form-control-sm" placeholder="Write a comment..." id="msg_${articleId}" required>
+                <button type="submit" class="btn btn-sm btn-danger px-3">Post</button>
+            </form>
+        `;
+
+        card.appendChild(bar);
+        card.appendChild(commentBox);
+
+        // সেভ করা কমেন্ট লোড
+        renderComments(articleId);
+    });
+});
+
+function handleLikeClick(id, btn) {
+    let countEl = btn.querySelector(".like-num");
+    let current = parseInt(countEl.innerText);
+    let isLiked = localStorage.getItem("user_liked_" + id) === "true";
+
+    if (!isLiked) {
+        current += 1;
+        localStorage.setItem("user_liked_" + id, "true");
+        btn.classList.add("liked");
+        btn.querySelector("i").className = "fas fa-heart";
+    } else {
+        current -= 1;
+        localStorage.removeItem("user_liked_" + id);
+        btn.classList.remove("liked");
+        btn.querySelector("i").className = "far fa-heart";
+    }
+    localStorage.setItem("likes_" + id, current);
+    countEl.innerText = current;
+}
+
+function toggleCommentBox(id) {
+    const box = document.getElementById("drawer_" + id);
+    box.style.display = (box.style.display === "block") ? "none" : "block";
+}
+
+function submitComment(e, id) {
+    e.preventDefault();
+    const name = document.getElementById("name_" + id).value.trim();
+    const msg = document.getElementById("msg_" + id).value.trim();
+    if (!name || !msg) return;
+
+    let comments = JSON.parse(localStorage.getItem("comments_" + id) || "[]");
+    comments.push({ name, msg, time: "Just now" });
+    localStorage.setItem("comments_" + id, JSON.stringify(comments));
+
+    document.getElementById("msg_" + id).value = "";
+    renderComments(id);
+}
+
+function renderComments(id) {
+    let comments = JSON.parse(localStorage.getItem("comments_" + id) || "[]");
+    let listEl = document.getElementById("list_" + id);
+    let countEl = document.getElementById("count_" + id);
+    if (!listEl) return;
+
+    countEl.innerText = comments.length;
+    listEl.innerHTML = comments.length === 0 ? '<p class="text-muted small mb-0">No comments yet. Be the first to share your thoughts!</p>' : '';
+
+    comments.forEach(c => {
+        listEl.innerHTML += `
+            <div class="border-bottom py-1">
+                <span class="fw-bold text-dark">${c.name}:</span>
+                <span class="text-secondary">${c.msg}</span>
+            </div>
+        `;
+    });
+}
+
+function copyNewsLink(btn) {
+    navigator.clipboard.writeText(window.location.href);
+    let original = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-check text-success"></i>';
+    setTimeout(() => { btn.innerHTML = original; }, 1800);
+}
+</script>
 </body>
 </html>
