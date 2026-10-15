@@ -91,136 +91,103 @@
 </head>
 <body class="text-slate-800 antialiased selection:bg-amber-500 selection:text-white">
 <!-- EN_LIVE_BAR_START -->
-<div id="siteLanguageContainer" style="display:inline-flex; align-items:center; gap:6px; margin-left:auto;">
-    <label for="portalGlobalLang" style="font-size:13px; font-weight:bold; color:#444; margin:0; display:flex; align-items:center; gap:4px;">
-        <span>🌐</span> Language:
-    </label>
-    <select id="portalGlobalLang" onchange="instantChangeLanguage(this.value)" style="padding:4px 10px; border-radius:6px; border:1px solid #ced4da; font-size:13px; font-weight:bold; background:#ffffff; color:#212529; cursor:pointer; outline:none; box-shadow:0 1px 3px rgba(0,0,0,0.08);">
-        <option value="en">English</option>
-        <option value="bn">বাংলা (Bengali)</option>
-        <option value="hi">हिन्दी (Hindi)</option>
-    </select>
+<div id="en-live-header-bar" style="all: revert; width: 100%; background: #0f172a; color: #f8fafc; font-size: 13px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; border-bottom: 1px solid #1e293b; position: relative; z-index: 99999;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 6px 15px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="display: inline-block; width: 8px; height: 8px; background: #22c55e; border-radius: 50%;"></span>
+            <span id="en-live-date-val" style="font-weight: 500; letter-spacing: 0.3px;">Loading Date...</span>
+        </div>
+        <div style="font-weight: 600; color: #38bdf8;">
+            <span id="en-live-time-val">Loading Time...</span>
+        </div>
+    </div>
 </div>
-
 <script>
-// ১. দ্রুততম ইন-মেমরি মাল্টি-ল্যাঙ্গুয়েজ ডিকশনারি
-const portalI18n = {
-    bn: {
-        "Home": "হোম",
-        "All Stories": "সমস্ত খবর",
-        "Regional & Cities": "আঞ্চলিক ও শহর",
-        "National": "জাতীয়",
-        "International / World": "আন্তর্জাতিক",
-        "Markets": "বাজার ও বাণিজ্য",
-        "Sports": "খেলাধুলা",
-        "Tech & AI": "প্রযুক্তি ও এআই",
-        "Entertainment": "বিনোদন",
-        "Write News": "খবর লিখুন",
-        "Recipes": "রেসিপি",
-        "BREAKING NEWS": "তাজা খবর",
-        "TOP SPOTLIGHT": "শীর্ষ স্পটলাইট",
-        "WORLD": "বিশ্ব",
-        "BULLION DESK:": "বুলিয়ন দর:",
-        "Gold 24K:": "২৪ ক্যারেট সোনা:",
-        "Silver:": "রুপো:",
-        "Platinum:": "প্ল্যাটিনাম:",
-        "Diamond 1ct:": "হিরে ১ ক্যারেট:",
-        "Language:": "ভাষা:",
-        "Auto-Rotation Active": "স্বয়ংক্রিয় খবর সচল"
-    },
-    hi: {
-        "Home": "होम",
-        "All Stories": "सभी खबरें",
-        "Regional & Cities": "क्षेत्रीय और शहर",
-        "National": "राष्ट्रीय",
-        "International / World": "अंतर्राष्ट्रीय",
-        "Markets": "बाजार",
-        "Sports": "खेल",
-        "Tech & AI": "तकनीक और एआई",
-        "Entertainment": "मनोरंजन",
-        "Write News": "समाचार लिखें",
-        "Recipes": "रेसिपी",
-        "BREAKING NEWS": "ताज़ा ख़बर",
-        "TOP SPOTLIGHT": "टॉप स्पॉटलाइट",
-        "WORLD": "विश्व",
-        "BULLION DESK:": "बुलियन दरें:",
-        "Gold 24K:": "२४ कैरेट सोना:",
-        "Silver:": "चांदी:",
-        "Platinum:": "प्लेटिनम:",
-        "Diamond 1ct:": "हीरा १ कैरेट:",
-        "Language:": "भाषा:",
-        "Auto-Rotation Active": "ऑटो-रोटेशन सक्रिय"
+(function() {
+    function updateClock() {
+        const d = new Date();
+        const dateOpt = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const dEl = document.getElementById('en-live-date-val');
+        const tEl = document.getElementById('en-live-time-val');
+        if (dEl) dEl.textContent = d.toLocaleDateString('en-US', dateOpt);
+        if (tEl) tEl.textContent = d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }) + ' IST';
     }
-};
-
-let originalTextCache = new Map();
-
-function instantChangeLanguage(lang) {
-    localStorage.setItem("portal_selected_lang", lang);
-    
-    // পঞ্জিকা থাকলে তার ভাষাও সাথে সাথে সিঙ্ক
-    if (typeof switchPanchangLang === 'function') {
-        switchPanchangLang(lang);
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', updateClock);
+    } else {
+        updateClock();
     }
-
-    if (lang === 'en') {
-        // তাৎক্ষণিকভাবে মূল ইংরেজি টেক্সট ফিরিয়ে আনা
-        originalTextCache.forEach((origText, node) => {
-            if (node.nodeType === Node.TEXT_NODE) {
-                node.nodeValue = origText;
-            }
-        });
-        return;
-    }
-
-    const dict = portalI18n[lang];
-    if (!dict) return;
-
-    // পুরো সাইটের টেক্সট নোডগুলোতে মিলিসেকেন্ডে সরাসরি ট্রান্সলেশন
-    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
-    let node;
-    while ((node = walker.nextNode())) {
-        let text = node.nodeValue.trim();
-        if (!text || node.parentElement.tagName === 'SCRIPT' || node.parentElement.tagName === 'STYLE' || node.parentElement.id === 'portalGlobalLang') {
-            continue;
-        }
-
-        if (!originalTextCache.has(node)) {
-            originalTextCache.set(node, node.nodeValue);
-        }
-
-        let currentVal = originalTextCache.get(node);
-        let modified = false;
-
-        for (const [enKey, transVal] of Object.entries(dict)) {
-            if (currentVal.includes(enKey)) {
-                currentVal = currentVal.replace(new RegExp(enKey, 'g'), transVal);
-                modified = true;
-            }
-        }
-
-        if (modified) {
-            node.nodeValue = currentVal;
-        }
-    }
-}
-
-// পেজ লোড হওয়ার পর সংরক্ষিত ভাষা সাথে সাথে সক্রিয় করা
-document.addEventListener("DOMContentLoaded", function() {
-    const savedLang = localStorage.getItem("portal_selected_lang") || "en";
-    const dropdown = document.getElementById("portalGlobalLang");
-    if (dropdown) dropdown.value = savedLang;
-
-    if (savedLang !== 'en') {
-        instantChangeLanguage(savedLang);
-    }
-});
+    setInterval(updateClock, 1000);
+})();
 </script>
-<style>
-/* গুগলের ধীরগতির বার স্থায়ীভাবে ব্লক */
-.goog-te-banner-frame.skiptranslate, .goog-te-gadget-simple { display: none !important; }
-body { top: 0px !important; }
-</style>
+<!-- EN_LIVE_BAR_END -->
+
+    <!-- ১. শীর্ষ ব্রেকিং নিউজ টিকার বার (Infinite Non-Stop Live Loop) -->
+  <div class="bg-red-800 text-white text-xs font-semibold overflow-hidden border-b border-red-900 shadow-inner flex items-center h-10">
+    <div class="bg-red-950 text-amber-300 px-4 py-2 font-bold uppercase tracking-widest text-[11px] flex items-center gap-2 z-20 flex-shrink-0 shadow-md">
+      <span class="w-2.5 h-2.5 rounded-full bg-red-400 animate-ping inline-block"></span> BREAKING NEWS
+    </div>
+    <div class="overflow-hidden w-full whitespace-nowrap pl-2 relative">
+      <div id="tickerTrack" class="ticker-wrapper text-sm sm:text-base tracking-wide font-semibold text-white">
+        <div id="tickerContentA" class="inline-flex items-center">
+          {% for t in ticker %}
+            <span class="mx-6 inline-flex items-center gap-2"><i class="fas fa-bolt text-amber-400 text-xs"></i> {{ t }}</span>
+          {% endfor %}
+        </div>
+        <div id="tickerContentB" class="inline-flex items-center">
+          {% for t in ticker %}
+            <span class="mx-6 inline-flex items-center gap-2"><i class="fas fa-bolt text-amber-400 text-xs"></i> {{ t }}</span>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ২. প্রিমিয়াম সোনা-রুপো ও মেটালস বার -->
+  <div class="bg-amber-50/80 backdrop-blur-xs border-b border-amber-200/60 px-4 py-1.5 text-[11px] text-amber-950 font-medium">
+    <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+      <div class="flex items-center gap-3 overflow-x-auto whitespace-nowrap py-0.5">
+        <span class="font-bold text-amber-900 flex items-center gap-1 text-[10px] tracking-wider uppercase"><i class="fas fa-coins text-amber-600"></i> Bullion Desk:</span>
+        <span class="bg-white/80 px-2 py-0.5 rounded border border-amber-200/60">Gold 24K: <strong>₹14,744/g</strong></span>
+        <span class="bg-white/80 px-2 py-0.5 rounded border border-amber-200/60">Silver: <strong>₹118/g</strong></span>
+        <span class="bg-white/80 px-2 py-0.5 rounded border border-amber-200/60">Platinum: <strong>₹4,200/g</strong></span>
+        <span class="bg-white/80 px-2 py-0.5 rounded border border-amber-200/60">Diamond 1ct: <strong>₹4,50,000</strong></span>
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- ৩. ইউনিক ব্র্যান্ডিং ও নেভিগেশন হেডার -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex flex-wrap justify-between items-center gap-3">
+      
+      <!-- অফিসিয়াল ব্যানার ও লোগো -->
+      <a href="/" class="flex items-center gap-3 group text-decoration-none">
+        <div class="w-10 h-10 flex-shrink-0 group-hover:scale-105 transition transform">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="40" height="40" fill="none">
+            <circle cx="24" cy="24" r="22" fill="#0f172a" stroke="#d97706" stroke-width="2.5"/>
+            <circle cx="24" cy="24" r="18" fill="none" stroke="#d97706" stroke-width="0.8" stroke-dasharray="2 2"/>
+            <text x="50%" y="58%" text-anchor="middle" fill="#d97706" font-family="'Cinzel', serif" font-weight="900" font-size="20">24</text>
+          </svg>
+        </div>
+        <span class="headline-font text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-none group-hover:text-amber-800 transition">24 EARLY NEWS</span>
+      </a>
+
+      <!-- সার্চ বার -->
+      <div class="flex-grow max-w-sm mx-1">
+        <div class="relative">
+          <input type="text" id="searchInput" autocomplete="off" spellcheck="false" onkeydown="handleCountrySearch(event)" placeholder="Search any of 195 Countries (e.g. Bangladesh, Japan, USA, Russia)..." class="w-full bg-slate-50 border border-slate-300 rounded-full py-1.5 pl-8 pr-3 text-xs focus:outline-none focus:ring-2 focus:ring-amber-500">
+          <i class="fas fa-search absolute left-2.5 top-2.5 text-slate-400 text-xs"></i>
+        </div>
+      </div>
+
+      <!-- উপরে ডানদিকে Search Language (অটো-সাজেস্ট ড্রপডাউন সহ) -->
+      <div class="relative">
+        <div class="flex items-center gap-1.5 bg-slate-100 border border-slate-300 rounded-full px-3 py-1 text-xs shadow-inner">
+          <i class="fas fa-language text-slate-500 text-sm"></i>
+          <input type="text" id="langSearchInput" autocomplete="off" spellcheck="false" oninput="showLanguageSuggestions(this.value)" onkeydown="handleLangKey(event)" placeholder="Search Language (e.g. Bengali, Hindi)..." class="bg-transparent border-none text-xs w-44 sm:w-56 focus:outline-none font-medium text-slate-700 placeholder-slate-400">
+          <button onclick="executeLanguageSearch()" class="bg-slate-900 text-white rounded-full px-2 py-0.5 text-[10px] font-bold hover:bg-slate-800 transition">Set</button>
+        </div>
         <!-- লাইভ সাজেশন ড্রপডাউন মেনু -->
         <div id="langDropdown" class="hidden absolute right-0 mt-1 w-64 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 max-h-60 overflow-y-auto divide-y divide-slate-100 text-xs">
         </div>
@@ -1250,7 +1217,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 </script>
-
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 <style>
 /* গুগল অনুবাদের বাড়তি বার বা ফ্রেম যেন সাইটের ডিজাইন নষ্ট না করে */
 .goog-te-banner-frame.skiptranslate, .goog-te-gadget-simple { display: none !important; }
