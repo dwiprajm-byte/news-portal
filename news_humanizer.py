@@ -1,5 +1,7 @@
 ﻿# -*- coding: utf-8 -*-
 import re
+import hashlib
+from datetime import datetime
 
 DATELINE_MAPPING = [
     ("delhi", "NEW DELHI"),
@@ -11,7 +13,6 @@ DATELINE_MAPPING = [
     ("us", "WASHINGTON"),
     ("america", "WASHINGTON"),
     ("russia", "MOSCOW"),
-    ("moscow", "MOSCOW"),
     ("ukraine", "KYIV"),
     ("london", "LONDON"),
     ("uk", "LONDON"),
@@ -28,68 +29,78 @@ def detect_dateline(text):
     for key, city in DATELINE_MAPPING:
         if key in text_low:
             return city
-    return "NEW DELHI"
+    return "GLOBAL NEWS DESK"
 
-def format_as_bullet_highlights(lead_text, title):
-    # সংবাদের ৩টি মূল হাইলাইটস তৈরি
-    p1 = f"Key developments confirmed regarding {title}."
-    p2 = lead_text if lead_text else "Administrative authorities and observer desks are closely reviewing ground assessments."
-    p3 = "Official directives have been notified as emergency and regulatory desks maintain heightened vigilance."
+def make_unique_headline(raw_title):
+    # অপ্রয়োজনীয় সোর্স মার্কার বা এপিআই ট্র্যাকার সরানো
+    title = re.sub(r'\s*-\s*[A-Za-z0-9\s\.\-]+$', '', raw_title).strip()
+    title = re.sub(r'["\']', '', title)
     
-    return (
-        f"<div class='news-highlights-box' style='background:#f9f9f9;border-left:4px solid #d32f2f;padding:12px 16px;margin:15px 0;border-radius:0 6px 6px 0;'>"
-        f"<strong style='font-size:14px;color:#111;text-transform:uppercase;'>Key Highlights:</strong>"
-        f"<ul style='margin:8px 0 0 18px;padding:0;font-size:14px;color:#333;line-height:1.6;'>"
-        f"<li>{p1}</li>"
-        f"<li>{p2}</li>"
-        f"<li>{p3}</li>"
-        f"</ul></div>"
-    )
+    if not title:
+        return "Global Developments: Key Strategic Updates Unfold"
+        
+    # হেডলাইনকে গুগল সার্চে ইউনিক ও বিশ্লেষণধর্মী দেখাতে স্মার্ট প্রিফিক্স
+    prefixes = [
+        "Special Dispatch:",
+        "Strategic Analysis:",
+        "Inside Report:",
+        "Key Developments:"
+    ]
+    hash_val = int(hashlib.md5(title.encode()).hexdigest(), 16)
+    prefix = prefixes[hash_val % len(prefixes)]
+    
+    if len(title.split()) > 7:
+        return title
+    return f"{prefix} {title}"
 
 def humanize_article(article):
     raw_title = article.get("title", "") or ""
     raw_desc = article.get("description", "") or ""
     raw_content = article.get("content", "") or ""
-    
-    # অপ্রয়োজনীয় সোর্স মার্কার বা এপিআই ক্লিনিং
-    clean_title = re.sub(r'\s*-\s*[A-Za-z0-9\s\.\-]+$', '', raw_title).strip()
-    if not clean_title:
-        clean_title = "Global News Report: Key Highlights And Emerging Developments"
-    clean_title = re.sub(r'["\']', '', clean_title)
 
-    # ১. ডেটলাইন চিহ্নিত করা
-    dateline = detect_dateline(clean_title + " " + raw_desc)
+    unique_title = make_unique_headline(raw_title)
+    dateline = detect_dateline(unique_title + " " + raw_desc)
+    current_date = datetime.now().strftime("%b %d")
 
-    # ২. লিড প্যারাগ্রাফ (Lede)
-    lead_summary = raw_desc.strip() if raw_desc else f"High-level developments were reported today concerning {clean_title}, drawing immediate reactions across regional and international diplomatic circles."
-    lead_paragraph = f"<p><strong>{dateline}: </strong> {lead_summary}</p>"
+    lead_text = raw_desc.strip() if raw_desc else f"Major developments unfolded regarding {unique_title}, drawing immediate reactions across public, commercial, and diplomatic corridors."
 
-    # ৩. হাইলাইটস বক্স
-    highlights_block = format_as_bullet_highlights(lead_summary, clean_title)
+    # ১. আন্তর্জাতিক ব্যুরো লিড (Date & Official Wire Line)
+    lede_paragraph = f"<p><strong>{dateline}, {current_date} (24 Early News Special Bureau) — </strong> {lead_text}</p>"
 
-    # ৪. ইনভার্টেড পিরামিড বডি প্যারাগ্রাফ (Body & Context)
-    body_paragraph = (
-        "<p>According to information shared by monitoring officials and desk correspondents, the matter is under active review by operational authorities. "
-        "Independent policy analysts emphasize that these developments carry strategic weight, particularly as regulatory bodies seek to address immediate ripple effects on the ground. "
-        "Ground security and monitoring protocols have been alerted to respond to emerging situations promptly.</p>"
+    # ২. এক্সিকিউটিভ স্ট্র্যাটেজিক ব্রিফ (Google Featured Snippet অপ্টিমাইজড হাইলাইটস কার্ড)
+    executive_brief = (
+        f"<div class='news-agency-take' style='background:#f8f9fa;border-left:4px solid #d32f2f;padding:14px 18px;margin:16px 0;border-radius:0 4px 4px 0;box-shadow:0 1px 3px rgba(0,0,0,0.05);'>"
+        f"<strong style='font-size:13px;letter-spacing:1px;color:#d32f2f;text-transform:uppercase;'>Executive Strategic Brief:</strong>"
+        f"<ul style='margin:8px 0 0 16px;padding:0;font-size:14px;color:#222;line-height:1.6;'>"
+        f"<li><strong>Ground Status:</strong> Administrative frameworks have been actively deployed to assess ongoing real-time variables.</li>"
+        f"<li><strong>Policy Impact:</strong> Strategic observers highlight cross-sector ripple effects shaping subsequent institutional stances.</li>"
+        f"<li><strong>Verification Protocol:</strong> Official communiqués and formalized briefs remain the designated reference for emerging updates.</li>"
+        f"</ul></div>"
     )
 
-    # ৫. অফিশিয়াল কোট/রেসপন্স ও সমাপনী (Sign-off)
-    closing_paragraph = (
-        "<p>Administrative spokespersons have reiterated that verified updates will be issued through official gazettes and accredited press briefs. "
-        "Our specialized news desk continues to follow the timeline of events closely and will bring verified on-ground dispatches as further facts are established.</p>"
+    # ৩. ইন-ডেপথ প্রেক্ষাপট ও কাঠামোগত বিশ্লেষণ (Original Background & Analysis)
+    context_body = (
+        "<p>According to dispatches reviewed by our monitoring editors, the situation reflects deeper structural shifts rather than isolated events. "
+        "Independent policy specialists tracking the proceedings noted that regulatory authorities are prioritizing protocol enforcement to prevent secondary disruptions. "
+        "Institutional observers further pointed out that previous benchmarks in similar circumstances necessitated coordinated policy responses between regional and executive oversight bodies.</p>"
     )
 
-    # পূর্ণাঙ্গ পেশাদার জার্নালিস্টিক আর্টিকেল
-    structured_content = f"{lead_paragraph}\n{highlights_block}\n{body_paragraph}\n{closing_paragraph}"
+    # ৪. অথরিটেটিভ বক্তব্য ও প্রফেশনাল ব্যুরো সমাপনী (Attribution & Sign-off)
+    signoff_paragraph = (
+        "<p>Spokespersons familiar with the deliberations stated that official briefings will follow as documentation is finalized, urging public observers to rely solely on verified channels. "
+        "Our specialized news desk maintains 24x7 active surveillance over developing corridors and will provide subsequent verified dispatches as facts are established.</p>"
+    )
+
+    # পূর্ণাঙ্গ প্রফেশনাল ওয়্যার আর্টিকেল
+    full_wire_story = f"{lede_paragraph}\n{executive_brief}\n{context_body}\n{signoff_paragraph}"
 
     return {
-        "title": clean_title,
-        "description": f"{dateline}: {lead_summary}",
-        "content": structured_content,
+        "title": unique_title,
+        "description": f"{dateline}: {lead_text}",
+        "content": full_wire_story,
         "url": article.get("url", "#"),
         "urlToImage": article.get("urlToImage", ""),
-        "publishedAt": article.get("publishedAt", "Live Update"),
+        "publishedAt": article.get("publishedAt", "Live Dispatch"),
         "source": {"name": "24 Early News Special Bureau"}
     }
 
