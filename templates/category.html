@@ -472,7 +472,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 <!-- Complete Clean Vedic Panchang & Horoscope System -->
 <div id="panchangModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.65); z-index:10000; justify-content:center; align-items:center;">
-    <div style="background:#fff; width:94%; max-width:760px; max-height:88vh; border-radius:12px; overflow-y:auto; padding:22px; position:relative; box-shadow:0 12px 30px rgba(0,0,0,0.5); font-family:system-ui, -apple-system, sans-serif;">
+    <div style="background:#fff; width:94%; max-width:760px; max-height:88vh; border-radius:12px; overflow-y:auto; padding:22px; position:relative; box-shadow:0 12px 30px rgba(0,0,0,0.5); font-family:system-ui, -apple-system, sans-serif; box-sizing:border-box;">
         <button onclick="togglePanchangModal()" style="position:absolute; top:15px; right:15px; border:none; background:#f0f0f0; width:32px; height:32px; border-radius:50%; font-weight:bold; cursor:pointer; font-size:16px;">✕</button>
         
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #ffc107; padding-bottom:10px; margin-bottom:15px; flex-wrap:wrap; gap:10px;">
@@ -489,47 +489,48 @@ document.addEventListener("DOMContentLoaded", function() {
             </div>
         </div>
 
-        <div style="background:#fff9e6; border:1px solid #ffe082; border-radius:8px; padding:16px; margin-bottom:18px;">
+        <!-- পঞ্জিকা পঞ্চাঙ্গ বিবরণ (কখনোই বক্সের বাইরে যাবে না) -->
+        <div style="background:#fff9e6; border:1px solid #ffe082; border-radius:8px; padding:16px; margin-bottom:18px; box-sizing:border-box;">
             <div style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:10px;">
-                <div style="flex:1 1 45%; min-width:240px; background:#fff; padding:8px 12px; border-radius:6px; border:1px solid #f0e6c8; box-sizing:border-box;">
-                    <strong id="lblDay" style="color:#666; font-size:12px; display:block;">Day</strong>
-                    <span id="pjBar" style="font-weight:600; color:#222; font-size:14px;">--</span>
+                <div style="flex:1 1 calc(50% - 10px); min-width:260px; background:#fff; padding:10px 14px; border-radius:6px; border:1px solid #f0e6c8; box-sizing:border-box; word-break:break-word;">
+                    <strong id="lblDay" style="color:#666; font-size:12px; display:block; margin-bottom:2px;">Day</strong>
+                    <span id="pjBar" style="font-weight:600; color:#222; font-size:14px; line-height:1.4;">--</span>
                 </div>
-                <div style="flex:1 1 45%; min-width:240px; background:#fff; padding:8px 12px; border-radius:6px; border:1px solid #f0e6c8; box-sizing:border-box;">
-                    <strong id="lblTithi" style="color:#666; font-size:12px; display:block;">Tithi</strong>
-                    <span id="pjTithi" style="color:#b71c1c; font-weight:bold; font-size:14px;">--</span>
+                <div style="flex:1 1 calc(50% - 10px); min-width:260px; background:#fff; padding:10px 14px; border-radius:6px; border:1px solid #f0e6c8; box-sizing:border-box; word-break:break-word;">
+                    <strong id="lblTithi" style="color:#666; font-size:12px; display:block; margin-bottom:2px;">Tithi</strong>
+                    <span id="pjTithi" style="color:#b71c1c; font-weight:bold; font-size:14px; line-height:1.4;">--</span>
                 </div>
-                <div style="flex:1 1 45%; min-width:240px; background:#fff; padding:8px 12px; border-radius:6px; border:1px solid #f0e6c8; box-sizing:border-box;">
-                    <strong id="lblNakshatra" style="color:#666; font-size:12px; display:block;">Nakshatra</strong>
-                    <span id="pjNakshatra" style="font-weight:600; color:#222; font-size:14px;">--</span>
+                <div style="flex:1 1 calc(50% - 10px); min-width:260px; background:#fff; padding:10px 14px; border-radius:6px; border:1px solid #f0e6c8; box-sizing:border-box; word-break:break-word;">
+                    <strong id="lblNakshatra" style="color:#666; font-size:12px; display:block; margin-bottom:2px;">Nakshatra</strong>
+                    <span id="pjNakshatra" style="font-weight:600; color:#222; font-size:14px; line-height:1.4;">--</span>
                 </div>
-                <div style="flex:1 1 45%; min-width:240px; background:#fff; padding:8px 12px; border-radius:6px; border:1px solid #f0e6c8; box-sizing:border-box;">
-                    <strong id="lblYogaKaran" style="color:#666; font-size:12px; display:block;">Yoga & Karana</strong>
-                    <span id="pjYogaKaran" style="font-weight:600; color:#222; font-size:14px;">--</span>
+                <div style="flex:1 1 calc(50% - 10px); min-width:260px; background:#fff; padding:10px 14px; border-radius:6px; border:1px solid #f0e6c8; box-sizing:border-box; word-break:break-word;">
+                    <strong id="lblYogaKaran" style="color:#666; font-size:12px; display:block; margin-bottom:2px;">Yoga & Karana</strong>
+                    <span id="pjYogaKaran" style="font-weight:600; color:#222; font-size:14px; line-height:1.4;">--</span>
                 </div>
-                <div style="flex:1 1 45%; min-width:240px; background:#fff; padding:8px 12px; border-radius:6px; border:1px solid #f0e6c8; box-sizing:border-box;">
-                    <strong id="lblShubha" style="color:#2e7d32; font-size:12px; display:block;">Auspicious Time</strong>
-                    <span id="pjShubha" style="color:#2e7d32; font-weight:bold; font-size:14px;">--</span>
+                <div style="flex:1 1 calc(50% - 10px); min-width:260px; background:#fff; padding:10px 14px; border-radius:6px; border:1px solid #f0e6c8; box-sizing:border-box; word-break:break-word;">
+                    <strong id="lblShubha" style="color:#2e7d32; font-size:12px; display:block; margin-bottom:2px;">Auspicious Time</strong>
+                    <span id="pjShubha" style="color:#2e7d32; font-weight:bold; font-size:14px; line-height:1.4;">--</span>
                 </div>
-                <div style="flex:1 1 45%; min-width:240px; background:#fff; padding:8px 12px; border-radius:6px; border:1px solid #f0e6c8; box-sizing:border-box;">
-                    <strong id="lblRahu" style="color:#c62828; font-size:12px; display:block;">Rahu Kaal (Avoid)</strong>
-                    <span id="pjRahu" style="color:#c62828; font-weight:bold; font-size:14px;">--</span>
+                <div style="flex:1 1 calc(50% - 10px); min-width:260px; background:#fff; padding:10px 14px; border-radius:6px; border:1px solid #f0e6c8; box-sizing:border-box; word-break:break-word;">
+                    <strong id="lblRahu" style="color:#c62828; font-size:12px; display:block; margin-bottom:2px;">Rahu Kaal (Avoid)</strong>
+                    <span id="pjRahu" style="color:#c62828; font-weight:bold; font-size:14px; line-height:1.4;">--</span>
                 </div>
             </div>
             
-            <div style="background:#fff; padding:8px 12px; border-radius:6px; border:1px solid #f0e6c8; font-size:13px; color:#444; margin-bottom:8px;">
+            <div style="background:#fff; padding:10px 14px; border-radius:6px; border:1px solid #f0e6c8; font-size:13px; color:#444; margin-bottom:8px; word-break:break-word; line-height:1.4;">
                 <strong id="lblMonthStatus">Month Status:</strong> <span id="pjAdhimas">--</span>
             </div>
-            <div style="background:#fff; padding:8px 12px; border-radius:6px; border:1px solid #f0e6c8; font-size:13px; color:#e65100; font-weight:bold;" id="pjEventsBox"></div>
+            <div style="background:#fff; padding:10px 14px; border-radius:6px; border:1px solid #f0e6c8; font-size:13px; color:#e65100; font-weight:bold; word-break:break-word; line-height:1.4;" id="pjEventsBox"></div>
         </div>
 
+        <!-- ১২ রাশির দৈনিক ফল (প্রতিটি কার্ড সম্পূর্ণ স্বয়ংসম্পূর্ণ ও সুরক্ষিত) -->
         <h4 style="margin:18px 0 12px 0; color:#333; font-size:16px; border-left:4px solid #b71c1c; padding-left:8px;" id="lblHoroscopeHead">
             🪐 Daily Horoscope (12 Zodiac Signs)
         </h4>
-        <div id="pjRashiContainer" style="display:flex; flex-wrap:wrap; gap:12px;"></div>
+        <div id="pjRashiContainer" style="display:flex; flex-wrap:wrap; gap:12px; width:100%; box-sizing:border-box;"></div>
     </div>
 </div>
-
 <script>
 const pjDataStore = {
     en: {
@@ -645,12 +646,12 @@ function renderPanchangUI(lang) {
     document.getElementById("pjAdhimas").innerText = d.monthVal;
     document.getElementById("pjEventsBox").innerText = d.evVal;
 
-    const box = document.getElementById("pjRashiContainer");
+        const box = document.getElementById("pjRashiContainer");
     box.innerHTML = "";
     d.rashis.forEach(r => {
         const item = document.createElement("div");
-        item.style = "flex: 1 1 45%; min-width: 250px; background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:12px; box-sizing:border-box;";
-        item.innerHTML = `<div style="font-weight:bold; color:#b71c1c; margin-bottom:5px; font-size:15px;">${r.s}${r.n}</div><div style="font-size:13px; color:#333; line-height:1.5;">${r.t}</div>`;
+        item.style = "flex: 1 1 calc(50% - 12px); min-width: 260px; max-width: 100%; background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:12px 14px; box-sizing:border-box; word-break:break-word; overflow-wrap:break-word; white-space:normal;";
+        item.innerHTML = `<div style="font-weight:bold; color:#b71c1c; margin-bottom:6px; font-size:15px;">${r.s} ${r.n}</div><div style="font-size:13px; color:#333; line-height:1.55; white-space:normal; word-break:break-word;">${r.t}</div>`;
         box.appendChild(item);
     });
 
