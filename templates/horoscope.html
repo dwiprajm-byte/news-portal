@@ -824,9 +824,139 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 </script>
-<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
 <style>
 /* গুগল অনুবাদের বাড়তি বার বা ফ্রেম যেন সাইটের ডিজাইন নষ্ট না করে */
+.goog-te-banner-frame.skiptranslate, .goog-te-gadget-simple { display: none !important; }
+body { top: 0px !important; }
+</style>
+<div id="siteLanguageContainer" style="display:inline-flex; align-items:center; gap:6px; margin-left:auto;">
+    <label for="portalGlobalLang" style="font-size:13px; font-weight:bold; color:#444; margin:0; display:flex; align-items:center; gap:4px;">
+        <span>🌐</span> Language:
+    </label>
+    <select id="portalGlobalLang" onchange="instantChangeLanguage(this.value)" style="padding:4px 10px; border-radius:6px; border:1px solid #ced4da; font-size:13px; font-weight:bold; background:#ffffff; color:#212529; cursor:pointer; outline:none; box-shadow:0 1px 3px rgba(0,0,0,0.08);">
+        <option value="en">English</option>
+        <option value="bn">বাংলা (Bengali)</option>
+        <option value="hi">हिन्दी (Hindi)</option>
+    </select>
+</div>
+
+<script>
+// ১. দ্রুততম ইন-মেমরি মাল্টি-ল্যাঙ্গুয়েজ ডিকশনারি
+const portalI18n = {
+    bn: {
+        "Home": "হোম",
+        "All Stories": "সমস্ত খবর",
+        "Regional & Cities": "আঞ্চলিক ও শহর",
+        "National": "জাতীয়",
+        "International / World": "আন্তর্জাতিক",
+        "Markets": "বাজার ও বাণিজ্য",
+        "Sports": "খেলাধুলা",
+        "Tech & AI": "প্রযুক্তি ও এআই",
+        "Entertainment": "বিনোদন",
+        "Write News": "খবর লিখুন",
+        "Recipes": "রেসিপি",
+        "BREAKING NEWS": "তাজা খবর",
+        "TOP SPOTLIGHT": "শীর্ষ স্পটলাইট",
+        "WORLD": "বিশ্ব",
+        "BULLION DESK:": "বুলিয়ন দর:",
+        "Gold 24K:": "২৪ ক্যারেট সোনা:",
+        "Silver:": "রুপো:",
+        "Platinum:": "প্ল্যাটিনাম:",
+        "Diamond 1ct:": "হিরে ১ ক্যারেট:",
+        "Language:": "ভাষা:",
+        "Auto-Rotation Active": "স্বয়ংক্রিয় খবর সচল"
+    },
+    hi: {
+        "Home": "होम",
+        "All Stories": "सभी खबरें",
+        "Regional & Cities": "क्षेत्रीय और शहर",
+        "National": "राष्ट्रीय",
+        "International / World": "अंतर्राष्ट्रीय",
+        "Markets": "बाजार",
+        "Sports": "खेल",
+        "Tech & AI": "तकनीक और एआई",
+        "Entertainment": "मनोरंजन",
+        "Write News": "समाचार लिखें",
+        "Recipes": "रेसिपी",
+        "BREAKING NEWS": "ताज़ा ख़बर",
+        "TOP SPOTLIGHT": "टॉप स्पॉटलाइट",
+        "WORLD": "विश्व",
+        "BULLION DESK:": "बुलियन दरें:",
+        "Gold 24K:": "२४ कैरेट सोना:",
+        "Silver:": "चांदी:",
+        "Platinum:": "प्लेटिनम:",
+        "Diamond 1ct:": "हीरा १ कैरेट:",
+        "Language:": "भाषा:",
+        "Auto-Rotation Active": "ऑटो-रोटेशन सक्रिय"
+    }
+};
+
+let originalTextCache = new Map();
+
+function instantChangeLanguage(lang) {
+    localStorage.setItem("portal_selected_lang", lang);
+    
+    // পঞ্জিকা থাকলে তার ভাষাও সাথে সাথে সিঙ্ক
+    if (typeof switchPanchangLang === 'function') {
+        switchPanchangLang(lang);
+    }
+
+    if (lang === 'en') {
+        // তাৎক্ষণিকভাবে মূল ইংরেজি টেক্সট ফিরিয়ে আনা
+        originalTextCache.forEach((origText, node) => {
+            if (node.nodeType === Node.TEXT_NODE) {
+                node.nodeValue = origText;
+            }
+        });
+        return;
+    }
+
+    const dict = portalI18n[lang];
+    if (!dict) return;
+
+    // পুরো সাইটের টেক্সট নোডগুলোতে মিলিসেকেন্ডে সরাসরি ট্রান্সলেশন
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+    let node;
+    while ((node = walker.nextNode())) {
+        let text = node.nodeValue.trim();
+        if (!text || node.parentElement.tagName === 'SCRIPT' || node.parentElement.tagName === 'STYLE' || node.parentElement.id === 'portalGlobalLang') {
+            continue;
+        }
+
+        if (!originalTextCache.has(node)) {
+            originalTextCache.set(node, node.nodeValue);
+        }
+
+        let currentVal = originalTextCache.get(node);
+        let modified = false;
+
+        for (const [enKey, transVal] of Object.entries(dict)) {
+            if (currentVal.includes(enKey)) {
+                currentVal = currentVal.replace(new RegExp(enKey, 'g'), transVal);
+                modified = true;
+            }
+        }
+
+        if (modified) {
+            node.nodeValue = currentVal;
+        }
+    }
+}
+
+// পেজ লোড হওয়ার পর সংরক্ষিত ভাষা সাথে সাথে সক্রিয় করা
+document.addEventListener("DOMContentLoaded", function() {
+    const savedLang = localStorage.getItem("portal_selected_lang") || "en";
+    const dropdown = document.getElementById("portalGlobalLang");
+    if (dropdown) dropdown.value = savedLang;
+
+    if (savedLang !== 'en') {
+        instantChangeLanguage(savedLang);
+    }
+});
+</script>
+<style>
+/* গুগলের ধীরগতির বার স্থায়ীভাবে ব্লক */
 .goog-te-banner-frame.skiptranslate, .goog-te-gadget-simple { display: none !important; }
 body { top: 0px !important; }
 </style>
