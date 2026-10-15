@@ -1,69 +1,92 @@
 ﻿# -*- coding: utf-8 -*-
 import re
 
-DATELINE_CITIES = [
-    ("india", "NEW DELHI"),
+DATELINE_MAPPING = [
     ("delhi", "NEW DELHI"),
+    ("india", "NEW DELHI"),
     ("mumbai", "MUMBAI"),
     ("bengaluru", "BENGALURU"),
+    ("kolkata", "KOLKATA"),
+    ("washington", "WASHINGTON"),
     ("us", "WASHINGTON"),
     ("america", "WASHINGTON"),
     ("russia", "MOSCOW"),
+    ("moscow", "MOSCOW"),
     ("ukraine", "KYIV"),
-    ("uk", "LONDON"),
     ("london", "LONDON"),
+    ("uk", "LONDON"),
+    ("beijing", "BEIJING"),
     ("china", "BEIJING"),
     ("israel", "JERUSALEM"),
-    ("cricket", "DUBAI"),
-    ("tech", "SAN FRANCISCO")
+    ("iran", "TEHRAN"),
+    ("tech", "SAN FRANCISCO"),
+    ("cricket", "DUBAI")
 ]
 
-def get_appropriate_dateline(text):
-    text_lower = text.lower()
-    for keyword, city in DATELINE_CITIES:
-        if keyword in text_lower:
+def detect_dateline(text):
+    text_low = text.lower()
+    for key, city in DATELINE_MAPPING:
+        if key in text_low:
             return city
-    return "NEW DELHI / GLOBAL DESK"
+    return "NEW DELHI"
+
+def format_as_bullet_highlights(lead_text, title):
+    # সংবাদের ৩টি মূল হাইলাইটস তৈরি
+    p1 = f"Key developments confirmed regarding {title}."
+    p2 = lead_text if lead_text else "Administrative authorities and observer desks are closely reviewing ground assessments."
+    p3 = "Official directives have been notified as emergency and regulatory desks maintain heightened vigilance."
+    
+    return (
+        f"<div class='news-highlights-box' style='background:#f9f9f9;border-left:4px solid #d32f2f;padding:12px 16px;margin:15px 0;border-radius:0 6px 6px 0;'>"
+        f"<strong style='font-size:14px;color:#111;text-transform:uppercase;'>Key Highlights:</strong>"
+        f"<ul style='margin:8px 0 0 18px;padding:0;font-size:14px;color:#333;line-height:1.6;'>"
+        f"<li>{p1}</li>"
+        f"<li>{p2}</li>"
+        f"<li>{p3}</li>"
+        f"</ul></div>"
+    )
 
 def humanize_article(article):
     raw_title = article.get("title", "") or ""
     raw_desc = article.get("description", "") or ""
     raw_content = article.get("content", "") or ""
     
-    # অপ্রয়োজনীয় ট্র্যাকিং ও স্ক্র্যাপ মার্কার ক্লিন করা
+    # অপ্রয়োজনীয় সোর্স মার্কার বা এপিআই ক্লিনিং
     clean_title = re.sub(r'\s*-\s*[A-Za-z0-9\s\.\-]+$', '', raw_title).strip()
     if not clean_title:
         clean_title = "Global News Report: Key Highlights And Emerging Developments"
-
     clean_title = re.sub(r'["\']', '', clean_title)
 
-    # সঠিক ব্যুরো ডেসপ্যাচ লোকেশন নির্ধারণ
-    dateline = get_appropriate_dateline(clean_title + " " + raw_desc)
+    # ১. ডেটলাইন চিহ্নিত করা
+    dateline = detect_dateline(clean_title + " " + raw_desc)
 
-    # ১. স্ট্রং লিড প্যারাগ্রাফ (Lead Story Paragraph)
-    lead_text = raw_desc.strip() if raw_desc else f"Significant developments unfolded today regarding {clean_title}, drawing immediate attention from key stakeholders and international observers."
-    dispatch_lead = f"<b>{dateline}: </b> {lead_text}"
+    # ২. লিড প্যারাগ্রাফ (Lede)
+    lead_summary = raw_desc.strip() if raw_desc else f"High-level developments were reported today concerning {clean_title}, drawing immediate reactions across regional and international diplomatic circles."
+    lead_paragraph = f"<p><strong>{dateline}: </strong> {lead_summary}</p>"
 
-    # ২. অ্যানালাইটিকাল বডি ও প্রেক্ষাপট (Context & Ground Reality)
-    dispatch_body = (
-        "According to official sources closely tracking the matter, administrative and monitoring teams are reviewing the broader implications. "
-        "Independent analysts point out that this move comes amid shifting regional and global dynamics, making it a critical talking point across policy and public circles. "
-        "Ground reports indicate that protocols have been alerted to address ongoing updates swiftly."
+    # ৩. হাইলাইটস বক্স
+    highlights_block = format_as_bullet_highlights(lead_summary, clean_title)
+
+    # ৪. ইনভার্টেড পিরামিড বডি প্যারাগ্রাফ (Body & Context)
+    body_paragraph = (
+        "<p>According to information shared by monitoring officials and desk correspondents, the matter is under active review by operational authorities. "
+        "Independent policy analysts emphasize that these developments carry strategic weight, particularly as regulatory bodies seek to address immediate ripple effects on the ground. "
+        "Ground security and monitoring protocols have been alerted to respond to emerging situations promptly.</p>"
     )
 
-    # ৩. অফিসিয়াল সাইন-অফ ও সমাপনী (Official Response & Sign-off)
-    dispatch_conclusion = (
-        "Authorities have urged stakeholders to rely exclusively on verified communications as formal briefs are compiled. "
-        "Our editorial desk continues to monitor the ground situation and will bring further verified updates as they emerge."
+    # ৫. অফিশিয়াল কোট/রেসপন্স ও সমাপনী (Sign-off)
+    closing_paragraph = (
+        "<p>Administrative spokespersons have reiterated that verified updates will be issued through official gazettes and accredited press briefs. "
+        "Our specialized news desk continues to follow the timeline of events closely and will bring verified on-ground dispatches as further facts are established.</p>"
     )
 
-    # ৩-স্তরের পূর্ণাঙ্গ সম্পাদকীয় সংবাদ
-    full_article_content = f"{dispatch_lead}\n\n{dispatch_body}\n\n{dispatch_conclusion}"
+    # পূর্ণাঙ্গ পেশাদার জার্নালিস্টিক আর্টিকেল
+    structured_content = f"{lead_paragraph}\n{highlights_block}\n{body_paragraph}\n{closing_paragraph}"
 
     return {
         "title": clean_title,
-        "description": f"{dateline}: {lead_text}",
-        "content": full_article_content,
+        "description": f"{dateline}: {lead_summary}",
+        "content": structured_content,
         "url": article.get("url", "#"),
         "urlToImage": article.get("urlToImage", ""),
         "publishedAt": article.get("publishedAt", "Live Update"),
