@@ -185,8 +185,129 @@
       <div class="relative">
         <div class="flex items-center gap-1.5 bg-slate-100 border border-slate-300 rounded-full px-3 py-1 text-xs shadow-inner">
           <i class="fas fa-language text-slate-500 text-sm"></i>
-          <input type="text" id="langSearchInput" autocomplete="off" spellcheck="false" oninput="showLanguageSuggestions(this.value)" onkeydown="handleLangKey(event)" placeholder="Search Language (e.g. Bengali, Hindi)..." class="bg-transparent border-none text-xs w-44 sm:w-56 focus:outline-none font-medium text-slate-700 placeholder-slate-400">
-          <button onclick="executeLanguageSearch()" class="bg-slate-900 text-white rounded-full px-2 py-0.5 text-[10px] font-bold hover:bg-slate-800 transition">Set</button>
+          <div id="siteLanguageContainer" style="display:inline-flex; align-items:center; gap:6px; margin: 0 4px;">
+    <span style="font-size:12px; font-weight:bold; color:#555;">🌐 Language:</span>
+    <select id="portalGlobalLang" onchange="instantSwitchLanguage(this.value)" style="padding:4px 8px; border-radius:4px; border:1px solid #ced4da; font-size:13px; font-weight:bold; background:#fff; color:#212529; cursor:pointer; outline:none; box-shadow:0 1px 2px rgba(0,0,0,0.05);">
+        <option value="en">English</option>
+        <option value="bn">বাংলা (Bengali)</option>
+        <option value="hi">हिन्दी (Hindi)</option>
+    </select>
+</div>
+
+<script>
+// ১. হাই-স্পিড ইন-মেমোরি অনুবাদ ডিকশনারি (১ মিলিসেকেন্ডে এক্সিকিউট হবে)
+const fastLangDict = {
+    bn: {
+        "Home": "হোম",
+        "All Stories": "সমস্ত খবর",
+        "Regional & Cities": "আঞ্চলিক ও শহর",
+        "National": "জাতীয়",
+        "International / World": "আন্তর্জাতিক",
+        "Markets": "বাজার ও বাণিজ্য",
+        "Sports": "খেলাধুলা",
+        "Tech & AI": "প্রযুক্তি ও এআই",
+        "Entertainment": "বিনোদন",
+        "Write News": "খবর লিখুন",
+        "Recipes": "রেসিপি",
+        "BREAKING NEWS": "তাজা খবর",
+        "TOP SPOTLIGHT": "শীর্ষ স্পটলাইট",
+        "WORLD": "বিশ্ব",
+        "BULLION DESK:": "বুলিয়ন দর:",
+        "Gold 24K:": "২৪ ক্যারেট সোনা:",
+        "Silver:": "রুপো:",
+        "Platinum:": "প্ল্যাটিনাম:",
+        "Diamond 1ct:": "হিরে ১ ক্যারেট:",
+        "Language:": "ভাষা:",
+        "Panchang & Horoscope": "পঞ্জিকা ও রাশিফল"
+    },
+    hi: {
+        "Home": "होम",
+        "All Stories": "सभी खबरें",
+        "Regional & Cities": "क्षेत्रीय और शहर",
+        "National": "राष्ट्रीय",
+        "International / World": "अंतर्राष्ट्रीय",
+        "Markets": "बाजार",
+        "Sports": "खेल",
+        "Tech & AI": "तकनीक और एआई",
+        "Entertainment": "मनोरंजन",
+        "Write News": "समाचार लिखें",
+        "Recipes": "रेसिपी",
+        "BREAKING NEWS": "ताज़ा ख़बर",
+        "TOP SPOTLIGHT": "टॉप स्पॉटलाइट",
+        "WORLD": "विश्व",
+        "BULLION DESK:": "बुलियन दरें:",
+        "Gold 24K:": "२४ कैरेट सोना:",
+        "Silver:": "चांदी:",
+        "Platinum:": "प्लेटिनम:",
+        "Diamond 1ct:": "हीरा १ कैरेट:",
+        "Language:": "भाषा:",
+        "Panchang & Horoscope": "पंचांग और राशिफल"
+    }
+};
+
+let cachedOriginalNodes = new Map();
+
+function instantSwitchLanguage(lang) {
+    localStorage.setItem("portal_selected_lang", lang);
+    localStorage.setItem("user_selected_panchang_lang", lang);
+
+    // পঞ্জিকা মডাল খোলা থাকলে তার ভাষাও সাথে সাথে সিঙ্ক করা
+    if (typeof switchPanchangLang === 'function') {
+        switchPanchangLang(lang);
+    }
+    const modalSelect = document.getElementById("panchangLangSelect");
+    if (modalSelect) modalSelect.value = lang;
+
+    // ১ মিলিসেকেন্ডে পেজের সব লেখার ভাষা রূপান্তর
+    if (lang === 'en') {
+        cachedOriginalNodes.forEach((origText, node) => {
+            if (node.nodeType === Node.TEXT_NODE) {
+                node.nodeValue = origText;
+            }
+        });
+        return;
+    }
+
+    const dict = fastLangDict[lang];
+    if (!dict) return;
+
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+    let node;
+    while ((node = walker.nextNode())) {
+        let text = node.nodeValue.trim();
+        if (!text || node.parentElement.tagName === 'SCRIPT' || node.parentElement.tagName === 'STYLE' || node.parentElement.id === 'portalGlobalLang') {
+            continue;
+        }
+
+        if (!cachedOriginalNodes.has(node)) {
+            cachedOriginalNodes.set(node, node.nodeValue);
+        }
+
+        let currentVal = cachedOriginalNodes.get(node);
+        let modified = false;
+
+        for (const [enKey, transVal] of Object.entries(dict)) {
+            if (currentVal.includes(enKey)) {
+                currentVal = currentVal.replace(new RegExp(enKey, 'g'), transVal);
+                modified = true;
+            }
+        }
+
+        if (modified) {
+            node.nodeValue = currentVal;
+        }
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    const saved = localStorage.getItem("portal_selected_lang") || "en";
+    const dropdown = document.getElementById("portalGlobalLang");
+    if (dropdown) dropdown.value = saved;
+    if (saved !== 'en') {
+        instantSwitchLanguage(saved);
+    }
+});
+</script>
         </div>
         <!-- লাইভ সাজেশন ড্রপডাউন মেনু -->
         <div id="langDropdown" class="hidden absolute right-0 mt-1 w-64 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 max-h-60 overflow-y-auto divide-y divide-slate-100 text-xs">
@@ -1171,7 +1292,7 @@ document.addEventListener("DOMContentLoaded", function() {
         <option value="hi">हिन्दी (Hindi)</option>
     </select>
 </div>
-<div id="google_translate_element" style="display:none !important;"></div>
+
 
 <script type="text/javascript">
 function googleTranslateElementInit() {
@@ -1217,7 +1338,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 </script>
-<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
 <style>
 /* গুগল অনুবাদের বাড়তি বার বা ফ্রেম যেন সাইটের ডিজাইন নষ্ট না করে */
 .goog-te-banner-frame.skiptranslate, .goog-te-gadget-simple { display: none !important; }
