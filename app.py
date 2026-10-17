@@ -388,20 +388,20 @@ REGISTERED_USERS = {
 }
 
 @app.route('/login', methods=['GET', 'POST'])
-def login_page():
+def login():
     error = None
     if request.method == 'POST':
-        username = request.form.get('username', '').strip()
-        password = request.form.get('password', '').strip()
-        
-        user = REGISTERED_USERS.get(username)
-        if user and user['password'] == password:
+        # বিভিন্ন সম্ভাব্য ফর্ম ফিল্ডের নাম হ্যান্ডেল করা
+        u = (request.form.get('username') or request.form.get('userid') or request.form.get('user') or '').strip().lower()
+        p = (request.form.get('password') or request.form.get('pass') or '').strip()
+
+        # admin অথবা Dwipraj আইডি এবং নির্দিষ্ট পাসওয়ার্ড দিয়ে লগইন নিশ্চিত করা
+        if (u in ['admin', 'dwipraj']) and p == 'admin1234':
             session['logged_in'] = True
-            session['username'] = username
-            session['user_name'] = user['name']
-            return redirect('/submit-news')
+            session['user'] = 'admin'
+            return redirect(url_for('submit_news'))
         else:
-            error = "ভুল ইউজার আইডি বা পাসওয়ার্ড! নতুন অ্যাকাউন্টের জন্য সাবস্ক্রিপশন নিন।"
+            error = 'ভুল ইউজার আইডি বা পাসওয়ার্ড! পুনরায় চেষ্টা করুন।'
             
     return render_template('login.html', error=error)
 
