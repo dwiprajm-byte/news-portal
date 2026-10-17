@@ -358,8 +358,8 @@ def fetch_feed_items():
     
     if new_articles:
         with lock:
-            cutoff = datetime.now() - timedelta(days=3650)
-            news_database = [item for item in (new_articles + news_database) if item['created_at'] > cutoff]
+            # No cutoff: all articles are permanently stored
+            news_database = [item for item in (new_articles + news_database) if True]
 
 try:
     fetch_feed_items()
