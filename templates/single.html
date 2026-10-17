@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,64 +10,65 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-gray-50 text-gray-900 font-sans antialiased selection:bg-red-500 selection:text-white">
+<body class="bg-slate-50 text-slate-800 font-sans antialiased">
 
-    <!-- Navbar -->
+    <!-- Header -->
     <header class="bg-slate-900 text-white shadow-md sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-            <a href="/" class="flex items-center gap-2 text-2xl font-black tracking-tight text-white">
+        <div class="max-w-5xl mx-auto px-4 py-3.5 flex items-center justify-between">
+            <a href="/" class="flex items-center gap-2 text-2xl font-black text-white tracking-tight">
                 <span class="bg-red-600 text-white px-2 py-0.5 rounded text-sm uppercase">24</span> Early News
             </a>
-            <div class="flex items-center gap-4">
-                <a href="/" class="text-sm font-semibold text-slate-300 hover:text-white transition flex items-center gap-1">
-                    <i class="fas fa-home"></i> Home
+            <div class="flex items-center gap-3">
+                <a href="/" class="text-sm font-semibold text-slate-300 hover:text-white transition flex items-center gap-1.5">
+                    <i class="fas fa-home"></i> হোম
                 </a>
                 <a href="/submit-news" class="bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-1.5 rounded-lg font-bold transition flex items-center gap-1">
-                    <i class="fas fa-pen-nib"></i> Write News
+                    <i class="fas fa-pen-nib"></i> খবর লিখুন
                 </a>
             </div>
         </div>
     </header>
 
-    <!-- Main Article Body -->
+    <!-- Main Content Container -->
     <main class="max-w-4xl mx-auto px-4 py-8">
         
-        <!-- Breadcrumb & Category -->
-        <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-red-600 mb-3">
-            <span>{{ article.category if article.category else 'Top News' }}</span>
-            <span class="text-gray-400">&bull;</span>
-            <span class="text-gray-500">{{ article.published }}</span>
+        <!-- Category & Date Bar -->
+        <div class="flex flex-wrap items-center gap-2 text-xs font-bold uppercase tracking-wider text-red-600 mb-3">
+            <span class="bg-red-100 text-red-700 px-2.5 py-1 rounded">{{ article.category if article.category else 'প্রধান খবর' }}</span>
+            <span class="text-slate-400">&bull;</span>
+            <span class="text-slate-500 font-medium">{{ article.published }}</span>
         </div>
 
         <!-- Headline -->
-        <h1 class="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight mb-6">
+        <h1 class="text-2xl sm:text-4xl font-extrabold text-slate-900 leading-snug sm:leading-tight mb-6">
             {{ article.title }}
         </h1>
 
         <!-- Featured Image -->
         {% if article.image %}
-        <div class="w-full mb-8 rounded-2xl overflow-hidden shadow-lg border border-gray-200">
-            <img src="{{ article.image }}" alt="{{ article.title }}" class="w-full max-h-[460px] object-cover" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1000';">
+        <div class="w-full mb-8 rounded-2xl overflow-hidden shadow-md border border-slate-200 bg-slate-100">
+            <img src="{{ article.image }}" alt="{{ article.title }}" class="w-full max-h-[480px] object-cover" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1000';">
         </div>
         {% endif %}
 
-        <!-- Editorial Content -->
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sm:p-10 mb-10">
+        <!-- Body / Summary Content -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-10 mb-8">
             {{ article.summary | safe }}
         </div>
 
         <!-- Back Button -->
-        <div class="flex justify-between items-center border-t border-gray-200 pt-6">
+        <div class="flex justify-between items-center border-t border-slate-200 pt-6">
             <a href="/" class="inline-flex items-center gap-2 px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold rounded-xl shadow transition">
-                <i class="fas fa-arrow-left"></i> Back to All Stories
+                <i class="fas fa-arrow-left"></i> সব খবর দেখুন
             </a>
-            <span class="text-xs text-gray-400 font-mono">Verified ID: {{ article.id }}</span>
+            <span class="text-xs text-slate-400 font-mono">ID: {{ article.id }}</span>
         </div>
     </main>
 
     <!-- Footer -->
-    <footer class="bg-slate-900 text-slate-400 py-8 text-center text-xs border-t border-slate-800">
-        <p>&copy; 2026 24 Early News Media Network. All rights reserved.</p>
+    <footer class="bg-slate-900 text-slate-400 py-8 text-center text-xs border-t border-slate-800 mt-12">
+        <p>&copy; 2026 24 Early News Network. All rights reserved.</p>
     </footer>
+
 </body>
 </html>
