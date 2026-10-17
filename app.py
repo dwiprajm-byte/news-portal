@@ -728,3 +728,8 @@ def api_daily_panchang():
         "rashifal": rashi_list
     })
 # ==================================================================================
+
+
+@app.route('/ads.txt')
+def ads_txt():
+    return send_from_directory('static', 'ads.txt', mimetype='text/plain')
