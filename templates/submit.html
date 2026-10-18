@@ -42,48 +42,15 @@
                     </h1>
                     <p class="text-xs text-slate-500 mt-1" id="page-sub">Publish verified real-time journalism</p>
                 </div>
-                <span class="bg-green-100 text-green-800 text-[11px] font-bold px-3 py-1 rounded-full border border-green-200" id="badge-seo">
-                    <i class="fas fa-bolt text-green-600 mr-1"></i> Auto-SEO Active
+                <span class="bg-green-100 text-green-800 text-[11px] font-bold px-3 py-1 rounded-full border border-green-200">
+                    <i class="fas fa-shield-alt text-green-600 mr-1"></i> Two-Step Auth
                 </span>
             </div>
 
-            <form action="/submit-news" method="POST" class="space-y-6" onsubmit="return validateSubmission()">
+            <!-- Form -->
+            <form action="/submit-news" method="POST" class="space-y-6" onsubmit="return finalSubmitCheck()">
 
-                <!-- 1. Headline -->
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5" id="lbl-headline">
-                        Headline *
-                    </label>
-                    <input type="text" name="title" required id="input-headline" placeholder="Enter news headline..."
-                        class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-red-600 focus:outline-none text-slate-900 font-bold text-base">
-                </div>
-
-                <!-- 2. Category & Location -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5" id="lbl-category">
-                            Category *
-                        </label>
-                        <select name="category" required class="w-full px-3 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-red-600 text-slate-900 text-sm font-medium">
-                            <option value="India">India</option>
-                            <option value="World">World</option>
-                            <option value="Business">Business</option>
-                            <option value="Technology">Technology</option>
-                            <option value="Sports">Sports</option>
-                            <option value="Entertainment">Entertainment</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5" id="lbl-location">
-                            Location *
-                        </label>
-                        <input type="text" name="location" required id="input-location" placeholder="Ex: Kolkata, New Delhi"
-                            class="w-full px-3 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-red-600 text-slate-900 text-sm">
-                    </div>
-                </div>
-
-                <!-- 3. Reporter Identification & Verification -->
+                <!-- 1. Reporter Identification & Verification Step -->
                 <div class="bg-slate-50 p-5 rounded-xl border border-slate-300 space-y-4">
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5" id="lbl-author">
@@ -93,19 +60,26 @@
                             class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-red-600 text-sm bg-white font-semibold text-slate-900">
                     </div>
 
-                    <!-- Founder Security Verification Box -->
-                    <div id="founderSecurityBox" class="hidden p-4 bg-amber-50 border border-amber-300 rounded-lg">
-                        <div class="flex items-center justify-between mb-2">
+                    <!-- Founder Passcode & VERIFY BUTTON Box -->
+                    <div id="founderSecurityBox" class="hidden p-4 bg-amber-50 border border-amber-300 rounded-xl space-y-2">
+                        <div class="flex items-center justify-between">
                             <span class="text-xs font-bold text-amber-900 flex items-center gap-1.5">
-                                <i class="fas fa-shield-alt text-amber-600"></i> Founder Authentication Required
+                                <i class="fas fa-key text-amber-600"></i> Founder Passcode Verification
                             </span>
-                            <span class="text-[10px] bg-amber-200 text-amber-800 font-bold px-2 py-0.5 rounded">Security Passcode</span>
+                            <span id="verifiedBadge" class="hidden text-xs bg-green-600 text-white font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1 shadow-xs">
+                                <i class="fas fa-check-circle"></i> Verified Founder
+                            </span>
                         </div>
-                        <label class="block text-[11px] font-semibold text-slate-700 mb-1">
-                            প্রতিষ্ঠাতার কেওয়াইসি শেষ ৪টি সংখ্যা অথবা সিকিউরিটি আইডি দিন *
+                        <label class="block text-[11px] font-semibold text-slate-700">
+                            সিকিউরিটি কোড বসিয়ে 'Verify' বাটনে ক্লিক করুন *
                         </label>
-                        <input type="password" name="founder_pin" id="founderPinInput" maxlength="4" placeholder="Enter 4-digit ID"
-                            class="w-full sm:w-48 px-3 py-2 rounded border border-amber-300 focus:ring-2 focus:ring-red-600 text-sm bg-white font-mono tracking-widest">
+                        <div class="flex items-center gap-2">
+                            <input type="password" name="founder_pin" id="founderPinInput" maxlength="4" placeholder="Enter 4-digit ID"
+                                class="w-36 px-3 py-2 rounded-lg border border-amber-300 focus:ring-2 focus:ring-red-600 text-sm bg-white font-mono tracking-widest font-bold">
+                            <button type="button" onclick="verifyFounderPasscode()" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-lg transition shadow flex items-center gap-1.5">
+                                <i class="fas fa-unlock-alt"></i> Verify
+                            </button>
+                        </div>
                     </div>
 
                     <!-- External Contributor Verification Box -->
@@ -145,32 +119,71 @@
                     <p id="auth-error-alert" class="text-xs text-red-600 font-bold hidden bg-red-50 p-2.5 rounded border border-red-200"></p>
                 </div>
 
-                <!-- 4. Featured Image URL -->
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5" id="lbl-img">
-                        Featured Image URL
-                    </label>
-                    <input type="url" name="image_url" id="input-img" placeholder="https://example.com/image.jpg (Optional - Category image used automatically)"
-                        class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-red-600 text-slate-900 text-sm">
-                </div>
+                <!-- 2. NEWS EDITORIAL DESK CONTENT (ভেরিফাই হলে আনলক হবে) -->
+                <div id="newsContentWrapper" class="space-y-6 opacity-40 pointer-events-none transition duration-300">
+                    
+                    <!-- Headline -->
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5" id="lbl-headline">
+                            Headline *
+                        </label>
+                        <input type="text" name="title" required id="input-headline" placeholder="Enter news headline..."
+                            class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-red-600 focus:outline-none text-slate-900 font-bold text-base">
+                    </div>
 
-                <!-- 5. Content Body -->
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5" id="lbl-body">
-                        In-Depth News Content *
-                    </label>
-                    <textarea name="content" rows="8" required id="input-body" placeholder="Write the detailed news report here..."
-                        class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-red-600 focus:outline-none text-slate-900 text-base leading-relaxed"></textarea>
-                </div>
+                    <!-- Category & Location -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5" id="lbl-category">
+                                Category *
+                            </label>
+                            <select name="category" required class="w-full px-3 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-red-600 text-slate-900 text-sm font-medium">
+                                <option value="India">India</option>
+                                <option value="World">World</option>
+                                <option value="Business">Business</option>
+                                <option value="Technology">Technology</option>
+                                <option value="Sports">Sports</option>
+                                <option value="Entertainment">Entertainment</option>
+                            </select>
+                        </div>
 
-                <!-- 6. Submit Button -->
-                <div class="pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <span class="text-xs text-green-700 font-semibold" id="txt-schema-notice">
-                        <i class="fas fa-check-circle mr-1"></i> Automatic Google NewsArticle Schema Enabled
-                    </span>
-                    <button type="submit" class="w-full sm:w-auto px-8 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-lg transition transform active:scale-95 flex items-center justify-center gap-2">
-                        <i class="fas fa-paper-plane"></i> <span id="btn-publish">Publish Dispatch</span>
-                    </button>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5" id="lbl-location">
+                                Location *
+                            </label>
+                            <input type="text" name="location" required id="input-location" placeholder="Ex: Kolkata, New Delhi"
+                                class="w-full px-3 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-red-600 text-slate-900 text-sm">
+                        </div>
+                    </div>
+
+                    <!-- Featured Image URL -->
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5" id="lbl-img">
+                            Featured Image URL
+                        </label>
+                        <input type="url" name="image_url" id="input-img" placeholder="https://example.com/image.jpg (Optional - Category image used automatically)"
+                            class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-red-600 text-slate-900 text-sm">
+                    </div>
+
+                    <!-- Content Body -->
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5" id="lbl-body">
+                            In-Depth News Content *
+                        </label>
+                        <textarea name="content" rows="8" required id="input-body" placeholder="Write the detailed news report here..."
+                            class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-red-600 focus:outline-none text-slate-900 text-base leading-relaxed"></textarea>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <span class="text-xs text-green-700 font-semibold" id="txt-schema-notice">
+                            <i class="fas fa-check-circle mr-1"></i> Automatic Google NewsArticle Schema Enabled
+                        </span>
+                        <button type="submit" class="w-full sm:w-auto px-8 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-lg transition transform active:scale-95 flex items-center justify-center gap-2">
+                            <i class="fas fa-paper-plane"></i> <span id="btn-publish">Publish Dispatch</span>
+                        </button>
+                    </div>
+
                 </div>
 
             </form>
@@ -182,33 +195,108 @@
     </footer>
 
     <script>
+        let isFounderVerified = false;
+
+        const authorInput = document.getElementById('authorInput');
+        const founderBox = document.getElementById('founderSecurityBox');
+        const founderPin = document.getElementById('founderPinInput');
+        const verifiedBadge = document.getElementById('verifiedBadge');
+        const contributorBox = document.getElementById('contributorBox');
+        const newsWrapper = document.getElementById('newsContentWrapper');
+        const alertBox = document.getElementById('auth-error-alert');
+
+        const idField = document.getElementById('idProofField');
+        const contactField = document.getElementById('contactField');
+
+        function checkAuthorSecurity() {
+            const val = authorInput.value.trim().toUpperCase();
+            if (val === 'DWIPRAJ MALLICK') {
+                founderBox.classList.remove('hidden');
+                contributorBox.classList.add('opacity-30', 'pointer-events-none');
+                idField.required = false;
+                contactField.required = false;
+                alertBox.classList.add('hidden');
+                
+                if (!isFounderVerified) {
+                    newsWrapper.classList.add('opacity-40', 'pointer-events-none');
+                }
+            } else {
+                founderBox.classList.add('hidden');
+                contributorBox.classList.remove('opacity-30', 'pointer-events-none');
+                idField.required = true;
+                contactField.required = true;
+                isFounderVerified = false;
+                verifiedBadge.classList.add('hidden');
+                // বহিরাগতদের সাধারণ ইনপুটের জন্য আনলক রাখা
+                newsWrapper.classList.remove('opacity-40', 'pointer-events-none');
+            }
+        }
+
+        function verifyFounderPasscode() {
+            const pin = founderPin.value.trim();
+            const correctPin = "62" + "03";
+            if (pin === correctPin) {
+                isFounderVerified = true;
+                verifiedBadge.classList.remove('hidden');
+                alertBox.classList.add('hidden');
+                newsWrapper.classList.remove('opacity-40', 'pointer-events-none');
+                founderPin.classList.remove('border-red-500');
+                founderPin.classList.add('border-green-500');
+            } else {
+                isFounderVerified = false;
+                verifiedBadge.classList.add('hidden');
+                alertBox.innerText = 'ভুল সিকিউরিটি কোড! ভেরিফাই করতে আপনার সঠিক ৪ সংখ্যার সিকিউরিটি কোড দিন।';
+                alertBox.classList.remove('hidden');
+                newsWrapper.classList.add('opacity-40', 'pointer-events-none');
+                founderPin.focus();
+            }
+        }
+
+        function finalSubmitCheck() {
+            const val = authorInput.value.trim().toUpperCase();
+            if (val === 'DWIPRAJ MALLICK') {
+                if (!isFounderVerified) {
+                    alertBox.innerText = 'দয়া করে সিকিউরিটি কোড প্রদান করে "Verify" বোতামে ক্লিক করুন!';
+                    alertBox.classList.remove('hidden');
+                    founderPin.focus();
+                    return false;
+                }
+                return true;
+            }
+
+            if (val.includes('DWIPRAJ') || val === 'ADMIN') {
+                alertBox.innerText = 'অননুমোদিত: প্রতিষ্ঠাতা বা প্রধান সম্পাদকের নাম নকল করা নিষিদ্ধ!';
+                alertBox.classList.remove('hidden');
+                return false;
+            }
+
+            return true;
+        }
+
+        authorInput.addEventListener('input', checkAuthorSecurity);
+
+        // Language pack
         const SUBMIT_I18N = {
             en: {
                 home: "Home", pageTitle: "Editorial Dispatch Desk", pageSub: "Publish verified real-time journalism",
                 headline: "Headline *", category: "Category *", location: "Location *", author: "Reporter / Full Author Name *",
                 verTitle: "Contributor KYC Verification", idType: "KYC ID Document *", idProof: "Document / ID Number *",
                 contact: "Contact Phone / Email *", img: "Featured Image URL", body: "In-Depth News Content *",
-                schemaNotice: "Automatic Google NewsArticle Schema Enabled", publish: "Publish Dispatch",
-                placeholderTitle: "Enter news headline...", placeholderLoc: "Ex: Kolkata, New Delhi",
-                placeholderAuthor: "Type full name (DWIPRAJ MALLICK for Founder)", placeholderBody: "Write the detailed news report here..."
+                schemaNotice: "Automatic Google NewsArticle Schema Enabled", publish: "Publish Dispatch"
             },
             bn: {
                 home: "হোম", pageTitle: "সংবাদ প্রকাশনা ডেস্ক", pageSub: "যাচাইকৃত বস্তুনিষ্ঠ সংবাদ প্রকাশ করুন",
                 headline: "খবরের শিরোনাম *", category: "বিভাগ *", location: "ঘটনাস্থল *", author: "প্রতিবেদকের পুরো নাম *",
                 verTitle: "কন্ট্রিবিউটর সরকারি KYC যাচাইকরণ", idType: "KYC ডকুমেন্ট নির্বাচন করুন *", idProof: "আইডি নম্বর *",
                 contact: "যোগাযোগ নম্বর / ইমেল *", img: "খবরের ছবির লিঙ্ক (Image URL)", body: "সংবাদের মূল বিবরণ *",
-                schemaNotice: "স্বয়ংক্রিয় গুগল এসইও ও NewsArticle Schema যুক্ত হবে", publish: "প্রকাশ করুন",
-                placeholderTitle: "খবরের শিরোনাম লিখুন...", placeholderLoc: "যেমন: কলকাতা, নিউ দিল্লি",
-                placeholderAuthor: "আপনার পুরো নাম লিখুন", placeholderBody: "খবরের সম্পূর্ণ বিবরণ এখানে বিস্তারিতভাবে লিখুন..."
+                schemaNotice: "স্বয়ংক্রিয় গুগল এসইও ও NewsArticle Schema যুক্ত হবে", publish: "প্রকাশ করুন"
             },
             hi: {
                 home: "होम", pageTitle: "संपादकीय समाचार डेस्क", pageSub: "तथ्यपूर्ण एवं प्रामाणिक समाचार प्रकाशित करें",
                 headline: "समाचार शीर्षक *", category: "श्रेणी / वर्ग *", location: "स्थान *", author: "संवाददाता का पूरा नाम *",
                 verTitle: "संवाददाता सरकारी KYC सत्यापन", idType: "KYC दस्तावेज़ चुनें *", idProof: "पहचान संख्या *",
                 contact: "संपर्क फोन / ईमेल *", img: "समाचार चित्र लिंक (URL)", body: "विस्तृत समाचार विवरण *",
-                schemaNotice: "स्वचालित गूगल एसईओ एवं NewsArticle Schema सक्रिय", publish: "प्रकाशित करें",
-                placeholderTitle: "समाचार का शीर्षक लिखें...", placeholderLoc: "उदा: कोलकाता, नई दिल्ली",
-                placeholderAuthor: "अपना पूरा नाम लिखें", placeholderBody: "समाचार का विस्तृत विवरण यहां लिखें..."
+                schemaNotice: "स्वचालित गूगल एसईओ एवं NewsArticle Schema सक्रिय", publish: "प्रकाशित करें"
             }
         };
 
@@ -231,112 +319,8 @@
             document.getElementById('lbl-body').innerText = d.body;
             document.getElementById('txt-schema-notice').innerHTML = '<i class="fas fa-check-circle mr-1"></i> ' + d.schemaNotice;
             document.getElementById('btn-publish').innerText = d.publish;
-
-            document.getElementById('input-headline').placeholder = d.placeholderTitle;
-            document.getElementById('input-location').placeholder = d.placeholderLoc;
-            document.getElementById('authorInput').placeholder = d.placeholderAuthor;
-            document.getElementById('input-body').placeholder = d.placeholderBody;
-
             document.getElementById('submitLangChoice').value = lang;
-            handleKycPlaceholder();
         }
-
-        const authorInput = document.getElementById('authorInput');
-        const founderBox = document.getElementById('founderSecurityBox');
-        const founderPin = document.getElementById('founderPinInput');
-        const contributorBox = document.getElementById('contributorBox');
-        const idField = document.getElementById('idProofField');
-        const contactField = document.getElementById('contactField');
-        const alertBox = document.getElementById('auth-error-alert');
-
-        function handleKycPlaceholder() {
-            const type = document.getElementById('idTypeSelect').value;
-            if (type === 'PAN') idField.placeholder = 'ABCDE1234F';
-            else if (type === 'VOTER') idField.placeholder = 'ABC1234567';
-            else if (type === 'PASSPORT') idField.placeholder = 'A1234567';
-            else if (type === 'DL') idField.placeholder = 'WB1220201234567';
-            else idField.placeholder = 'Enter valid ID';
-        }
-
-        function checkAuthorSecurity() {
-            const val = authorInput.value.trim().toUpperCase();
-            if (val === 'DWIPRAJ MALLICK') {
-                founderBox.classList.remove('hidden');
-                founderPin.required = true;
-                contributorBox.classList.add('opacity-30', 'pointer-events-none');
-                idField.required = false;
-                contactField.required = false;
-                alertBox.classList.add('hidden');
-            } else {
-                founderBox.classList.add('hidden');
-                founderPin.required = false;
-                contributorBox.classList.remove('opacity-30', 'pointer-events-none');
-                idField.required = true;
-                contactField.required = true;
-            }
-        }
-
-        function validateSubmission() {
-            const val = authorInput.value.trim().toUpperCase();
-
-            // প্রতিষ্ঠাতা হিসেবে পুরো নাম দিলে সিকিউরিটি কোড যাচাই
-            if (val === 'DWIPRAJ MALLICK') {
-                const pin = founderPin.value.trim();
-                const expectedCode = "62" + "03";
-                if (pin !== expectedCode) {
-                    alertBox.innerText = 'ভুল সিকিউরিটি কোড! DWIPRAJ MALLICK নামের অধীনে প্রকাশ করতে আপনার নির্ধারিত ৪ সংখ্যার সঠিক আইডি প্রদান করুন।';
-                    alertBox.classList.remove('hidden');
-                    founderPin.focus();
-                    return false;
-                }
-                return true;
-            }
-
-            // প্রতিষ্ঠাতা নাম নকল প্রতিরোধ
-            if (val.includes('DWIPRAJ') || val === 'ADMIN') {
-                alertBox.innerText = 'অননুমোদিত: প্রতিষ্ঠাতা বা প্রধান সম্পাদকের নাম নকল করা নিষিদ্ধ!';
-                alertBox.classList.remove('hidden');
-                authorInput.focus();
-                return false;
-            }
-
-            // বহিরাগতদের সাধারণ যাচাইকরণ
-            const type = document.getElementById('idTypeSelect').value;
-            const idVal = idField.value.trim().toUpperCase().replace(/\s+/g, '');
-            const contactVal = contactField.value.trim();
-
-            if (!idVal || !contactVal) {
-                alertBox.innerText = 'ত্রুটি: কেওয়াইসি আইডি নম্বর এবং যোগাযোগের ফোন/ইমেল প্রদান বাধ্যতামূলক!';
-                alertBox.classList.remove('hidden');
-                return false;
-            }
-
-            let valid = true;
-            let errMsg = '';
-
-            if (type === 'PAN') {
-                valid = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(idVal);
-                errMsg = 'ভুল প্যান নম্বর! সঠিক বিন্যাস লিখুন (যেমন: ABCDE1234F)';
-            } else if (type === 'VOTER') {
-                valid = /^[A-Z]{3}[0-9]{7}$/.test(idVal);
-                errMsg = 'ভুল ভোটার কার্ড নম্বর! সঠিক বিন্যাস লিখুন (যেমন: ABC1234567)';
-            } else if (type === 'PASSPORT') {
-                valid = /^[A-Z]{1}[0-9]{7}$/.test(idVal);
-                errMsg = 'ভুল পাসপোর্ট নম্বর!';
-            }
-
-            if (!valid) {
-                alertBox.innerText = errMsg;
-                alertBox.classList.remove('hidden');
-                idField.focus();
-                return false;
-            }
-
-            alertBox.classList.add('hidden');
-            return true;
-        }
-
-        authorInput.addEventListener('input', checkAuthorSecurity);
 
         document.addEventListener('DOMContentLoaded', function() {
             const currentSiteLang = localStorage.getItem('user_site_lang') || 'en';
