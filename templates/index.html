@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -15,11 +15,20 @@
     <div class="bg-neutral-900 text-white text-xs py-2 px-4 border-b border-neutral-800">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <span class="bg-red-600 text-white font-bold px-2 py-0.5 rounded text-[10px] uppercase tracking-wider animate-pulse">Live</span>
-                
+                <span class="bg-red-600 text-white font-bold px-2 py-0.5 rounded text-[10px] uppercase tracking-wider animate-pulse" data-i18n="live">Live</span>
+                <span class="text-gray-300 font-medium" data-i18n="network">Global Newsroom Network</span>
             </div>
-            <div>
-                <a href="/submit-news" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded font-bold transition">Editorial Desk</a>
+            
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-1.5 bg-neutral-800 px-2.5 py-1 rounded border border-neutral-700 text-white">
+                    <i class="fas fa-globe text-red-500 text-xs"></i>
+                    <select id="siteLangSelector" onchange="changeLanguage(this.value)" class="bg-transparent text-xs font-semibold focus:outline-none cursor-pointer text-gray-200">
+                        <option value="en" class="bg-neutral-900 text-white">English</option>
+                        <option value="bn" class="bg-neutral-900 text-white">বাংলা</option>
+                        <option value="hi" class="bg-neutral-900 text-white">हिन्दी</option>
+                    </select>
+                </div>
+                <a href="/submit-news" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded font-bold transition" data-i18n="editorial_desk">Editorial Desk</a>
             </div>
         </div>
     </div>
@@ -32,12 +41,12 @@
                 <span class="text-3xl font-black tracking-wider uppercase font-serif">EARLY NEWS</span>
             </a>
             <nav class="hidden lg:flex items-center gap-6 text-sm font-bold uppercase text-white">
-                <a href="/" class="border-b-2 border-white pb-1">Home</a>
-                <a href="/?cat=India" class="hover:text-gray-200 transition">India</a>
-                <a href="/?cat=World" class="hover:text-gray-200 transition">World</a>
-                <a href="/?cat=Business" class="hover:text-gray-200 transition">Business</a>
-                <a href="/?cat=Technology" class="hover:text-gray-200 transition">Tech</a>
-                <a href="/?cat=Sports" class="hover:text-gray-200 transition">Sports</a>
+                <a href="/" class="border-b-2 border-white pb-1" data-i18n="nav_home">Home</a>
+                <a href="/?cat=India" class="hover:text-gray-200 transition" data-i18n="nav_india">India</a>
+                <a href="/?cat=World" class="hover:text-gray-200 transition" data-i18n="nav_world">World</a>
+                <a href="/?cat=Business" class="hover:text-gray-200 transition" data-i18n="nav_business">Business</a>
+                <a href="/?cat=Technology" class="hover:text-gray-200 transition" data-i18n="nav_tech">Tech</a>
+                <a href="/?cat=Sports" class="hover:text-gray-200 transition" data-i18n="nav_sports">Sports</a>
             </nav>
         </div>
     </header>
@@ -45,18 +54,15 @@
     <!-- Breaking News Ticker Bar -->
     <div class="bg-neutral-900 text-white text-xs border-b border-neutral-800 py-2">
         <div class="max-w-7xl mx-auto px-4 flex items-center gap-3">
-            <span class="bg-red-600 text-white font-bold px-2 py-0.5 text-[10px] uppercase">Trending</span>
-            <span class="text-gray-300 truncate">24 Early News delivers verified, real-time dispatches with full editorial governance.</span>
+            <span class="bg-red-600 text-white font-bold px-2 py-0.5 text-[10px] uppercase" data-i18n="trending">Trending</span>
+            <span class="text-gray-300 truncate" data-i18n="ticker_text">24 Early News delivers verified, real-time dispatches with full editorial governance.</span>
         </div>
     </div>
 
     <!-- Main Container -->
     <main class="max-w-7xl mx-auto px-4 py-8">
         
-        <!-- Founder Identity Banner -->
-        
-
-        <!-- News Grid Feed (Error-free Jinja2 Loop) -->
+        <!-- News Grid Feed -->
         {% set display_articles = news if news else (news_list if news_list else []) %}
         {% if display_articles and display_articles|length > 0 %}
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-8">
@@ -80,7 +86,7 @@
                 </div>
                 <div class="px-4 pb-3 pt-2 border-t border-gray-100 flex items-center justify-between text-[11px] text-gray-400">
                     <span class="font-mono">{{ item.published }}</span>
-                    <a href="{{ item.link }}" class="text-red-600 font-bold hover:underline">Read More &rarr;</a>
+                    <a href="{{ item.link }}" class="text-red-600 font-bold hover:underline" data-i18n="read_more">Read More &rarr;</a>
                 </div>
             </article>
             {% endfor %}
@@ -90,16 +96,53 @@
 
     <!-- Footer -->
     <footer class="bg-neutral-900 text-gray-400 text-xs border-t-4 border-red-600 mt-16 py-8 text-center">
-        <p>&copy; 2026 <strong>24 Early News Network</strong>. Founded &amp; Published by <strong>DWIPRAJ MALLICK</strong>. All rights reserved.</p>
-    
-    <!-- Legal Policy Links for Google AdSense -->
-    <div class="mt-4 pt-4 border-t border-neutral-800 flex flex-wrap justify-center gap-6 text-xs text-gray-400">
-        <a href="/privacy" class="hover:text-white transition">Privacy Policy</a>
-        <a href="/about" class="hover:text-white transition">About Us</a>
-        <a href="/contact" class="hover:text-white transition">Contact Us</a>
-        <a href="/terms" class="hover:text-white transition">Terms of Service</a>
-    </div>
-    
-</footer>
+        <p>&copy; 2026 <strong data-i18n="footer_network">24 Early News Network</strong>. <span data-i18n="footer_rights">Founded &amp; Published by</span> <strong>DWIPRAJ MALLICK</strong>. <span data-i18n="footer_all">All rights reserved.</span></p>
+        <div class="mt-4 pt-4 border-t border-neutral-800 flex flex-wrap justify-center gap-6 text-xs text-gray-400">
+            <a href="/privacy" class="hover:text-white transition">Privacy Policy</a>
+            <a href="/about" class="hover:text-white transition">About Us</a>
+            <a href="/contact" class="hover:text-white transition">Contact Us</a>
+            <a href="/terms" class="hover:text-white transition">Terms of Service</a>
+        </div>
+    </footer>
+
+    <!-- Instant 3-Language Script Engine -->
+    <script>
+        const TRANSLATIONS = {
+            en: {
+                live: "Live", network: "Global Newsroom Network", editorial_desk: "Editorial Desk",
+                nav_home: "Home", nav_india: "India", nav_world: "World", nav_business: "Business", nav_tech: "Tech", nav_sports: "Sports",
+                trending: "Trending", ticker_text: "24 Early News delivers verified, real-time dispatches with full editorial governance.",
+                read_more: "Read More →", footer_network: "24 Early News Network", footer_rights: "Founded & Published by", footer_all: "All rights reserved."
+            },
+            bn: {
+                live: "লাইভ", network: "স্ট্যান্ডার্ড নিউজরুম নেটওয়ার্ক", editorial_desk: "এডিটর ডেস্ক",
+                nav_home: "হোম", nav_india: "ভারত", nav_world: "বিশ্ব", nav_business: "ব্যবসা", nav_tech: "প্রযুক্তি", nav_sports: "খেলাধুলা",
+                trending: "ট্রেন্ডিং", ticker_text: "২৪ আর্লি নিউজ সম্পূর্ণ সম্পাদকীয় নিয়ম মেনে যাচাইকৃত এবং রিয়েল-টাইম সংবাদ পরিবেশন করে।",
+                read_more: "আরও পড়ুন →", footer_network: "২৪ আর্লি নিউজ নেটওয়ার্ক", footer_rights: "প্রতিষ্ঠিত ও প্রকাশিত করেছেন", footer_all: "সর্বস্বত্ব সংরক্ষিত।"
+            },
+            hi: {
+                live: "लाइव", network: "स्टैंडर्ड न्यूज़रूम नेटवर्क", editorial_desk: "संपादकीय डेस्क",
+                nav_home: "होम", nav_india: "भारत", nav_world: "विश्व", nav_business: "व्यापार", nav_tech: "टेक", nav_sports: "खेल",
+                trending: "ट्रेंडिंग", ticker_text: "24 Early News पूर्ण संपादकीय शासन के साथ सत्यापित, वास्तविक समय की खबरें प्रदान करता है।",
+                read_more: "और पढ़ें →", footer_network: "24 अर्ली न्यूज़ नेटवर्क", footer_rights: "संस्थापित एवं प्रकाशित", footer_all: "सर्वाधिकार सुरक्षित।"
+            }
+        };
+
+        function changeLanguage(lang) {
+            localStorage.setItem('selected_site_lang', lang);
+            const t = TRANSLATIONS[lang] || TRANSLATIONS.en;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key]) el.innerText = t[key];
+            });
+            const selector = document.getElementById('siteLangSelector');
+            if (selector) selector.value = lang;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('selected_site_lang') || 'en';
+            changeLanguage(savedLang);
+        });
+    </script>
 </body>
 </html>
