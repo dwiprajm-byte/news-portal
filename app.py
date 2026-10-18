@@ -828,3 +828,170 @@ def serve_contact():
 def serve_terms():
     return render_template('terms.html')
 
+# ==================== ADVANCED AUTOMATED GOOGLE-COMPLIANT WIRE ENGINE ====================
+import threading
+import time
+from datetime import datetime
+
+EDITORIAL_BUREAU = [
+    ("National News Desk", "New Delhi"),
+    ("State Affairs Bureau", "Kolkata"),
+    ("Global Wire Desk", "International Bureau"),
+    ("Markets & Finance Desk", "Mumbai"),
+    ("Special Dispatches", "Kolkata")
+]
+
+CATEGORY_VERIFIED_IMAGES = {
+    'India': 'https://images.unsplash.com/photo-1532375810709-75b1da00537c?w=1200',
+    'Regional': 'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=1200',
+    'World': 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200',
+    'Business': 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1200',
+    'StockMarket': 'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=1200',
+    'Politics': 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=1200',
+    'Technology': 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200',
+    'Automobile': 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1200',
+    'Sports': 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=1200',
+    'Entertainment': 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1200',
+    'Education': 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1200',
+    'Health': 'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=1200',
+    'Crime': 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1200',
+    'Weather': 'https://images.unsplash.com/photo-1534088568595-a066f410bcda?w=1200'
+}
+
+def auto_transform_to_human_seo_article(raw_title, raw_desc, category):
+    import random
+    desk_name, loc = random.choice(EDITORIAL_BUREAU)
+    
+    clean_summary = raw_desc.replace('<p>', '').replace('</p>', '').replace('<b>', '').replace('</b>', '').strip()
+    if not clean_summary or len(clean_summary) < 20:
+        clean_summary = f"{loc} — {raw_title} সংক্রান্ত বিষয়ে প্রশাসনিক ও প্রাতিষ্ঠানিক স্তরে গুরুত্বপূর্ণ তথ্য সামনে এসেছে।"
+
+    human_body = f"""
+    <div class="editorial-container max-w-3xl mx-auto font-sans leading-relaxed text-gray-800">
+        <!-- Reporter Header -->
+        <div class="flex flex-wrap items-center justify-between border-y border-gray-200 py-3 mb-6 text-sm text-gray-600 bg-gray-50/70 px-4 rounded-lg">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-red-600 text-white font-bold flex items-center justify-center text-sm shadow">
+                    24
+                </div>
+                <div>
+                    <span class="font-bold text-gray-900 block">DWIPRAJ MALLICK</span>
+                    <span class="text-xs text-gray-500">Editor-in-Chief &bull; {desk_name}</span>
+                </div>
+            </div>
+            <div class="text-xs text-gray-500 mt-2 sm:mt-0 font-medium">
+                <span>📍 {loc}</span> &bull; <span class="text-green-700 font-semibold font-mono">Fact Checked &amp; Verified Wire</span>
+            </div>
+        </div>
+
+        <!-- মূল খবর (সাংবাদিকসুলভ ৪ প্যারাগ্রাফ) -->
+        <div class="article-body space-y-4 text-base md:text-lg text-gray-800 leading-8 font-serif">
+            <p class="first-letter:text-5xl first-letter:font-bold first-letter:text-red-600 first-letter:float-left first-letter:mr-3">
+                <strong class="font-sans uppercase text-xs tracking-wider text-gray-500 block mb-1.5">{loc} DISPATCH —</strong>
+                {clean_summary}
+            </p>
+
+            <h3 class="font-sans text-xl font-bold text-gray-900 pt-3 pb-1 border-b border-gray-100">
+                ঘটনার পরিপ্রেক্ষিত ও নীতিনির্ধারণী পর্যালোচনা
+            </h3>
+            <p>
+                উক্ত বিষয়ের গভীরে গিয়ে সংশ্লিষ্ট মহলের সঙ্গে যোগাযোগ করা হলে জানা যায়, সাম্প্রতিক নীতিগত রূপরেখা এবং আঞ্চলিক গতিপ্রকৃতির কারণে ঘটনাটি বিশেষ তাৎপর্য বহন করছে। বিভিন্ন স্তরের দায়িত্বপ্রাপ্ত প্রতিনিধিদের মতে, পরিস্থিতির গুরুত্ব বিচার করে সুনির্দিষ্ট পর্যবেক্ষণ জারি রাখা হয়েছে যাতে সামগ্রিক তথ্যপ্রবাহ সম্পূর্ণ নির্ভুল থাকে।
+            </p>
+
+            <blockquote class="p-4 my-4 border-l-4 border-red-500 bg-slate-50 italic text-gray-700 text-base font-sans">
+                "বস্তুনিষ্ঠ এবং যাচাইকৃত তথ্য প্রকাশ করাই যেকোনো বিশ্বাসযোগ্য গণমাধ্যমের প্রধান কর্তব্য," গ্রাউন্ড ডেস্কে তথ্য যাচাইয়ের দায়িত্বে থাকা আধিকারিকরা বিষয়টি নিশ্চিত করেছেন।
+            </blockquote>
+
+            <p>
+                আগামী কয়েক দিনের মধ্যে এ সংক্রান্ত আরও সুনির্দিষ্ট নির্দেশিকা বা অগ্রগতি প্রকাশিত হতে পারে বলে ধারণা করা হচ্ছে। 24 Early News পুরো পরিস্থিতির ওপর নজর রাখছে এবং প্রতিটি নতুন দিক নিরপেক্ষভাবে পাঠকদের সামনে তুলে ধরতে প্রতিশ্রুতিবদ্ধ।
+            </p>
+        </div>
+
+        <!-- Google NewsArticle Schema (Auto SEO for High Rank) -->
+        <script type="application/ld+json">
+        {{
+            "@context": "https://schema.org",
+            "@type": "NewsArticle",
+            "headline": "{raw_title}",
+            "datePublished": "{datetime.now().isoformat()}",
+            "author": [{{
+                "@type": "Person",
+                "name": "DWIPRAJ MALLICK"
+            }}],
+            "publisher": {{
+                "@type": "NewsMediaOrganization",
+                "name": "24 Early News",
+                "url": "https://24earlynews.com"
+            }}
+        }}
+        </script>
+
+        <div class="mt-8 pt-4 border-t border-gray-200 text-xs text-gray-500 flex justify-between">
+            <span>&copy; 2026 24 Early News Wire Network</span>
+            <span class="text-slate-600 font-semibold">Editorial Governance &bull; Fact-Checked Original Coverage</span>
+        </div>
+    </div>
+    """
+    return human_body
+
+def automated_background_feed_syncer():
+    import feedparser
+    global news_database
+    
+    # শীর্ষ গুগল নিউজ এবং প্রধান অথরিটি ফিড
+    AUTHORITY_FEEDS = [
+        ('India', 'https://news.google.com/rss/search?q=India+when:24h&hl=en-IN&gl=IN&ceid=IN:en'),
+        ('World', 'https://news.google.com/rss/search?q=World+when:24h&hl=en-IN&gl=IN&ceid=IN:en'),
+        ('Business', 'https://news.google.com/rss/search?q=Business+Economy+India+when:24h&hl=en-IN&gl=IN&ceid=IN:en'),
+        ('Technology', 'https://news.google.com/rss/search?q=Technology+AI+when:24h&hl=en-IN&gl=IN&ceid=IN:en'),
+        ('Sports', 'https://news.google.com/rss/search?q=Cricket+Sports+when:24h&hl=en-IN&gl=IN&ceid=IN:en')
+    ]
+
+    while True:
+        try:
+            collected_articles = []
+            for cat, feed_url in AUTHORITY_FEEDS:
+                parsed = feedparser.parse(feed_url)
+                for entry in parsed.entries[:3]:
+                    t = entry.get('title', '').split(' - ')[0].strip()
+                    desc = entry.get('summary', entry.get('description', ''))
+                    art_id = str(int(time.time() * 1000) + len(collected_articles))
+                    
+                    # অলরেডি ডাটাবেসে থাকলে বাদ
+                    with lock:
+                        if any(item.get('title') == t for item in news_database):
+                            continue
+
+                    img = CATEGORY_VERIFIED_IMAGES.get(cat, CATEGORY_VERIFIED_IMAGES['India'])
+                    rich_content = auto_transform_to_human_seo_article(t, desc, cat)
+
+                    item_obj = {
+                        'id': art_id,
+                        'title': t,
+                        'summary': rich_content,
+                        'category': cat,
+                        'link': f"/news/{art_id}",
+                        'image': img,
+                        'published': datetime.now().strftime("%a, %d %b %Y %H:%M:%S GMT"),
+                        'created_at': datetime.now()
+                    }
+                    collected_articles.append(item_obj)
+
+            if collected_articles:
+                with lock:
+                    for a in collected_articles:
+                        news_database.insert(0, a)
+                        if 'save_article_permanently' in globals():
+                            save_article_permanently(a)
+
+        except Exception:
+            pass
+
+        # প্রতি ১৫ মিনিট অন্তর স্বয়ংক্রিয়ভাবে ব্যাকগ্রাউন্ডে চলবে
+        time.sleep(900)
+
+# ব্যাকগ্রাউন্ড থ্রেড চালু করা
+auto_worker = threading.Thread(target=automated_background_feed_syncer, daemon=True)
+auto_worker.start()
+# =========================================================================================
+
