@@ -1,6 +1,6 @@
 ﻿import os
 import json
-import traceback
+import time
 from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 
@@ -34,7 +34,7 @@ def home():
             }]
         return render_template('index.html', news=articles, news_list=articles)
     except Exception as e:
-        return f"TEMPLATE RENDERING ERROR: {traceback.format_exc()}", 500
+        return f"CRITICAL ERROR: {str(e)}", 500
 
 @app.route('/news/<article_id>')
 def view_article(article_id):
@@ -44,8 +44,8 @@ def view_article(article_id):
         if not target:
             return redirect(url_for('home'))
         return render_template('single.html', article=target)
-    except Exception as e:
-        return f"ARTICLE PAGE ERROR: {traceback.format_exc()}", 500
+    except Exception:
+        return redirect(url_for('home'))
 
 @app.route('/submit-news', methods=['GET', 'POST'])
 def submit_news():
@@ -87,7 +87,7 @@ def submit_news():
 
             return redirect(f"/news/{article_id}")
         except Exception as e:
-            return f"SUBMISSION ERROR: {traceback.format_exc()}", 500
+            return f"SUBMISSION ERROR: {str(e)}", 500
 
     return render_template('submit.html')
 
