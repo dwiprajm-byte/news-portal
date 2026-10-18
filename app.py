@@ -380,16 +380,30 @@ crawler_thread.start()
 @app.route('/')
 def home():
     global news_database
-    with lock:
-        # ডাটাবেস খালি থাকলে তৎক্ষণাৎ প্রাথমিক ট্রেন্ডিং ফিড ফেচ করা
-        if not news_database:
-            try:
-                fetch_initial_trending_news()
-            except Exception:
-                pass
-        current_news = list(news_database)
+    safe_news = []
+    try:
+        with lock:
+            if not news_database:
+                try:
+                    fetch_initial_trending_news()
+                except Exception:
+                    pass
+            safe_news = list(news_database)
+    except Exception:
+        safe_news = []
 
-    return render_template('index.html', news=current_news, news_list=current_news)
+    if not safe_news:
+        safe_news = [{
+            'id': '101',
+            'title': '24 Early News: Verified Global & Regional Media Network Begins Live Wire',
+            'summary': 'Kolkata — 24 Early News launches dedicated round-the-clock news wire dispatches ensuring ethical, verified, and ground-level reporting across global territories.',
+            'category': 'India',
+            'link': '/news/101',
+            'image': 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1000',
+            'published': datetime.now().strftime("%a, %d %b %Y %H:%M:%S GMT")
+        }]
+
+    return render_template('index.html', news=safe_news, news_list=safe_news)
 
 @app.route('/news/<int:news_id>')
 def single_article(news_id):
