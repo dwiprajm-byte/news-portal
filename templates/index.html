@@ -172,50 +172,24 @@
             {% endfor %}
         </section>
         {% else %}
-        <!-- Empty State -->
-        <div class="text-center py-20 bg-white rounded-2xl shadow-sm border border-slate-200">
-            <i class="fas fa-newspaper text-5xl text-slate-300 mb-4"></i>
-            <h3 class="text-xl font-bold text-slate-700" data-i18n="empty_title">No Dispatches Available Right Now</h3>
-            <p class="text-slate-500 text-sm mt-1" data-i18n="empty_desc">To add real-time dispatches, click the "Submit News" button above.</p>
-        </div>
-        {% endif %}
-
-    </main>
-
-    <!-- Global Footer -->
-    <footer class="bg-slate-950 text-slate-400 text-xs border-t-4 border-red-600 mt-16 pt-12 pb-8">
-        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-            <div>
-                <a href="/" class="flex items-center gap-2 mb-3">
-                    <span class="bg-red-600 text-white font-black px-2 py-0.5 rounded-sm">24</span>
-                    <span class="text-xl font-black text-white tracking-tight uppercase font-serif">Early News</span>
-                </a>
-                <p class="text-slate-400 leading-relaxed" data-i18n="footer_about">
-                    Digital broadcasting network providing independent, fact-checked dispatches covering global geopolitics, economic trends, and localized events.
-                </p>
-            </div>
-            <div>
-                <h4 class="text-white font-bold uppercase tracking-wider mb-3" data-i18n="footer_sections_title">Sections</h4>
-                <ul class="space-y-1.5">
-                    <li><a href="/?cat=India" class="hover:text-white transition" data-i18n="nav_india">India</a></li>
-                    <li><a href="/?cat=World" class="hover:text-white transition" data-i18n="nav_world">World</a></li>
-                    <li><a href="/?cat=Business" class="hover:text-white transition" data-i18n="nav_business">Business</a></li>
-                    <li><a href="/?cat=Technology" class="hover:text-white transition" data-i18n="nav_tech">Technology</a></li>
-                    <li><a href="/?cat=Sports" class="hover:text-white transition" data-i18n="nav_sports">Sports</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-white font-bold uppercase tracking-wider mb-3" data-i18n="footer_trust_title">Governance &amp; Trust</h4>
-                <ul class="space-y-1.5">
-                    <li><a href="/about" class="hover:text-white transition" data-i18n="footer_about_us">About Us</a></li>
-                    <li><a href="/contact" class="hover:text-white transition" data-i18n="footer_contact">Contact Bureau</a></li>
-                    <li><a href="/privacy" class="hover:text-white transition" data-i18n="footer_privacy">Privacy Policy</a></li>
-                    <li><a href="/terms" class="hover:text-white transition" data-i18n="footer_terms">Terms of Service</a></li>
-                </ul>
+                <!-- Featured Welcome & Editorial Identity Section -->
+        <div class="my-10 bg-white rounded-2xl shadow-sm border border-slate-200 p-8 sm:p-12 text-center max-w-4xl mx-auto">
+            <span class="bg-red-100 text-red-700 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full inline-block mb-3">
+                Independent Digital Journalism
+            </span>
+            <h2 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight mb-4 font-serif">
+                Welcome to 24 Early News Wire
+            </h2>
+            <p class="text-slate-600 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto mb-6">
+                Delivering objective dispatches, verified regional field reports, and unbiased geopolitical analysis across national and global territories.
+            </p>
+            <div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-700 bg-slate-50 border border-slate-200 px-4 py-2 rounded-xl">
+                <span>Editor-in-Chief & Founder:</span>
+                <span class="text-red-600 font-extrabold text-sm">DWIPRAJ MALLICK</span>
             </div>
         </div>
         <div class="max-w-7xl mx-auto px-4 pt-6 border-t border-slate-900 flex flex-wrap justify-between items-center text-slate-500 gap-2">
-            <p>&copy; 2026 24 Early News Network. All rights reserved.</p>
+            <p>&copy; 2026 <strong>24 Early News Network</strong>. Founded & Published by <strong>DWIPRAJ MALLICK</strong>. All rights reserved.</p>
             <p class="font-mono" data-i18n="footer_standards">Google News Standard &bull; Verified Wire Coverage</p>
         </div>
     </footer>
