@@ -312,3 +312,33 @@ def serve_ads_txt():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
+
+
+import traceback
+
+@app.errorhandler(Exception)
+def handle_exception(e):
+    tb_str = traceback.format_exc()
+    return f'''
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Error Diagnostic Desk</title>
+        <style>
+            body {{ font-family: monospace; background: #0f172a; color: #f8fafc; padding: 20px; }}
+            .box {{ background: #1e293b; border: 2px solid #ef4444; border-radius: 10px; padding: 20px; }}
+            h2 {{ color: #ef4444; }}
+            pre {{ background: #000; color: #38bdf8; padding: 15px; border-radius: 6px; overflow-x: auto; font-size: 12px; }}
+        </style>
+    </head>
+    <body>
+        <div class="box">
+            <h2>⚠️ লাইভ এরর ডায়াগনস্টিক আউটপুট</h2>
+            <p>দয়া করে এই কোড বা টেক্সটটি কপি করে আমাকে দিন, আমি সাথে সাথে ঠিক করে দেব:</p>
+            <pre>{tb_str}</pre>
+        </div>
+    </body>
+    </html>
+    ''', 500
+
