@@ -72,6 +72,28 @@
                 24 Early News is committed to verified and independent journalism across global territories &bull; Accurate dispatches updated 24/7
             </div>
         </div>
+    <!-- Official Live Market Ticker (TradingView Verified Data) -->
+    <div class="bg-slate-900 border-b border-slate-800 py-1 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="tradingview-widget-container">
+                <div class="tradingview-widget-container__widget"></div>
+                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-tickers.js" async>
+                {
+                    "symbols": [
+                        { "proName": "BSE:SENSEX", "title": "SENSEX" },
+                        { "proName": "NSE:NIFTY", "title": "NIFTY 50" },
+                        { "proName": "FX_IDC:USDINR", "title": "USD / INR" },
+                        { "proName": "MCX:GOLDKG1!", "title": "GOLD 1KG" }
+                    ],
+                    "isTransparent": true,
+                    "showSymbolLogo": true,
+                    "colorTheme": "dark",
+                    "locale": "in"
+                }
+                </script>
+            </div>
+        </div>
+    </div>
     </div>
 
     <!-- Main Container -->
