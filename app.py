@@ -1,56 +1,37 @@
 ﻿import os
 import time
 import json
-import threading
 from datetime import datetime
-from flask import Flask, render_template, request, redirect, url_for, session, send_from_directory
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 
 app = Flask(__name__)
-app.secret_key = "early_news_master_super_key_2026"
+app.secret_key = "early_news_absolute_stable_key_2026"
 
-lock = threading.Lock()
-news_database = []
 DATA_STORE_FILE = "articles_store.json"
 
-def load_stored_articles():
-    global news_database
+def get_all_news():
     if os.path.exists(DATA_STORE_FILE):
         try:
             with open(DATA_STORE_FILE, "r", encoding="utf-8") as f:
-                news_database = json.load(f)
+                return json.load(f)
         except Exception:
-            news_database = []
+            return []
+    return []
 
-def save_article_permanently(article):
-    global news_database
+def save_news(article):
     try:
-        data = []
-        if os.path.exists(DATA_STORE_FILE):
-            try:
-                with open(DATA_STORE_FILE, "r", encoding="utf-8") as f:
-                    data = json.load(f)
-            except Exception:
-                data = []
+        data = get_all_news()
         data.insert(0, article)
         with open(DATA_STORE_FILE, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
     except Exception:
         pass
 
-load_stored_articles()
-
 @app.route('/')
 def home():
-    global news_database
-    current_news = []
-    try:
-        with lock:
-            current_news = list(news_database)
-    except Exception:
-        current_news = []
-
-    if not current_news:
-        current_news = [{
+    articles = get_all_news()
+    if not articles:
+        articles = [{
             'id': '101',
             'title': '24 Early News: Verified Global & Regional Media Network',
             'summary': 'Kolkata — 24 Early News launches dedicated round-the-clock news wire dispatches ensuring ethical, verified, and ground-level reporting.',
@@ -59,31 +40,14 @@ def home():
             'image': 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1000',
             'published': datetime.now().strftime("%a, %d %b %Y %H:%M:%S GMT")
         }]
-
-    return render_template('index.html', news=current_news, news_list=current_news)
+    return render_template('index.html', news=articles, news_list=articles)
 
 @app.route('/news/<article_id>')
 def view_article(article_id):
-    target = None
-    try:
-        with lock:
-            for item in news_database:
-                if str(item.get('id')) == str(article_id):
-                    target = item
-                    break
-        if not target and os.path.exists(DATA_STORE_FILE):
-            with open(DATA_STORE_FILE, "r", encoding="utf-8") as f:
-                stored = json.load(f)
-                for item in stored:
-                    if str(item.get('id')) == str(article_id):
-                        target = item
-                        break
-    except Exception:
-        pass
-
+    articles = get_all_news()
+    target = next((item for item in articles if str(item.get('id')) == str(article_id)), None)
     if not target:
         return redirect(url_for('home'))
-
     return render_template('single.html', article=target)
 
 @app.route('/submit-news', methods=['GET', 'POST'])
@@ -119,10 +83,7 @@ def submit_news():
             'created_at': datetime.now().isoformat()
         }
 
-        with lock:
-            news_database.insert(0, article_obj)
-            save_article_permanently(article_obj)
-
+        save_news(article_obj)
         return redirect(f"/news/{article_id}")
 
     return render_template('submit.html')
