@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,23 +7,48 @@
     <meta name="description" content="Verified breaking news, global affairs, technology and financial insights.">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <!-- Google AdSense Script -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=pub-9701604898518993" crossorigin="anonymous"></script>
     <meta name="google-adsense-account" content="pub-9701604898518993">
+
+    <style>
+        /* Hide Default Google Translate Top Banner */
+        .goog-te-banner-frame.skiptranslate { display: none !important; }
+        body { top: 0px !important; }
+        #google_translate_element { display: none; }
+        .goog-tooltip { display: none !important; }
+        .goog-tooltip:hover { display: none !important; }
+        .goog-text-highlight { background-color: transparent !important; border: none !important; box-shadow: none !important; }
+    </style>
 </head>
 <body class="bg-slate-100 text-slate-900 font-sans antialiased selection:bg-red-600 selection:text-white">
 
-    <!-- Top Utility Bar (BBC/CNN Style) -->
+    <!-- Hidden Google Translate Element -->
+    <div id="google_translate_element"></div>
+
+    <!-- Top Utility Bar (Global Media Standard) -->
     <div class="bg-black text-slate-300 text-xs border-b border-slate-800">
         <div class="max-w-7xl mx-auto px-4 py-2 flex flex-wrap justify-between items-center gap-2">
             <div class="flex items-center gap-3">
                 <span class="font-bold text-red-500 uppercase tracking-wider flex items-center gap-1.5">
                     <span class="w-2 h-2 rounded-full bg-red-600 animate-ping"></span> Live Wire
                 </span>
-                <span class="text-slate-400">আন্তর্জাতিক ও আঞ্চলিক বিশ্বস্ত সংবাদ নেটওয়ার্ক</span>
+                <span class="text-slate-400">Global & Regional Verified Media Network</span>
             </div>
+            
             <div class="flex items-center gap-4 text-slate-400 font-mono text-[11px]">
-                <span id="live-datetime">Updated Realtime</span>
+                <!-- Language Selector Dropdown -->
+                <div class="flex items-center gap-1.5 bg-slate-900 px-2.5 py-1 rounded border border-slate-700 text-white notranslate">
+                    <i class="fas fa-globe text-red-500 text-xs"></i>
+                    <select id="languageSelector" onchange="changeSiteLanguage(this.value)" class="bg-transparent text-xs font-semibold focus:outline-none cursor-pointer text-slate-200">
+                        <option value="en" class="bg-slate-900 text-white" selected>English (Primary)</option>
+                        <option value="bn" class="bg-slate-900 text-white">বাংলা (Bengali)</option>
+                        <option value="hi" class="bg-slate-900 text-white">हिन्दी (Hindi)</option>
+                    </select>
+                </div>
+
+                <span id="live-datetime" class="hidden sm:inline">Updated Realtime</span>
                 <a href="/login" class="hover:text-white text-slate-300 transition flex items-center gap-1">
                     <i class="fas fa-lock text-[10px]"></i> Editorial Desk
                 </a>
@@ -31,29 +56,29 @@
         </div>
     </div>
 
-    <!-- Main Global Header -->
+    <!-- Main Header -->
     <header class="bg-slate-950 text-white shadow-xl sticky top-0 z-50 border-b-2 border-red-600">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+        <div class="max-w-7xl mx-auto px-4 py-3.5 flex items-center justify-between">
             <!-- Brand Logo -->
             <a href="/" class="flex items-center gap-2">
                 <span class="bg-red-600 text-white font-black px-2.5 py-1 text-lg tracking-tight rounded-sm">24</span>
                 <span class="text-2xl md:text-3xl font-black tracking-tighter uppercase font-serif">Early News</span>
             </a>
 
-            <!-- Category Links -->
+            <!-- Category Links (English Primary) -->
             <nav class="hidden lg:flex items-center gap-6 text-sm font-bold tracking-wide uppercase text-slate-300">
-                <a href="/" class="text-white border-b-2 border-red-600 pb-1">হোম</a>
-                <a href="/?cat=India" class="hover:text-red-500 transition">ভারত</a>
-                <a href="/?cat=World" class="hover:text-red-500 transition">বিশ্ব</a>
-                <a href="/?cat=Business" class="hover:text-red-500 transition">অর্থনীতি</a>
-                <a href="/?cat=Technology" class="hover:text-red-500 transition">প্রযুক্তি</a>
-                <a href="/?cat=Sports" class="hover:text-red-500 transition">খেলাধুলা</a>
+                <a href="/" class="text-white border-b-2 border-red-600 pb-1">Home</a>
+                <a href="/?cat=India" class="hover:text-red-500 transition">India</a>
+                <a href="/?cat=World" class="hover:text-red-500 transition">World</a>
+                <a href="/?cat=Business" class="hover:text-red-500 transition">Business</a>
+                <a href="/?cat=Technology" class="hover:text-red-500 transition">Technology</a>
+                <a href="/?cat=Sports" class="hover:text-red-500 transition">Sports</a>
             </nav>
 
             <!-- Actions -->
             <div class="flex items-center gap-3">
                 <a href="/submit-news" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-4 py-2 rounded shadow transition flex items-center gap-1.5">
-                    <i class="fas fa-pen-fancy"></i> খবর সাবমিট
+                    <i class="fas fa-pen-fancy"></i> Submit News
                 </a>
             </div>
         </div>
@@ -64,7 +89,7 @@
         <div class="max-w-7xl mx-auto px-4 py-2 flex items-center gap-3">
             <span class="bg-black text-white px-2 py-0.5 font-bold uppercase rounded-xs tracking-wider shrink-0 text-[11px]">Breaking</span>
             <div class="truncate text-red-50 font-medium">
-                24 Early News সত্য, নির্ভরযোগ্য ও তথ্যভিত্তিক সাংবাদিকতায় নিয়োজিত &bull; বিশ্বজুড়ে সর্বশেষ ঘটনাবলীর নিরপেক্ষ গ্রাউন্ড রিপোর্ট
+                24 Early News is committed to verified and independent journalism across global territories &bull; Accurate dispatches updated 24/7
             </div>
         </div>
     </div>
@@ -73,9 +98,9 @@
     <main class="max-w-7xl mx-auto px-4 py-8">
 
         {% if news and news|length > 0 %}
-        <!-- HERO GRID (BBC Style Lead Stories) -->
+        <!-- HERO GRID -->
         <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-12">
-            <!-- Main Hero Article (Col 1-8) -->
+            <!-- Lead Article -->
             <div class="lg:col-span-8 bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200 flex flex-col justify-between group hover:shadow-md transition">
                 <div>
                     <div class="relative overflow-hidden aspect-[16/9] bg-slate-900">
@@ -99,13 +124,13 @@
                 </div>
                 <div class="px-6 md:px-8 pb-6 flex items-center justify-between border-t border-slate-100 pt-4">
                     <a href="{{ news[0].link }}" class="text-xs font-bold text-red-600 hover:text-red-700 flex items-center gap-1">
-                        সম্পূর্ণ পড়ুন <i class="fas fa-arrow-right text-[10px]"></i>
+                        Read Full Story <i class="fas fa-arrow-right text-[10px]"></i>
                     </a>
                     <span class="text-[11px] text-slate-400 font-mono">Fact Checked</span>
                 </div>
             </div>
 
-            <!-- Side Featured Stories (Col 9-12) -->
+            <!-- Side Featured Stories -->
             <div class="lg:col-span-4 flex flex-col gap-6">
                 {% for item in news[1:4] %}
                 <div class="bg-white rounded-xl overflow-hidden shadow-sm border border-slate-200 flex flex-col justify-between p-4 group hover:shadow transition">
@@ -130,7 +155,7 @@
         <!-- SUBSEQUENT FEED GRID -->
         <div class="border-t-2 border-slate-900 pt-6 mb-6 flex justify-between items-center">
             <h3 class="text-xl font-black uppercase tracking-tight text-slate-900 font-serif">
-                সর্বশেষ সংবাদ ও গভীর বিশ্লেষণ
+                Latest Ground Dispatches &amp; In-Depth Analysis
             </h3>
             <span class="text-xs font-semibold text-slate-500">Live Global Feed</span>
         </div>
@@ -157,7 +182,7 @@
                 </div>
                 <div class="px-5 pb-4 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
                     <span class="font-mono">{{ item.published }}</span>
-                    <a href="{{ item.link }}" class="text-red-600 font-bold hover:underline">বিস্তারিত &rarr;</a>
+                    <a href="{{ item.link }}" class="text-red-600 font-bold hover:underline">Full Details &rarr;</a>
                 </div>
             </article>
             {% endfor %}
@@ -166,14 +191,14 @@
         <!-- Empty State -->
         <div class="text-center py-20 bg-white rounded-2xl shadow-sm border border-slate-200">
             <i class="fas fa-newspaper text-5xl text-slate-300 mb-4"></i>
-            <h3 class="text-xl font-bold text-slate-700">বর্তমানে কোনো সংবাদ পাওয়া যায়নি</h3>
-            <p class="text-slate-500 text-sm mt-1">খবর যোগ করতে উপরের "খবর সাবমিট" বাটনে ক্লিক করুন।</p>
+            <h3 class="text-xl font-bold text-slate-700">No Dispatches Available Right Now</h3>
+            <p class="text-slate-500 text-sm mt-1">To add real-time dispatches, click the "Submit News" button above.</p>
         </div>
         {% endif %}
 
     </main>
 
-    <!-- Global Footer (CNN/BBC Standard) -->
+    <!-- Global Footer -->
     <footer class="bg-slate-950 text-slate-400 text-xs border-t-4 border-red-600 mt-16 pt-12 pb-8">
         <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             <div>
@@ -182,48 +207,91 @@
                     <span class="text-xl font-black text-white tracking-tight uppercase font-serif">Early News</span>
                 </a>
                 <p class="text-slate-400 leading-relaxed">
-                    আন্তর্জাতিক ও জাতীয় পর্যায়ের নির্ভরযোগ্য সংবাদের ডিজিটাল প্ল্যাটফর্ম। নিরপেক্ষ সংবাদ পরিবেশনই আমাদের মূল অঙ্গীকার।
+                    Digital broadcasting network providing independent, fact-checked dispatches covering global geopolitics, economic trends, and localized events.
                 </p>
             </div>
             <div>
-                <h4 class="text-white font-bold uppercase tracking-wider mb-3">বিভাগসমূহ</h4>
+                <h4 class="text-white font-bold uppercase tracking-wider mb-3">Sections</h4>
                 <ul class="space-y-1.5">
-                    <li><a href="/?cat=India" class="hover:text-white transition">জাতীয় সংবাদ</a></li>
-                    <li><a href="/?cat=World" class="hover:text-white transition">আন্তর্জাতিক</a></li>
-                    <li><a href="/?cat=Business" class="hover:text-white transition">অর্থনীতি ও বাণিজ্য</a></li>
-                    <li><a href="/?cat=Technology" class="hover:text-white transition">তথ্যপ্রযুক্তি</a></li>
+                    <li><a href="/?cat=India" class="hover:text-white transition">National News</a></li>
+                    <li><a href="/?cat=World" class="hover:text-white transition">World Affairs</a></li>
+                    <li><a href="/?cat=Business" class="hover:text-white transition">Economy &amp; Finance</a></li>
+                    <li><a href="/?cat=Technology" class="hover:text-white transition">Technology</a></li>
                 </ul>
             </div>
             <div>
-                <h4 class="text-white font-bold uppercase tracking-wider mb-3">নীতিমালা ও পরিচিতি</h4>
+                <h4 class="text-white font-bold uppercase tracking-wider mb-3">Governance &amp; Trust</h4>
                 <ul class="space-y-1.5">
-                    <li><a href="/about" class="hover:text-white transition">About Us (আমাদের সম্পর্কে)</a></li>
-                    <li><a href="/contact" class="hover:text-white transition">Contact Us (যোগাযোগ)</a></li>
-                    <li><a href="/privacy" class="hover:text-white transition">Privacy Policy (গোপনীয়তা নীতি)</a></li>
+                    <li><a href="/about" class="hover:text-white transition">About Us</a></li>
+                    <li><a href="/contact" class="hover:text-white transition">Contact Bureau</a></li>
+                    <li><a href="/privacy" class="hover:text-white transition">Privacy Policy</a></li>
                     <li><a href="/terms" class="hover:text-white transition">Terms of Service</a></li>
                 </ul>
             </div>
             <div>
-                <h4 class="text-white font-bold uppercase tracking-wider mb-3">অ্যাডমিন ও সম্পাদকীয় ডেস্ক</h4>
+                <h4 class="text-white font-bold uppercase tracking-wider mb-3">Editorial Desk</h4>
                 <p class="text-slate-400 mb-3 leading-relaxed">
-                    অনুমোদিত সাংবাদিক ও প্রতিনিধিদের জন্য সুরক্ষিত সম্পাদকীয় পোর্টাল।
+                    Secure workspace for authorized correspondents and editorial contributors.
                 </p>
                 <a href="/login" class="inline-block bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded text-xs font-bold transition">
-                    লগইন করুন
+                    Staff Login
                 </a>
             </div>
         </div>
         <div class="max-w-7xl mx-auto px-4 pt-6 border-t border-slate-900 flex flex-wrap justify-between items-center text-slate-500 gap-2">
             <p>&copy; 2026 24 Early News Network. All rights reserved.</p>
-            <p class="font-mono">Google News Compliant &bull; Fact-Checked Wire Service</p>
+            <p class="font-mono">Google News Standard &bull; Verified Wire Coverage</p>
         </div>
     </footer>
 
-    <script>
+    <!-- Google Translate Script & Custom Language Controller -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'en,bn,hi',
+                autoDisplay: false
+            }, 'google_translate_element');
+
+            // Saved Language Preference Check
+            const savedLang = localStorage.getItem('selected_language') || 'en';
+            const selectElem = document.getElementById('languageSelector');
+            if (selectElem) selectElem.value = savedLang;
+        }
+
+        function changeSiteLanguage(langCode) {
+            localStorage.setItem('selected_language', langCode);
+            
+            if (langCode === 'en') {
+                // Return to Primary English
+                document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=." + document.domain + "; path=/;";
+                window.location.reload();
+                return;
+            }
+
+            // Set Google Translate Cookie for Selected Language
+            const cookieVal = '/en/' + langCode;
+            document.cookie = "googtrans=" + cookieVal + "; path=/;";
+            document.cookie = "googtrans=" + cookieVal + "; domain=." + document.domain + "; path=/;";
+            
+            // Trigger translation instantly
+            const googleCombo = document.querySelector('.goog-te-combo');
+            if (googleCombo) {
+                googleCombo.value = langCode;
+                googleCombo.dispatchEvent(new Event('change'));
+            } else {
+                window.location.reload();
+            }
+        }
+
+        // Live Clock
         const now = new Date();
         document.getElementById('live-datetime').innerText = now.toLocaleString('en-US', { 
             weekday: 'short', month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute:'2-digit' 
         });
     </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
 </body>
 </html>
