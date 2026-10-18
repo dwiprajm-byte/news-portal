@@ -117,6 +117,7 @@
             </div>
         </div>
 
+        
         <!-- Dynamic News Grid Section -->
         {% set display_articles = news if news else (news_list if news_list else []) %}
         {% if display_articles and display_articles|length > 0 %}
@@ -128,36 +129,9 @@
                 <span class="text-xs font-semibold text-slate-500 font-mono">Live Ingestion</span>
             </div>
 
-            <!-- Top Lead Story -->
-            <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200 mb-8 grid grid-cols-1 lg:grid-cols-12 group hover:shadow-md transition">
-                <div class="lg:col-span-7 aspect-[16/9] lg:aspect-auto overflow-hidden bg-slate-900">
-                    <img src="{{ display_articles[0].image }}" alt="{{ display_articles[0].title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200';">
-                </div>
-                <div class="lg:col-span-5 p-6 md:p-8 flex flex-col justify-between">
-                    <div>
-                        <span class="bg-red-600 text-white text-[10px] font-extrabold uppercase px-2.5 py-1 rounded shadow-xs mb-3 inline-block">
-                            {{ display_articles[0].category if display_articles[0].category else 'Top Story' }}
-                        </span>
-                        <span class="text-xs text-slate-400 font-mono block mb-2">{{ display_articles[0].published }}</span>
-                        <h2 class="text-xl md:text-2xl font-black text-slate-900 group-hover:text-red-600 transition leading-snug mb-3">
-                            <a href="{{ display_articles[0].link }}">{{ display_articles[0].title }}</a>
-                        </h2>
-                        <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">
-                            {{ display_articles[0].summary | striptags | truncate(180) }}
-                        </p>
-                    </div>
-                    <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs mt-4">
-                        <a href="{{ display_articles[0].link }}" class="text-red-600 font-bold hover:underline flex items-center gap-1">
-                            Read Full Report &rarr;
-                        </a>
-                        <span class="text-slate-400 font-mono text-[10px]">Fact Checked</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Grid of remaining stories -->
+            <!-- Grid of stories -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {% for item in display_articles[1:] %}
+                {% for item in display_articles %}
                 <article class="bg-white rounded-xl overflow-hidden shadow-sm border border-slate-200 flex flex-col justify-between group hover:shadow-md transition">
                     <div>
                         {% if item.image %}
@@ -184,112 +158,7 @@
             </div>
         </div>
         {% endif %}
-                        <div class="p-5">
-                            <span class="text-[10px] font-bold text-red-600 uppercase">{{ item.category if item.category else 'Verified Wire' }}</span>
-                            <h3 class="text-base font-bold text-slate-900 group-hover:text-red-600 transition leading-snug mt-1 mb-2">
-                                <a href="{{ item.link }}">{{ item.title }}</a>
-                            </h3>
-                            <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed">
-                                {{ item.summary | striptags | truncate(110) }}
-                            </p>
-                        </div>
-                    </div>
-                    <div class="px-5 pb-4 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
-                        <span class="font-mono text-[10px]">{{ item.published }}</span>
-                        <a href="{{ item.link }}" class="text-red-600 font-bold hover:underline read-more-link">Details &rarr;</a>
-                    </div>
-                </article>
-                {% endfor %}
-            </div>
-        </div>
-        {% endif %}
-                    <div class="p-5">
-                        <span class="text-xs font-bold text-red-600 uppercase">{{ item.category if item.category else 'Top News' }}</span>
-                        <h3 class="text-lg font-bold text-slate-900 group-hover:text-red-600 transition leading-snug mt-1 mb-2">
-                            <a href="{{ item.link }}">{{ item.title }}</a>
-                        </h3>
-                        <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed">
-                            {{ item.summary | striptags | truncate(120) }}
-                        </p>
-                    </div>
-                </div>
-                <div class="px-5 pb-4 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
-                    <span class="font-mono">{{ item.published }}</span>
-                    <a href="{{ item.link }}" class="text-red-600 font-bold hover:underline read-more-link">Read Story &rarr;</a>
-                </div>
-            </article>
-            {% endfor %}
-        </div>
-        {% endif %}
-
-    </main>
-
-    <!-- 🕉️ PANCHANG MODAL (ক্লিক করলেই কেবল ভেসে উঠবে) -->
-    <div id="panchangModal" class="fixed inset-0 bg-black/70 z-[100] hidden flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-4xl max-h-[90vh] rounded-2xl overflow-y-auto shadow-2xl p-6 md:p-8 relative border-t-4 border-amber-500">
-            <button onclick="closeModal('panchangModal')" class="absolute top-4 right-4 bg-slate-100 hover:bg-slate-200 text-slate-700 w-8 h-8 rounded-full font-bold flex items-center justify-center transition">✕</button>
-            
-            <div class="flex items-center gap-3 border-b border-amber-100 pb-4 mb-6">
-                <span class="text-3xl">🕉️</span>
-                <div>
-                    <h3 class="text-2xl font-black text-slate-900" id="pj-title">Daily Vedic Panchang</h3>
-                    <p class="text-xs text-slate-500" id="pj-subtitle">Accurate Start & End Timings (Gupta Press & Pure Vedic Calculation)</p>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <div class="bg-amber-50/60 p-4 rounded-xl border border-amber-200">
-                    <span class="text-xs font-bold uppercase text-slate-500 block mb-1" id="lbl-tithi">Tithi (Start & End)</span>
-                    <h4 class="text-base font-extrabold text-red-700" id="val-tithi-name">--</h4>
-                    <p class="text-xs text-slate-600 mt-2 font-medium bg-white p-2 rounded border border-amber-100" id="val-tithi-time">--</p>
-                </div>
-                <div class="bg-amber-50/60 p-4 rounded-xl border border-amber-200">
-                    <span class="text-xs font-bold uppercase text-slate-500 block mb-1" id="lbl-nakshatra">Nakshatra (Timing)</span>
-                    <h4 class="text-base font-extrabold text-slate-900" id="val-nakshatra-name">--</h4>
-                    <p class="text-xs text-slate-600 mt-2 font-medium bg-white p-2 rounded border border-amber-100" id="val-nakshatra-time">--</p>
-                </div>
-                <div class="bg-green-50/60 p-4 rounded-xl border border-green-200">
-                    <span class="text-xs font-bold uppercase text-green-700 block mb-1" id="lbl-shubha">Auspicious Time</span>
-                    <h4 class="text-base font-extrabold text-green-700" id="val-shubha-name">Abhijit / Amrit Yoga</h4>
-                    <p class="text-xs text-slate-600 mt-2 font-medium bg-white p-2 rounded border border-green-100" id="val-shubha-time">--</p>
-                </div>
-                <div class="bg-red-50/60 p-4 rounded-xl border border-red-200">
-                    <span class="text-xs font-bold uppercase text-red-600 block mb-1" id="lbl-rahu">Rahu Kaal</span>
-                    <h4 class="text-base font-extrabold text-red-700" id="val-rahu-name">Bar-wise Rahu Time</h4>
-                    <p class="text-xs text-slate-600 mt-2 font-medium bg-white p-2 rounded border border-red-100" id="val-rahu-time">--</p>
-                </div>
-                <div class="bg-amber-50/60 p-4 rounded-xl border border-amber-200">
-                    <span class="text-xs font-bold uppercase text-slate-500 block mb-1" id="lbl-sun">Sun & Moon</span>
-                    <h4 class="text-base font-extrabold text-slate-800" id="val-sun-details">--</h4>
-                    <p class="text-xs text-slate-600 mt-2 font-medium bg-white p-2 rounded border border-amber-100" id="val-moon-details">--</p>
-                </div>
-                <div class="bg-amber-50/60 p-4 rounded-xl border border-amber-200">
-                    <span class="text-xs font-bold uppercase text-slate-500 block mb-1" id="lbl-yk">Yoga & Vrat</span>
-                    <h4 class="text-base font-extrabold text-slate-800" id="val-yk-name">--</h4>
-                    <p class="text-xs text-slate-600 mt-2 font-medium bg-white p-2 rounded border border-amber-100" id="val-vrat-name">--</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ✨ HOROSCOPE MODAL (ক্লিক করলেই কেবল ভেসে উঠবে) -->
-    <div id="horoscopeModal" class="fixed inset-0 bg-black/70 z-[100] hidden flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-5xl max-h-[90vh] rounded-2xl overflow-y-auto shadow-2xl p-6 md:p-8 relative border-t-4 border-indigo-600">
-            <button onclick="closeModal('horoscopeModal')" class="absolute top-4 right-4 bg-slate-100 hover:bg-slate-200 text-slate-700 w-8 h-8 rounded-full font-bold flex items-center justify-center transition">✕</button>
-            
-            <div class="border-b border-slate-200 pb-4 mb-6">
-                <h3 class="text-2xl font-black text-slate-900 flex items-center gap-2" id="hr-title">
-                    <span>✨</span> Daily Horoscope (12 Zodiac Signs)
-                </h3>
-                <p class="text-xs text-slate-500 mt-1" id="hr-subtitle">Accurate daily predictions based on Vedic Astrology principles</p>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="rashi-cards-container">
-                <!-- Rashi Cards injected by JS -->
-            </div>
-        </div>
-    </div>
-
+    
     <!-- Global Footer -->
     <footer class="bg-slate-950 text-slate-400 text-xs border-t-4 border-red-600 mt-16 pt-12 pb-8">
         <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
