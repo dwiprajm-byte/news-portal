@@ -117,7 +117,6 @@
             </div>
         </div>
 
-        <!-- News Feed / Articles Grid -->
         <!-- Dynamic News Grid Section -->
         {% set display_articles = news if news else (news_list if news_list else []) %}
         {% if display_articles and display_articles|length > 0 %}
@@ -166,6 +165,25 @@
                             <img src="{{ item.image }}" alt="{{ item.title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800';">
                         </div>
                         {% endif %}
+                        <div class="p-5">
+                            <span class="text-[10px] font-bold text-red-600 uppercase">{{ item.category if item.category else 'Verified Wire' }}</span>
+                            <h3 class="text-base font-bold text-slate-900 group-hover:text-red-600 transition leading-snug mt-1 mb-2">
+                                <a href="{{ item.link }}">{{ item.title }}</a>
+                            </h3>
+                            <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                                {{ item.summary | striptags | truncate(110) }}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="px-5 pb-4 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
+                        <span class="font-mono text-[10px]">{{ item.published }}</span>
+                        <a href="{{ item.link }}" class="text-red-600 font-bold hover:underline read-more-link">Details &rarr;</a>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
                         <div class="p-5">
                             <span class="text-[10px] font-bold text-red-600 uppercase">{{ item.category if item.category else 'Verified Wire' }}</span>
                             <h3 class="text-base font-bold text-slate-900 group-hover:text-red-600 transition leading-snug mt-1 mb-2">
