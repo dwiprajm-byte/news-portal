@@ -1,367 +1,103 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>24 Early News - Global &amp; Regional Dispatches</title>
+    <title>24 Early News - Global & Regional Dispatches</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=pub-9701604898518993" crossorigin="anonymous"></script>
     <meta name="google-adsense-account" content="pub-9701604898518993">
 </head>
-<body class="bg-slate-100 text-slate-900 font-sans antialiased">
+<body class="bg-gray-100 text-gray-900 font-sans antialiased">
 
-    <!-- Top Utility Bar -->
-    <div class="bg-black text-slate-300 text-xs border-b border-slate-800">
-        <div class="max-w-7xl mx-auto px-4 py-2 flex flex-wrap justify-between items-center gap-2">
+    <!-- NDTV Style Top Bar -->
+    <div class="bg-neutral-900 text-white text-xs py-2 px-4 border-b border-neutral-800">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <span class="font-bold text-red-500 uppercase tracking-wider flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-red-600 animate-ping"></span> <span id="txt-live">Live News</span>
-                </span>
-                <span class="text-slate-400" id="txt-network">Global &amp; Regional Verified Media Network</span>
+                <span class="bg-red-600 text-white font-bold px-2 py-0.5 rounded text-[10px] uppercase tracking-wider animate-pulse">Live</span>
+                <span class="text-gray-300 font-medium">NDTV Standard Newsroom Network</span>
             </div>
-            
-            <div class="flex items-center gap-4 text-slate-400 font-mono text-[11px]">
-                <div class="flex items-center gap-1.5 bg-slate-900 px-2.5 py-1 rounded border border-slate-700 text-white">
-                    <i class="fas fa-globe text-red-500 text-xs"></i>
-                    <select id="langChoice" onchange="switchLanguage(this.value)" class="bg-transparent text-xs font-semibold focus:outline-none cursor-pointer text-slate-200">
-                        <option value="en" class="bg-slate-900 text-white">English (Default)</option>
-                        <option value="bn" class="bg-slate-900 text-white">বাংলা (Bengali)</option>
-                        <option value="hi" class="bg-slate-900 text-white">हिन्दी (Hindi)</option>
-                    </select>
-                </div>
-                <span id="live-time" class="font-bold text-white text-xs bg-slate-800/80 px-2 py-0.5 rounded border border-slate-700 tracking-wide"></span>
+            <div>
+                <a href="/submit-news" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded font-bold transition">Editorial Desk</a>
             </div>
         </div>
     </div>
 
-    <!-- Main Header -->
-    <header class="bg-slate-950 text-white shadow-xl sticky top-0 z-50 border-b-2 border-red-600">
-        <div class="max-w-7xl mx-auto px-4 py-3.5 flex items-center justify-between">
+    <!-- NDTV Red Header -->
+    <header class="bg-red-700 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
             <a href="/" class="flex items-center gap-2">
-                <span class="bg-red-600 text-white font-black px-2.5 py-1 text-lg tracking-tight rounded-sm">24</span>
-                <span class="text-2xl md:text-3xl font-black tracking-tighter uppercase font-serif">Early News</span>
+                <span class="bg-white text-red-700 font-black px-2.5 py-1 text-lg rounded-sm">24</span>
+                <span class="text-3xl font-black tracking-wider uppercase font-serif">EARLY NEWS</span>
             </a>
-
-            <!-- Navigation Links (Panchang & Horoscope after Sports, same color) -->
-            <nav class="hidden lg:flex items-center gap-5 text-sm font-bold tracking-wide uppercase text-slate-300">
-                <a href="/" class="text-white border-b-2 border-red-600 pb-1" id="nav-home">Home</a>
-                <a href="/?cat=India" class="hover:text-red-500 transition" id="nav-india">India</a>
-                <a href="/?cat=World" class="hover:text-red-500 transition" id="nav-world">World</a>
-                <a href="/?cat=Business" class="hover:text-red-500 transition" id="nav-business">Business</a>
-                <a href="/?cat=Technology" class="hover:text-red-500 transition" id="nav-tech">Technology</a>
-                <a href="/?cat=Sports" class="hover:text-red-500 transition" id="nav-sports">Sports</a>
-                <!-- Placed after Sports with matching slate-300 color -->
-                <a href="javascript:void(0)" onclick="openModal('panchangModal')" class="hover:text-red-500 transition text-slate-300 cursor-pointer" id="nav-panchang">🕉️ Panchang</a>
-                <a href="javascript:void(0)" onclick="openModal('horoscopeModal')" class="hover:text-red-500 transition text-slate-300 cursor-pointer" id="nav-horoscope">✨ Horoscope</a>
+            <nav class="hidden lg:flex items-center gap-6 text-sm font-bold uppercase text-white">
+                <a href="/" class="border-b-2 border-white pb-1">Home</a>
+                <a href="/?cat=India" class="hover:text-gray-200 transition">India</a>
+                <a href="/?cat=World" class="hover:text-gray-200 transition">World</a>
+                <a href="/?cat=Business" class="hover:text-gray-200 transition">Business</a>
+                <a href="/?cat=Technology" class="hover:text-gray-200 transition">Tech</a>
+                <a href="/?cat=Sports" class="hover:text-gray-200 transition">Sports</a>
             </nav>
-
-            <div>
-                <a href="/submit-news" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-4 py-2 rounded shadow transition flex items-center gap-1.5">
-                    <i class="fas fa-pen-fancy"></i> <span id="btn-submit">Submit News</span>
-                </a>
-            </div>
         </div>
     </header>
 
-    <!-- Breaking News Ticker -->
-    <div class="bg-red-600 text-white text-xs font-semibold overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 py-2 flex items-center gap-3">
-            <span class="bg-black text-white px-2 py-0.5 font-bold uppercase rounded-xs tracking-wider shrink-0 text-[11px]" id="txt-breaking">Breaking</span>
-            <div class="truncate text-red-50 font-medium" id="txt-ticker">
-                24 Early News is committed to verified and independent journalism across global territories &bull; Accurate dispatches updated 24/7
-            </div>
-        </div>
-    </div>
-
-    <!-- Official TradingView Market Ticker -->
-    <div class="bg-slate-900 border-b border-slate-800 py-1 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="tradingview-widget-container">
-                <div class="tradingview-widget-container__widget"></div>
-                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-tickers.js" async>
-                {
-                    "symbols": [
-                        { "proName": "BSE:SENSEX", "title": "SENSEX" },
-                        { "proName": "NSE:NIFTY", "title": "NIFTY 50" },
-                        { "proName": "FX_IDC:USDINR", "title": "USD / INR" },
-                        { "proName": "MCX:GOLDKG1!", "title": "GOLD 1KG" }
-                    ],
-                    "isTransparent": true,
-                    "showSymbolLogo": true,
-                    "colorTheme": "dark",
-                    "locale": "in"
-                }
-                </script>
-            </div>
+    <!-- Breaking News Ticker Bar -->
+    <div class="bg-neutral-900 text-white text-xs border-b border-neutral-800 py-2">
+        <div class="max-w-7xl mx-auto px-4 flex items-center gap-3">
+            <span class="bg-red-600 text-white font-bold px-2 py-0.5 text-[10px] uppercase">Trending</span>
+            <span class="text-gray-300 truncate">24 Early News delivers verified, real-time dispatches with full editorial governance.</span>
         </div>
     </div>
 
     <!-- Main Container -->
     <main class="max-w-7xl mx-auto px-4 py-8">
-
         
-                    <div class="px-5 pb-4 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
-                        <span class="font-mono text-[10px]">{{ item.published }}</span>
-                        <a href="{{ item.link }}" class="text-red-600 font-bold hover:underline read-more-link">Details &rarr;</a>
-                    </div>
-                </article>
-                {% endfor %}
+        <!-- Founder Identity Banner -->
+        <div class="my-6 bg-white rounded-xl shadow-xs border border-gray-200 p-6 text-center max-w-4xl mx-auto">
+            <h2 class="text-2xl font-black text-gray-900 mb-2 font-serif">Welcome to 24 Early News Network</h2>
+            <p class="text-gray-600 text-xs mb-3">Independent digital broadcasting and ground-level verified reporting.</p>
+            <div class="inline-flex items-center gap-2 text-xs font-bold uppercase text-gray-700 bg-gray-50 border border-gray-200 px-3 py-1.5 rounded-lg">
+                <span>Founder &amp; Editor-in-Chief:</span>
+                <span class="text-red-600 font-extrabold">DWIPRAJ MALLICK</span>
             </div>
+        </div>
+
+        <!-- News Grid Feed (Error-free Jinja2 Loop) -->
+        {% set display_articles = news if news else (news_list if news_list else []) %}
+        {% if display_articles and display_articles|length > 0 %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-8">
+            {% for item in display_articles %}
+            <article class="bg-white rounded-lg overflow-hidden shadow-xs border border-gray-200 flex flex-col justify-between group hover:shadow-md transition">
+                <div>
+                    {% if item.image %}
+                    <div class="aspect-[16/10] overflow-hidden bg-gray-100">
+                        <img src="{{ item.image }}" alt="{{ item.title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800';">
+                    </div>
+                    {% endif %}
+                    <div class="p-4">
+                        <span class="text-[10px] font-bold text-red-600 uppercase">{{ item.category if item.category else 'Top News' }}</span>
+                        <h3 class="text-base font-bold text-gray-900 group-hover:text-red-600 transition leading-snug mt-1 mb-2">
+                            <a href="{{ item.link }}">{{ item.title }}</a>
+                        </h3>
+                        <p class="text-xs text-gray-600 line-clamp-2 leading-relaxed">
+                            {{ item.summary | striptags | truncate(110) }}
+                        </p>
+                    </div>
+                </div>
+                <div class="px-4 pb-3 pt-2 border-t border-gray-100 flex items-center justify-between text-[11px] text-gray-400">
+                    <span class="font-mono">{{ item.published }}</span>
+                    <a href="{{ item.link }}" class="text-red-600 font-bold hover:underline">Read More &rarr;</a>
+                </div>
+            </article>
+            {% endfor %}
         </div>
         {% endif %}
-    
-    <!-- Global Footer -->
-    <footer class="bg-slate-950 text-slate-400 text-xs border-t-4 border-red-600 mt-16 pt-12 pb-8">
-        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-            <div>
-                <a href="/" class="flex items-center gap-2 mb-3">
-                    <span class="bg-red-600 text-white font-black px-2 py-0.5 rounded-sm">24</span>
-                    <span class="text-xl font-black text-white tracking-tight uppercase font-serif">Early News</span>
-                </a>
-                <p class="text-slate-400 leading-relaxed" id="footer-desc">
-                    Independent digital broadcasting media founded and directed by <strong>DWIPRAJ MALLICK</strong>. Committed to verified facts and ethical journalism.
-                </p>
-            </div>
-            <div>
-                <h4 class="text-white font-bold uppercase tracking-wider mb-3" id="footer-sections">Sections</h4>
-                <ul class="space-y-1.5">
-                    <li><a href="/?cat=India" class="hover:text-white transition" id="fn-india">National News</a></li>
-                    <li><a href="/?cat=World" class="hover:text-white transition" id="fn-world">World Affairs</a></li>
-                    <li><a href="/?cat=Business" class="hover:text-white transition" id="fn-business">Economy &amp; Finance</a></li>
-                    <li><a href="/?cat=Technology" class="hover:text-white transition" id="fn-tech">Technology</a></li>
-                    <li><a href="/?cat=Sports" class="hover:text-white transition" id="fn-sports">Sports</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-white font-bold uppercase tracking-wider mb-3" id="footer-trust">Governance &amp; Trust</h4>
-                <ul class="space-y-1.5">
-                    <li><a href="/about" class="hover:text-white transition" id="fn-about">About Us</a></li>
-                    <li><a href="/contact" class="hover:text-white transition" id="fn-contact">Contact Bureau</a></li>
-                    <li><a href="/privacy" class="hover:text-white transition" id="fn-privacy">Privacy Policy</a></li>
-                    <li><a href="/terms" class="hover:text-white transition" id="fn-terms">Terms of Service</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="max-w-7xl mx-auto px-4 pt-6 border-t border-slate-900 flex flex-wrap justify-between items-center text-slate-500 gap-2">
-            <p>&copy; 2026 <strong>24 Early News Network</strong>. Founded &amp; Published by <strong>DWIPRAJ MALLICK</strong>. All rights reserved.</p>
-            <p class="font-mono">Google News Standard &bull; Verified Wire Coverage</p>
-        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-neutral-900 text-gray-400 text-xs border-t-4 border-red-600 mt-16 py-8 text-center">
+        <p>&copy; 2026 <strong>24 Early News Network</strong>. Founded &amp; Published by <strong>DWIPRAJ MALLICK</strong>. All rights reserved.</p>
     </footer>
-
-    <!-- Instant 3-Language Controller & Dynamic Panchang Script -->
-    <script>
-        const LANG_PACK = {
-            en: {
-                live: "Live News", network: "Global & Regional Verified Media Network", home: "Home",
-                panchangNav: "🕉️ Panchang", horoscopeNav: "✨ Horoscope",
-                india: "India", world: "World", business: "Business", tech: "Technology", sports: "Sports",
-                submit: "Submit News", breaking: "Breaking",
-                ticker: "24 Early News is committed to verified and independent journalism across global territories • Accurate dispatches updated 24/7",
-                badgeIndependent: "Independent Digital Journalism", titleWelcome: "Welcome to 24 Early News Wire",
-                descWelcome: "Delivering objective dispatches, verified regional field reports, and unbiased geopolitical analysis across national and global territories.",
-                founder: "Editor-in-Chief & Founder:",
-                footerDesc: "Independent digital broadcasting media founded and directed by DWIPRAJ MALLICK. Committed to verified facts and ethical journalism.",
-                footerSections: "Sections", footerTrust: "Governance & Trust", readMore: "Read Story →",
-                pjTitle: "Daily Vedic Panchang", pjSubtitle: "Accurate Start & End Timings (Gupta Press & Pure Vedic Calculation)",
-                lblTithi: "Tithi (Start & End)", lblNakshatra: "Nakshatra (Timing)",
-                lblShubha: "Auspicious Time (Shubha Muhurat)", lblRahu: "Rahu Kaal (Avoid Work)",
-                lblSun: "Sunrise & Sunset", lblYK: "Yoga & Vrat",
-                hrTitle: "Daily Horoscope (12 Zodiac Signs)", hrSubtitle: "Accurate daily predictions based on Vedic Astrology",
-                tithiName: "Shukla Ashtami / Navami",
-                tithiTime: "Starts: Yesterday 09:12 PM | Ends: Today 06:45 PM",
-                nakName: "Uttara Ashadha", nakTime: "Active till 04:18 PM, then Shravana begins",
-                shubhaName: "Abhijit Muhurat", shubhaTime: "Starts: 11:38 AM | Ends: 12:26 PM",
-                rahuName: "Inauspicious Period", rahuTime: "Avoid important tasks: 04:30 PM – 06:00 PM",
-                sunDetails: "Sunrise: 05:35 AM | Sunset: 05:12 PM",
-                moonDetails: "Moonrise: 01:15 PM | Moonset: 11:58 PM",
-                ykName: "Dhriti Yoga / Taitila Karana", vratName: "🚩 Special: Auspicious Day for General Worship & Enterprise",
-                rashis: [
-                    { name: "Aries (মেষ)", symbol: "♈", desc: "Progress in career and work. Exercise care in financial investments." },
-                    { name: "Taurus (বৃষ)", symbol: "♉", desc: "Peace in family life. High chances of profit for business owners." },
-                    { name: "Gemini (মিথুন)", symbol: "♊", desc: "Success in creative pursuits. Travel opportunities may arise." },
-                    { name: "Cancer (কর্কট)", symbol: "♋", desc: "Mental calmness will prevail. Pending money may be recovered." },
-                    { name: "Leo (সিংহ)", symbol: "♌", desc: "Respect and honor will increase. Advice from elders proves beneficial." },
-                    { name: "Virgo (কন্যা)", symbol: "♍", desc: "New partnership opportunities at workplace. Good focus for students." },
-                    { name: "Libra (তুলা)", symbol: "♎", desc: "Income sources will open up. Mind will find spiritual peace." },
-                    { name: "Scorpio (বৃশ্চিক)", symbol: "♏", desc: "Work responsibilities increase. Maintaining patience is recommended." },
-                    { name: "Sagittarius (ধনু)", symbol: "♐", desc: "Fortune favors your decisions. Good news from distant relations." },
-                    { name: "Capricorn (মকর)", symbol: "♑", desc: "Longstanding problems will be resolved. Warm ties with family." },
-                    { name: "Aquarius (কুম্ভ)", symbol: "♒", desc: "Favorable time for new initiatives. Financial stability remains intact." },
-                    { name: "Pisces (মীন)", symbol: "♓", desc: "Spiritual thoughts bring joy. Happy and harmonious home atmosphere." }
-                ]
-            },
-            bn: {
-                live: "লাইভ নিউজ", network: "আন্তর্জাতিক ও আঞ্চলিক নির্ভরযোগ্য সংবাদ নেটওয়ার্ক", home: "হোম",
-                panchangNav: "🕉️ নিত্য পঞ্জিকা", horoscopeNav: "✨ রাশিফল",
-                india: "ভারত", world: "বিশ্ব", business: "অর্থনীতি", tech: "তথ্যপ্রযুক্তি", sports: "খেলাধুলা",
-                submit: "সংবাদ লিখুন", breaking: "ব্রেকিং নিউজ",
-                ticker: "24 Early News বিশ্বজুড়ে সত্য, নির্ভরযোগ্য ও নিরপেক্ষ সাংবাদিকতায় নিয়োজিত • সর্বশেষ গুরুত্বপূর্ণ আপডেট ২৪/৭",
-                badgeIndependent: "স্বাধীন ডিজিটাল সাংবাদিকতা", titleWelcome: "স্বাগতম ২৪ আর্লি নিউজ ওয়্যার",
-                descWelcome: "আন্তর্জাতিক ও জাতীয় পর্যায়ের নির্ভরযোগ্য, বস্তুনিষ্ঠ ও নিরপেক্ষ সংবাদ পরিবেশনে সার্বক্ষণিক নিয়োজিত।",
-                founder: "প্রধান সম্পাদক ও প্রতিষ্ঠাতা:",
-                footerDesc: "DWIPRAJ MALLICK কর্তৃক প্রতিষ্ঠিত ও পরিচালিত নিরপেক্ষ ডিজিটাল সংবাদ মাধ্যম। সত্যনিষ্ঠ সাংবাদিকতাই আমাদের মূল অঙ্গীকার।",
-                footerSections: "বিভাগসমূহ", footerTrust: "নীতিমালা ও পরিচয়", readMore: "বিস্তারিত পড়ুন →",
-                pjTitle: "বিশুদ্ধ বৈদিক পঞ্জিকা (সূর্যসিদ্ধান্ত ও গুপ্তপ্রেস)", pjSubtitle: "তিথি ও নক্ষত্রের শুরু ও শেষের নির্ভুল সময়সূচী (কখন লাগছে ও কখন ছাড়ছে)",
-                lblTithi: "তিথি (শুরু ও শেষ সময়)", lblNakshatra: "নক্ষত্র (স্থিতিকাল)",
-                lblShubha: "শুভ মুহূর্ত (অমৃতযোগ / অভিজিৎ)", lblRahu: "রাহুকাল (বর্জনীয় সময়)",
-                lblSun: "সূর্যোদয় ও সূর্যাস্ত", lblYK: "যোগ ও ব্রত",
-                hrTitle: "আজকের ১২ রাশির ভাগ্যফল (পরাশর সিদ্ধান্ত)", hrSubtitle: "বৈদিক জ্যোতিষশাস্ত্র অনুযায়ী আজকের নির্ভুল রাশিফল",
-                tithiName: "শুক্লা অষ্টমী / নবমী তিথি",
-                tithiTime: "শুরু: গতকাল রাত্রি ০৯:১২ মিঃ | সমাপ্তি: আজ সন্ধ্যা ০৬:৪৫ মিঃ",
-                nakName: "উত্তরাষাঢ়া নক্ষত্র", nakTime: "স্থিতি: অপরাহ্ন ০৪:১৮ মিঃ পর্যন্ত, পরে শ্রবণ নক্ষত্র আরম্ভ",
-                shubhaName: "অভিজিৎ ও অমৃতযোগ", shubhaTime: "শুরু: বেলা ১১:৩৮ মিঃ | সমাপ্তি: দুপুর ১২:২৬ মিঃ",
-                rahuName: "বারবেলা ও রাহুকাল", rahuTime: "বর্জনীয় সময়: বিকাল ০৪:৩০ মিঃ – সন্ধ্যা ০৬:০০ মিঃ",
-                sunDetails: "সূর্যোদয়: ভোর ০৫:৩৫ মিঃ | সূর্যাস্ত: বিকাল ০৫:১২ মিঃ",
-                moonDetails: "চন্দ্রোদয়: দুপুর ০১:১৫ মিঃ | চন্দ্রাস্ত: রাত্রি ১১:৫৮ মিঃ",
-                ykName: "ধৃতি যোগ / তৈতিল করণ", vratName: "🚩 পর্ব ও তাৎপর্য: নিত্যপূজা, দেবকর্ম ও শুভযোগ অনুকূল",
-                rashis: [
-                    { name: "মেষ রাশি", symbol: "♈", desc: "কর্মক্ষেত্রে পদোন্নতি বা নতুন সুযোগের যোগ রয়েছে। আর্থিক লেনদেনে সচেতন থাকুন।" },
-                    { name: "বৃষ রাশি", symbol: "♉", desc: "পারিবারিক শান্তি বজায় থাকবে। ব্যবসায়ীদের জন্য নতুন বিনিয়োগ শুভ ফল দেবে।" },
-                    { name: "মিথুন রাশি", symbol: "♊", desc: "সৃজনশীল কাজে সাফল্য মিলবে। ভ্রমণের সুযোগ আসতে পারে, স্বাস্থ্য অনুকূল।" },
-                    { name: "কর্কট রাশি", symbol: "♋", desc: "মানসিক প্রফুল্লতা বৃদ্ধি পাবে। আটকে থাকা অর্থ প্রাপ্তির শুভ সম্ভাবনা।" },
-                    { name: "সিংহ রাশি", symbol: "♌", desc: "গুরুত্বপূর্ণ সিদ্ধান্তে শুভাকাঙ্ক্ষীদের পরামর্শে লাভবান হবেন। সামাজিক সুনাম বৃদ্ধি।" },
-                    { name: "কন্যা রাশি", symbol: "♍", desc: "ব্যবসায় নতুন অংশীদারিত্বের সুযোগ। শিক্ষার্থীদের একাগ্রতা বৃদ্ধি পাবে।" },
-                    { name: "তুলা রাশি", symbol: "♎", desc: "আয় বৃদ্ধির নতুন পথ উন্মোচিত হতে পারে। ধর্মীয় কাজে মানসিক শান্তি মিলবে।" },
-                    { name: "বৃশ্চিক রাশি", symbol: "♏", desc: "কর্মক্ষেত্রে অতিরিক্ত দায়িত্ব বৃদ্ধি পেতে পারে। ধৈর্য বজায় রাখা শ্রেয়।" },
-                    { name: "ধনু রাশি", symbol: "♐", desc: "ভাগ্য আপনার পক্ষে থাকবে। দূরবর্তী যোগাযোগ থেকে শুভ সংবাদ পেতে পারেন।" },
-                    { name: "মকর রাশি", symbol: "♑", desc: "পুরোনো সমস্যার সুষ্ঠু সমাধান হবে। পরিজনদের সঙ্গে সুসম্পর্ক বজায় থাকবে।" },
-                    { name: "কুম্ভ রাশি", symbol: "♒", desc: "নতুন উদ্যোগে সাফল্য আসবে। আর্থিক স্থিতিশীলতা বজায় থাকবে।" },
-                    { name: "মীন রাশি", symbol: "♓", desc: "আধ্যাত্মিক চিন্তায় মানসিক তৃপ্তি। পারিবারিক ক্ষেত্রে আনন্দময় পরিবেশ থাকবে।" }
-                ]
-            },
-            hi: {
-                live: "लाइव न्यूज़", network: "वैश्विक एवं क्षेत्रीय प्रामाणिक समाचार नेटवर्क", home: "होम",
-                panchangNav: "🕉️ नित्य पंचांग", horoscopeNav: "✨ दैनिक राशिफल",
-                india: "भारत", world: "विश्व", business: "व्यापार / आर्थिकी", tech: "प्रौद्योगिकी", sports: "खेल",
-                submit: "समाचार भेजें", breaking: "ब्रेकिंग न्यूज़",
-                ticker: "24 Early News निष्पक्ष, सटीक और तथ्य-आधारित पत्रकारिता के लिए समर्पित है • निरंतर 24/7 लाइव अपडेट्स",
-                badgeIndependent: "स्वतंत्र डिजिटल पत्रकारिता", titleWelcome: "24 अर्ली न्यूज़ वायर में आपका स्वागत है",
-                descWelcome: "सटीक, निष्पक्ष और तथ्य-आधारित ज़मीनी रिपोर्टिंग प्रदान करने वाला प्रमुख डिजिटल न्यूज़ नेटवर्क।",
-                founder: "प्रधान संपादक एवं संस्थापक:",
-                footerDesc: "DWIPRAJ MALLICK द्वारा स्थापित एवं निर्देशित स्वतंत्र डिजिटल मीडिया नेटवर्क। विश्वसनीय एवं तथ्यपूर्ण पत्रकारिता।",
-                footerSections: "प्रमुख वर्ग", footerTrust: "नीतियां एवं परिचय", readMore: "पूरी खबर पढ़ें →",
-                pjTitle: "दैनिक वैदिक पंचांग", pjSubtitle: "तिथि एवं नक्षत्र के प्रारंभ और समाप्त होने का सटीक समय (कब लगेगा, कब उतरेगा)",
-                lblTithi: "तिथि (प्रारंभ व समाप्ति)", lblNakshatra: "नक्षत्र (समय काल)",
-                lblShubha: "शुभ मुहूर्त", lblRahu: "राहुकाल",
-                lblSun: "सूर्योदय व सूर्यास्त", lblYK: "योग एवं व्रत",
-                hrTitle: "आज का 12 राशियों का राशिफल", hrSubtitle: "वैदिक ज्योतिष गणना के अनुसार आज का दैनिक भाग्यफल",
-                tithiName: "शुक्ल अष्टमी / नवमी तिथि",
-                tithiTime: "प्रारंभ: कल रात्रि 09:12 | समाप्ति: आज सायं 06:45",
-                nakName: "उत्तराषाढ़ा नक्षत्र", nakTime: "अवधि: सायं 04:18 तक, तत्पश्चात श्रवण नक्षत्र आरंभ",
-                shubhaName: "अभिजित मुहूर्त", shubhaTime: "प्रारंभ: 11:38 AM | समाप्ति: 12:26 PM",
-                rahuName: "राहुकाल (वर्जित)", rahuTime: "वर्जित समय: 04:30 PM – 06:00 PM",
-                sunDetails: "सूर्योदय: 05:35 AM | सूर्यास्त: 05:12 PM",
-                moonDetails: "चंद्रोदय: 01:15 PM | चंद्रास्त: 11:58 PM",
-                ykName: "धृति योग / तैतिल करण", vratName: "🚩 विशेष: नित्य पूजा व धार्मिक अनुष्ठानों हेतु शुभ दिन",
-                rashis: [
-                    { name: "मेष राशि", symbol: "♈", desc: "कार्यक्षेत्र में उन्नति और नए अवसर प्राप्त होंगे। आर्थिक मामलों में सतर्क रहें।" },
-                    { name: "वृषभ राशि", symbol: "♉", desc: "पारिवारिक शांति बनी रहेगी। नए निवेश से व्यापार में लाभ होगा।" },
-                    { name: "मिथुन राशि", symbol: "♊", desc: "रचनात्मक कार्यों में सफलता मिलेगी। स्वास्थ्य अनुकूल रहेगा।" },
-                    { name: "कर्क राशि", symbol: "♋", desc: "मानसिक प्रसन्नता में वृद्धि होगी। रुका हुआ धन वापस मिलने के योग हैं।" },
-                    { name: "सिंह राशि", symbol: "♌", desc: "महत्वपूर्ण निर्णयों में शुभचिंतकों की सलाह लाभकारी रहेगी।" },
-                    { name: "कन्या राशि", symbol: "♍", desc: "व्यापार में नई साझेदारी के अवसर मिलेंगे। छात्रों के लिए समय उत्तम है।" },
-                    { name: "तुला राशि", symbol: "♎", desc: "आय के नए स्रोत विकसित हो सकते हैं। मानसिक शांति का अनुभव होगा।" },
-                    { name: "वृश्चिक राशि", symbol: "♏", desc: "कार्यस्थल पर अतिरिक्त जिम्मेदारियां मिल सकती हैं। धैर्य बनाए रखें।" },
-                    { name: "धनु राशि", symbol: "♐", desc: "भाग्य आपका साथ देगा। दूर के संपर्कों से शुभ समाचार मिलेगा।" },
-                    { name: "मकर राशि", symbol: "♑", desc: "पुरानी समस्याओं का समाधान होगा। परिजनों के साथ संबंध मधुर रहेंगे।" },
-                    { name: "कुंभ राशि", symbol: "♒", desc: "नए कार्यों में सफलता प्राप्त होगी। आर्थिक स्थिरता बनी रहेगी।" },
-                    { name: "मीन राशि", symbol: "♓", desc: "अध्यात्म में रुचि बढ़ेगी। पारिवारिक वातावरण सुखद रहेगा।" }
-                ]
-            }
-        };
-
-        function openModal(id) {
-            document.getElementById(id).classList.remove('hidden');
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).classList.add('hidden');
-        }
-
-        function switchLanguage(lang) {
-            localStorage.setItem('user_site_lang', lang);
-            const p = LANG_PACK[lang] || LANG_PACK.en;
-
-            document.getElementById('txt-live').innerText = p.live;
-            document.getElementById('txt-network').innerText = p.network;
-            document.getElementById('nav-home').innerText = p.home;
-            document.getElementById('nav-panchang').innerText = p.panchangNav;
-            document.getElementById('nav-horoscope').innerText = p.horoscopeNav;
-            document.getElementById('nav-india').innerText = p.india;
-            document.getElementById('nav-world').innerText = p.world;
-            document.getElementById('nav-business').innerText = p.business;
-            document.getElementById('nav-tech').innerText = p.tech;
-            document.getElementById('nav-sports').innerText = p.sports;
-            document.getElementById('btn-submit').innerText = p.submit;
-            document.getElementById('txt-breaking').innerText = p.breaking;
-            document.getElementById('txt-ticker').innerText = p.ticker;
-
-            document.getElementById('badge-independent').innerText = p.badgeIndependent;
-            document.getElementById('title-welcome').innerText = p.titleWelcome;
-            document.getElementById('desc-welcome').innerText = p.descWelcome;
-            document.getElementById('txt-founder').innerText = p.founder;
-
-            // Panchang Modal Details
-            document.getElementById('pj-title').innerText = p.pjTitle;
-            document.getElementById('pj-subtitle').innerText = p.pjSubtitle;
-            document.getElementById('lbl-tithi').innerText = p.lblTithi;
-            document.getElementById('val-tithi-name').innerText = p.tithiName;
-            document.getElementById('val-tithi-time').innerText = p.tithiTime;
-            document.getElementById('lbl-nakshatra').innerText = p.lblNakshatra;
-            document.getElementById('val-nakshatra-name').innerText = p.nakName;
-            document.getElementById('val-nakshatra-time').innerText = p.nakTime;
-            document.getElementById('lbl-shubha').innerText = p.lblShubha;
-            document.getElementById('val-shubha-name').innerText = p.shubhaName;
-            document.getElementById('val-shubha-time').innerText = p.shubhaTime;
-            document.getElementById('lbl-rahu').innerText = p.lblRahu;
-            document.getElementById('val-rahu-name').innerText = p.rahuName;
-            document.getElementById('val-rahu-time').innerText = p.rahuTime;
-            document.getElementById('lbl-sun').innerText = p.lblSun;
-            document.getElementById('val-sun-details').innerText = p.sunDetails;
-            document.getElementById('val-moon-details').innerText = p.moonDetails;
-            document.getElementById('lbl-yk').innerText = p.lblYK;
-            document.getElementById('val-yk-name').innerText = p.ykName;
-            document.getElementById('val-vrat-name').innerText = p.vratName;
-
-            // Horoscope Modal Details
-            document.getElementById('hr-title').innerHTML = `<span>✨</span> ${p.hrTitle}`;
-            document.getElementById('hr-subtitle').innerText = p.hrSubtitle;
-
-            const rashiContainer = document.getElementById('rashi-cards-container');
-            if (rashiContainer) {
-                rashiContainer.innerHTML = '';
-                p.rashis.forEach(r => {
-                    const card = document.createElement('div');
-                    card.className = "bg-slate-50 p-4 rounded-xl border border-slate-200";
-                    card.innerHTML = `
-                        <div class="flex items-center gap-2 mb-2">
-                            <span class="text-xl text-red-600 font-bold">${r.symbol}</span>
-                            <h4 class="font-bold text-slate-900 text-sm">${r.name}</h4>
-                        </div>
-                        <p class="text-xs text-slate-600 leading-relaxed">${r.desc}</p>
-                    `;
-                    rashiContainer.appendChild(card);
-                });
-            }
-
-            document.getElementById('footer-desc').innerHTML = p.footerDesc;
-            document.getElementById('footer-sections').innerText = p.footerSections;
-            document.getElementById('footer-trust').innerText = p.footerTrust;
-
-            const sel = document.getElementById('langChoice');
-            if (sel) sel.value = lang;
-        }
-
-        document.addEventListener("DOMContentLoaded", function() {
-            const saved = localStorage.getItem('user_site_lang') || 'en';
-            switchLanguage(saved);
-
-            const now = new Date();
-            document.getElementById('live-time').innerText = now.toLocaleString('en-US', { 
-                weekday: 'short', month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute:'2-digit' 
-            });
-        });
-    </script>
 </body>
 </html>
