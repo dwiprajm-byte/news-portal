@@ -530,6 +530,18 @@ def submit_news():
 
         article_id = str(int(time.time() * 1000))
 
+        # আসল ছবি আপলোড থাকলে তা static/uploads-এ সেভ করা
+        uploaded_image = request.files.get('news_image_file')
+        if uploaded_image and uploaded_image.filename:
+            upload_dir = os.path.join('static', 'uploads')
+            os.makedirs(upload_dir, exist_ok=True)
+            img_ext = os.path.splitext(uploaded_image.filename)[1].lower()
+            if img_ext in ['.jpg', '.jpeg', '.png', '.webp']:
+                saved_img_name = f"news_{article_id}{img_ext}"
+                uploaded_image.save(os.path.join(upload_dir, saved_img_name))
+                img_url = f"/static/uploads/{saved_img_name}"
+
+        # যদি ছবি না থাকে তবে ক্যাটাগরি অনুযায়ী স্ট্যান্ডার্ড ছবি
         if not img_url:
             cat_images = {
                 'India': 'https://images.unsplash.com/photo-1532375810709-75b1da00537c?w=1000',
@@ -560,7 +572,7 @@ def submit_news():
                 </div>
             </div>
 
-            <div class="article-body space-y-4 text-base md:text-lg text-gray-800 leading-8">
+            <div class="article-body space-y-4 text-base md:text-lg text-gray-800 leading-8 font-serif">
                 <p class="first-letter:text-5xl first-letter:font-bold first-letter:text-red-600 first-letter:float-left first-letter:mr-3">
                     <strong class="font-sans uppercase text-xs tracking-wider text-gray-500 block mb-1.5">{location} DISPATCH —</strong>
                     {content}

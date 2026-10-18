@@ -9,7 +9,7 @@
 </head>
 <body class="bg-slate-100 text-slate-800 font-sans antialiased">
 
-    <!-- Header -->
+    <!-- Top Navigation Header -->
     <header class="bg-slate-950 text-white shadow-md sticky top-0 z-50 border-b-2 border-red-600">
         <div class="max-w-5xl mx-auto px-4 py-3.5 flex items-center justify-between">
             <a href="/" class="flex items-center gap-2 text-xl font-black text-white">
@@ -40,17 +40,58 @@
                     <h1 class="text-2xl font-black text-slate-900 flex items-center gap-2" id="page-title">
                         <i class="fas fa-pen-nib text-red-600"></i> Editorial Dispatch Desk
                     </h1>
-                    <p class="text-xs text-slate-500 mt-1" id="page-sub">Publish verified real-time journalism</p>
+                    <p class="text-xs text-slate-500 mt-1" id="page-sub">Auto-generate and publish SEO-optimized news dispatches</p>
                 </div>
                 <span class="bg-green-100 text-green-800 text-[11px] font-bold px-3 py-1 rounded-full border border-green-200">
-                    <i class="fas fa-shield-alt text-green-600 mr-1"></i> Two-Step Auth
+                    <i class="fas fa-magic text-green-600 mr-1"></i> Smart SEO Generator Active
                 </span>
             </div>
 
-            <!-- Form -->
-            <form action="/submit-news" method="POST" class="space-y-6" onsubmit="return finalSubmitCheck()">
+            <form action="/submit-news" method="POST" enctype="multipart/form-data" class="space-y-6" onsubmit="return finalSubmitCheck()">
 
-                <!-- 1. Reporter Identification & Verification Step -->
+                <!-- 1. Headline -->
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5" id="lbl-headline">
+                        Headline / খবরের শিরোনাম *
+                    </label>
+                    <input type="text" name="title" required id="input-headline" placeholder="Enter headline..."
+                        class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-red-600 focus:outline-none text-slate-900 font-bold text-base">
+                </div>
+
+                <!-- 2. Expanded All Categories & Location -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5" id="lbl-category">
+                            Category / খবরের বিভাগ *
+                        </label>
+                        <select name="category" id="categorySelect" required class="w-full px-3 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-red-600 text-slate-900 text-sm font-semibold">
+                            <option value="India">জাতীয় / National (India)</option>
+                            <option value="Regional">রাজ্য ও আঞ্চলিক / Regional & State</option>
+                            <option value="World">আন্তর্জাতিক / International & World</option>
+                            <option value="Business">অর্থনীতি ও বাণিজ্য / Business & Markets</option>
+                            <option value="StockMarket">শেয়ার বাজার / Stock Market & Finance</option>
+                            <option value="Politics">রাজনীতি / Politics</option>
+                            <option value="Technology">তথ্যপ্রযুক্তি ও এআই / Technology & AI</option>
+                            <option value="Automobile">অটোমোবাইল / Auto & Vehicles</option>
+                            <option value="Sports">খেলাধুলা / Sports</option>
+                            <option value="Entertainment">বিনোদন / Entertainment</option>
+                            <option value="Education">শিক্ষা ও চাকরি / Education & Career</option>
+                            <option value="Health">স্বাস্থ্য ও জীবনযাত্রা / Health & Lifestyle</option>
+                            <option value="Crime">অপরাধ ও তদন্ত / Crime & Investigation</option>
+                            <option value="Weather">আবহাওয়া ও পরিবেশ / Weather & Environment</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5" id="lbl-location">
+                            Location / ঘটনাস্থল *
+                        </label>
+                        <input type="text" name="location" required id="input-location" placeholder="Ex: Kolkata, New Delhi"
+                            class="w-full px-3 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-red-600 text-slate-900 text-sm">
+                    </div>
+                </div>
+
+                <!-- 3. Reporter Identification & Security Box -->
                 <div class="bg-slate-50 p-5 rounded-xl border border-slate-300 space-y-4">
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5" id="lbl-author">
@@ -60,21 +101,21 @@
                             class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-red-600 text-sm bg-white font-semibold text-slate-900">
                     </div>
 
-                    <!-- Founder Passcode & VERIFY BUTTON Box -->
+                    <!-- Founder Passcode Box -->
                     <div id="founderSecurityBox" class="hidden p-4 bg-amber-50 border border-amber-300 rounded-xl space-y-2">
                         <div class="flex items-center justify-between">
                             <span class="text-xs font-bold text-amber-900 flex items-center gap-1.5">
-                                <i class="fas fa-key text-amber-600"></i> Founder Passcode Verification
+                                <i class="fas fa-key text-amber-600"></i> Founder Security Authentication
                             </span>
                             <span id="verifiedBadge" class="hidden text-xs bg-green-600 text-white font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1 shadow-xs">
                                 <i class="fas fa-check-circle"></i> Verified Founder
                             </span>
                         </div>
                         <label class="block text-[11px] font-semibold text-slate-700">
-                            সিকিউরিটি কোড বসিয়ে 'Verify' বাটনে ক্লিক করুন *
+                            সিকিউরিটি কোড দিয়ে 'Verify' বাটনে ক্লিক করুন *
                         </label>
                         <div class="flex items-center gap-2">
-                            <input type="password" name="founder_pin" id="founderPinInput" maxlength="4" placeholder="Enter 4-digit ID"
+                            <input type="password" name="founder_pin" id="founderPinInput" maxlength="4" placeholder="Enter ID"
                                 class="w-36 px-3 py-2 rounded-lg border border-amber-300 focus:ring-2 focus:ring-red-600 text-sm bg-white font-mono tracking-widest font-bold">
                             <button type="button" onclick="verifyFounderPasscode()" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-lg transition shadow flex items-center gap-1.5">
                                 <i class="fas fa-unlock-alt"></i> Verify
@@ -82,108 +123,92 @@
                         </div>
                     </div>
 
-                    <!-- External Contributor Verification Box -->
+                    <!-- External Contributor Box -->
                     <div id="contributorBox" class="pt-3 border-t border-slate-200">
-                        <div class="flex items-center justify-between mb-3">
-                            <span class="text-xs font-bold uppercase tracking-wider text-slate-700" id="lbl-ver-title">
-                                <i class="fas fa-id-card text-slate-500 mr-1"></i> Contributor KYC Verification
-                            </span>
-                        </div>
-
-                        <div id="docInputsGrid" class="space-y-4">
-                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                                <div>
-                                    <label class="block text-[11px] font-bold text-slate-600 mb-1" id="lbl-id-type">KYC ID Document *</label>
-                                    <select name="id_type" id="idTypeSelect" onchange="handleKycPlaceholder()" class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-red-600 text-xs bg-white font-medium">
-                                        <option value="PAN">PAN Card</option>
-                                        <option value="VOTER">Voter ID Card</option>
-                                        <option value="PASSPORT">Passport</option>
-                                        <option value="DL">Driving Licence</option>
-                                        <option value="GOV">Govt / Press ID</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-[11px] font-bold text-slate-600 mb-1" id="lbl-idproof">Document / ID Number *</label>
-                                    <input type="text" name="id_proof" id="idProofField" placeholder="ABCDE1234F"
-                                        class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-red-600 text-xs bg-white font-mono uppercase">
-                                </div>
-                                <div>
-                                    <label class="block text-[11px] font-bold text-slate-600 mb-1" id="lbl-contact">Contact Phone / Email *</label>
-                                    <input type="text" name="contact_info" id="contactField" placeholder="Phone or email"
-                                        class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-red-600 text-xs bg-white">
-                                </div>
-                            </div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-700 block mb-2" id="lbl-ver-title">
+                            <i class="fas fa-id-card text-slate-500 mr-1"></i> Contributor Identification
+                        </span>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <select name="id_type" id="idTypeSelect" class="px-3 py-2 rounded-lg border border-slate-300 text-xs bg-white font-medium">
+                                <option value="PAN">PAN Card</option>
+                                <option value="VOTER">Voter ID Card</option>
+                                <option value="PASSPORT">Passport</option>
+                                <option value="DL">Driving Licence</option>
+                                <option value="GOV">Govt / Press ID</option>
+                            </select>
+                            <input type="text" name="id_proof" id="idProofField" placeholder="Document ID Number"
+                                class="px-3 py-2 rounded-lg border border-slate-300 text-xs bg-white font-mono uppercase">
+                            <input type="text" name="contact_info" id="contactField" placeholder="Phone or email"
+                                class="px-3 py-2 rounded-lg border border-slate-300 text-xs bg-white">
                         </div>
                     </div>
 
                     <p id="auth-error-alert" class="text-xs text-red-600 font-bold hidden bg-red-50 p-2.5 rounded border border-red-200"></p>
                 </div>
 
-                <!-- 2. NEWS EDITORIAL DESK CONTENT (ভেরিফাই হলে আনলক হবে) -->
-                <div id="newsContentWrapper" class="space-y-6 opacity-40 pointer-events-none transition duration-300">
-                    
-                    <!-- Headline -->
-                    <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5" id="lbl-headline">
-                            Headline *
-                        </label>
-                        <input type="text" name="title" required id="input-headline" placeholder="Enter news headline..."
-                            class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-red-600 focus:outline-none text-slate-900 font-bold text-base">
-                    </div>
+                <!-- 4. Real Image Upload OR Online Image URL -->
+                <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-800" id="lbl-image-section">
+                        Article Featured Image / খবরের ছবি (যেকোনো একটি প্রদান করুন) *
+                    </label>
 
-                    <!-- Category & Location -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5" id="lbl-category">
-                                Category *
-                            </label>
-                            <select name="category" required class="w-full px-3 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-red-600 text-slate-900 text-sm font-medium">
-                                <option value="India">India</option>
-                                <option value="World">World</option>
-                                <option value="Business">Business</option>
-                                <option value="Technology">Technology</option>
-                                <option value="Sports">Sports</option>
-                                <option value="Entertainment">Entertainment</option>
-                            </select>
+                        <!-- Option A: Direct Original Upload -->
+                        <div class="bg-white p-3.5 rounded-lg border border-slate-300">
+                            <span class="block text-xs font-bold text-slate-700 mb-1 flex items-center gap-1.5">
+                                <i class="fas fa-camera text-red-600"></i> অপশন ১: আসল ছবি আপলোড করুন
+                            </span>
+                            <input type="file" name="news_image_file" id="imageFileInput" accept="image/*"
+                                class="w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-bold file:bg-red-50 file:text-red-700 hover:file:bg-red-100">
+                            <p class="text-[10px] text-slate-400 mt-1">ক্যামেরা বা কম্পিউটার থেকে নিজস্ব আসল ছবি আপলোড করুন</p>
                         </div>
 
-                        <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5" id="lbl-location">
-                                Location *
-                            </label>
-                            <input type="text" name="location" required id="input-location" placeholder="Ex: Kolkata, New Delhi"
-                                class="w-full px-3 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-red-600 text-slate-900 text-sm">
+                        <!-- Option B: Direct URL -->
+                        <div class="bg-white p-3.5 rounded-lg border border-slate-300">
+                            <span class="block text-xs font-bold text-slate-700 mb-1 flex items-center gap-1.5">
+                                <i class="fas fa-link text-blue-600"></i> অপশন ২: অনলাইন ছবির লিঙ্ক (URL)
+                            </span>
+                            <input type="url" name="image_url" id="imageUrlInput" placeholder="https://images.unsplash.com/photo-..."
+                                class="w-full px-3 py-1.5 rounded-md border border-slate-300 focus:ring-2 focus:ring-red-600 text-xs text-slate-900">
+                            <p class="text-[10px] text-slate-400 mt-1">অথবা কপিরাইটমুক্ত ছবির ওয়েব লিঙ্ক এখানে দিন</p>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Featured Image URL -->
-                    <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5" id="lbl-img">
-                            Featured Image URL
+                <!-- 5. Short Summary Input + Auto SEO Generator -->
+                <div class="bg-blue-50/60 p-4 rounded-xl border border-blue-200 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-blue-950 flex items-center gap-1.5">
+                            <i class="fas fa-magic text-blue-600"></i> সংক্ষেপে মূল তথ্য লিখুন (Auto SEO Generator)
                         </label>
-                        <input type="url" name="image_url" id="input-img" placeholder="https://example.com/image.jpg (Optional - Category image used automatically)"
-                            class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-red-600 text-slate-900 text-sm">
-                    </div>
-
-                    <!-- Content Body -->
-                    <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5" id="lbl-body">
-                            In-Depth News Content *
-                        </label>
-                        <textarea name="content" rows="8" required id="input-body" placeholder="Write the detailed news report here..."
-                            class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-red-600 focus:outline-none text-slate-900 text-base leading-relaxed"></textarea>
-                    </div>
-
-                    <!-- Submit Button -->
-                    <div class="pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
-                        <span class="text-xs text-green-700 font-semibold" id="txt-schema-notice">
-                            <i class="fas fa-check-circle mr-1"></i> Automatic Google NewsArticle Schema Enabled
-                        </span>
-                        <button type="submit" class="w-full sm:w-auto px-8 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-lg transition transform active:scale-95 flex items-center justify-center gap-2">
-                            <i class="fas fa-paper-plane"></i> <span id="btn-publish">Publish Dispatch</span>
+                        <button type="button" onclick="generateAutoSeoArticle()" id="btn-generate" class="px-3.5 py-1.5 bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs rounded-lg transition shadow flex items-center gap-1.5">
+                            <i class="fas fa-wand-magic-sparkles"></i> সম্পূর্ণ খবর তৈরি করুন
                         </button>
                     </div>
+                    <textarea id="briefPointsInput" rows="3" placeholder="ঘটনার মূল ২-৩টি তথ্য বা পয়েন্ট এখানে সংক্ষেপে লিখুন... এরপর উপরের বাটনে চাপ দিলে স্বয়ংক্রিয়ভাবে বিস্তারিত খবর তৈরি হবে।"
+                        class="w-full px-3 py-2 rounded-lg border border-blue-300 focus:ring-2 focus:ring-blue-600 text-xs bg-white leading-relaxed"></textarea>
+                </div>
 
+                <!-- 6. In-Depth News Content (Editable Area) -->
+                <div>
+                    <div class="flex items-center justify-between mb-1.5">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700" id="lbl-body">
+                            সম্পূর্ণ খবর ও বিস্তারিত বিবরণ (In-Depth Article Body) *
+                        </label>
+                        <span class="text-[11px] text-slate-400 font-medium">প্রয়োজনে লেখার যেকোনো অংশ সম্পাদনা করুন</span>
+                    </div>
+                    <textarea name="content" rows="11" required id="input-body" placeholder="খবরের সম্পূর্ণ বিবরণ এখানে স্বয়ংক্রিয়ভাবে তৈরি হবে এবং আপনি নিজের ইচ্ছামতো পরিবর্তন করতে পারবেন..."
+                        class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-red-600 focus:outline-none text-slate-900 text-base leading-relaxed font-serif"></textarea>
+                </div>
+
+                <!-- 7. Submit Action -->
+                <div class="pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <span class="text-xs text-green-700 font-semibold" id="txt-schema-notice">
+                        <i class="fas fa-check-circle mr-1"></i> Google NewsArticle Schema &amp; Auto-SEO Enabled
+                    </span>
+                    <button type="submit" class="w-full sm:w-auto px-8 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-lg transition transform active:scale-95 flex items-center justify-center gap-2">
+                        <i class="fas fa-paper-plane"></i> <span id="btn-publish">প্রকাশ করুন (Publish Dispatch)</span>
+                    </button>
                 </div>
 
             </form>
@@ -202,11 +227,9 @@
         const founderPin = document.getElementById('founderPinInput');
         const verifiedBadge = document.getElementById('verifiedBadge');
         const contributorBox = document.getElementById('contributorBox');
-        const newsWrapper = document.getElementById('newsContentWrapper');
-        const alertBox = document.getElementById('auth-error-alert');
-
         const idField = document.getElementById('idProofField');
         const contactField = document.getElementById('contactField');
+        const alertBox = document.getElementById('auth-error-alert');
 
         function checkAuthorSecurity() {
             const val = authorInput.value.trim().toUpperCase();
@@ -216,10 +239,6 @@
                 idField.required = false;
                 contactField.required = false;
                 alertBox.classList.add('hidden');
-                
-                if (!isFounderVerified) {
-                    newsWrapper.classList.add('opacity-40', 'pointer-events-none');
-                }
             } else {
                 founderBox.classList.add('hidden');
                 contributorBox.classList.remove('opacity-30', 'pointer-events-none');
@@ -227,8 +246,6 @@
                 contactField.required = true;
                 isFounderVerified = false;
                 verifiedBadge.classList.add('hidden');
-                // বহিরাগতদের সাধারণ ইনপুটের জন্য আনলক রাখা
-                newsWrapper.classList.remove('opacity-40', 'pointer-events-none');
             }
         }
 
@@ -239,21 +256,51 @@
                 isFounderVerified = true;
                 verifiedBadge.classList.remove('hidden');
                 alertBox.classList.add('hidden');
-                newsWrapper.classList.remove('opacity-40', 'pointer-events-none');
                 founderPin.classList.remove('border-red-500');
                 founderPin.classList.add('border-green-500');
             } else {
                 isFounderVerified = false;
                 verifiedBadge.classList.add('hidden');
-                alertBox.innerText = 'ভুল সিকিউরিটি কোড! ভেরিফাই করতে আপনার সঠিক ৪ সংখ্যার সিকিউরিটি কোড দিন।';
+                alertBox.innerText = 'ভুল সিকিউরিটি কোড! সঠিক ৪ সংখ্যার সিকিউরিটি কোড দিন।';
                 alertBox.classList.remove('hidden');
-                newsWrapper.classList.add('opacity-40', 'pointer-events-none');
                 founderPin.focus();
             }
         }
 
+        // হেডলাইন ও সংক্ষেপ থেকে অটোমেটিক এসইও খবর তৈরি
+        function generateAutoSeoArticle() {
+            const headline = document.getElementById('input-headline').value.trim();
+            const location = document.getElementById('input-location').value.trim() || 'কলকাতা';
+            const category = document.getElementById('categorySelect').value;
+            const points = document.getElementById('briefPointsInput').value.trim();
+            const bodyArea = document.getElementById('input-body');
+
+            if (!headline) {
+                alert('দয়া করে প্রথমে খবরের শিরোনাম লিখুন!');
+                document.getElementById('input-headline').focus();
+                return;
+            }
+
+            const rawFacts = points ? points : 'ঘটনাস্থল থেকে প্রাপ্ত তথ্যের ভিত্তিতে ঘটনার সূত্রপাত ও প্রশাসনিক পদক্ষেপ পর্যালোচনা করা হচ্ছে।';
+
+            // পেশাদার সাংবাদিকসুলভ বহু-প্যারাগ্রাফ এসইও ড্রাফট
+            const generatedDraft = `${location} — ${headline} নিয়ে বিস্তারিত তথ্য সামনে এসেছে। ${rawFacts}
+
+ঘটনার পরিপ্রেক্ষিতে স্থানীয় ও প্রশাসনিক স্তরে তৎপরতা বৃদ্ধি পেয়েছে। সংশ্লিষ্ট দফতরের পর্যবেক্ষকরা জানিয়েছেন, পরিস্থিতির ওপর নজর রেখে প্রয়োজনীয় সবরকম ব্যবস্থা গ্রহণ করা হচ্ছে। সার্বিক ভারসাম্য বজায় রাখতে বিভিন্ন মহলে আলোচনা জারি রয়েছে।
+
+বিশেষজ্ঞ ও দায়িত্বপ্রাপ্ত আধিকারিকদের মতে, এই ধরণের ঘটনাবলী সামগ্রিক পরিকাঠামো এবং জনসাধারণের দৈনন্দিন জীবনের ওপর গভীর প্রভাব বিস্তার করে। তাই সময়োপযোগী এবং সুনির্দিষ্ট পদক্ষেপ গ্রহণের মাধ্যমে বিষয়টিকে সমাধানের দিকে এগিয়ে নিয়ে যাওয়াই মূল লক্ষ্য।
+
+ইতিমধ্যে মাঠপর্যায়ের সংশ্লিষ্ট দল ঘটনাস্থল পরিদর্শন করে প্রাথমিক তথ্য সংগ্রহ শুরু করেছে। 24 Early News এ সংক্রান্ত পরবর্তী সমস্ত নির্ভরযোগ্য ও যাচাইকৃত তথ্য সরাসরি আপডেট করবে।`;
+
+            bodyArea.value = generatedDraft;
+            bodyArea.classList.add('ring-2', 'ring-green-500');
+            setTimeout(() => { bodyArea.classList.remove('ring-2', 'ring-green-500'); }, 1200);
+        }
+
         function finalSubmitCheck() {
             const val = authorInput.value.trim().toUpperCase();
+
+            // ১. প্রতিষ্ঠাতা অনুমোদন পরীক্ষা
             if (val === 'DWIPRAJ MALLICK') {
                 if (!isFounderVerified) {
                     alertBox.innerText = 'দয়া করে সিকিউরিটি কোড প্রদান করে "Verify" বোতামে ক্লিক করুন!';
@@ -261,12 +308,18 @@
                     founderPin.focus();
                     return false;
                 }
-                return true;
-            }
-
-            if (val.includes('DWIPRAJ') || val === 'ADMIN') {
+            } else if (val.includes('DWIPRAJ') || val === 'ADMIN') {
                 alertBox.innerText = 'অননুমোদিত: প্রতিষ্ঠাতা বা প্রধান সম্পাদকের নাম নকল করা নিষিদ্ধ!';
                 alertBox.classList.remove('hidden');
+                return false;
+            }
+
+            // ২. ছবির জন্য যেকোনো একটি অপশন দেওয়া হয়েছে কি না
+            const fileInput = document.getElementById('imageFileInput');
+            const urlInput = document.getElementById('imageUrlInput').value.trim();
+
+            if ((!fileInput.files || fileInput.files.length === 0) && !urlInput) {
+                alert('দয়া করে খবরের জন্য আসল ছবি আপলোড করুন অথবা ছবির অনলাইন লিঙ্ক প্রদান করুন!');
                 return false;
             }
 
@@ -278,25 +331,19 @@
         // Language pack
         const SUBMIT_I18N = {
             en: {
-                home: "Home", pageTitle: "Editorial Dispatch Desk", pageSub: "Publish verified real-time journalism",
-                headline: "Headline *", category: "Category *", location: "Location *", author: "Reporter / Full Author Name *",
-                verTitle: "Contributor KYC Verification", idType: "KYC ID Document *", idProof: "Document / ID Number *",
-                contact: "Contact Phone / Email *", img: "Featured Image URL", body: "In-Depth News Content *",
-                schemaNotice: "Automatic Google NewsArticle Schema Enabled", publish: "Publish Dispatch"
+                home: "Home", pageTitle: "Editorial Dispatch Desk", pageSub: "Auto-generate and publish SEO-optimized news dispatches",
+                headline: "Headline / News Title *", category: "Category *", location: "Location *", author: "Reporter / Full Author Name *",
+                body: "In-Depth News Content (Editable Area) *", publish: "Publish Dispatch"
             },
             bn: {
-                home: "হোম", pageTitle: "সংবাদ প্রকাশনা ডেস্ক", pageSub: "যাচাইকৃত বস্তুনিষ্ঠ সংবাদ প্রকাশ করুন",
-                headline: "খবরের শিরোনাম *", category: "বিভাগ *", location: "ঘটনাস্থল *", author: "প্রতিবেদকের পুরো নাম *",
-                verTitle: "কন্ট্রিবিউটর সরকারি KYC যাচাইকরণ", idType: "KYC ডকুমেন্ট নির্বাচন করুন *", idProof: "আইডি নম্বর *",
-                contact: "যোগাযোগ নম্বর / ইমেল *", img: "খবরের ছবির লিঙ্ক (Image URL)", body: "সংবাদের মূল বিবরণ *",
-                schemaNotice: "স্বয়ংক্রিয় গুগল এসইও ও NewsArticle Schema যুক্ত হবে", publish: "প্রকাশ করুন"
+                home: "হোম", pageTitle: "সংবাদ প্রকাশনা ডেস্ক", pageSub: "স্বয়ংক্রিয় এসইও অপটিমাইজেশন সহ নির্ভরযোগ্য খবর প্রকাশ করুন",
+                headline: "খবরের শিরোনাম (Headline) *", category: "খবরের বিভাগ (Category) *", location: "ঘটনাস্থল (Location) *", author: "প্রতিবেদকের পুরো নাম (Author Name) *",
+                body: "সম্পূর্ণ খবর ও বিস্তারিত বিবরণ (সম্পাদনাযোগ্য) *", publish: "প্রকাশ করুন (Publish Dispatch)"
             },
             hi: {
-                home: "होम", pageTitle: "संपादकीय समाचार डेस्क", pageSub: "तथ्यपूर्ण एवं प्रामाणिक समाचार प्रकाशित करें",
-                headline: "समाचार शीर्षक *", category: "श्रेणी / वर्ग *", location: "स्थान *", author: "संवाददाता का पूरा नाम *",
-                verTitle: "संवाददाता सरकारी KYC सत्यापन", idType: "KYC दस्तावेज़ चुनें *", idProof: "पहचान संख्या *",
-                contact: "संपर्क फोन / ईमेल *", img: "समाचार चित्र लिंक (URL)", body: "विस्तृत समाचार विवरण *",
-                schemaNotice: "स्वचालित गूगल एसईओ एवं NewsArticle Schema सक्रिय", publish: "प्रकाशित करें"
+                home: "होम", pageTitle: "संपादकीय समाचार डेस्क", pageSub: "स्वचालित एसईओ अनुकूलित समाचार प्रकाशित करें",
+                headline: "समाचार शीर्षक *", category: "समाचार वर्ग *", location: "स्थान *", author: "संवाददाता का पूरा नाम *",
+                body: "विस्तृत समाचार सामग्री (संपादन योग्य) *", publish: "प्रकाशित करें"
             }
         };
 
@@ -311,13 +358,7 @@
             document.getElementById('lbl-category').innerText = d.category;
             document.getElementById('lbl-location').innerText = d.location;
             document.getElementById('lbl-author').innerText = d.author;
-            document.getElementById('lbl-ver-title').innerHTML = '<i class="fas fa-id-card text-slate-500 mr-1"></i> ' + d.verTitle;
-            document.getElementById('lbl-id-type').innerText = d.idType;
-            document.getElementById('lbl-idproof').innerText = d.idProof;
-            document.getElementById('lbl-contact').innerText = d.contact;
-            document.getElementById('lbl-img').innerText = d.img;
             document.getElementById('lbl-body').innerText = d.body;
-            document.getElementById('txt-schema-notice').innerHTML = '<i class="fas fa-check-circle mr-1"></i> ' + d.schemaNotice;
             document.getElementById('btn-publish').innerText = d.publish;
             document.getElementById('submitLangChoice').value = lang;
         }
