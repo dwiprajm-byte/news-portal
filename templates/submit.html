@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-slate-100 text-slate-800 font-sans antialiased" data-admin-auth="{{ 'true' if session.get('logged_in') else 'false' }}">
+<body class="bg-slate-100 text-slate-800 font-sans antialiased">
 
     <!-- Header -->
     <header class="bg-slate-950 text-white shadow-md sticky top-0 z-50 border-b-2 border-red-600">
@@ -47,7 +47,7 @@
                 </span>
             </div>
 
-            <form action="/submit-news" method="POST" class="space-y-6" onsubmit="return validateAuthorDocs()">
+            <form action="/submit-news" method="POST" class="space-y-6" onsubmit="return validateSubmission()">
 
                 <!-- 1. Headline -->
                 <div>
@@ -83,23 +83,37 @@
                     </div>
                 </div>
 
-                <!-- 3. Reporter / Verification Box -->
+                <!-- 3. Reporter Identification & Verification -->
                 <div class="bg-slate-50 p-5 rounded-xl border border-slate-300 space-y-4">
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5" id="lbl-author">
-                            Reporter / Author Name *
+                            Reporter / Full Author Name *
                         </label>
-                        <input type="text" name="author" id="authorInput" required placeholder="Enter author name"
+                        <input type="text" name="author" id="authorInput" required placeholder="Type full name (DWIPRAJ MALLICK for Founder)"
                             class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-red-600 text-sm bg-white font-semibold text-slate-900">
+                    </div>
+
+                    <!-- Founder Security Verification Box -->
+                    <div id="founderSecurityBox" class="hidden p-4 bg-amber-50 border border-amber-300 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-bold text-amber-900 flex items-center gap-1.5">
+                                <i class="fas fa-shield-alt text-amber-600"></i> Founder Authentication Required
+                            </span>
+                            <span class="text-[10px] bg-amber-200 text-amber-800 font-bold px-2 py-0.5 rounded">Security Passcode</span>
+                        </div>
+                        <label class="block text-[11px] font-semibold text-slate-700 mb-1">
+                            প্রতিষ্ঠাতার কেওয়াইসি শেষ ৪টি সংখ্যা অথবা সিকিউরিটি আইডি দিন *
+                        </label>
+                        <input type="password" name="founder_pin" id="founderPinInput" maxlength="4" placeholder="Enter 4-digit ID"
+                            class="w-full sm:w-48 px-3 py-2 rounded border border-amber-300 focus:ring-2 focus:ring-red-600 text-sm bg-white font-mono tracking-widest">
                     </div>
 
                     <!-- External Contributor Verification Box -->
                     <div id="contributorBox" class="pt-3 border-t border-slate-200">
                         <div class="flex items-center justify-between mb-3">
-                            <span class="text-xs font-bold uppercase tracking-wider text-amber-800" id="lbl-ver-title">
-                                <i class="fas fa-id-card text-amber-600 mr-1"></i> Contributor Identity Verification
+                            <span class="text-xs font-bold uppercase tracking-wider text-slate-700" id="lbl-ver-title">
+                                <i class="fas fa-id-card text-slate-500 mr-1"></i> Contributor KYC Verification
                             </span>
-                            <span id="admin-tag" class="hidden text-[11px] font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded">Verified Founder - KYC Exempted</span>
                         </div>
 
                         <div id="docInputsGrid" class="space-y-4">
@@ -125,9 +139,10 @@
                                         class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-red-600 text-xs bg-white">
                                 </div>
                             </div>
-                            <p id="kyc-error-alert" class="text-xs text-red-600 font-bold hidden bg-red-50 p-2.5 rounded border border-red-200"></p>
                         </div>
                     </div>
+
+                    <p id="auth-error-alert" class="text-xs text-red-600 font-bold hidden bg-red-50 p-2.5 rounded border border-red-200"></p>
                 </div>
 
                 <!-- 4. Featured Image URL -->
@@ -170,30 +185,30 @@
         const SUBMIT_I18N = {
             en: {
                 home: "Home", pageTitle: "Editorial Dispatch Desk", pageSub: "Publish verified real-time journalism",
-                headline: "Headline *", category: "Category *", location: "Location *", author: "Reporter / Author Name *",
-                verTitle: "Contributor Identity Verification", idType: "KYC ID Document *", idProof: "Document / ID Number *",
+                headline: "Headline *", category: "Category *", location: "Location *", author: "Reporter / Full Author Name *",
+                verTitle: "Contributor KYC Verification", idType: "KYC ID Document *", idProof: "Document / ID Number *",
                 contact: "Contact Phone / Email *", img: "Featured Image URL", body: "In-Depth News Content *",
                 schemaNotice: "Automatic Google NewsArticle Schema Enabled", publish: "Publish Dispatch",
                 placeholderTitle: "Enter news headline...", placeholderLoc: "Ex: Kolkata, New Delhi",
-                placeholderAuthor: "Enter author name", placeholderBody: "Write the detailed news report here..."
+                placeholderAuthor: "Type full name (DWIPRAJ MALLICK for Founder)", placeholderBody: "Write the detailed news report here..."
             },
             bn: {
                 home: "হোম", pageTitle: "সংবাদ প্রকাশনা ডেস্ক", pageSub: "যাচাইকৃত বস্তুনিষ্ঠ সংবাদ প্রকাশ করুন",
-                headline: "খবরের শিরোনাম *", category: "বিভাগ *", location: "ঘটনাস্থল *", author: "প্রতিবেদকের নাম *",
+                headline: "খবরের শিরোনাম *", category: "বিভাগ *", location: "ঘটনাস্থল *", author: "প্রতিবেদকের পুরো নাম *",
                 verTitle: "কন্ট্রিবিউটর সরকারি KYC যাচাইকরণ", idType: "KYC ডকুমেন্ট নির্বাচন করুন *", idProof: "আইডি নম্বর *",
                 contact: "যোগাযোগ নম্বর / ইমেল *", img: "খবরের ছবির লিঙ্ক (Image URL)", body: "সংবাদের মূল বিবরণ *",
                 schemaNotice: "স্বয়ংক্রিয় গুগল এসইও ও NewsArticle Schema যুক্ত হবে", publish: "প্রকাশ করুন",
                 placeholderTitle: "খবরের শিরোনাম লিখুন...", placeholderLoc: "যেমন: কলকাতা, নিউ দিল্লি",
-                placeholderAuthor: "আপনার নাম লিখুন", placeholderBody: "খবরের সম্পূর্ণ বিবরণ এখানে বিস্তারিতভাবে লিখুন..."
+                placeholderAuthor: "আপনার পুরো নাম লিখুন", placeholderBody: "খবরের সম্পূর্ণ বিবরণ এখানে বিস্তারিতভাবে লিখুন..."
             },
             hi: {
                 home: "होम", pageTitle: "संपादकीय समाचार डेस्क", pageSub: "तथ्यपूर्ण एवं प्रामाणिक समाचार प्रकाशित करें",
-                headline: "समाचार शीर्षक *", category: "श्रेणी / वर्ग *", location: "स्थान *", author: "संवाददाता का नाम *",
+                headline: "समाचार शीर्षक *", category: "श्रेणी / वर्ग *", location: "स्थान *", author: "संवाददाता का पूरा नाम *",
                 verTitle: "संवाददाता सरकारी KYC सत्यापन", idType: "KYC दस्तावेज़ चुनें *", idProof: "पहचान संख्या *",
                 contact: "संपर्क फोन / ईमेल *", img: "समाचार चित्र लिंक (URL)", body: "विस्तृत समाचार विवरण *",
                 schemaNotice: "स्वचालित गूगल एसईओ एवं NewsArticle Schema सक्रिय", publish: "प्रकाशित करें",
                 placeholderTitle: "समाचार का शीर्षक लिखें...", placeholderLoc: "उदा: कोलकाता, नई दिल्ली",
-                placeholderAuthor: "अपना नाम लिखें", placeholderBody: "समाचार का विस्तृत विवरण यहां लिखें..."
+                placeholderAuthor: "अपना पूरा नाम लिखें", placeholderBody: "समाचार का विस्तृत विवरण यहां लिखें..."
             }
         };
 
@@ -208,7 +223,7 @@
             document.getElementById('lbl-category').innerText = d.category;
             document.getElementById('lbl-location').innerText = d.location;
             document.getElementById('lbl-author').innerText = d.author;
-            document.getElementById('lbl-ver-title').innerHTML = '<i class="fas fa-id-card text-amber-600 mr-1"></i> ' + d.verTitle;
+            document.getElementById('lbl-ver-title').innerHTML = '<i class="fas fa-id-card text-slate-500 mr-1"></i> ' + d.verTitle;
             document.getElementById('lbl-id-type').innerText = d.idType;
             document.getElementById('lbl-idproof').innerText = d.idProof;
             document.getElementById('lbl-contact').innerText = d.contact;
@@ -227,11 +242,12 @@
         }
 
         const authorInput = document.getElementById('authorInput');
-        const docGrid = document.getElementById('docInputsGrid');
-        const adminTag = document.getElementById('admin-tag');
+        const founderBox = document.getElementById('founderSecurityBox');
+        const founderPin = document.getElementById('founderPinInput');
+        const contributorBox = document.getElementById('contributorBox');
         const idField = document.getElementById('idProofField');
         const contactField = document.getElementById('contactField');
-        const alertBox = document.getElementById('kyc-error-alert');
+        const alertBox = document.getElementById('auth-error-alert');
 
         function handleKycPlaceholder() {
             const type = document.getElementById('idTypeSelect').value;
@@ -242,51 +258,55 @@
             else idField.placeholder = 'Enter valid ID';
         }
 
-        function evaluateAuthor() {
-            const author = authorInput.value.trim().toUpperCase();
-            const isAdminLoggedIn = (document.body.getAttribute('data-admin-auth') === 'true');
-
-            if (author.includes('DWIPRAJ') || author === 'ADMIN') {
-                if (isAdminLoggedIn) {
-                    docGrid.classList.add('opacity-30', 'pointer-events-none');
-                    adminTag.classList.remove('hidden');
-                    idField.required = false;
-                    contactField.required = false;
-                    alertBox.classList.add('hidden');
-                } else {
-                    docGrid.classList.remove('opacity-30', 'pointer-events-none');
-                    adminTag.classList.add('hidden');
-                }
+        function checkAuthorSecurity() {
+            const val = authorInput.value.trim().toUpperCase();
+            if (val === 'DWIPRAJ MALLICK') {
+                founderBox.classList.remove('hidden');
+                founderPin.required = true;
+                contributorBox.classList.add('opacity-30', 'pointer-events-none');
+                idField.required = false;
+                contactField.required = false;
+                alertBox.classList.add('hidden');
             } else {
-                docGrid.classList.remove('opacity-30', 'pointer-events-none');
-                adminTag.classList.add('hidden');
+                founderBox.classList.add('hidden');
+                founderPin.required = false;
+                contributorBox.classList.remove('opacity-30', 'pointer-events-none');
                 idField.required = true;
                 contactField.required = true;
             }
         }
 
-        function validateAuthorDocs() {
-            const author = authorInput.value.trim().toUpperCase();
-            const isAdminLoggedIn = (document.body.getAttribute('data-admin-auth') === 'true');
+        function validateSubmission() {
+            const val = authorInput.value.trim().toUpperCase();
 
-            // ১. আপনার নাম অপব্যবহার রোধ
-            if (author.includes('DWIPRAJ') || author === 'ADMIN') {
-                if (!isAdminLoggedIn) {
-                    alertBox.innerText = 'Security Alert: You cannot publish using Founder DWIPRAJ MALLICK without Admin Login.';
+            // প্রতিষ্ঠাতা হিসেবে পুরো নাম দিলে সিকিউরিটি কোড যাচাই
+            if (val === 'DWIPRAJ MALLICK') {
+                const pin = founderPin.value.trim();
+                const expectedCode = "62" + "03";
+                if (pin !== expectedCode) {
+                    alertBox.innerText = 'ভুল সিকিউরিটি কোড! DWIPRAJ MALLICK নামের অধীনে প্রকাশ করতে আপনার নির্ধারিত ৪ সংখ্যার সঠিক আইডি প্রদান করুন।';
                     alertBox.classList.remove('hidden');
-                    authorInput.focus();
+                    founderPin.focus();
                     return false;
                 }
                 return true;
             }
 
-            // ২. বহিরাগতদের আইডি ফিল্ড চেক
+            // প্রতিষ্ঠাতা নাম নকল প্রতিরোধ
+            if (val.includes('DWIPRAJ') || val === 'ADMIN') {
+                alertBox.innerText = 'অননুমোদিত: প্রতিষ্ঠাতা বা প্রধান সম্পাদকের নাম নকল করা নিষিদ্ধ!';
+                alertBox.classList.remove('hidden');
+                authorInput.focus();
+                return false;
+            }
+
+            // বহিরাগতদের সাধারণ যাচাইকরণ
             const type = document.getElementById('idTypeSelect').value;
             const idVal = idField.value.trim().toUpperCase().replace(/\s+/g, '');
             const contactVal = contactField.value.trim();
 
             if (!idVal || !contactVal) {
-                alertBox.innerText = 'KYC Error: Valid ID Number and contact details are required.';
+                alertBox.innerText = 'ত্রুটি: কেওয়াইসি আইডি নম্বর এবং যোগাযোগের ফোন/ইমেল প্রদান বাধ্যতামূলক!';
                 alertBox.classList.remove('hidden');
                 return false;
             }
@@ -296,16 +316,13 @@
 
             if (type === 'PAN') {
                 valid = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(idVal);
-                errMsg = 'Invalid PAN Number! Format must be ABCDE1234F';
+                errMsg = 'ভুল প্যান নম্বর! সঠিক বিন্যাস লিখুন (যেমন: ABCDE1234F)';
             } else if (type === 'VOTER') {
                 valid = /^[A-Z]{3}[0-9]{7}$/.test(idVal);
-                errMsg = 'Invalid Voter ID Number! Format must be ABC1234567';
+                errMsg = 'ভুল ভোটার কার্ড নম্বর! সঠিক বিন্যাস লিখুন (যেমন: ABC1234567)';
             } else if (type === 'PASSPORT') {
                 valid = /^[A-Z]{1}[0-9]{7}$/.test(idVal);
-                errMsg = 'Invalid Passport Number! Format must be A1234567';
-            } else if (type === 'DL') {
-                valid = /^[A-Z]{2}[0-9]{13,14}$/.test(idVal) || idVal.length >= 10;
-                errMsg = 'Invalid Driving Licence format!';
+                errMsg = 'ভুল পাসপোর্ট নম্বর!';
             }
 
             if (!valid) {
@@ -319,12 +336,12 @@
             return true;
         }
 
-        authorInput.addEventListener('input', evaluateAuthor);
+        authorInput.addEventListener('input', checkAuthorSecurity);
 
         document.addEventListener('DOMContentLoaded', function() {
             const currentSiteLang = localStorage.getItem('user_site_lang') || 'en';
             switchSubmitLang(currentSiteLang);
-            evaluateAuthor();
+            checkAuthorSecurity();
         });
     </script>
 </body>

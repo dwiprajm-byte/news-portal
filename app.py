@@ -505,14 +505,28 @@ def submit_news():
         title = request.form.get('title', '').strip()
         category = request.form.get('category', 'India').strip()
         location = request.form.get('location', 'Kolkata').strip()
-        author = request.form.get('author', 'Staff Reporter').strip()
-        ver_id = request.form.get('verification_id', 'Verified Reporter').strip()
-        contact = request.form.get('contributor_contact', '').strip()
+        author = request.form.get('author', '').strip()
+        founder_pin = request.form.get('founder_pin', '').strip()
+        id_type = request.form.get('id_type', 'KYC').strip()
+        id_proof = request.form.get('id_proof', '').strip()
+        contact_info = request.form.get('contact_info', '').strip()
         img_url = request.form.get('image_url', '').strip()
         content = request.form.get('content', '').strip()
 
         if not title or not content:
             return redirect(url_for('submit_news'))
+
+        is_founder = (author.strip().upper() == 'DWIPRAJ MALLICK')
+        valid_founder_code = "62" + "03"
+
+        if is_founder:
+            if founder_pin != valid_founder_code:
+                return "Security Error: Invalid Founder Passcode.", 403
+        else:
+            if 'DWIPRAJ' in author.upper() or 'ADMIN' in author.upper():
+                return "Security Error: Unauthorized attempt to use Founder Byline.", 403
+            if not id_proof or not contact_info:
+                return "Error: External contributors must submit verified ID number and contact info.", 400
 
         article_id = str(int(time.time() * 1000))
 
@@ -527,33 +541,32 @@ def submit_news():
             }
             img_url = cat_images.get(category, 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1000')
 
-        # স্বয়ংক্রিয় গুগল এসইও এবং সম্পাদকীয় কাঠামো তৈরি
-        seo_article_html = f"""
+        ver_badge = "Editor-in-Chief & Founder" if is_founder else f"Verified Contributor [{id_type}]"
+
+        seo_body = f"""
         <div class="editorial-container max-w-3xl mx-auto font-sans leading-relaxed text-gray-800">
             <div class="flex flex-wrap items-center justify-between border-y border-gray-200 py-3 mb-6 text-sm text-gray-600 bg-gray-50/70 px-4 rounded-lg">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-full bg-red-600 text-white font-bold flex items-center justify-center text-sm shadow">
-                        {author[0].upper() if author else 'R'}
+                        {author[0].upper() if author else 'E'}
                     </div>
                     <div>
                         <span class="font-bold text-gray-900 block">{author}</span>
-                        <span class="text-xs text-gray-500">Verified Contributor &bull; {category} Bureau</span>
+                        <span class="text-xs text-gray-500">{category} Bureau &bull; {ver_badge}</span>
                     </div>
                 </div>
                 <div class="text-xs text-gray-500 mt-2 sm:mt-0 font-medium">
-                    <span>📍 {location}</span> &bull; <span class="text-green-700 font-semibold font-mono">ID Verified ({ver_id[:4]}***)</span>
+                    <span>📍 {location}</span> &bull; <span class="text-green-700 font-semibold font-mono">Fact Checked &amp; Verified</span>
                 </div>
             </div>
 
-            <!-- মূল খবর -->
             <div class="article-body space-y-4 text-base md:text-lg text-gray-800 leading-8">
                 <p class="first-letter:text-5xl first-letter:font-bold first-letter:text-red-600 first-letter:float-left first-letter:mr-3">
-                    <strong class="font-sans uppercase text-xs tracking-wider text-gray-500 block mb-1">{location} —</strong>
+                    <strong class="font-sans uppercase text-xs tracking-wider text-gray-500 block mb-1.5">{location} DISPATCH —</strong>
                     {content}
                 </p>
             </div>
 
-            <!-- গুগল নিউজ আর্টিকেল স্কিমা (Auto SEO) -->
             <script type="application/ld+json">
             {{
                 "@context": "https://schema.org",
@@ -574,8 +587,8 @@ def submit_news():
             </script>
 
             <div class="mt-8 pt-4 border-t border-gray-200 text-xs text-gray-500 flex justify-between">
-                <span>&copy; 2026 24 Early News Wire Network</span>
-                <span class="text-slate-600 font-semibold">Verified Journalism Standards</span>
+                <span>&copy; 2026 24 Early News Network</span>
+                <span class="text-slate-600 font-semibold">Verified Journalism &amp; Ethical Media</span>
             </div>
         </div>
         """
@@ -583,7 +596,7 @@ def submit_news():
         article_obj = {
             'id': article_id,
             'title': title,
-            'summary': seo_article_html,
+            'summary': seo_body,
             'category': category,
             'link': f"/news/{article_id}",
             'image': img_url,
