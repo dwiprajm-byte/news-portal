@@ -1,90 +1,110 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>24 Early News - Global & Regional Dispatches</title>
-    <meta name="description" content="Verified breaking news, global affairs, technology and financial insights.">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=pub-9701604898518993" crossorigin="anonymous"></script>
     <meta name="google-adsense-account" content="pub-9701604898518993">
 </head>
 <body class="bg-slate-100 text-slate-900 font-sans antialiased">
-
-    <!-- Top Utility Bar -->
     <div class="bg-black text-slate-300 text-xs border-b border-slate-800">
         <div class="max-w-7xl mx-auto px-4 py-2 flex flex-wrap justify-between items-center gap-2">
             <div class="flex items-center gap-3">
                 <span class="font-bold text-red-500 uppercase tracking-wider flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-red-600 animate-ping"></span> Live Wire
+                    <span class="w-2 h-2 rounded-full bg-red-600 animate-ping"></span> <span id="txt-live">Live Wire</span>
                 </span>
-                <span class="text-slate-400">Global & Regional Verified Media Network</span>
+                <span class="text-slate-400" id="txt-network">Global & Regional Verified Media Network</span>
             </div>
             <div class="flex items-center gap-4 text-slate-400 font-mono text-[11px]">
-                <span id="live-datetime">Realtime Wire</span>
+                <div class="flex items-center gap-1.5 bg-slate-900 px-2.5 py-1 rounded border border-slate-700 text-white">
+                    <i class="fas fa-globe text-red-500 text-xs"></i>
+                    <select id="langChoice" onchange="switchLanguage(this.value)" class="bg-transparent text-xs font-semibold focus:outline-none cursor-pointer text-slate-200">
+                        <option value="en" class="bg-slate-900 text-white">English (Default)</option>
+                        <option value="bn" class="bg-slate-900 text-white">বাংলা (Bengali)</option>
+                        <option value="hi" class="bg-slate-900 text-white">हिन्दी (Hindi)</option>
+                    </select>
+                </div>
+                <span id="live-time"></span>
             </div>
         </div>
     </div>
-
-    <!-- Main Header -->
     <header class="bg-slate-950 text-white shadow-xl sticky top-0 z-50 border-b-2 border-red-600">
         <div class="max-w-7xl mx-auto px-4 py-3.5 flex items-center justify-between">
             <a href="/" class="flex items-center gap-2">
                 <span class="bg-red-600 text-white font-black px-2.5 py-1 text-lg tracking-tight rounded-sm">24</span>
                 <span class="text-2xl md:text-3xl font-black tracking-tighter uppercase font-serif">Early News</span>
             </a>
-
             <nav class="hidden lg:flex items-center gap-6 text-sm font-bold tracking-wide uppercase text-slate-300">
-                <a href="/" class="text-white border-b-2 border-red-600 pb-1">Home</a>
-                <a href="/?cat=India" class="hover:text-red-500 transition">India</a>
-                <a href="/?cat=World" class="hover:text-red-500 transition">World</a>
-                <a href="/?cat=Business" class="hover:text-red-500 transition">Business</a>
-                <a href="/?cat=Technology" class="hover:text-red-500 transition">Technology</a>
-                <a href="/?cat=Sports" class="hover:text-red-500 transition">Sports</a>
+                <a href="/" class="text-white border-b-2 border-red-600 pb-1" id="nav-home">Home</a>
+                <a href="/?cat=India" class="hover:text-red-500 transition" id="nav-india">India</a>
+                <a href="/?cat=World" class="hover:text-red-500 transition" id="nav-world">World</a>
+                <a href="/?cat=Business" class="hover:text-red-500 transition" id="nav-business">Business</a>
+                <a href="/?cat=Technology" class="hover:text-red-500 transition" id="nav-tech">Technology</a>
+                <a href="/?cat=Sports" class="hover:text-red-500 transition" id="nav-sports">Sports</a>
             </nav>
-
-            <div class="flex items-center gap-3">
+            <div>
                 <a href="/submit-news" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-4 py-2 rounded shadow transition flex items-center gap-1.5">
-                    <i class="fas fa-pen-fancy"></i> Submit News
+                    <i class="fas fa-pen-fancy"></i> <span id="btn-submit">Submit News</span>
                 </a>
             </div>
         </div>
     </header>
-
-    <!-- Breaking News Ticker -->
     <div class="bg-red-600 text-white text-xs font-semibold overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 py-2 flex items-center gap-3">
-            <span class="bg-black text-white px-2 py-0.5 font-bold uppercase rounded-xs tracking-wider shrink-0 text-[11px]">Breaking</span>
-            <div class="truncate text-red-50 font-medium">
-                24 Early News is committed to verified and independent journalism across global territories &bull; Accurate dispatches updated 24/7
+            <span class="bg-black text-white px-2 py-0.5 font-bold uppercase rounded-xs tracking-wider shrink-0 text-[11px]" id="txt-breaking">Breaking</span>
+            <div class="truncate text-red-50 font-medium" id="txt-ticker">
+                24 Early News is committed to verified and independent journalism across global territories • Accurate dispatches updated 24/7
             </div>
         </div>
     </div>
-
-    <!-- Main Content Container -->
     <main class="max-w-7xl mx-auto px-4 py-8">
-        
-        <!-- Founder & Editorial Notice -->
         <div class="my-6 bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-10 text-center max-w-4xl mx-auto">
-            <span class="bg-red-100 text-red-700 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full inline-block mb-3">
+            <span class="bg-red-100 text-red-700 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full inline-block mb-3" id="badge-independent">
                 Independent Digital Journalism
             </span>
-            <h2 class="text-2xl md:text-3xl font-black text-slate-900 tracking-tight mb-3 font-serif">
+            <h2 class="text-2xl md:text-3xl font-black text-slate-900 tracking-tight mb-3 font-serif" id="title-welcome">
                 Welcome to 24 Early News Wire
             </h2>
-            <p class="text-slate-600 text-sm leading-relaxed max-w-2xl mx-auto mb-4">
+            <p class="text-slate-600 text-sm leading-relaxed max-w-2xl mx-auto mb-4" id="desc-welcome">
                 Delivering objective dispatches, verified regional field reports, and unbiased geopolitical analysis across national and global territories.
             </p>
             <div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-700 bg-slate-50 border border-slate-200 px-4 py-2 rounded-xl">
-                <span>Editor-in-Chief &amp; Founder:</span>
+                <span id="txt-founder">Editor-in-Chief &amp; Founder:</span>
                 <span class="text-red-600 font-extrabold text-sm">DWIPRAJ MALLICK</span>
             </div>
         </div>
-
+        {% if news and news|length > 0 %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-8">
+            {% for item in news %}
+            <article class="bg-white rounded-xl overflow-hidden shadow-sm border border-slate-200 flex flex-col justify-between group hover:shadow-md transition">
+                <div>
+                    {% if item.image %}
+                    <div class="aspect-[16/10] overflow-hidden bg-slate-100">
+                        <img src="{{ item.image }}" alt="{{ item.title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800';">
+                    </div>
+                    {% endif %}
+                    <div class="p-5">
+                        <span class="text-xs font-bold text-red-600 uppercase">{{ item.category if item.category else 'Top News' }}</span>
+                        <h3 class="text-lg font-bold text-slate-900 group-hover:text-red-600 transition leading-snug mt-1 mb-2">
+                            <a href="{{ item.link }}">{{ item.title }}</a>
+                        </h3>
+                        <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                            {{ item.summary | striptags | truncate(120) }}
+                        </p>
+                    </div>
+                </div>
+                <div class="px-5 pb-4 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
+                    <span class="font-mono">{{ item.published }}</span>
+                    <a href="{{ item.link }}" class="text-red-600 font-bold hover:underline read-more-link">Read Story &rarr;</a>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        {% endif %}
     </main>
-
-    <!-- Global Footer -->
     <footer class="bg-slate-950 text-slate-400 text-xs border-t-4 border-red-600 mt-16 pt-12 pb-8">
         <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
             <div>
@@ -92,26 +112,27 @@
                     <span class="bg-red-600 text-white font-black px-2 py-0.5 rounded-sm">24</span>
                     <span class="text-xl font-black text-white tracking-tight uppercase font-serif">Early News</span>
                 </a>
-                <p class="text-slate-400 leading-relaxed">
+                <p class="text-slate-400 leading-relaxed" id="footer-desc">
                     Independent digital broadcasting media founded and directed by <strong>DWIPRAJ MALLICK</strong>. Committed to verified facts and ethical journalism.
                 </p>
             </div>
             <div>
-                <h4 class="text-white font-bold uppercase tracking-wider mb-3">Sections</h4>
+                <h4 class="text-white font-bold uppercase tracking-wider mb-3" id="footer-sections">Sections</h4>
                 <ul class="space-y-1.5">
-                    <li><a href="/?cat=India" class="hover:text-white transition">National News</a></li>
-                    <li><a href="/?cat=World" class="hover:text-white transition">World Affairs</a></li>
-                    <li><a href="/?cat=Business" class="hover:text-white transition">Economy &amp; Finance</a></li>
-                    <li><a href="/?cat=Technology" class="hover:text-white transition">Technology</a></li>
+                    <li><a href="/?cat=India" class="hover:text-white transition" id="fn-india">National News</a></li>
+                    <li><a href="/?cat=World" class="hover:text-white transition" id="fn-world">World Affairs</a></li>
+                    <li><a href="/?cat=Business" class="hover:text-white transition" id="fn-business">Economy &amp; Finance</a></li>
+                    <li><a href="/?cat=Technology" class="hover:text-white transition" id="fn-tech">Technology</a></li>
+                    <li><a href="/?cat=Sports" class="hover:text-white transition" id="fn-sports">Sports</a></li>
                 </ul>
             </div>
             <div>
-                <h4 class="text-white font-bold uppercase tracking-wider mb-3">Governance &amp; Trust</h4>
+                <h4 class="text-white font-bold uppercase tracking-wider mb-3" id="footer-trust">Governance &amp; Trust</h4>
                 <ul class="space-y-1.5">
-                    <li><a href="/about" class="hover:text-white transition">About Us</a></li>
-                    <li><a href="/contact" class="hover:text-white transition">Contact Bureau</a></li>
-                    <li><a href="/privacy" class="hover:text-white transition">Privacy Policy</a></li>
-                    <li><a href="/terms" class="hover:text-white transition">Terms of Service</a></li>
+                    <li><a href="/about" class="hover:text-white transition" id="fn-about">About Us</a></li>
+                    <li><a href="/contact" class="hover:text-white transition" id="fn-contact">Contact Bureau</a></li>
+                    <li><a href="/privacy" class="hover:text-white transition" id="fn-privacy">Privacy Policy</a></li>
+                    <li><a href="/terms" class="hover:text-white transition" id="fn-terms">Terms of Service</a></li>
                 </ul>
             </div>
         </div>
@@ -120,11 +141,77 @@
             <p class="font-mono">Google News Standard &bull; Verified Wire Coverage</p>
         </div>
     </footer>
-
     <script>
-        const now = new Date();
-        document.getElementById('live-datetime').innerText = now.toLocaleString('en-US', { 
-            weekday: 'short', month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute:'2-digit' 
+        const LANG_PACK = {
+            en: {
+                live: "Live Wire", network: "Global & Regional Verified Media Network", home: "Home",
+                india: "India", world: "World", business: "Business", tech: "Technology", sports: "Sports",
+                submit: "Submit News", breaking: "Breaking",
+                ticker: "24 Early News is committed to verified and independent journalism across global territories • Accurate dispatches updated 24/7",
+                badgeIndependent: "Independent Digital Journalism", titleWelcome: "Welcome to 24 Early News Wire",
+                descWelcome: "Delivering objective dispatches, verified regional field reports, and unbiased geopolitical analysis across national and global territories.",
+                founder: "Editor-in-Chief & Founder:",
+                footerDesc: "Independent digital broadcasting media founded and directed by DWIPRAJ MALLICK. Committed to verified facts and ethical journalism.",
+                footerSections: "Sections", footerTrust: "Governance & Trust", readMore: "Read Story →"
+            },
+            bn: {
+                live: "লাইভ ওয়্যার", network: "আন্তর্জাতিক ও আঞ্চলিক নির্ভরযোগ্য সংবাদ নেটওয়ার্ক", home: "হোম",
+                india: "ভারত", world: "বিশ্ব", business: "অর্থনীতি", tech: "তথ্যপ্রযুক্তি", sports: "খেলাধুলা",
+                submit: "সংবাদ লিখুন", breaking: "ব্রেকিং নিউজ",
+                ticker: "24 Early News বিশ্বজুড়ে সত্য, নির্ভরযোগ্য ও নিরপেক্ষ সাংবাদিকতায় নিয়োজিত • সর্বশেষ গুরুত্বপূর্ণ আপডেট ২৪/৭",
+                badgeIndependent: "স্বাধীন ডিজিটাল সাংবাদিকতা", titleWelcome: "স্বাগতম ২৪ আর্লি নিউজ ওয়্যার",
+                descWelcome: "আন্তর্জাতিক ও জাতীয় পর্যায়ের নির্ভরযোগ্য, বস্তুনিষ্ঠ ও নিরপেক্ষ সংবাদ পরিবেশনে সার্বক্ষণিক নিয়োজিত।",
+                founder: "প্রধান সম্পাদক ও প্রতিষ্ঠাতা:",
+                footerDesc: "DWIPRAJ MALLICK কর্তৃক প্রতিষ্ঠিত ও পরিচালিত নিরপেক্ষ ডিজিটাল সংবাদ মাধ্যম। সত্যনিষ্ঠ সাংবাদিকতাই আমাদের মূল অঙ্গীকার।",
+                footerSections: "বিভাগসমূহ", footerTrust: "নীতিমালা ও পরিচয়", readMore: "বিস্তারিত পড়ুন →"
+            },
+            hi: {
+                live: "लाइव वायर", network: "वैश्विक एवं क्षेत्रीय प्रामाणिक समाचार नेटवर्क", home: "होम",
+                india: "भारत", world: "विश्व", business: "व्यापार / आर्थिकी", tech: "प्रौद्योगिकी", sports: "खेल",
+                submit: "समाचार भेजें", breaking: "ब्रेकिंग न्यूज़",
+                ticker: "24 Early News निष्पक्ष, सटीक और तथ्य-आधारित पत्रकारिता के लिए समर्पित है • निरंतर 24/7 लाइव अपडेट्स",
+                badgeIndependent: "स्वतंत्र डिजिटल पत्रकारिता", titleWelcome: "24 अर्ली न्यूज़ वायर में आपका स्वागत है",
+                descWelcome: "सटीक, निष्पक्ष और तथ्य-आधारित ज़मीनी रिपोर्टिंग प्रदान करने वाला प्रमुख डिजिटल न्यूज़ नेटवर्क।",
+                founder: "प्रधान संपादक एवं संस्थापक:",
+                footerDesc: "DWIPRAJ MALLICK द्वारा स्थापित एवं निर्देशित स्वतंत्र डिजिटल मीडिया नेटवर्क। विश्वसनीय एवं तथ्यपूर्ण पत्रकारिता।",
+                footerSections: "प्रमुख वर्ग", footerTrust: "नीतियां एवं परिचय", readMore: "पूरी खबर पढ़ें →"
+            }
+        };
+
+        function switchLanguage(lang) {
+            localStorage.setItem('user_site_lang', lang);
+            const p = LANG_PACK[lang] || LANG_PACK.en;
+            document.getElementById('txt-live').innerText = p.live;
+            document.getElementById('txt-network').innerText = p.network;
+            document.getElementById('nav-home').innerText = p.home;
+            document.getElementById('nav-india').innerText = p.india;
+            document.getElementById('nav-world').innerText = p.world;
+            document.getElementById('nav-business').innerText = p.business;
+            document.getElementById('nav-tech').innerText = p.tech;
+            document.getElementById('nav-sports').innerText = p.sports;
+            document.getElementById('btn-submit').innerText = p.submit;
+            document.getElementById('txt-breaking').innerText = p.breaking;
+            document.getElementById('txt-ticker').innerText = p.ticker;
+            document.getElementById('badge-independent').innerText = p.badgeIndependent;
+            document.getElementById('title-welcome').innerText = p.titleWelcome;
+            document.getElementById('desc-welcome').innerText = p.descWelcome;
+            document.getElementById('txt-founder').innerText = p.founder;
+            document.getElementById('footer-desc').innerHTML = p.footerDesc;
+            document.getElementById('footer-sections').innerText = p.footerSections;
+            document.getElementById('footer-trust').innerText = p.footerTrust;
+
+            document.querySelectorAll('.read-more-link').forEach(el => { el.innerText = p.readMore; });
+            const sel = document.getElementById('langChoice');
+            if (sel) sel.value = lang;
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const saved = localStorage.getItem('user_site_lang') || 'en';
+            switchLanguage(saved);
+            const now = new Date();
+            document.getElementById('live-time').innerText = now.toLocaleString('en-US', { 
+                weekday: 'short', month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute:'2-digit' 
+            });
         });
     </script>
 </body>
