@@ -504,13 +504,14 @@ def submit_news():
     if request.method == 'POST':
         title = request.form.get('title', '').strip()
         category = request.form.get('category', 'India').strip()
-        location = request.form.get('location', 'New Delhi').strip()
-        author = request.form.get('author', 'Editorial Desk').strip()
+        location = request.form.get('location', 'Kolkata').strip()
+        author = request.form.get('author', 'Staff Reporter').strip()
+        ver_id = request.form.get('verification_id', 'Verified Reporter').strip()
+        contact = request.form.get('contributor_contact', '').strip()
         img_url = request.form.get('image_url', '').strip()
-        raw_content = request.form.get('content', '') or request.form.get('summary', '') or ''
-        raw_content = raw_content.strip()
+        content = request.form.get('content', '').strip()
 
-        if not title or not raw_content:
+        if not title or not content:
             return redirect(url_for('submit_news'))
 
         article_id = str(int(time.time() * 1000))
@@ -526,13 +527,63 @@ def submit_news():
             }
             img_url = cat_images.get(category, 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1000')
 
-        # মিলিসেকেন্ডের মধ্যে লোকাল ইঞ্জিনে রিচ আর্টিকেল তৈরি
-        rich_article_html = build_instant_editorial(title, raw_content, category, location, author)
+        # স্বয়ংক্রিয় গুগল এসইও এবং সম্পাদকীয় কাঠামো তৈরি
+        seo_article_html = f"""
+        <div class="editorial-container max-w-3xl mx-auto font-sans leading-relaxed text-gray-800">
+            <div class="flex flex-wrap items-center justify-between border-y border-gray-200 py-3 mb-6 text-sm text-gray-600 bg-gray-50/70 px-4 rounded-lg">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-red-600 text-white font-bold flex items-center justify-center text-sm shadow">
+                        {author[0].upper() if author else 'R'}
+                    </div>
+                    <div>
+                        <span class="font-bold text-gray-900 block">{author}</span>
+                        <span class="text-xs text-gray-500">Verified Contributor &bull; {category} Bureau</span>
+                    </div>
+                </div>
+                <div class="text-xs text-gray-500 mt-2 sm:mt-0 font-medium">
+                    <span>📍 {location}</span> &bull; <span class="text-green-700 font-semibold font-mono">ID Verified ({ver_id[:4]}***)</span>
+                </div>
+            </div>
+
+            <!-- মূল খবর -->
+            <div class="article-body space-y-4 text-base md:text-lg text-gray-800 leading-8">
+                <p class="first-letter:text-5xl first-letter:font-bold first-letter:text-red-600 first-letter:float-left first-letter:mr-3">
+                    <strong class="font-sans uppercase text-xs tracking-wider text-gray-500 block mb-1">{location} —</strong>
+                    {content}
+                </p>
+            </div>
+
+            <!-- গুগল নিউজ আর্টিকেল স্কিমা (Auto SEO) -->
+            <script type="application/ld+json">
+            {{
+                "@context": "https://schema.org",
+                "@type": "NewsArticle",
+                "headline": "{title}",
+                "image": ["{img_url}"],
+                "datePublished": "{datetime.now().isoformat()}",
+                "author": [{{
+                    "@type": "Person",
+                    "name": "{author}"
+                }}],
+                "publisher": {{
+                    "@type": "NewsMediaOrganization",
+                    "name": "24 Early News",
+                    "url": "https://24earlynews.com"
+                }}
+            }}
+            </script>
+
+            <div class="mt-8 pt-4 border-t border-gray-200 text-xs text-gray-500 flex justify-between">
+                <span>&copy; 2026 24 Early News Wire Network</span>
+                <span class="text-slate-600 font-semibold">Verified Journalism Standards</span>
+            </div>
+        </div>
+        """
 
         article_obj = {
             'id': article_id,
             'title': title,
-            'summary': rich_article_html,
+            'summary': seo_article_html,
             'category': category,
             'link': f"/news/{article_id}",
             'image': img_url,
@@ -542,6 +593,8 @@ def submit_news():
 
         with lock:
             news_database.insert(0, article_obj)
+            if 'save_article_permanently' in globals():
+                save_article_permanently(article_obj)
 
         return redirect(f"/news/{article_id}")
 

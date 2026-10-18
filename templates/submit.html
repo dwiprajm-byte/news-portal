@@ -1,135 +1,139 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editorial News Desk | 24 Early News</title>
+    <title>Submit News Dispatch - 24 Early News</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="canonical" href="https://24earlynews.com/submit" />
-    <!-- Google AdSense Official Script -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=pub-9701604898518993"
-         crossorigin="anonymous"></script>
-    <meta name="google-adsense-account" content="pub-9701604898518993">
 </head>
 <body class="bg-slate-100 text-slate-800 font-sans antialiased">
 
     <!-- Header -->
-    <header class="bg-slate-900 text-white shadow-md sticky top-0 z-50">
-        <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
-            <a href="/" class="flex items-center gap-2 text-xl font-black tracking-tight text-white">
-                <span class="bg-red-600 text-white px-2 py-0.5 rounded text-sm uppercase">Live</span> 24 Early News Desk
+    <header class="bg-slate-950 text-white shadow-md sticky top-0 z-50 border-b-2 border-red-600">
+        <div class="max-w-5xl mx-auto px-4 py-3.5 flex items-center justify-between">
+            <a href="/" class="flex items-center gap-2 text-xl font-black text-white">
+                <span class="bg-red-600 text-white px-2 py-0.5 rounded text-sm uppercase">24</span> Early News Desk
             </a>
-            <a href="/" class="text-sm font-semibold text-slate-300 hover:text-white transition flex items-center gap-1">
-                <i class="fas fa-arrow-left"></i> Back to Homepage
+            <a href="/" class="text-sm font-semibold text-slate-300 hover:text-white transition flex items-center gap-1.5">
+                <i class="fas fa-home"></i> হোমপেজে ফিরুন
             </a>
         </div>
     </header>
 
-    <!-- Main Editorial Container -->
     <main class="max-w-4xl mx-auto px-4 py-8">
         
-        <!-- Google Editorial Guidelines Alert Box -->
-        <div class="bg-blue-50 border-l-4 border-blue-600 p-4 rounded-r-lg mb-8 shadow-sm">
-            <h3 class="text-sm font-bold text-blue-900 flex items-center gap-2">
-                <i class="fas fa-shield-alt text-blue-600"></i> Google News & AdSense E-E-A-T Editorial Standards
-            </h3>
-            <p class="text-xs text-blue-800 mt-1 leading-relaxed">
-                Publishing here ensures verified journalist bylines, localized datelines, structured executive summaries, and Schema.org metadata to comply with Google Editorial & AdSense quality guidelines.
-            </p>
-        </div>
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-10">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-4 mb-6">
+                <div>
+                    <h1 class="text-2xl font-black text-slate-900 flex items-center gap-2">
+                        <i class="fas fa-newspaper text-red-600"></i> সাংবাদিক ও কন্ট্রিবিউটর নিউজ পোর্টাল
+                    </h1>
+                    <p class="text-xs text-slate-500 mt-1">গুগল নিউজ ও এসইও অপটিমাইজেশনের মাধ্যমে তাৎক্ষণিক প্রকাশনা</p>
+                </div>
+                <span class="hidden sm:inline bg-green-100 text-green-800 text-[11px] font-bold px-3 py-1 rounded-full border border-green-200">
+                    <i class="fas fa-bolt text-green-600"></i> Auto SEO Engine Active
+                </span>
+            </div>
 
-        <!-- Submission Card -->
-        <div class="bg-white rounded-2xl shadow-xl border border-slate-200 p-6 md:p-8">
-            <h1 class="text-2xl font-black text-slate-900 mb-6 pb-3 border-b border-slate-200 flex items-center gap-2">
-                <i class="fas fa-newspaper text-red-600"></i> File a Verified News Dispatch
-            </h1>
+            <form action="/submit-news" method="POST" class="space-y-6">
 
-            <form action="/submit" method="POST" class="space-y-6">
-
-                <!-- 1. Headline -->
+                <!-- শিরোনাম -->
                 <div>
                     <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                        Headline / খবরের শিরোনাম <span class="text-red-500">*</span>
+                        খবরের শিরোনাম (Headline) <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" name="title" required placeholder="Ex: RBI Announces Crucial Shift in Repo Rates to Balance Market Liquidity"
-                        class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-600 focus:outline-none text-slate-900 font-semibold text-base placeholder-slate-400">
-                    <p class="text-[11px] text-slate-500 mt-1">Make it clear, factual, and informative. Avoid clickbait titles.</p>
+                    <input type="text" name="title" required placeholder="খবরের সঠিক ও স্পষ্ট শিরোনাম লিখুন..."
+                        class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-red-600 focus:outline-none text-slate-900 font-bold text-base">
                 </div>
 
-                <!-- 2. Category, Location, & Reporter Details -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- বিভাগ, অবস্থান ও রিপোর্টার -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                            Category / বিভাগ <span class="text-red-500">*</span>
+                            বিভাগ (Category) <span class="text-red-500">*</span>
                         </label>
-                        <select name="category" required class="w-full px-3 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-600 text-slate-900 text-sm font-medium">
-                            <option value="India">India / দেশ</option>
-                            <option value="World">World / আন্তর্জাতিক</option>
-                            <option value="Business">Business / অর্থনীতি</option>
-                            <option value="Technology">Technology / প্রযুক্তি</option>
-                            <option value="Sports">Sports / খেলাধুলা</option>
-                            <option value="Entertainment">Entertainment / বিনোদন</option>
+                        <select name="category" required class="w-full px-3 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-red-600 text-slate-900 text-sm font-medium">
+                            <option value="India">জাতীয় / India</option>
+                            <option value="World">আন্তর্জাতিক / World</option>
+                            <option value="Business">অর্থনীতি / Business</option>
+                            <option value="Technology">প্রযুক্তি / Technology</option>
+                            <option value="Sports">খেলাধুলা / Sports</option>
+                            <option value="Entertainment">বিনোদন / Entertainment</option>
                         </select>
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                            Dateline / খবরের অবস্থান <span class="text-red-500">*</span>
+                            ঘটনাস্থল (Location) <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" name="location" required placeholder="Ex: Kolkata, New Delhi, AZIZNAGAR"
-                            class="w-full px-3 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-600 text-slate-900 text-sm">
+                        <input type="text" name="location" required placeholder="যেমন: কলকাতা, নিউ দিল্লি"
+                            class="w-full px-3 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-red-600 text-slate-900 text-sm">
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                            Reporter / প্রতিবেদকের নাম <span class="text-red-500">*</span>
+                            প্রতিবেদকের নাম (Author) <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" name="author" required placeholder="Ex: Special Correspondent / Staff Reporter"
-                            class="w-full px-3 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-600 text-slate-900 text-sm font-medium">
+                        <input type="text" name="author" required placeholder="আপনার নাম লিখুন"
+                            class="w-full px-3 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-red-600 text-slate-900 text-sm font-medium">
                     </div>
                 </div>
 
-                <!-- 3. Featured Image URL -->
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                        Featured Image URL / খবরের ছবির লিঙ্ক
-                    </label>
-                    <input type="url" name="image_url" placeholder="https://images.unsplash.com/photo-..."
-                        class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-600 text-slate-900 text-sm">
-                    <p class="text-[11px] text-slate-500 mt-1">High-quality image link from reliable sources (Unsplash, Pexels, or direct web URLs).</p>
+                <!-- আউটসাইডার ভেরিফিকেশন সেকশন (প্রেস আইডি বা ডকুমেন্টস) -->
+                <div class="bg-amber-50/60 p-4 rounded-xl border border-amber-200">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-amber-900 mb-2 flex items-center gap-1.5">
+                        <i class="fas fa-id-card text-amber-700"></i> বহিরাগত কন্ট্রিবিউটর ভেরিফিকেশন (Mandatory Verification)
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600 mb-1">পরিচয়পত্র / প্রেস আইডি নম্বর <span class="text-red-500">*</span></label>
+                            <input type="text" name="verification_id" required placeholder="প্রেস কার্ড বা অফিসিয়াল আইডি নম্বর"
+                                class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-red-600 text-xs bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600 mb-1">যোগাযোগের ফোন নম্বর / ইমেল <span class="text-red-500">*</span></label>
+                            <input type="text" name="contributor_contact" required placeholder="ফোন নম্বর অথবা ইমেল"
+                                class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-red-600 text-xs bg-white">
+                        </div>
+                    </div>
                 </div>
 
-                <!-- 4. Key Highlights (Executive Summary) -->
+                <!-- খবরের ছবি -->
                 <div>
                     <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                        Key Highlights / সংক্ষেপ বুলেট পয়েন্ট (Google Snippet Friendly)
+                        খবরের ছবির অনলাইন লিঙ্ক (Image URL)
                     </label>
-                    <input type="text" name="highlights" placeholder="Ex: Key decision announced; Immediate implementation; Public reactions"
-                        class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-600 text-slate-900 text-sm">
-                    <p class="text-[11px] text-slate-500 mt-1">Separate 2 or 3 brief points using semicolons (;).</p>
+                    <input type="url" name="image_url" placeholder="https://example.com/image.jpg (ফাঁকা রাখলে স্বয়ংক্রিয় প্রফেশনাল ছবি যুক্ত হবে)"
+                        class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-red-600 text-slate-900 text-sm">
                 </div>
 
-                <!-- 5. Full Ground Report / Story Body -->
+                <!-- মূল সংবাদ -->
                 <div>
                     <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                        In-Depth News Report / সম্পূর্ণ খবর ও বিস্তারিত বিবরণ <span class="text-red-500">*</span>
+                        সম্পূর্ণ খবর ও বিস্তারিত বিবরণ <span class="text-red-500">*</span>
                     </label>
-                    <textarea name="content" rows="10" required placeholder="সম্পূর্ণ সংবাদ বিস্তারিতভাবে লিখুন... অন্তত ৩-৪টি তথ্যবহুল অনুচ্ছেদে ঘটনার বিবরণ, কারণ ও প্রভাব তুলে ধরুন (Google AdSense prefers 300+ words of clear reporting)."
-                        class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-600 focus:outline-none text-slate-900 font-serif text-base leading-relaxed"></textarea>
+                    <textarea name="content" rows="10" required placeholder="খবরের সম্পূর্ণ বিবরণ এখানে বিস্তারিতভাবে লিখুন..."
+                        class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-red-600 focus:outline-none text-slate-900 text-base leading-relaxed"></textarea>
                 </div>
 
-                <!-- Submission Controls -->
+                <!-- সাবমিট বাটন ও অটো এসইও নোটিশ -->
                 <div class="pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <div class="flex items-center gap-2 text-xs text-green-700 font-semibold">
-                        <i class="fas fa-check-circle"></i> Auto E-E-A-T &amp; Schema Validation Enabled
+                    <div class="text-xs text-green-700 font-semibold flex items-center gap-1.5">
+                        <i class="fas fa-search"></i> গুগল র‍্যাংকিং মেটাডাটা ও স্কিমা স্বয়ংক্রিয়ভাবে তৈরি হবে
                     </div>
-                    <button type="submit" class="w-full sm:w-auto px-8 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-lg hover:shadow-red-500/30 transition transform active:scale-95 flex items-center justify-center gap-2">
-                        <i class="fas fa-paper-plane"></i> Publish to 24 Early News
+                    <button type="submit" class="w-full sm:w-auto px-8 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-lg transition transform active:scale-95 flex items-center justify-center gap-2">
+                        <i class="fas fa-paper-plane"></i> প্রকাশ করুন (Publish Now)
                     </button>
                 </div>
+
             </form>
         </div>
     </main>
+
+    <footer class="bg-slate-950 text-slate-400 py-6 text-center text-xs border-t border-slate-800 mt-12">
+        <p>&copy; 2026 24 Early News Network. All rights reserved.</p>
+    </footer>
+
 </body>
 </html>
