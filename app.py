@@ -379,21 +379,17 @@ crawler_thread.start()
 
 @app.route('/')
 def home():
+    global news_database
     with lock:
-        if len(news_database) == 0:
-            fetch_feed_items()
+        # ডাটাবেস খালি থাকলে তৎক্ষণাৎ প্রাথমিক ট্রেন্ডিং ফিড ফেচ করা
+        if not news_database:
+            try:
+                fetch_initial_trending_news()
+            except Exception:
+                pass
         current_news = list(news_database)
-        if current_news:
-            minute_seed = int(time.time() // 60)
-            rotate_offset = minute_seed % len(current_news)
-            rotated_news = current_news[rotate_offset:] + current_news[:rotate_offset]
-        else:
-            rotated_news = []
 
-    lead = rotated_news[0] if rotated_news else None
-    breaking_ticker = [n['title'] for n in rotated_news[:15]]
-    metals_info = get_daily_metals_rates()
-    return render_template('index.html', news_list=rotated_news, lead=lead, ticker=breaking_ticker, metals=metals_info)
+    return render_template('index.html', news=current_news, news_list=current_news)
 
 @app.route('/news/<int:news_id>')
 def single_article(news_id):
@@ -994,4 +990,45 @@ def automated_background_feed_syncer():
 auto_worker = threading.Thread(target=automated_background_feed_syncer, daemon=True)
 auto_worker.start()
 # =========================================================================================
+
+
+
+def fetch_initial_trending_news():
+    import feedparser
+    global news_database
+    FEEDS = [
+        ('India', 'https://news.google.com/rss/search?q=India+top+news+when:24h&hl=en-IN&gl=IN&ceid=IN:en'),
+        ('World', 'https://news.google.com/rss/search?q=World+news+when:24h&hl=en-IN&gl=IN&ceid=IN:en'),
+        ('Business', 'https://news.google.com/rss/search?q=Business+Markets+India+when:24h&hl=en-IN&gl=IN&ceid=IN:en'),
+        ('Technology', 'https://news.google.com/rss/search?q=Technology+AI+India+when:24h&hl=en-IN&gl=IN&ceid=IN:en'),
+        ('Sports', 'https://news.google.com/rss/search?q=Cricket+Sports+India+when:24h&hl=en-IN&gl=IN&ceid=IN:en')
+    ]
+    items = []
+    for cat, url in FEEDS:
+        try:
+            d = feedparser.parse(url)
+            for e in d.entries[:3]:
+                t = e.get('title', '').split(' - ')[0].strip()
+                desc = e.get('summary', e.get('description', ''))
+                art_id = str(int(time.time() * 1000) + len(items))
+                img = CATEGORY_VERIFIED_IMAGES.get(cat, 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1000')
+                body = auto_transform_to_human_seo_article(t, desc, cat)
+                items.append({
+                    'id': art_id,
+                    'title': t,
+                    'summary': body,
+                    'category': cat,
+                    'link': f"/news/{art_id}",
+                    'image': img,
+                    'published': datetime.now().strftime("%a, %d %b %Y %H:%M:%S GMT"),
+                    'created_at': datetime.now()
+                })
+        except Exception:
+            continue
+
+    if items:
+        news_database = items + news_database
+        if 'save_article_permanently' in globals():
+            for it in items:
+                save_article_permanently(it)
 
