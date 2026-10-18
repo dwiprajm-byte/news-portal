@@ -1,15 +1,15 @@
 ﻿import os
-import json
 import time
+import json
 from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 
 app = Flask(__name__)
-app.secret_key = "stable_news_key_2026"
+app.secret_key = "ndtv_style_news_portal_2026"
 
 DATA_STORE_FILE = "articles_store.json"
 
-def get_news():
+def get_all_news():
     if os.path.exists(DATA_STORE_FILE):
         try:
             with open(DATA_STORE_FILE, "r", encoding="utf-8") as f:
@@ -18,10 +18,19 @@ def get_news():
             return []
     return []
 
+def save_news(article):
+    try:
+        data = get_all_news()
+        data.insert(0, article)
+        with open(DATA_STORE_FILE, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+    except Exception:
+        pass
+
 @app.route('/')
 def home():
     try:
-        articles = get_news()
+        articles = get_all_news()
         if not articles:
             articles = [{
                 'id': '101',
@@ -34,12 +43,12 @@ def home():
             }]
         return render_template('index.html', news=articles, news_list=articles)
     except Exception as e:
-        return f"CRITICAL ERROR: {str(e)}", 500
+        return f"Template Error: {str(e)}", 500
 
 @app.route('/news/<article_id>')
 def view_article(article_id):
     try:
-        articles = get_news()
+        articles = get_all_news()
         target = next((item for item in articles if str(item.get('id')) == str(article_id)), None)
         if not target:
             return redirect(url_for('home'))
@@ -62,10 +71,11 @@ def submit_news():
             if not title or not content:
                 return redirect(url_for('submit_news'))
 
-            if author.strip().upper() == 'DWIPRAJ MALLICK' and founder_pin != "6203":
+            is_founder = (author.strip().upper() == 'DWIPRAJ MALLICK')
+            if is_founder and founder_pin != "6203":
                 return "Security Error: Invalid Founder Passcode.", 403
 
-            article_id = str(int(datetime.now().timestamp() * 1000))
+            article_id = str(int(time.time() * 1000))
             if not img_url:
                 img_url = 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1000'
 
@@ -80,14 +90,10 @@ def submit_news():
                 'created_at': datetime.now().isoformat()
             }
 
-            data = get_news()
-            data.insert(0, article_obj)
-            with open(DATA_STORE_FILE, "w", encoding="utf-8") as f:
-                json.dump(data, f, ensure_ascii=False, indent=2)
-
+            save_news(article_obj)
             return redirect(f"/news/{article_id}")
         except Exception as e:
-            return f"SUBMISSION ERROR: {str(e)}", 500
+            return f"Submission Error: {str(e)}", 500
 
     return render_template('submit.html')
 
