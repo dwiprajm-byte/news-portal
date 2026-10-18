@@ -22,7 +22,6 @@
             </div>
             
             <div class="flex items-center gap-4 text-slate-400 font-mono text-[11px]">
-                <!-- Instant 3-Language Selector -->
                 <div class="flex items-center gap-1.5 bg-slate-900 px-2.5 py-1 rounded border border-slate-700 text-white">
                     <i class="fas fa-globe text-red-500 text-xs"></i>
                     <select id="langChoice" onchange="switchLanguage(this.value)" class="bg-transparent text-xs font-semibold focus:outline-none cursor-pointer text-slate-200">
@@ -44,16 +43,17 @@
                 <span class="text-2xl md:text-3xl font-black tracking-tighter uppercase font-serif">Early News</span>
             </a>
 
-            <!-- Navigation Links with Panchang & Horoscope -->
+            <!-- Navigation Links (Panchang & Horoscope after Sports, same color) -->
             <nav class="hidden lg:flex items-center gap-5 text-sm font-bold tracking-wide uppercase text-slate-300">
                 <a href="/" class="text-white border-b-2 border-red-600 pb-1" id="nav-home">Home</a>
-                <a href="#panchang-section" class="hover:text-red-500 transition text-amber-400" id="nav-panchang">🕉️ Panchang</a>
-                <a href="#horoscope-section" class="hover:text-red-500 transition text-amber-400" id="nav-horoscope">✨ Horoscope</a>
                 <a href="/?cat=India" class="hover:text-red-500 transition" id="nav-india">India</a>
                 <a href="/?cat=World" class="hover:text-red-500 transition" id="nav-world">World</a>
                 <a href="/?cat=Business" class="hover:text-red-500 transition" id="nav-business">Business</a>
                 <a href="/?cat=Technology" class="hover:text-red-500 transition" id="nav-tech">Technology</a>
                 <a href="/?cat=Sports" class="hover:text-red-500 transition" id="nav-sports">Sports</a>
+                <!-- Placed after Sports with matching slate-300 color -->
+                <a href="javascript:void(0)" onclick="openModal('panchangModal')" class="hover:text-red-500 transition text-slate-300 cursor-pointer" id="nav-panchang">🕉️ Panchang</a>
+                <a href="javascript:void(0)" onclick="openModal('horoscopeModal')" class="hover:text-red-500 transition text-slate-300 cursor-pointer" id="nav-horoscope">✨ Horoscope</a>
             </nav>
 
             <div>
@@ -72,7 +72,9 @@
                 24 Early News is committed to verified and independent journalism across global territories &bull; Accurate dispatches updated 24/7
             </div>
         </div>
-    <!-- Official Live Market Ticker (TradingView Verified Data) -->
+    </div>
+
+    <!-- Official TradingView Market Ticker -->
     <div class="bg-slate-900 border-b border-slate-800 py-1 overflow-hidden">
         <div class="max-w-7xl mx-auto px-4">
             <div class="tradingview-widget-container">
@@ -94,7 +96,6 @@
             </div>
         </div>
     </div>
-    </div>
 
     <!-- Main Container -->
     <main class="max-w-7xl mx-auto px-4 py-8">
@@ -115,93 +116,6 @@
                 <span class="text-red-600 font-extrabold text-sm">DWIPRAJ MALLICK</span>
             </div>
         </div>
-
-        <!-- 🕉️ PANCHANG SECTION (কখন লাগছে কখন ছাড়ছে সহ নিখুঁত সময়) -->
-        <section id="panchang-section" class="my-10 bg-amber-50/60 rounded-2xl border-2 border-amber-300 p-6 md:p-8 shadow-sm">
-            <div class="flex flex-wrap items-center justify-between border-b border-amber-200 pb-4 mb-6 gap-3">
-                <div class="flex items-center gap-2.5">
-                    <span class="text-2xl">🕉️</span>
-                    <div>
-                        <h3 class="text-xl font-extrabold text-amber-950" id="pj-title">Daily Vedic Panchang</h3>
-                        <p class="text-xs text-amber-800 font-medium" id="pj-subtitle">Accurate Start & End Timings (Gupta Press & Pure Vedic Calculation)</p>
-                    </div>
-                </div>
-                <span class="bg-amber-200/80 text-amber-900 text-xs font-bold px-3 py-1.5 rounded-lg border border-amber-300" id="pj-date-badge">--</span>
-            </div>
-
-            <!-- Timing Cards Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-                <!-- Tithi Card with Start & End -->
-                <div class="bg-white p-4 rounded-xl border border-amber-200 shadow-xs">
-                    <span class="text-xs font-bold uppercase text-slate-500 block mb-1" id="lbl-tithi">Tithi</span>
-                    <h4 class="text-base font-extrabold text-red-700" id="val-tithi-name">--</h4>
-                    <p class="text-xs text-slate-600 mt-2 font-medium bg-amber-50/70 p-2 rounded border border-amber-100" id="val-tithi-time">
-                        <strong class="text-slate-700">Timing:</strong> Starts: Prev Day 08:42 PM | Ends: Today 06:14 PM
-                    </p>
-                </div>
-
-                <!-- Nakshatra Card with Start & End -->
-                <div class="bg-white p-4 rounded-xl border border-amber-200 shadow-xs">
-                    <span class="text-xs font-bold uppercase text-slate-500 block mb-1" id="lbl-nakshatra">Nakshatra</span>
-                    <h4 class="text-base font-extrabold text-slate-900" id="val-nakshatra-name">--</h4>
-                    <p class="text-xs text-slate-600 mt-2 font-medium bg-amber-50/70 p-2 rounded border border-amber-100" id="val-nakshatra-time">
-                        <strong class="text-slate-700">Timing:</strong> Upto 05:22 PM, followed by next Nakshatra
-                    </p>
-                </div>
-
-                <!-- Auspicious Muhurat -->
-                <div class="bg-white p-4 rounded-xl border border-green-200 shadow-xs">
-                    <span class="text-xs font-bold uppercase text-green-700 block mb-1" id="lbl-shubha">Auspicious Time (Shubha Muhurat)</span>
-                    <h4 class="text-base font-extrabold text-green-700" id="val-shubha-name">Abhijit / Amrit Yoga</h4>
-                    <p class="text-xs text-slate-600 mt-2 font-medium bg-green-50/70 p-2 rounded border border-green-100" id="val-shubha-time">
-                        Starts: 11:38 AM | Ends: 12:26 PM
-                    </p>
-                </div>
-
-                <!-- Rahu Kaal (Inauspicious) -->
-                <div class="bg-white p-4 rounded-xl border border-red-200 shadow-xs">
-                    <span class="text-xs font-bold uppercase text-red-600 block mb-1" id="lbl-rahu">Rahu Kaal (Inauspicious Period)</span>
-                    <h4 class="text-base font-extrabold text-red-700" id="val-rahu-name">Bar-wise Rahu Time</h4>
-                    <p class="text-xs text-slate-600 mt-2 font-medium bg-red-50/70 p-2 rounded border border-red-100" id="val-rahu-time">
-                        Avoid auspicious work: 04:30 PM – 06:00 PM
-                    </p>
-                </div>
-
-                <!-- Sun & Moon Rise/Set -->
-                <div class="bg-white p-4 rounded-xl border border-amber-200 shadow-xs">
-                    <span class="text-xs font-bold uppercase text-slate-500 block mb-1" id="lbl-sun">Sunrise &amp; Sunset</span>
-                    <h4 class="text-base font-extrabold text-slate-800" id="val-sun-details">Sun: 05:34 AM / 05:12 PM</h4>
-                    <p class="text-xs text-slate-600 mt-2 font-medium bg-amber-50/70 p-2 rounded border border-amber-100" id="val-moon-details">
-                        Moonrise: 01:45 PM | Moonset: 11:20 PM
-                    </p>
-                </div>
-
-                <!-- Yoga & Karana -->
-                <div class="bg-white p-4 rounded-xl border border-amber-200 shadow-xs">
-                    <span class="text-xs font-bold uppercase text-slate-500 block mb-1" id="lbl-yk">Yoga &amp; Karana</span>
-                    <h4 class="text-base font-extrabold text-slate-800" id="val-yk-name">Shobhana Yoga / Taitila Karana</h4>
-                    <p class="text-xs text-slate-600 mt-2 font-medium bg-amber-50/70 p-2 rounded border border-amber-100" id="val-vrat-name">
-                        🚩 Vrat: Daily Puja &amp; Peace rituals favorable
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- ✨ HOROSCOPE SECTION (১২ রাশির দৈনিক রাশিফল) -->
-        <section id="horoscope-section" class="my-10 bg-white rounded-2xl border border-slate-200 p-6 md:p-8 shadow-sm">
-            <div class="border-b border-slate-200 pb-4 mb-6 flex items-center justify-between">
-                <div>
-                    <h3 class="text-xl font-extrabold text-slate-900 flex items-center gap-2" id="hr-title">
-                        <span>✨</span> Daily Horoscope (12 Zodiac Signs)
-                    </h3>
-                    <p class="text-xs text-slate-500 mt-0.5" id="hr-subtitle">Accurate daily predictions based on Vedic Astrology principles</p>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="rashi-cards-container">
-                <!-- Rashi Cards will be injected by JavaScript -->
-            </div>
-        </section>
 
         <!-- News Feed / Articles Grid -->
         {% if news and news|length > 0 %}
@@ -234,6 +148,72 @@
         {% endif %}
 
     </main>
+
+    <!-- 🕉️ PANCHANG MODAL (ক্লিক করলেই কেবল ভেসে উঠবে) -->
+    <div id="panchangModal" class="fixed inset-0 bg-black/70 z-[100] hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-4xl max-h-[90vh] rounded-2xl overflow-y-auto shadow-2xl p-6 md:p-8 relative border-t-4 border-amber-500">
+            <button onclick="closeModal('panchangModal')" class="absolute top-4 right-4 bg-slate-100 hover:bg-slate-200 text-slate-700 w-8 h-8 rounded-full font-bold flex items-center justify-center transition">✕</button>
+            
+            <div class="flex items-center gap-3 border-b border-amber-100 pb-4 mb-6">
+                <span class="text-3xl">🕉️</span>
+                <div>
+                    <h3 class="text-2xl font-black text-slate-900" id="pj-title">Daily Vedic Panchang</h3>
+                    <p class="text-xs text-slate-500" id="pj-subtitle">Accurate Start & End Timings (Gupta Press & Pure Vedic Calculation)</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="bg-amber-50/60 p-4 rounded-xl border border-amber-200">
+                    <span class="text-xs font-bold uppercase text-slate-500 block mb-1" id="lbl-tithi">Tithi (Start & End)</span>
+                    <h4 class="text-base font-extrabold text-red-700" id="val-tithi-name">--</h4>
+                    <p class="text-xs text-slate-600 mt-2 font-medium bg-white p-2 rounded border border-amber-100" id="val-tithi-time">--</p>
+                </div>
+                <div class="bg-amber-50/60 p-4 rounded-xl border border-amber-200">
+                    <span class="text-xs font-bold uppercase text-slate-500 block mb-1" id="lbl-nakshatra">Nakshatra (Timing)</span>
+                    <h4 class="text-base font-extrabold text-slate-900" id="val-nakshatra-name">--</h4>
+                    <p class="text-xs text-slate-600 mt-2 font-medium bg-white p-2 rounded border border-amber-100" id="val-nakshatra-time">--</p>
+                </div>
+                <div class="bg-green-50/60 p-4 rounded-xl border border-green-200">
+                    <span class="text-xs font-bold uppercase text-green-700 block mb-1" id="lbl-shubha">Auspicious Time</span>
+                    <h4 class="text-base font-extrabold text-green-700" id="val-shubha-name">Abhijit / Amrit Yoga</h4>
+                    <p class="text-xs text-slate-600 mt-2 font-medium bg-white p-2 rounded border border-green-100" id="val-shubha-time">--</p>
+                </div>
+                <div class="bg-red-50/60 p-4 rounded-xl border border-red-200">
+                    <span class="text-xs font-bold uppercase text-red-600 block mb-1" id="lbl-rahu">Rahu Kaal</span>
+                    <h4 class="text-base font-extrabold text-red-700" id="val-rahu-name">Bar-wise Rahu Time</h4>
+                    <p class="text-xs text-slate-600 mt-2 font-medium bg-white p-2 rounded border border-red-100" id="val-rahu-time">--</p>
+                </div>
+                <div class="bg-amber-50/60 p-4 rounded-xl border border-amber-200">
+                    <span class="text-xs font-bold uppercase text-slate-500 block mb-1" id="lbl-sun">Sun & Moon</span>
+                    <h4 class="text-base font-extrabold text-slate-800" id="val-sun-details">--</h4>
+                    <p class="text-xs text-slate-600 mt-2 font-medium bg-white p-2 rounded border border-amber-100" id="val-moon-details">--</p>
+                </div>
+                <div class="bg-amber-50/60 p-4 rounded-xl border border-amber-200">
+                    <span class="text-xs font-bold uppercase text-slate-500 block mb-1" id="lbl-yk">Yoga & Vrat</span>
+                    <h4 class="text-base font-extrabold text-slate-800" id="val-yk-name">--</h4>
+                    <p class="text-xs text-slate-600 mt-2 font-medium bg-white p-2 rounded border border-amber-100" id="val-vrat-name">--</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ✨ HOROSCOPE MODAL (ক্লিক করলেই কেবল ভেসে উঠবে) -->
+    <div id="horoscopeModal" class="fixed inset-0 bg-black/70 z-[100] hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-5xl max-h-[90vh] rounded-2xl overflow-y-auto shadow-2xl p-6 md:p-8 relative border-t-4 border-indigo-600">
+            <button onclick="closeModal('horoscopeModal')" class="absolute top-4 right-4 bg-slate-100 hover:bg-slate-200 text-slate-700 w-8 h-8 rounded-full font-bold flex items-center justify-center transition">✕</button>
+            
+            <div class="border-b border-slate-200 pb-4 mb-6">
+                <h3 class="text-2xl font-black text-slate-900 flex items-center gap-2" id="hr-title">
+                    <span>✨</span> Daily Horoscope (12 Zodiac Signs)
+                </h3>
+                <p class="text-xs text-slate-500 mt-1" id="hr-subtitle">Accurate daily predictions based on Vedic Astrology principles</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="rashi-cards-container">
+                <!-- Rashi Cards injected by JS -->
+            </div>
+        </div>
+    </div>
 
     <!-- Global Footer -->
     <footer class="bg-slate-950 text-slate-400 text-xs border-t-4 border-red-600 mt-16 pt-12 pb-8">
@@ -273,7 +253,7 @@
         </div>
     </footer>
 
-    <!-- Instant 3-Language Controller & Dynamic Panchang Engine -->
+    <!-- Instant 3-Language Controller & Dynamic Panchang Script -->
     <script>
         const LANG_PACK = {
             en: {
@@ -290,12 +270,12 @@
                 pjTitle: "Daily Vedic Panchang", pjSubtitle: "Accurate Start & End Timings (Gupta Press & Pure Vedic Calculation)",
                 lblTithi: "Tithi (Start & End)", lblNakshatra: "Nakshatra (Timing)",
                 lblShubha: "Auspicious Time (Shubha Muhurat)", lblRahu: "Rahu Kaal (Avoid Work)",
-                lblSun: "Sunrise & Sunset", lblYK: "Yoga & Karana",
-                hrTitle: "✨ Daily Horoscope (12 Zodiac Signs)", hrSubtitle: "Accurate daily predictions based on Vedic Astrology",
+                lblSun: "Sunrise & Sunset", lblYK: "Yoga & Vrat",
+                hrTitle: "Daily Horoscope (12 Zodiac Signs)", hrSubtitle: "Accurate daily predictions based on Vedic Astrology",
                 tithiName: "Shukla Ashtami / Navami",
                 tithiTime: "Starts: Yesterday 09:12 PM | Ends: Today 06:45 PM",
                 nakName: "Uttara Ashadha", nakTime: "Active till 04:18 PM, then Shravana begins",
-                shubhaName: "Abhijit Muhurat (Highly Auspicious)", shubhaTime: "Starts: 11:38 AM | Ends: 12:26 PM",
+                shubhaName: "Abhijit Muhurat", shubhaTime: "Starts: 11:38 AM | Ends: 12:26 PM",
                 rahuName: "Inauspicious Period", rahuTime: "Avoid important tasks: 04:30 PM – 06:00 PM",
                 sunDetails: "Sunrise: 05:35 AM | Sunset: 05:12 PM",
                 moonDetails: "Moonrise: 01:15 PM | Moonset: 11:58 PM",
@@ -329,13 +309,13 @@
                 pjTitle: "বিশুদ্ধ বৈদিক পঞ্জিকা (সূর্যসিদ্ধান্ত ও গুপ্তপ্রেস)", pjSubtitle: "তিথি ও নক্ষত্রের শুরু ও শেষের নির্ভুল সময়সূচী (কখন লাগছে ও কখন ছাড়ছে)",
                 lblTithi: "তিথি (শুরু ও শেষ সময়)", lblNakshatra: "নক্ষত্র (স্থিতিকাল)",
                 lblShubha: "শুভ মুহূর্ত (অমৃতযোগ / অভিজিৎ)", lblRahu: "রাহুকাল (বর্জনীয় সময়)",
-                lblSun: "সূর্যোদয় ও সূর্যাস্ত", lblYK: "যোগ ও করণ",
-                hrTitle: "✨ আজকের ১২ রাশির ভাগ্যফল (পরাশর সিদ্ধান্ত)", hrSubtitle: "বৈদিক জ্যোতিষশাস্ত্র অনুযায়ী আজকের নির্ভুল রাশিফল",
+                lblSun: "সূর্যোদয় ও সূর্যাস্ত", lblYK: "যোগ ও ব্রত",
+                hrTitle: "আজকের ১২ রাশির ভাগ্যফল (পরাশর সিদ্ধান্ত)", hrSubtitle: "বৈদিক জ্যোতিষশাস্ত্র অনুযায়ী আজকের নির্ভুল রাশিফল",
                 tithiName: "শুক্লা অষ্টমী / নবমী তিথি",
                 tithiTime: "শুরু: গতকাল রাত্রি ০৯:১২ মিঃ | সমাপ্তি: আজ সন্ধ্যা ০৬:৪৫ মিঃ",
                 nakName: "উত্তরাষাঢ়া নক্ষত্র", nakTime: "স্থিতি: অপরাহ্ন ০৪:১৮ মিঃ পর্যন্ত, পরে শ্রবণ নক্ষত্র আরম্ভ",
-                shubhaName: "অভিজিৎ ও অমৃতযোগ (সর্বকার্যসিদ্ধি)", shubhaTime: "শুরু: বেলা ১১:৩৮ মিঃ | সমাপ্তি: দুপুর ১২:২৬ মিঃ",
-                rahuName: "বারবেলা ও রাহুকাল (শুভকর্ম বর্জনীয়)", rahuTime: "বর্জনীয় সময়: বিকাল ০৪:৩০ মিঃ – সন্ধ্যা ০৬:০০ মিঃ",
+                shubhaName: "অভিজিৎ ও অমৃতযোগ", shubhaTime: "শুরু: বেলা ১১:৩৮ মিঃ | সমাপ্তি: দুপুর ১২:২৬ মিঃ",
+                rahuName: "বারবেলা ও রাহুকাল", rahuTime: "বর্জনীয় সময়: বিকাল ০৪:৩০ মিঃ – সন্ধ্যা ০৬:০০ মিঃ",
                 sunDetails: "সূর্যোদয়: ভোর ০৫:৩৫ মিঃ | সূর্যাস্ত: বিকাল ০৫:১২ মিঃ",
                 moonDetails: "চন্দ্রোদয়: দুপুর ০১:১৫ মিঃ | চন্দ্রাস্ত: রাত্রি ১১:৫৮ মিঃ",
                 ykName: "ধৃতি যোগ / তৈতিল করণ", vratName: "🚩 পর্ব ও তাৎপর্য: নিত্যপূজা, দেবকর্ম ও শুভযোগ অনুকূল",
@@ -367,14 +347,14 @@
                 footerSections: "प्रमुख वर्ग", footerTrust: "नीतियां एवं परिचय", readMore: "पूरी खबर पढ़ें →",
                 pjTitle: "दैनिक वैदिक पंचांग", pjSubtitle: "तिथि एवं नक्षत्र के प्रारंभ और समाप्त होने का सटीक समय (कब लगेगा, कब उतरेगा)",
                 lblTithi: "तिथि (प्रारंभ व समाप्ति)", lblNakshatra: "नक्षत्र (समय काल)",
-                lblShubha: "शुभ मुहूर्त (अभिजित / अमृत काल)", lblRahu: "राहुकाल (अशुभ समय)",
-                lblSun: "सूर्योदय व सूर्यास्त", lblYK: "योग एवं करण",
-                hrTitle: "✨ आज का 12 राशियों का राशिफल", hrSubtitle: "वैदिक ज्योतिष गणना के अनुसार आज का दैनिक भाग्यफल",
+                lblShubha: "शुभ मुहूर्त", lblRahu: "राहुकाल",
+                lblSun: "सूर्योदय व सूर्यास्त", lblYK: "योग एवं व्रत",
+                hrTitle: "आज का 12 राशियों का राशिफल", hrSubtitle: "वैदिक ज्योतिष गणना के अनुसार आज का दैनिक भाग्यफल",
                 tithiName: "शुक्ल अष्टमी / नवमी तिथि",
                 tithiTime: "प्रारंभ: कल रात्रि 09:12 | समाप्ति: आज सायं 06:45",
                 nakName: "उत्तराषाढ़ा नक्षत्र", nakTime: "अवधि: सायं 04:18 तक, तत्पश्चात श्रवण नक्षत्र आरंभ",
-                shubhaName: "अभिजित मुहूर्त (अति शुभ काल)", shubhaTime: "प्रारंभ: 11:38 AM | समाप्ति: 12:26 PM",
-                rahuName: "राहुकाल (शुभ कार्य वर्जित)", rahuTime: "वर्जित समय: 04:30 PM – 06:00 PM",
+                shubhaName: "अभिजित मुहूर्त", shubhaTime: "प्रारंभ: 11:38 AM | समाप्ति: 12:26 PM",
+                rahuName: "राहुकाल (वर्जित)", rahuTime: "वर्जित समय: 04:30 PM – 06:00 PM",
                 sunDetails: "सूर्योदय: 05:35 AM | सूर्यास्त: 05:12 PM",
                 moonDetails: "चंद्रोदय: 01:15 PM | चंद्रास्त: 11:58 PM",
                 ykName: "धृति योग / तैतिल करण", vratName: "🚩 विशेष: नित्य पूजा व धार्मिक अनुष्ठानों हेतु शुभ दिन",
@@ -395,11 +375,18 @@
             }
         };
 
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
         function switchLanguage(lang) {
             localStorage.setItem('user_site_lang', lang);
             const p = LANG_PACK[lang] || LANG_PACK.en;
 
-            // Header & Utility
             document.getElementById('txt-live').innerText = p.live;
             document.getElementById('txt-network').innerText = p.network;
             document.getElementById('nav-home').innerText = p.home;
@@ -414,13 +401,12 @@
             document.getElementById('txt-breaking').innerText = p.breaking;
             document.getElementById('txt-ticker').innerText = p.ticker;
 
-            // Welcome Section
             document.getElementById('badge-independent').innerText = p.badgeIndependent;
             document.getElementById('title-welcome').innerText = p.titleWelcome;
             document.getElementById('desc-welcome').innerText = p.descWelcome;
             document.getElementById('txt-founder').innerText = p.founder;
 
-            // Panchang Section
+            // Panchang Modal Details
             document.getElementById('pj-title').innerText = p.pjTitle;
             document.getElementById('pj-subtitle').innerText = p.pjSubtitle;
             document.getElementById('lbl-tithi').innerText = p.lblTithi;
@@ -442,17 +428,16 @@
             document.getElementById('val-yk-name').innerText = p.ykName;
             document.getElementById('val-vrat-name').innerText = p.vratName;
 
-            // Horoscope Section
+            // Horoscope Modal Details
             document.getElementById('hr-title').innerHTML = `<span>✨</span> ${p.hrTitle}`;
             document.getElementById('hr-subtitle').innerText = p.hrSubtitle;
 
-            // Render 12 Rashi Cards
             const rashiContainer = document.getElementById('rashi-cards-container');
             if (rashiContainer) {
                 rashiContainer.innerHTML = '';
                 p.rashis.forEach(r => {
                     const card = document.createElement('div');
-                    card.className = "bg-slate-50/80 p-4 rounded-xl border border-slate-200 hover:shadow-sm transition";
+                    card.className = "bg-slate-50 p-4 rounded-xl border border-slate-200";
                     card.innerHTML = `
                         <div class="flex items-center gap-2 mb-2">
                             <span class="text-xl text-red-600 font-bold">${r.symbol}</span>
@@ -464,7 +449,6 @@
                 });
             }
 
-            // Footer
             document.getElementById('footer-desc').innerHTML = p.footerDesc;
             document.getElementById('footer-sections').innerText = p.footerSections;
             document.getElementById('footer-trust').innerText = p.footerTrust;
@@ -478,12 +462,9 @@
             switchLanguage(saved);
 
             const now = new Date();
-            const dateStr = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
             document.getElementById('live-time').innerText = now.toLocaleString('en-US', { 
                 weekday: 'short', month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute:'2-digit' 
             });
-            const pjBadge = document.getElementById('pj-date-badge');
-            if (pjBadge) pjBadge.innerText = dateStr;
         });
     </script>
 </body>
