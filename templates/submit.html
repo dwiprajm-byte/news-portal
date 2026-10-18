@@ -17,7 +17,6 @@
             </a>
             
             <div class="flex items-center gap-4">
-                <!-- Language Selector Sync -->
                 <div class="flex items-center gap-1.5 bg-slate-900 px-2.5 py-1 rounded border border-slate-700 text-white text-xs font-mono">
                     <i class="fas fa-globe text-red-500"></i>
                     <select id="submitLangChoice" onchange="switchSubmitLang(this.value)" class="bg-transparent text-xs font-semibold focus:outline-none cursor-pointer text-slate-200">
@@ -36,7 +35,6 @@
     <main class="max-w-4xl mx-auto px-4 py-8">
         <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-10">
             
-            <!-- Headline Title -->
             <div class="border-b border-slate-200 pb-4 mb-6 flex items-center justify-between">
                 <div>
                     <h1 class="text-2xl font-black text-slate-900 flex items-center gap-2" id="page-title">
@@ -49,7 +47,7 @@
                 </span>
             </div>
 
-            <form action="/submit-news" method="POST" class="space-y-6" onsubmit="return validateAuthorDocs()">
+            <form action="/submit-news" method="POST" enctype="multipart/form-data" class="space-y-6" onsubmit="return validateAuthorDocs()">
 
                 <!-- 1. Headline -->
                 <div>
@@ -86,35 +84,56 @@
                 </div>
 
                 <!-- 3. Reporter / Verification Box -->
-                <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
+                <div class="bg-slate-50 p-5 rounded-xl border border-slate-300 space-y-4">
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5" id="lbl-author">
                             Reporter / Author Name *
                         </label>
-                        <input type="text" name="author" id="authorInput" required placeholder="Enter your name (Type your founder name for auto-approval)"
+                        <input type="text" name="author" id="authorInput" required placeholder="Enter author name"
                             class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-red-600 text-sm bg-white font-semibold text-slate-900">
                     </div>
 
                     <!-- External Contributor Verification Box -->
                     <div id="contributorBox" class="pt-3 border-t border-slate-200">
-                        <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center justify-between mb-3">
                             <span class="text-xs font-bold uppercase tracking-wider text-amber-800" id="lbl-ver-title">
                                 <i class="fas fa-id-card text-amber-600 mr-1"></i> Contributor Identity Verification
                             </span>
-                            <span id="admin-tag" class="hidden text-[11px] font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded">Verified Founder - No Docs Required</span>
+                            <span id="admin-tag" class="hidden text-[11px] font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded">Verified Founder - KYC Exempted</span>
                         </div>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="docInputsGrid">
-                            <div>
-                                <label class="block text-[11px] font-bold text-slate-600 mb-1" id="lbl-idproof">Valid Press ID / Gov ID Number *</label>
-                                <input type="text" name="id_proof" id="idProofField" placeholder="Enter valid ID number"
-                                    class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-red-600 text-xs bg-white">
+                        <div id="docInputsGrid" class="space-y-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-[11px] font-bold text-slate-600 mb-1" id="lbl-id-type">Select KYC ID Document *</label>
+                                    <select name="id_type" id="idTypeSelect" onchange="handleKycPlaceholder()" class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-red-600 text-xs bg-white font-medium">
+                                        <option value="AADHAAR">Aadhaar Card (12 Digits)</option>
+                                        <option value="PAN">PAN Card (10 Chars)</option>
+                                        <option value="VOTER">Voter ID Card</option>
+                                        <option value="DL">Driving Licence</option>
+                                        <option value="PASSPORT">Passport</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] font-bold text-slate-600 mb-1" id="lbl-idproof">Document / ID Number *</label>
+                                    <input type="text" name="id_proof" id="idProofField" placeholder="Enter 12 digit number"
+                                        class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-red-600 text-xs bg-white font-mono uppercase">
+                                </div>
                             </div>
-                            <div>
-                                <label class="block text-[11px] font-bold text-slate-600 mb-1" id="lbl-contact">Contact Phone / Email *</label>
-                                <input type="text" name="contact_info" id="contactField" placeholder="Phone number or email"
-                                    class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-red-600 text-xs bg-white">
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-[11px] font-bold text-slate-600 mb-1" id="lbl-doc-file">Upload ID Document (Image/PDF) *</label>
+                                    <input type="file" name="kyc_doc_file" id="kycFileField" accept="image/*,.pdf"
+                                        class="w-full px-2 py-1.5 rounded-lg border border-slate-300 text-xs bg-white file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:font-bold file:bg-red-50 file:text-red-700">
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] font-bold text-slate-600 mb-1" id="lbl-contact">Contact Phone / Email *</label>
+                                    <input type="text" name="contact_info" id="contactField" placeholder="Phone number or email"
+                                        class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-red-600 text-xs bg-white">
+                                </div>
                             </div>
+                            <p id="kyc-error-alert" class="text-xs text-red-600 font-bold hidden bg-red-50 p-2 rounded border border-red-200"></p>
                         </div>
                     </div>
                 </div>
@@ -155,7 +174,7 @@
         <p>&copy; 2026 24 Early News Network. All rights reserved.</p>
     </footer>
 
-    <!-- Multilingual Sync & Founder Bypass Logic -->
+    <!-- Multilingual Sync & Client Validation Logic -->
     <script>
         const SUBMIT_I18N = {
             en: {
@@ -167,7 +186,9 @@
                 location: "Location *",
                 author: "Reporter / Author Name *",
                 verTitle: "Contributor Identity Verification",
-                idProof: "Valid Press ID / Gov ID Number *",
+                idType: "Select KYC ID Document *",
+                idProof: "Document / ID Number *",
+                docFile: "Upload ID Document (Image/PDF) *",
                 contact: "Contact Phone / Email *",
                 img: "Featured Image URL",
                 body: "In-Depth News Content *",
@@ -186,8 +207,10 @@
                 category: "বিভাগ *",
                 location: "ঘটনাস্থল *",
                 author: "প্রতিবেদকের নাম *",
-                verTitle: "কন্ট্রিবিউটর পরিচয় ও নথি যাচাইকরণ",
-                idProof: "বৈধ প্রেস আইডি বা পরিচয়পত্র নম্বর *",
+                verTitle: "কন্ট্রিবিউটর সরকারি KYC যাচাইকরণ",
+                idType: "যেকোনো একটি KYC ডকুমেন্ট নির্বাচন করুন *",
+                idProof: "ডকুমেন্ট / আইডি নম্বর *",
+                docFile: "ডকুমেন্টের আসল ছবি / ফাইল আপলোড করুন *",
                 contact: "যোগাযোগ নম্বর / ইমেল *",
                 img: "খবরের ছবির লিঙ্ক (Image URL)",
                 body: "সংবাদের মূল বিবরণ *",
@@ -206,8 +229,10 @@
                 category: "श्रेणी / वर्ग *",
                 location: "स्थान *",
                 author: "संवाददाता का नाम *",
-                verTitle: "संवाददाता पहचान सत्यापन",
-                idProof: "मान्य प्रेस आईडी / पहचान पत्र संख्या *",
+                verTitle: "संवाददाता सरकारी KYC सत्यापन",
+                idType: "कोई एक KYC दस्तावेज़ चुनें *",
+                idProof: "दस्तावेज़ / पहचान संख्या *",
+                docFile: "पहचान पत्र की फोटो / फाइल अपलोड करें *",
                 contact: "संपर्क फोन / ईमेल *",
                 img: "समाचार चित्र लिंक (URL)",
                 body: "विस्तृत समाचार विवरण *",
@@ -225,18 +250,20 @@
             const d = SUBMIT_I18N[lang] || SUBMIT_I18N.en;
 
             document.getElementById('lbl-home').innerText = d.home;
-            document.getElementById('page-title').innerHTML = <i class="fas fa-pen-nib text-red-600 mr-2"></i>  + d.pageTitle;
+            document.getElementById('page-title').innerHTML = `<i class="fas fa-pen-nib text-red-600 mr-2"></i> ` + d.pageTitle;
             document.getElementById('page-sub').innerText = d.pageSub;
             document.getElementById('lbl-headline').innerText = d.headline;
             document.getElementById('lbl-category').innerText = d.category;
             document.getElementById('lbl-location').innerText = d.location;
             document.getElementById('lbl-author').innerText = d.author;
-            document.getElementById('lbl-ver-title').innerHTML = <i class="fas fa-id-card text-amber-600 mr-1"></i>  + d.verTitle;
+            document.getElementById('lbl-ver-title').innerHTML = `<i class="fas fa-id-card text-amber-600 mr-1"></i> ` + d.verTitle;
+            document.getElementById('lbl-id-type').innerText = d.idType;
             document.getElementById('lbl-idproof').innerText = d.idProof;
+            document.getElementById('lbl-doc-file').innerText = d.docFile;
             document.getElementById('lbl-contact').innerText = d.contact;
             document.getElementById('lbl-img').innerText = d.img;
             document.getElementById('lbl-body').innerText = d.body;
-            document.getElementById('txt-schema-notice').innerHTML = <i class="fas fa-check-circle mr-1"></i>  + d.schemaNotice;
+            document.getElementById('txt-schema-notice').innerHTML = `<i class="fas fa-check-circle mr-1"></i> ` + d.schemaNotice;
             document.getElementById('btn-publish').innerText = d.publish;
 
             document.getElementById('input-headline').placeholder = d.placeholderTitle;
@@ -245,46 +272,107 @@
             document.getElementById('input-body').placeholder = d.placeholderBody;
 
             document.getElementById('submitLangChoice').value = lang;
+            handleKycPlaceholder();
         }
 
-        // Founder Bypass Logic
         const authorInput = document.getElementById('authorInput');
         const docGrid = document.getElementById('docInputsGrid');
         const adminTag = document.getElementById('admin-tag');
         const idField = document.getElementById('idProofField');
         const contactField = document.getElementById('contactField');
+        const fileField = document.getElementById('kycFileField');
+        const alertBox = document.getElementById('kyc-error-alert');
+
+        function handleKycPlaceholder() {
+            const type = document.getElementById('idTypeSelect').value;
+            const lang = localStorage.getItem('user_site_lang') || 'en';
+            if (type === 'AADHAAR') {
+                idField.placeholder = (lang === 'bn') ? '১২ সংখ্যার আধার নম্বর লিখুন' : 'Enter 12 digit number';
+            } else if (type === 'PAN') {
+                idField.placeholder = 'ABCDE1234F';
+            } else if (type === 'VOTER') {
+                idField.placeholder = 'ABC1234567';
+            } else if (type === 'DL') {
+                idField.placeholder = 'WB1220201234567';
+            } else if (type === 'PASSPORT') {
+                idField.placeholder = 'A1234567';
+            }
+        }
 
         function evaluateAuthor() {
             const author = authorInput.value.trim().toUpperCase();
-            // আপনি নিজে হলে ডকুমেন্টস লাগবে না
             if (author.includes('DWIPRAJ') || author === 'ADMIN') {
                 docGrid.classList.add('opacity-30', 'pointer-events-none');
                 adminTag.classList.remove('hidden');
                 idField.required = false;
                 contactField.required = false;
+                fileField.required = false;
+                alertBox.classList.add('hidden');
             } else {
                 docGrid.classList.remove('opacity-30', 'pointer-events-none');
                 adminTag.classList.add('hidden');
                 idField.required = true;
                 contactField.required = true;
+                fileField.required = true;
             }
         }
 
         function validateAuthorDocs() {
             const author = authorInput.value.trim().toUpperCase();
-            if (!author.includes('DWIPRAJ') && author !== 'ADMIN') {
-                if (!idField.value.trim() || !contactField.value.trim()) {
-                    alert('External contributors must provide a valid ID number and contact info.');
-                    return false;
-                }
+            if (author.includes('DWIPRAJ') || author === 'ADMIN') {
+                return true;
             }
+
+            const type = document.getElementById('idTypeSelect').value;
+            const idVal = idField.value.trim().toUpperCase().replace(/\s+/g, '');
+            const contactVal = contactField.value.trim();
+
+            if (!idVal || !contactVal) {
+                alertBox.innerText = '⚠️ Error: KYC ID number and contact info are strictly required.';
+                alertBox.classList.remove('hidden');
+                return false;
+            }
+
+            let valid = true;
+            let errMsg = '';
+
+            if (type === 'AADHAAR') {
+                valid = /^[2-9]{1}[0-9]{11}$/.test(idVal) && !/^(.)\1{11}$/.test(idVal);
+                errMsg = 'Invalid Aadhaar format! Must be 12 valid digits.';
+            } else if (type === 'PAN') {
+                valid = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(idVal);
+                errMsg = 'Invalid PAN format! (e.g. ABCDE1234F)';
+            } else if (type === 'VOTER') {
+                valid = /^[A-Z]{3}[0-9]{7}$/.test(idVal);
+                errMsg = 'Invalid Voter ID format! (e.g. ABC1234567)';
+            } else if (type === 'DL') {
+                valid = /^[A-Z]{2}[0-9]{13,14}$/.test(idVal) || idVal.length >= 10;
+                errMsg = 'Invalid Driving Licence format!';
+            } else if (type === 'PASSPORT') {
+                valid = /^[A-Z]{1}[0-9]{7}$/.test(idVal);
+                errMsg = 'Invalid Passport format! (e.g. A1234567)';
+            }
+
+            if (!valid) {
+                alertBox.innerText = '⚠️ ' + errMsg;
+                alertBox.classList.remove('hidden');
+                idField.focus();
+                return false;
+            }
+
+            if (!fileField.files || fileField.files.length === 0) {
+                alertBox.innerText = '⚠️ Error: You must upload the official ID document image/PDF.';
+                alertBox.classList.remove('hidden');
+                return false;
+            }
+
+            alertBox.classList.add('hidden');
             return true;
         }
 
         authorInput.addEventListener('input', evaluateAuthor);
 
         document.addEventListener('DOMContentLoaded', function() {
-            // মূল ওয়েবসাইটের নির্বাচিত ভাষা সিঙ্ক
             const currentSiteLang = localStorage.getItem('user_site_lang') || 'en';
             switchSubmitLang(currentSiteLang);
             evaluateAuthor();
