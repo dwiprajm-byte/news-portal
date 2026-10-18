@@ -1,1361 +1,229 @@
-﻿﻿<!DOCTYPE html>
-<html lang="en">
+﻿<!DOCTYPE html>
+<html lang="bn">
 <head>
-    <title>24 Early News - Real-Time Breaking News, World & Live Updates</title>
-    <meta name="description" content="24 Early News delivers real-time breaking news, international headlines, business trends, sports dispatches, and 24/7 global updates.">
-    <link rel="canonical" href="https://24earlynews.com/" />
-    <meta property="og:title" content="24 Early News">
-    <meta property="og:url" content="https://24earlynews.com/">
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "24 Early News",
-      "url": "https://24earlynews.com/"
-    }
-    </script>
-    <!-- Google Rank #1 Brand Authority & News Schema -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "NewsMediaOrganization",
-      "name": "24 Early News",
-      "alternateName": ["24earlynews", "24earlynews.com", "24 Early News Wire"],
-      "url": "https://24earlynews.com/",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://24earlynews.com/static/favicon.svg",
-        "width": 192,
-        "height": 192
-      },
-      "sameAs": [
-        "https://24earlynews.com/"
-      ],
-      "publishingPrinciples": "https://24earlynews.com/editorial-charter",
-      "actionableFeedbackPolicy": "https://24earlynews.com/editorial-charter"
-    }
-    </script>
-    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg?v=2">
-    <link rel="shortcut icon" href="/static/favicon.svg?v=2">
-    <meta name="google-site-verification" content="dgXSh_1IJ_JoZz_v_H5m7qf4N0ZqR3Q2c1a8L9k" />
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9701604898518993" crossorigin="anonymous"></script>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>24 Early News | 24earlynews.com - Latest Breaking News & Updates</title>
-  <script src="https://cdn.tailwindcss.com">    // লাইভ ব্রেকিং নিউজ অটো-চেক এবং স্বয়ংক্রিয় বারে যুক্ত করা (প্রতি ২০ সেকেন্ড)
-    let knownTickerFirst = "";
-    function checkLiveBreakingNews() {
-      fetch('/api/live-ticker')
-        .then(res => res.json())
-        .then(data => {
-          if (data.status === 'success' && data.ticker && data.ticker.length > 0) {
-            const latest = data.ticker[0];
-            if (knownTickerFirst && knownTickerFirst !== latest) {
-              let updatedHtml = "";
-              data.ticker.forEach(item => {
-                updatedHtml += `<span class="mx-6 inline-flex items-center gap-2"><i class="fas fa-bolt text-amber-400 text-xs"></i> ${item}</span>`;
-              });
-              const boxA = document.getElementById('tickerContentA');
-              const boxB = document.getElementById('tickerContentB');
-              if (boxA && boxB) {
-                boxA.innerHTML = updatedHtml;
-                boxB.innerHTML = updatedHtml;
-              }
-            }
-            knownTickerFirst = latest;
-          }
-        })
-        .catch(() => {});
-    }
-    setInterval(checkLiveBreakingNews, 20000);
-  </script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
-    .headline-font { font-family: 'Playfair Display', Georgia, serif; }
-    .brand-font { font-family: 'Cinzel', serif; }
-    
-    /* ধীরগতির মার্জিত ব্রেকিং নিউজ স্ক্রলার */
-        /* সীমাহীন অবিরাম ব্রেকিং নিউজ অ্যানিমেশন (কোনো বিরতি ছাড়া) */
-    @keyframes infiniteTicker {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-    .ticker-wrapper {
-      display: inline-flex;
-      white-space: nowrap;
-      width: max-content;
-      animation: infiniteTicker 180s linear infinite;
-    }
-    .ticker-wrapper:hover {
-      animation-play-state: paused;
-    }
-    
-    /* অনন্য কার্ড ইন্টারঅ্যাকশন এফেক্ট */
-    .news-card-unique {
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .news-card-unique:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 16px 32px -8px rgba(15, 23, 42, 0.12);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>24 Early News - Global & Regional Dispatches</title>
+    <meta name="description" content="Verified breaking news, global affairs, technology and financial insights.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google AdSense Script -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=pub-9701604898518993" crossorigin="anonymous"></script>
+    <meta name="google-adsense-account" content="pub-9701604898518993">
 </head>
-<body class="text-slate-800 antialiased selection:bg-amber-500 selection:text-white">
-<!-- EN_LIVE_BAR_START -->
-<div id="en-live-header-bar" style="all: revert; width: 100%; background: #0f172a; color: #f8fafc; font-size: 13px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; border-bottom: 1px solid #1e293b; position: relative; z-index: 99999;">
-    <div style="max-width: 1200px; margin: 0 auto; padding: 6px 15px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box;">
-        <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="display: inline-block; width: 8px; height: 8px; background: #22c55e; border-radius: 50%;"></span>
-            <span id="en-live-date-val" style="font-weight: 500; letter-spacing: 0.3px;">Loading Date...</span>
-        </div>
-        <div style="font-weight: 600; color: #38bdf8;">
-            <span id="en-live-time-val">Loading Time...</span>
-        </div>
-    </div>
-</div>
-<script>
-(function() {
-    function updateClock() {
-        const d = new Date();
-        const dateOpt = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        const dEl = document.getElementById('en-live-date-val');
-        const tEl = document.getElementById('en-live-time-val');
-        if (dEl) dEl.textContent = d.toLocaleDateString('en-US', dateOpt);
-        if (tEl) tEl.textContent = d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }) + ' IST';
-    }
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', updateClock);
-    } else {
-        updateClock();
-    }
-    setInterval(updateClock, 1000);
-})();
-</script>
-<!-- EN_LIVE_BAR_END -->
+<body class="bg-slate-100 text-slate-900 font-sans antialiased selection:bg-red-600 selection:text-white">
 
-    <!-- ১. শীর্ষ ব্রেকিং নিউজ টিকার বার (Infinite Non-Stop Live Loop) -->
-  <div class="bg-red-800 text-white text-xs font-semibold overflow-hidden border-b border-red-900 shadow-inner flex items-center h-10">
-    <div class="bg-red-950 text-amber-300 px-4 py-2 font-bold uppercase tracking-widest text-[11px] flex items-center gap-2 z-20 flex-shrink-0 shadow-md">
-      <span class="w-2.5 h-2.5 rounded-full bg-red-400 animate-ping inline-block"></span> BREAKING NEWS
-    </div>
-    <div class="overflow-hidden w-full whitespace-nowrap pl-2 relative">
-      <div id="tickerTrack" class="ticker-wrapper text-sm sm:text-base tracking-wide font-semibold text-white">
-        <div id="tickerContentA" class="inline-flex items-center">
-          {% for t in ticker %}
-            <span class="mx-6 inline-flex items-center gap-2"><i class="fas fa-bolt text-amber-400 text-xs"></i> {{ t }}</span>
-          {% endfor %}
-        </div>
-        <div id="tickerContentB" class="inline-flex items-center">
-          {% for t in ticker %}
-            <span class="mx-6 inline-flex items-center gap-2"><i class="fas fa-bolt text-amber-400 text-xs"></i> {{ t }}</span>
-          {% endfor %}
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ২. প্রিমিয়াম সোনা-রুপো ও মেটালস বার -->
-  <div class="bg-amber-50/80 backdrop-blur-xs border-b border-amber-200/60 px-4 py-1.5 text-[11px] text-amber-950 font-medium">
-    <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
-      <div class="flex items-center gap-3 overflow-x-auto whitespace-nowrap py-0.5">
-        <span class="font-bold text-amber-900 flex items-center gap-1 text-[10px] tracking-wider uppercase"><i class="fas fa-coins text-amber-600"></i> Bullion Desk:</span>
-        <span class="bg-white/80 px-2 py-0.5 rounded border border-amber-200/60">Gold 24K: <strong>₹14,744/g</strong></span>
-        <span class="bg-white/80 px-2 py-0.5 rounded border border-amber-200/60">Silver: <strong>₹118/g</strong></span>
-        <span class="bg-white/80 px-2 py-0.5 rounded border border-amber-200/60">Platinum: <strong>₹4,200/g</strong></span>
-        <span class="bg-white/80 px-2 py-0.5 rounded border border-amber-200/60">Diamond 1ct: <strong>₹4,50,000</strong></span>
-      </div>
-      
-    </div>
-  </div>
-
-  <!-- ৩. ইউনিক ব্র্যান্ডিং ও নেভিগেশন হেডার -->
-  <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-xs">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex flex-wrap justify-between items-center gap-3">
-      
-      <!-- অফিসিয়াল ব্যানার ও লোগো -->
-      <a href="/" class="flex items-center gap-3 group text-decoration-none">
-        <div class="w-10 h-10 flex-shrink-0 group-hover:scale-105 transition transform">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="40" height="40" fill="none">
-            <circle cx="24" cy="24" r="22" fill="#0f172a" stroke="#d97706" stroke-width="2.5"/>
-            <circle cx="24" cy="24" r="18" fill="none" stroke="#d97706" stroke-width="0.8" stroke-dasharray="2 2"/>
-            <text x="50%" y="58%" text-anchor="middle" fill="#d97706" font-family="'Cinzel', serif" font-weight="900" font-size="20">24</text>
-          </svg>
-        </div>
-        <span class="headline-font text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-none group-hover:text-amber-800 transition">24 EARLY NEWS</span>
-      </a>
-
-      <!-- সার্চ বার -->
-      <div class="flex-grow max-w-sm mx-1">
-        <div class="relative">
-          <input type="text" id="searchInput" autocomplete="off" spellcheck="false" onkeydown="handleCountrySearch(event)" placeholder="Search any of 195 Countries (e.g. Bangladesh, Japan, USA, Russia)..." class="w-full bg-slate-50 border border-slate-300 rounded-full py-1.5 pl-8 pr-3 text-xs focus:outline-none focus:ring-2 focus:ring-amber-500">
-          <i class="fas fa-search absolute left-2.5 top-2.5 text-slate-400 text-xs"></i>
-        </div>
-      </div>
-
-      <!-- উপরে ডানদিকে Search Language (অটো-সাজেস্ট ড্রপডাউন সহ) -->
-      <div class="relative">
-        <div class="flex items-center gap-1.5 bg-slate-100 border border-slate-300 rounded-full px-3 py-1 text-xs shadow-inner">
-          <i class="fas fa-language text-slate-500 text-sm"></i>
-          <div id="siteLanguageContainer" style="display:inline-flex; align-items:center; gap:6px; margin: 0 4px;">
-    <span style="font-size:12px; font-weight:bold; color:#555;">🌐 Language:</span>
-    <select id="portalGlobalLang" onchange="instantSwitchLanguage(this.value)" style="padding:4px 8px; border-radius:4px; border:1px solid #ced4da; font-size:13px; font-weight:bold; background:#fff; color:#212529; cursor:pointer; outline:none; box-shadow:0 1px 2px rgba(0,0,0,0.05);">
-        <option value="en">English</option>
-        <option value="bn">বাংলা (Bengali)</option>
-        <option value="hi">हिन्दी (Hindi)</option>
-    </select>
-</div>
-
-<script>
-// ১. হাই-স্পিড ইন-মেমোরি অনুবাদ ডিকশনারি (১ মিলিসেকেন্ডে এক্সিকিউট হবে)
-const fastLangDict = {
-    bn: {
-        "Home": "হোম",
-        "All Stories": "সমস্ত খবর",
-        "Regional & Cities": "আঞ্চলিক ও শহর",
-        "National": "জাতীয়",
-        "International / World": "আন্তর্জাতিক",
-        "Markets": "বাজার ও বাণিজ্য",
-        "Sports": "খেলাধুলা",
-        "Tech & AI": "প্রযুক্তি ও এআই",
-        "Entertainment": "বিনোদন",
-        "Write News": "খবর লিখুন",
-        "Recipes": "রেসিপি",
-        "BREAKING NEWS": "তাজা খবর",
-        "TOP SPOTLIGHT": "শীর্ষ স্পটলাইট",
-        "WORLD": "বিশ্ব",
-        "BULLION DESK:": "বুলিয়ন দর:",
-        "Gold 24K:": "২৪ ক্যারেট সোনা:",
-        "Silver:": "রুপো:",
-        "Platinum:": "প্ল্যাটিনাম:",
-        "Diamond 1ct:": "হিরে ১ ক্যারেট:",
-        "Language:": "ভাষা:",
-        "Panchang & Horoscope": "পঞ্জিকা ও রাশিফল"
-    },
-    hi: {
-        "Home": "होम",
-        "All Stories": "सभी खबरें",
-        "Regional & Cities": "क्षेत्रीय और शहर",
-        "National": "राष्ट्रीय",
-        "International / World": "अंतर्राष्ट्रीय",
-        "Markets": "बाजार",
-        "Sports": "खेल",
-        "Tech & AI": "तकनीक और एआई",
-        "Entertainment": "मनोरंजन",
-        "Write News": "समाचार लिखें",
-        "Recipes": "रेसिपी",
-        "BREAKING NEWS": "ताज़ा ख़बर",
-        "TOP SPOTLIGHT": "टॉप स्पॉटलाइट",
-        "WORLD": "विश्व",
-        "BULLION DESK:": "बुलियन दरें:",
-        "Gold 24K:": "२४ कैरेट सोना:",
-        "Silver:": "चांदी:",
-        "Platinum:": "प्लेटिनम:",
-        "Diamond 1ct:": "हीरा १ कैरेट:",
-        "Language:": "भाषा:",
-        "Panchang & Horoscope": "पंचांग और राशिफल"
-    }
-};
-
-let cachedOriginalNodes = new Map();
-
-function instantSwitchLanguage(lang) {
-    localStorage.setItem("portal_selected_lang", lang);
-    localStorage.setItem("user_selected_panchang_lang", lang);
-
-    // পঞ্জিকা মডাল খোলা থাকলে তার ভাষাও সাথে সাথে সিঙ্ক করা
-    if (typeof switchPanchangLang === 'function') {
-        switchPanchangLang(lang);
-    }
-    const modalSelect = document.getElementById("panchangLangSelect");
-    if (modalSelect) modalSelect.value = lang;
-
-    // ১ মিলিসেকেন্ডে পেজের সব লেখার ভাষা রূপান্তর
-    if (lang === 'en') {
-        cachedOriginalNodes.forEach((origText, node) => {
-            if (node.nodeType === Node.TEXT_NODE) {
-                node.nodeValue = origText;
-            }
-        });
-        return;
-    }
-
-    const dict = fastLangDict[lang];
-    if (!dict) return;
-
-    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
-    let node;
-    while ((node = walker.nextNode())) {
-        let text = node.nodeValue.trim();
-        if (!text || node.parentElement.tagName === 'SCRIPT' || node.parentElement.tagName === 'STYLE' || node.parentElement.id === 'portalGlobalLang') {
-            continue;
-        }
-
-        if (!cachedOriginalNodes.has(node)) {
-            cachedOriginalNodes.set(node, node.nodeValue);
-        }
-
-        let currentVal = cachedOriginalNodes.get(node);
-        let modified = false;
-
-        for (const [enKey, transVal] of Object.entries(dict)) {
-            if (currentVal.includes(enKey)) {
-                currentVal = currentVal.replace(new RegExp(enKey, 'g'), transVal);
-                modified = true;
-            }
-        }
-
-        if (modified) {
-            node.nodeValue = currentVal;
-        }
-    }
-}
-
-document.addEventListener("DOMContentLoaded", function() {
-    const saved = localStorage.getItem("portal_selected_lang") || "en";
-    const dropdown = document.getElementById("portalGlobalLang");
-    if (dropdown) dropdown.value = saved;
-    if (saved !== 'en') {
-        instantSwitchLanguage(saved);
-    }
-});
-</script>
-        </div>
-        <!-- লাইভ সাজেশন ড্রপডাউন মেনু -->
-        <div id="langDropdown" class="hidden absolute right-0 mt-1 w-64 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 max-h-60 overflow-y-auto divide-y divide-slate-100 text-xs">
-        </div>
-      </div>
-
-    </div>
-
-    <!-- টাস্কবার (All Stories-এর এক সারিতে সব বাটন) -->
-    <nav class="max-w-7xl mx-auto px-4 sm:px-6 py-2 overflow-x-auto border-t border-slate-100 flex items-center justify-between gap-2 text-xs">
-      <div class="flex items-center gap-2 whitespace-nowrap">
-        <a href="/" class="cat-btn font-bold px-3 py-1.5 rounded-md bg-slate-900 text-white border border-slate-900 hover:bg-slate-800 transition flex items-center gap-1 shadow-xs"><i class="fas fa-home text-amber-400"></i> Home</a>
-        <button onclick="filterNews('ALL', this)" class="cat-btn active font-bold px-3 py-1.5 rounded-md bg-slate-800 text-white transition flex items-center gap-1"><i class="fas fa-layer-group"></i> All Stories</button>
-<!-- Multilingual Vedic Panchang & Horoscope Navigation Button & Modal -->
-<a href="javascript:void(0)" id="panchangNavBtn" onclick="togglePanchangModal()" class="btn btn-sm d-inline-flex align-items-center" style="background:#fff3e0; color:#b71c1c; border:1px solid #ffe082; font-weight:bold; font-size:13px; padding:4px 10px; border-radius:6px; text-decoration:none; margin:0 6px; cursor:pointer; box-shadow:0 1px 3px rgba(0,0,0,0.08);">
-    <span style="font-size:14px; margin-right:4px;">🕉️</span> <span id="panchangBtnText">Panchang & Horoscope</span>
-</a>
-
-<!-- Complete Clean Vedic Panchang & Horoscope System -->
-<div id="panchangModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.65); z-index:10000; justify-content:center; align-items:center;">
-    <div style="background:#fff; width:94%; max-width:760px; max-height:88vh; border-radius:12px; overflow-y:auto; padding:22px; position:relative; box-shadow:0 12px 30px rgba(0,0,0,0.5); font-family:system-ui, -apple-system, sans-serif; box-sizing:border-box;">
-        <button onclick="togglePanchangModal()" style="position:absolute; top:15px; right:15px; border:none; background:#f0f0f0; width:32px; height:32px; border-radius:50%; font-weight:bold; cursor:pointer; font-size:16px;">✕</button>
-        
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #ffc107; padding-bottom:10px; margin-bottom:15px; flex-wrap:wrap; gap:10px;">
-            <h3 style="margin:0; color:#b71c1c; font-size:20px;" id="modalHeading">
-                🕉️ Vedic Panchang & Horoscope
-            </h3>
-            <div style="display:flex; align-items:center; gap:6px;">
-                <label for="panchangLangSelect" style="font-size:13px; font-weight:bold; color:#444;">Language:</label>
-                <select id="panchangLangSelect" onchange="switchPanchangLang(this.value)" style="padding:5px 10px; border-radius:4px; border:1px solid #bbb; font-size:13px; font-weight:bold; cursor:pointer;">
-                    <option value="en">English</option>
-                    <option value="bn">বাংলা (Bengali)</option>
-                    <option value="hi">हिन्दी (Hindi)</option>
-                </select>
+    <!-- Top Utility Bar (BBC/CNN Style) -->
+    <div class="bg-black text-slate-300 text-xs border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 py-2 flex flex-wrap justify-between items-center gap-2">
+            <div class="flex items-center gap-3">
+                <span class="font-bold text-red-500 uppercase tracking-wider flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-red-600 animate-ping"></span> Live Wire
+                </span>
+                <span class="text-slate-400">আন্তর্জাতিক ও আঞ্চলিক বিশ্বস্ত সংবাদ নেটওয়ার্ক</span>
+            </div>
+            <div class="flex items-center gap-4 text-slate-400 font-mono text-[11px]">
+                <span id="live-datetime">Updated Realtime</span>
+                <a href="/login" class="hover:text-white text-slate-300 transition flex items-center gap-1">
+                    <i class="fas fa-lock text-[10px]"></i> Editorial Desk
+                </a>
             </div>
         </div>
+    </div>
 
-        <!-- পঞ্জিকা পঞ্চাঙ্গ বিবরণ (কখনোই বক্সের বাইরে যাবে না) -->
-        <div style="background:#fff9e6; border:1px solid #ffe082; border-radius:8px; padding:16px; margin-bottom:18px; box-sizing:border-box;">
-            <div style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:10px;">
-                <div style="flex:1 1 calc(50% - 10px); min-width:260px; background:#fff; padding:10px 14px; border-radius:6px; border:1px solid #f0e6c8; box-sizing:border-box; word-break:break-word;">
-                    <strong id="lblDay" style="color:#666; font-size:12px; display:block; margin-bottom:2px;">Day</strong>
-                    <span id="pjBar" style="font-weight:600; color:#222; font-size:14px; line-height:1.4;">--</span>
+    <!-- Main Global Header -->
+    <header class="bg-slate-950 text-white shadow-xl sticky top-0 z-50 border-b-2 border-red-600">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="/" class="flex items-center gap-2">
+                <span class="bg-red-600 text-white font-black px-2.5 py-1 text-lg tracking-tight rounded-sm">24</span>
+                <span class="text-2xl md:text-3xl font-black tracking-tighter uppercase font-serif">Early News</span>
+            </a>
+
+            <!-- Category Links -->
+            <nav class="hidden lg:flex items-center gap-6 text-sm font-bold tracking-wide uppercase text-slate-300">
+                <a href="/" class="text-white border-b-2 border-red-600 pb-1">হোম</a>
+                <a href="/?cat=India" class="hover:text-red-500 transition">ভারত</a>
+                <a href="/?cat=World" class="hover:text-red-500 transition">বিশ্ব</a>
+                <a href="/?cat=Business" class="hover:text-red-500 transition">অর্থনীতি</a>
+                <a href="/?cat=Technology" class="hover:text-red-500 transition">প্রযুক্তি</a>
+                <a href="/?cat=Sports" class="hover:text-red-500 transition">খেলাধুলা</a>
+            </nav>
+
+            <!-- Actions -->
+            <div class="flex items-center gap-3">
+                <a href="/submit-news" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-4 py-2 rounded shadow transition flex items-center gap-1.5">
+                    <i class="fas fa-pen-fancy"></i> খবর সাবমিট
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breaking News Ticker -->
+    <div class="bg-red-600 text-white text-xs font-semibold overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 py-2 flex items-center gap-3">
+            <span class="bg-black text-white px-2 py-0.5 font-bold uppercase rounded-xs tracking-wider shrink-0 text-[11px]">Breaking</span>
+            <div class="truncate text-red-50 font-medium">
+                24 Early News সত্য, নির্ভরযোগ্য ও তথ্যভিত্তিক সাংবাদিকতায় নিয়োজিত &bull; বিশ্বজুড়ে সর্বশেষ ঘটনাবলীর নিরপেক্ষ গ্রাউন্ড রিপোর্ট
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 py-8">
+
+        {% if news and news|length > 0 %}
+        <!-- HERO GRID (BBC Style Lead Stories) -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-12">
+            <!-- Main Hero Article (Col 1-8) -->
+            <div class="lg:col-span-8 bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200 flex flex-col justify-between group hover:shadow-md transition">
+                <div>
+                    <div class="relative overflow-hidden aspect-[16/9] bg-slate-900">
+                        <img src="{{ news[0].image if news[0].image else 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200' }}" 
+                             alt="{{ news[0].title }}" 
+                             class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                             onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200';">
+                        <span class="absolute top-4 left-4 bg-red-600 text-white text-xs font-extrabold uppercase px-3 py-1 rounded shadow">
+                            {{ news[0].category if news[0].category else 'Top Story' }}
+                        </span>
+                    </div>
+                    <div class="p-6 md:p-8">
+                        <span class="text-xs text-slate-500 font-semibold mb-2 block font-mono">{{ news[0].published }}</span>
+                        <h2 class="text-2xl md:text-3xl font-black text-slate-900 group-hover:text-red-600 transition leading-snug mb-3">
+                            <a href="{{ news[0].link }}">{{ news[0].title }}</a>
+                        </h2>
+                        <div class="text-slate-600 text-sm md:text-base line-clamp-3 leading-relaxed mb-4">
+                            {{ news[0].summary | striptags | truncate(220) }}
+                        </div>
+                    </div>
                 </div>
-                <div style="flex:1 1 calc(50% - 10px); min-width:260px; background:#fff; padding:10px 14px; border-radius:6px; border:1px solid #f0e6c8; box-sizing:border-box; word-break:break-word;">
-                    <strong id="lblTithi" style="color:#666; font-size:12px; display:block; margin-bottom:2px;">Tithi</strong>
-                    <span id="pjTithi" style="color:#b71c1c; font-weight:bold; font-size:14px; line-height:1.4;">--</span>
-                </div>
-                <div style="flex:1 1 calc(50% - 10px); min-width:260px; background:#fff; padding:10px 14px; border-radius:6px; border:1px solid #f0e6c8; box-sizing:border-box; word-break:break-word;">
-                    <strong id="lblNakshatra" style="color:#666; font-size:12px; display:block; margin-bottom:2px;">Nakshatra</strong>
-                    <span id="pjNakshatra" style="font-weight:600; color:#222; font-size:14px; line-height:1.4;">--</span>
-                </div>
-                <div style="flex:1 1 calc(50% - 10px); min-width:260px; background:#fff; padding:10px 14px; border-radius:6px; border:1px solid #f0e6c8; box-sizing:border-box; word-break:break-word;">
-                    <strong id="lblYogaKaran" style="color:#666; font-size:12px; display:block; margin-bottom:2px;">Yoga & Karana</strong>
-                    <span id="pjYogaKaran" style="font-weight:600; color:#222; font-size:14px; line-height:1.4;">--</span>
-                </div>
-                <div style="flex:1 1 calc(50% - 10px); min-width:260px; background:#fff; padding:10px 14px; border-radius:6px; border:1px solid #f0e6c8; box-sizing:border-box; word-break:break-word;">
-                    <strong id="lblShubha" style="color:#2e7d32; font-size:12px; display:block; margin-bottom:2px;">Auspicious Time</strong>
-                    <span id="pjShubha" style="color:#2e7d32; font-weight:bold; font-size:14px; line-height:1.4;">--</span>
-                </div>
-                <div style="flex:1 1 calc(50% - 10px); min-width:260px; background:#fff; padding:10px 14px; border-radius:6px; border:1px solid #f0e6c8; box-sizing:border-box; word-break:break-word;">
-                    <strong id="lblRahu" style="color:#c62828; font-size:12px; display:block; margin-bottom:2px;">Rahu Kaal (Avoid)</strong>
-                    <span id="pjRahu" style="color:#c62828; font-weight:bold; font-size:14px; line-height:1.4;">--</span>
+                <div class="px-6 md:px-8 pb-6 flex items-center justify-between border-t border-slate-100 pt-4">
+                    <a href="{{ news[0].link }}" class="text-xs font-bold text-red-600 hover:text-red-700 flex items-center gap-1">
+                        সম্পূর্ণ পড়ুন <i class="fas fa-arrow-right text-[10px]"></i>
+                    </a>
+                    <span class="text-[11px] text-slate-400 font-mono">Fact Checked</span>
                 </div>
             </div>
-            
-            <div style="background:#fff; padding:10px 14px; border-radius:6px; border:1px solid #f0e6c8; font-size:13px; color:#444; margin-bottom:8px; word-break:break-word; line-height:1.4;">
-                <strong id="lblMonthStatus">Month Status:</strong> <span id="pjAdhimas">--</span>
-            </div>
-            <div style="background:#fff; padding:10px 14px; border-radius:6px; border:1px solid #f0e6c8; font-size:13px; color:#e65100; font-weight:bold; word-break:break-word; line-height:1.4;" id="pjEventsBox"></div>
-        </div>
 
-        <!-- ১২ রাশির দৈনিক ফল (প্রতিটি কার্ড সম্পূর্ণ স্বয়ংসম্পূর্ণ ও সুরক্ষিত) -->
-        <h4 style="margin:18px 0 12px 0; color:#333; font-size:16px; border-left:4px solid #b71c1c; padding-left:8px;" id="lblHoroscopeHead">
-            🪐 Daily Horoscope (12 Zodiac Signs)
-        </h4>
-        <div id="pjRashiContainer" style="display:flex; flex-wrap:wrap; gap:12px; width:100%; box-sizing:border-box;"></div>
-    </div>
-</div>
-<script>
-const pjDataStore = {
-    en: {
-        btn: "Panchang & Horoscope",
-        head: "🕉️ Vedic Panchang & Horoscope",
-        day: "Day", tithi: "Tithi", nak: "Nakshatra", yk: "Yoga & Karana",
-        shubha: "Auspicious Time", rahu: "Rahu Kaal (Avoid)", month: "Month Status:",
-        hHead: "🪐 Daily Horoscope (12 Zodiac Signs)",
-        days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-        tithiVal: "Shukla Trayodashi (Pradosh Vrat)",
-        nakVal: "Revati", ykVal: "Shobhana Yoga / Taitila",
-        shubhaVal: "11:36 AM – 12:24 PM (Abhijit Muhurat)",
-        rahuVal: "10:30 AM – 12:00 PM",
-        monthVal: "Pure Solar Month (Shuddha Masa)",
-        evVal: "🚩 Vrat & Event: Pradosh Vrat (Lord Shiva Worship) | Auspicious Day",
-        rashis: [
-            { n: "Aries", s: "♈", t: "Promising day for career growth. Stay cautious with financial transactions." },
-            { n: "Taurus", s: "♉", t: "Family harmony prevails. Favorable for new investments and business deals." },
-            { n: "Gemini", s: "♊", t: "Creative pursuits will bring great success. Pleasant health and travel outlook." },
-            { n: "Cancer", s: "♋", t: "Mental peace and optimism increase. Likely to recover pending funds." },
-            { n: "Leo", s: "♌", t: "Valuable advice from elders brings success. Social prestige improves." },
-            { n: "Virgo", s: "♍", t: "New partnership opportunities in work. Focus and clarity for students." },
-            { n: "Libra", s: "♎", t: "New avenues of income may open up. Peaceful state of mind." },
-            { n: "Scorpio", s: "♏", t: "Additional responsibilities at work. Patience and calm will be rewarded." },
-            { n: "Sagittarius", s: "♐", t: "Fortune favors you today. Pleasant news from distant contacts." },
-            { n: "Capricorn", s: "♑", t: "Old obstacles resolved smoothly. Pleasant relationships at home." },
-            { n: "Aquarius", s: "♒", t: "Great day for launching new initiatives. Financial stability maintained." },
-            { n: "Pisces", s: "♓", t: "Spiritual and inner peace. Joyful atmosphere among family members." }
-        ]
-    },
-    bn: {
-        btn: "পঞ্জিকা ও রাশিফল",
-        head: "🕉️ নিত্য বৈদিক পঞ্জিকা ও রাশিফল",
-        day: "বার", tithi: "তিথি", nak: "নক্ষত্র", yk: "যোগ ও করণ",
-        shubha: "শুভ মুহূর্ত", rahu: "রাহুকাল (বর্জনীয়)", month: "মাস স্থিতি:",
-        hHead: "🪐 আজকের ১২ রাশির ভাগ্যফল (পরাশর সংহিতা অনুসারে)",
-        days: ["রবিবার", "সোমবার", "মঙ্গলবার", "বুধবার", "বৃহস্পতিবার", "শুক্রবার", "শনিবার"],
-        tithiVal: "শুক্লা ত্রয়োদশী (প্রদোষ ব্রত)",
-        nakVal: "রেবতী", ykVal: "শোভন যোগ / তৈতিল",
-        shubhaVal: "সকাল ১১:৩৬ – দুপুর ১২:২৪ (অভিজিৎ/অমৃতযোগ)",
-        rahuVal: "সকাল ১০:৩০ – ১২:০০",
-        monthVal: "বর্তমান বৎসর শুদ্ধমাস (অধিমাস/মলমাস দোষমুক্ত)",
-        evVal: "🚩 ব্রত ও তাৎপর্য: আজ পরম পবিত্র প্রদোষ ব্রত (শিব আরাধনা) ও পুণ্যদিন",
-        rashis: [
-            { n: "মেষ (Aries)", s: "♈", t: "কর্মক্ষেত্রে পদোন্নতি বা নতুন সুযোগের যোগ রয়েছে। আর্থিক লেনদেনে সচেতন থাকুন।" },
-            { n: "বৃষ (Taurus)", s: "♉", t: "পারিবারিক শান্তি বজায় থাকবে। ব্যবসায়ীদের জন্য নতুন বিনিয়োগ শুভ ফল দেবে।" },
-            { n: "মিথুন (Gemini)", s: "♊", t: "সৃজনশীল কাজে সাফল্য মিলবে। ভ্রমণের সুযোগ আসতে পারে, স্বাস্থ্য অনুকূল।" },
-            { n: "কর্কট (Cancer)", s: "♋", t: "মানসিক প্রফুল্লতা বৃদ্ধি পাবে। আটকে থাকা অর্থ প্রাপ্তির সম্ভাবনা রয়েছে।" },
-            { n: "সিংহ (Leo)", s: "♌", t: "গুরুত্বপূর্ণ সিদ্ধান্তে শুভাকাঙ্ক্ষীদের পরামর্শে লাভবান হবেন। সুনাম বৃদ্ধি পাবে।" },
-            { n: "কন্যা (Virgo)", s: "♍", t: "ব্যবসায় নতুন অংশীদারিত্বের সুযোগ। শিক্ষার্থীদের একাগ্রতা বৃদ্ধি পাবে।" },
-            { n: "তুলা (Libra)", s: "♎", t: "আয় বৃদ্ধির নতুন পথ উন্মোচিত হতে পারে। ধর্মীয় কাজে মানসিক শান্তি মিলবে।" },
-            { n: "বৃশ্চিক (Scorpio)", s: "♏", t: "কর্মক্ষেত্রে অতিরিক্ত দায়িত্ব বৃদ্ধি পেতে পারে। ধৈর্য বজায় রাখা শ্রেয়।" },
-            { n: "ধনু (Sagittarius)", s: "♐", t: "ভাগ্য আপনার পক্ষে থাকবে। দূরবর্তী যোগাযোগ থেকে শুভ সংবাদ পেতে পারেন।" },
-            { n: "মকর (Capricorn)", s: "♑", t: "পুরোনো সমস্যার সুষ্ঠু সমাধান হবে। পরিজনদের সঙ্গে সুসম্পর্ক বজায় থাকবে।" },
-            { n: "কুম্ভ (Aquarius)", s: "♒", t: "নতুন উদ্যোগে সাফল্য আসবে। আর্থিক স্থিতিশীলতা বজায় থাকবে।" },
-            { n: "মীন (Pisces)", s: "♓", t: "আধ্যাত্মিক চিন্তায় মানসিক তৃপ্তি। পারিবারিক ক্ষেত্রে আনন্দময় পরিবেশ থাকবে।" }
-        ]
-    },
-    hi: {
-        btn: "पंचांग और राशिफल",
-        head: "🕉️ नित्य वैदिक पंचांग एवं दैनिक राशिफल",
-        day: "वार", tithi: "तिथि", nak: "नक्षत्र", yk: "योग एवं करण",
-        shubha: "शुभ मुहूर्त", rahu: "राहुकाल (वर्जित)", month: "मास स्थिति:",
-        hHead: "🪐 आज का 12 राशियों का राशिफल (वैदिक गणना)",
-        days: ["रविवार", "सोमवार", "मंगलवार", "बुधवार", "गुरुवार", "शुक्रवार", "शनिवार"],
-        tithiVal: "शुक्ल त्रयोदशी (प्रदोष व्रत)",
-        nakVal: "रेवती", ykVal: "शोभन योग / तैतिल",
-        shubhaVal: "सुबह 11:36 – दोपहर 12:24 (अभिजित मुहूर्त)",
-        rahuVal: "सुबह 10:30 – 12:00",
-        monthVal: "शुद्ध मास (अधिकमास दोष रहित)",
-        evVal: "🚩 व्रत एवं पर्व: आज परम पवित्र प्रदोष व्रत (भगवान शिव की पूजा)",
-        rashis: [
-            { n: "मेष (Aries)", s: "♈", t: "कार्यक्षेत्र में उन्नति और नए अवसर प्राप्त होंगे। आर्थिक मामलों में सतर्क रहें।" },
-            { n: "वृषभ (Taurus)", s: "♉", t: "पारिवारिक शांति बनी रहेगी। नए निवेश से व्यापार में लाभ होगा।" },
-            { n: "मिथुन (Gemini)", s: "♊", t: "रचनात्मक कार्यों में सफलता मिलेगी। स्वास्थ्य अनुकूल रहेगा।" },
-            { n: "कर्क (Cancer)", s: "♋", t: "मानसिक प्रसन्नता में वृद्धि होगी। रुका हुआ धन वापस मिलने के योग हैं।" },
-            { n: "सिंह (Leo)", s: "♌", t: "महत्वपूर्ण निर्णयों में शुभचिंतकों की सलाह लाभकारी रहेगी।" },
-            { n: "कन्या (Virgo)", s: "♍", t: "व्यापार में नई साझेदारी के अवसर मिलेंगे। छात्रों के लिए समय उत्तम है।" },
-            { n: "तुला (Libra)", s: "♎", t: "आय के नए स्रोत विकसित हो सकते हैं। मानसिक शांति का अनुभव होगा।" },
-            { n: "वृश्चिक (Scorpio)", s: "♏", t: "कार्यस्थल पर अतिरिक्त जिम्मेदारियां मिल सकती हैं। धैर्य बनाए रखें।" },
-            { n: "धनु (Sagittarius)", s: "♐", t: "भाग्य आपका साथ देगा। दूर के संपर्कों से शुभ समाचार मिलेगा।" },
-            { n: "मकर (Capricorn)", s: "♑", t: "पुरानी समस्याओं का समाधान होगा। परिजनों के साथ संबंध मधुर रहेंगे।" },
-            { n: "कुंभ (Aquarius)", s: "♒", t: "नए कार्यों में सफलता प्राप्त होगी। आर्थिक स्थिरता बनी रहेगी।" },
-            { n: "मीन (Pisces)", s: "♓", t: "अध्यात्म में रुचि बढ़ेगी। पारिवारिक वातावरण सुखद रहेगा।" }
-        ]
-    }
-};
-
-function renderPanchangUI(lang) {
-    if (!pjDataStore[lang]) lang = 'en';
-    const d = pjDataStore[lang];
-    
-    const bText = document.getElementById("panchangBtnText");
-    if (bText) bText.innerText = d.btn;
-
-    document.getElementById("modalHeading").innerText = d.head;
-    document.getElementById("lblDay").innerText = d.day;
-    document.getElementById("lblTithi").innerText = d.tithi;
-    document.getElementById("lblNakshatra").innerText = d.nak;
-    document.getElementById("lblYogaKaran").innerText = d.yk;
-    document.getElementById("lblShubha").innerText = d.shubha;
-    document.getElementById("lblRahu").innerText = d.rahu;
-    document.getElementById("lblMonthStatus").innerText = d.month;
-    document.getElementById("lblHoroscopeHead").innerText = d.hHead;
-
-    const weekdayIdx = new Date().getDay();
-    document.getElementById("pjBar").innerText = d.days[weekdayIdx];
-    document.getElementById("pjTithi").innerText = d.tithiVal;
-    document.getElementById("pjNakshatra").innerText = d.nakVal;
-    document.getElementById("pjYogaKaran").innerText = d.ykVal;
-    document.getElementById("pjShubha").innerText = d.shubhaVal;
-    document.getElementById("pjRahu").innerText = d.rahuVal;
-    document.getElementById("pjAdhimas").innerText = d.monthVal;
-    document.getElementById("pjEventsBox").innerText = d.evVal;
-
-        const box = document.getElementById("pjRashiContainer");
-    box.innerHTML = "";
-    d.rashis.forEach(r => {
-        const item = document.createElement("div");
-        item.style = "flex: 1 1 calc(50% - 12px); min-width: 260px; max-width: 100%; background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:12px 14px; box-sizing:border-box; word-break:break-word; overflow-wrap:break-word; white-space:normal;";
-        item.innerHTML = `<div style="font-weight:bold; color:#b71c1c; margin-bottom:6px; font-size:15px;">${r.s} ${r.n}</div><div style="font-size:13px; color:#333; line-height:1.55; white-space:normal; word-break:break-word;">${r.t}</div>`;
-        box.appendChild(item);
-    });
-
-    const sel = document.getElementById("panchangLangSelect");
-    if (sel) sel.value = lang;
-}
-
-function switchPanchangLang(lang) {
-    localStorage.setItem("user_selected_panchang_lang", lang);
-    renderPanchangUI(lang);
-}
-
-function togglePanchangModal() {
-    const modal = document.getElementById("panchangModal");
-    if (!modal) return;
-    if (modal.style.display === "none" || modal.style.display === "") {
-        modal.style.display = "flex";
-        const currentLang = localStorage.getItem("user_selected_panchang_lang") || "en";
-        renderPanchangUI(currentLang);
-    } else {
-        modal.style.display = "none";
-    }
-}
-
-document.addEventListener("DOMContentLoaded", function() {
-    const activeLang = localStorage.getItem("user_selected_panchang_lang") || "en";
-    renderPanchangUI(activeLang);
-});
-</script>
-        <button onclick="filterNews('Regional & Cities', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-slate-200 hover:border-slate-400 transition"><i class="fas fa-map-marker-alt text-emerald-600"></i> Regional & Cities</button>
-        <button onclick="filterNews('National', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-slate-200 hover:border-slate-400 transition"><i class="fas fa-flag text-rose-600"></i> National</button>
-        <button onclick="filterNews('World', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-slate-200 hover:border-slate-400 transition"><i class="fas fa-globe-americas text-blue-600"></i> International / World</button>
-        <button onclick="filterNews('Business', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-slate-200 hover:border-slate-400 transition"><i class="fas fa-chart-line text-emerald-700"></i> Markets</button>
-        <button onclick="filterNews('Sports', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-slate-200 hover:border-slate-400 transition"><i class="fas fa-futbol text-orange-600"></i> Sports</button>
-        <button onclick="filterNews('Technology', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-slate-200 hover:border-slate-400 transition"><i class="fas fa-microchip text-indigo-600"></i> Tech & AI</button>
-        <button onclick="filterNews('Entertainment', this)" class="cat-btn font-semibold px-3 py-1.5 rounded-md bg-white border border-slate-200 hover:border-slate-400 transition"><i class="fas fa-film text-purple-600"></i> Entertainment</button>
-      </div>
-      <div class="flex items-center gap-2 whitespace-nowrap pl-4 border-l border-slate-200">
-        
-        
-        <a href="/submit-news" class="font-bold px-3 py-1.5 rounded-md bg-stone-700 hover:bg-stone-800 text-white transition flex items-center gap-1 shadow-xs"><i class="fas fa-pen-nib"></i> Write News</a>
-        <a href="/recipes" class="font-bold px-3 py-1.5 rounded-md bg-orange-700 hover:bg-orange-800 text-white transition flex items-center gap-1 shadow-xs"><i class="fas fa-utensils"></i> Recipes</a>
-      </div>
-    </nav>
-  </header>
-
-  <!-- ৪. মূল কন্টেন্ট ও অনন্য আর্কিটেকচার লেআউট -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-    
-    <!-- সেকশন টাইটেল -->
-    <div class="flex items-center justify-between border-b-2 border-slate-900 pb-3 mb-8">
-      <div class="flex items-center gap-3">
-        <span class="w-3.5 h-3.5 bg-amber-600 rounded-sm inline-block"></span>
-        <h2 class="headline-font text-2xl sm:text-3xl font-black text-slate-900 tracking-tight"></h2>
-      </div>
-      <span class="text-xs font-semibold text-slate-500 flex items-center gap-1.5">
-        <i class="fas fa-sync-alt animate-spin text-amber-600"></i> 60-Second Auto-Rotation Active
-      </span>
-    </div>
-
-    <!-- অনন্য লিড হিরো ডিসপ্লে (Architectural Spotlight Showcase) -->
-    {% if lead %}
-    <div class="mb-10 bg-gradient-to-br from-slate-950 via-slate-900 to-stone-900 rounded-3xl overflow-hidden shadow-2xl border border-slate-800 grid grid-cols-1 lg:grid-cols-12 group">
-      <div class="lg:col-span-7 relative h-72 sm:h-96 lg:h-auto overflow-hidden">
-        <img src="{{ lead.image }}" alt="{{ lead.title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700 opacity-90">
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent lg:hidden"></div>
-        <span class="absolute top-4 left-4 bg-amber-500 text-slate-950 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full shadow-lg">
-          Top Spotlight
-        </span>
-      </div>
-      <div class="lg:col-span-5 p-6 sm:p-10 flex flex-col justify-center text-white">
-        <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-amber-400 mb-3">
-          <span>{{ lead.category }}</span> &bull; <span>{{ lead.date }}</span>
-        </div>
-        <h3 class="headline-font text-2xl sm:text-3xl font-extrabold leading-snug mb-4 group-hover:text-amber-200 transition">
-          <a href="/news/{{ lead.id }}">{{ lead.title }}</a>
-        </h3>
-        <p class="text-slate-300 text-xs sm:text-sm leading-relaxed mb-6 line-clamp-3">
-          {{ lead.summary }}
-        </p>
-        <div class="flex items-center justify-between pt-4 border-t border-slate-800">
-<!-- Dispatch Link Removed -->
-          <button onclick="likeArticle({{ lead.id }}, this)" class="text-xs font-bold text-slate-400 hover:text-rose-400 flex items-center gap-1.5 transition">
-            <i class="fas fa-heart text-rose-500"></i> <span>{{ lead.likes }}</span>
-          </button>
-        </div>
-      </div>
-    </div>
-    {% endif %}
-
-    <!-- ৫. অনন্য কার্ড গ্রিড (Modern Glass Card Layout) -->
-    <div id="newsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {% for item in news_list[1:] %}
-      <article class="news-card-unique bg-white border border-slate-200/80 rounded-2xl overflow-hidden flex flex-col shadow-xs" data-category="{{ item.category }}">
-        <div class="relative h-48 overflow-hidden bg-slate-100">
-          <img src="{{ item.image }}" alt="{{ item.title }}" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition duration-500">
-          <span class="absolute top-3 left-3 bg-slate-900/90 backdrop-blur-xs text-amber-300 text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-md shadow-sm">
-            {{ item.category }}
-          </span>
-        </div>
-        <div class="p-5 flex flex-col flex-grow justify-between">
-          <div>
-            <div class="text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-              <i class="far fa-clock"></i> {{ item.date }}
-            </div>
-            <h4 class="headline-font text-lg font-bold text-slate-900 leading-snug hover:text-amber-700 transition mb-2">
-              <a href="/news/{{ item.id }}">{{ item.title }}</a>
-            </h4>
-            <p class="text-xs text-slate-700 leading-relaxed line-clamp-2 mb-4 font-normal">
-              {{ item.summary }}
-            </p>
-          </div>
-          <div class="flex items-center justify-between pt-3 border-t border-slate-100 text-xs">
-<div></div>
-            <button onclick="likeArticle({{ item.id }}, this)" class="text-slate-600 hover:text-rose-500 flex items-center gap-1 transition">
-              <i class="fas fa-heart text-rose-500"></i> <span>{{ item.likes }}</span>
-            </button>
-          </div>
-        </div>
-      </article>
-      {% endfor %}
-    </div>
-
-  </main>
-
-  <!-- ৬. ফুটার (সম্পূর্ণ সংবিধিবদ্ধ ৫টি লিগ্যাল পেজ সহ) -->
-  <footer class="bg-[#0f172a] text-slate-400 text-xs py-10 mt-16 text-center border-t border-slate-800">
-    <div class="max-w-7xl mx-auto px-4 flex flex-wrap justify-center gap-6 mb-4 font-semibold text-slate-300">
-      <a href="/about-us" class="hover:text-white transition">About Us</a> | <a href="/editorial-charter" style="color: inherit; text-decoration: none;">Editorial Charter</a>
-      <a href="/contact-us" class="hover:text-white transition">Contact Us</a>
-      <a href="/privacy-policy" class="hover:text-white transition">Privacy Policy</a>
-      <a href="/terms" class="hover:text-white transition">Terms of Service</a>
-      <a href="/disclaimer" class="hover:text-white transition">Disclaimer</a>
-      
-      
-    </div>
-    <p class="text-slate-400">&copy; 2026 24 Early News. Founder & Director: DWIPRAJ MALLICK.</p>
-  </footer>
-
-  <!-- জাভাস্ক্রিপ্ট কন্ট্রোলার (সার্চ, ফিল্টার, লাইক এবং ৬০ সেকেন্ড রোটেশন) -->
-  <script>
-    function filterNews(cat, btn) {
-      document.querySelectorAll('.cat-btn').forEach(b => {
-        b.classList.remove('bg-slate-800', 'text-white', 'active');
-        b.classList.add('bg-white', 'text-slate-800');
-      });
-      btn.classList.add('bg-slate-800', 'text-white', 'active');
-      btn.classList.remove('bg-white');
-
-      const cards = document.querySelectorAll('.news-card-unique');
-      cards.forEach(card => {
-        if (cat === 'ALL' | card.getAttribute('data-category') === cat) {
-          card.style.display = 'flex';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    }
-
-        function handleCountrySearch(event) {
-      if (event.key === 'Enter') {
-        const query = document.getElementById('searchInput').value.trim();
-        if (!query) return;
-        fetchCountryNews(query);
-      } else {
-        searchArticles();
-      }
-    }
-
-    function fetchCountryNews(country) {
-      const grid = document.getElementById('newsGrid');
-      const originalHtml = grid.innerHTML;
-      
-      grid.innerHTML = `
-        <div class="col-span-full py-16 text-center">
-          <i class="fas fa-satellite-dish fa-spin text-3xl text-amber-600 mb-3"></i>
-          <h3 class="text-base font-bold text-slate-900">Connecting to Global Wire for ${country.toUpperCase()}...</h3>
-          <p class="text-xs text-slate-500 mt-1">Retrieving latest dispatches from all 195 sovereign nations...</p>
-        </div>
-      `;
-
-      fetch(`/api/country-news?country=${encodeURIComponent(country)}`)
-        .then(res => res.json())
-        .then(data => {
-          if (data.status === 'success' && data.articles.length > 0) {
-            let cardsHtml = '';
-            data.articles.forEach(item => {
-              cardsHtml += `
-                <article class="news-card-unique bg-white border border-slate-200/80 rounded-2xl overflow-hidden flex flex-col shadow-xs" data-category="${item.category}">
-                  <div class="relative h-48 overflow-hidden bg-slate-100">
-                    <img src="${item.image}" alt="${item.title}" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition duration-500">
-                    <span class="absolute top-3 left-3 bg-slate-900/90 backdrop-blur-xs text-amber-300 text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-md shadow-sm">
-                      ${item.category}
-                    </span>
-                  </div>
-                  <div class="p-5 flex flex-col flex-grow justify-between">
+            <!-- Side Featured Stories (Col 9-12) -->
+            <div class="lg:col-span-4 flex flex-col gap-6">
+                {% for item in news[1:4] %}
+                <div class="bg-white rounded-xl overflow-hidden shadow-sm border border-slate-200 flex flex-col justify-between p-4 group hover:shadow transition">
                     <div>
-                      <div class="text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                        <i class="far fa-clock"></i> ${item.date}
-                      </div>
-                      <h4 class="headline-font text-lg font-bold text-slate-900 leading-snug hover:text-amber-700 transition mb-2">
-                        <a href="/news/${item.id}">${item.title}</a>
-                      </h4>
-                      <p class="text-xs text-slate-700 leading-relaxed line-clamp-2 mb-4 font-normal">
-                        ${item.summary}
-                      </p>
+                        <div class="aspect-[16/9] w-full rounded-lg overflow-hidden mb-3 bg-slate-100">
+                            <img src="{{ item.image if item.image else 'https://images.unsplash.com/photo-1495020689067-958852a7765e?w=800' }}" 
+                                 alt="{{ item.title }}" 
+                                 class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                                 onerror="this.src='https://images.unsplash.com/photo-1495020689067-958852a7765e?w=800';">
+                        </div>
+                        <span class="text-[11px] font-bold text-red-600 uppercase">{{ item.category if item.category else 'Update' }}</span>
+                        <h3 class="text-base font-bold text-slate-900 group-hover:text-red-600 transition leading-snug mt-1 mb-2">
+                            <a href="{{ item.link }}">{{ item.title }}</a>
+                        </h3>
                     </div>
-                    <div class="flex items-center justify-between pt-3 border-t border-slate-100 text-xs">
-                      <div></div>
-                      <button onclick="likeArticle(${item.id}, this)" class="text-slate-600 hover:text-rose-500 flex items-center gap-1 transition">
-                        <i class="fas fa-heart text-rose-500"></i> <span>${item.likes}</span>
-                      </button>
+                    <span class="text-[10px] text-slate-400 font-mono mt-2 pt-2 border-t border-slate-100">{{ item.published }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- SUBSEQUENT FEED GRID -->
+        <div class="border-t-2 border-slate-900 pt-6 mb-6 flex justify-between items-center">
+            <h3 class="text-xl font-black uppercase tracking-tight text-slate-900 font-serif">
+                সর্বশেষ সংবাদ ও গভীর বিশ্লেষণ
+            </h3>
+            <span class="text-xs font-semibold text-slate-500">Live Global Feed</span>
+        </div>
+
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            {% for item in news[4:] %}
+            <article class="bg-white rounded-xl overflow-hidden shadow-sm border border-slate-200 flex flex-col justify-between group hover:shadow-md transition">
+                <div>
+                    <div class="aspect-[16/10] overflow-hidden bg-slate-100">
+                        <img src="{{ item.image if item.image else 'https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=800' }}" 
+                             alt="{{ item.title }}" 
+                             class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                             onerror="this.src='https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=800';">
                     </div>
-                  </div>
-                </article>
-              `;
-            });
-            grid.innerHTML = cardsHtml;
-          } else {
-            searchArticles();
-          }
-        })
-        .catch(err => {
-          grid.innerHTML = originalHtml;
-        });
-    }
+                    <div class="p-5">
+                        <span class="text-xs font-bold text-red-600 uppercase">{{ item.category if item.category else 'General' }}</span>
+                        <h4 class="text-lg font-bold text-slate-900 group-hover:text-red-600 transition leading-snug mt-1 mb-2">
+                            <a href="{{ item.link }}">{{ item.title }}</a>
+                        </h4>
+                        <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                            {{ item.summary | striptags | truncate(110) }}
+                        </p>
+                    </div>
+                </div>
+                <div class="px-5 pb-4 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
+                    <span class="font-mono">{{ item.published }}</span>
+                    <a href="{{ item.link }}" class="text-red-600 font-bold hover:underline">বিস্তারিত &rarr;</a>
+                </div>
+            </article>
+            {% endfor %}
+        </section>
+        {% else %}
+        <!-- Empty State -->
+        <div class="text-center py-20 bg-white rounded-2xl shadow-sm border border-slate-200">
+            <i class="fas fa-newspaper text-5xl text-slate-300 mb-4"></i>
+            <h3 class="text-xl font-bold text-slate-700">বর্তমানে কোনো সংবাদ পাওয়া যায়নি</h3>
+            <p class="text-slate-500 text-sm mt-1">খবর যোগ করতে উপরের "খবর সাবমিট" বাটনে ক্লিক করুন।</p>
+        </div>
+        {% endif %}
 
-    function searchArticles() {
-      const q = document.getElementById('searchInput').value.toLowerCase();
-      const cards = document.querySelectorAll('.news-card-unique');
-      cards.forEach(card => {
-        const text = card.innerText.toLowerCase();
-        card.style.display = text.includes(q) ? 'flex' : 'none';
-      });
-    }
+    </main>
 
-        // বৈশ্বিক ও আঞ্চলিক ভাষার ডেটাবেজ ও কোড
-    const AVAILABLE_LANGUAGES = [
-      { name: "Bengali (বাংলা)", code: "bn", aliases: ["bangla", "bengali", "bn", "ba"] },
-      { name: "Hindi (हिन्दी)", code: "hi", aliases: ["hindi", "hi", "hin"] },
-      { name: "English", code: "en", aliases: ["english", "en", "eng"] },
-      { name: "Urdu (اردو)", code: "ur", aliases: ["urdu", "ur"] },
-      { name: "Tamil (தமிழ்)", code: "ta", aliases: ["tamil", "ta"] },
-      { name: "Telugu (తెలుగు)", code: "te", aliases: ["telugu", "te"] },
-      { name: "Marathi (मराठी)", code: "mr", aliases: ["marathi", "mr"] },
-      { name: "Gujarati (ગુજરાતી)", code: "gu", aliases: ["gujarati", "gu"] },
-      { name: "Punjabi (ਪੰਜਾਬੀ)", code: "pa", aliases: ["punjabi", "pa"] },
-      { name: "Malayalam (മലയാളം)", code: "ml", aliases: ["malayalam", "ml"] },
-      { name: "Kannada (ಕನ್ನಡ)", code: "kn", aliases: ["kannada", "kn"] },
-      { name: "Odia (ଓଡ଼ିଆ)", code: "or", aliases: ["odia", "oriya", "or"] },
-      { name: "Assamese (অসমীয়া)", code: "as", aliases: ["assamese", "as"] },
-      { name: "Arabic (العربية)", code: "ar", aliases: ["arabic", "ar"] },
-      { name: "Spanish (Español)", code: "es", aliases: ["spanish", "es", "espanol"] },
-      { name: "French (Français)", code: "fr", aliases: ["french", "fr"] },
-      { name: "German (Deutsch)", code: "de", aliases: ["german", "de"] },
-      { name: "Russian (Русский)", code: "ru", aliases: ["russian", "ru"] },
-      { name: "Chinese (中文)", code: "zh-CN", aliases: ["chinese", "zh", "mandarin"] },
-      { name: "Japanese (日本語)", code: "ja", aliases: ["japanese", "ja"] }
-    ];
-
-    function showLanguageSuggestions(query) {
-      const dropdown = document.getElementById('langDropdown');
-      const q = query.trim().toLowerCase();
-      
-      if (!q) {
-        dropdown.classList.add('hidden');
-        dropdown.innerHTML = '';
-        return;
-      }
-
-      // ১ বা ২টি অক্ষর মিললেই স্বয়ংক্রিয় ফিল্টার
-      const matches = AVAILABLE_LANGUAGES.filter(lang => {
-        return lang.name.toLowerCase().includes(q) | 
-               lang.code.toLowerCase().startsWith(q) | 
-               lang.aliases.some(a => a.startsWith(q) | a.includes(q));
-      });
-
-      if (matches.length === 0) {
-        dropdown.innerHTML = '<div class="p-3 text-slate-400 text-center italic text-[11px]">No matching language found</div>';
-        dropdown.classList.remove('hidden');
-        return;
-      }
-
-      let html = '';
-      matches.slice(0, 8).forEach(lang => {
-        html += `<div onclick="selectLanguage('${lang.code}', '${lang.name}')" class="px-3.5 py-2 hover:bg-amber-50 cursor-pointer flex items-center justify-between transition group">
-                  <span class="font-medium text-slate-800 group-hover:text-amber-900">${lang.name}</span>
-                  <span class="text-[10px] uppercase font-bold text-slate-400 group-hover:text-amber-700 bg-slate-100 group-hover:bg-amber-100 px-1.5 py-0.5 rounded">${lang.code}</span>
-                 </div>`;
-      });
-
-      dropdown.innerHTML = html;
-      dropdown.classList.remove('hidden');
-    }
-
-    function selectLanguage(code, name) {
-      document.getElementById('langSearchInput').value = name;
-      document.getElementById('langDropdown').classList.add('hidden');
-      applyTranslation(code);
-    }
-
-    function handleLangKey(event) {
-      if (event.key === 'Enter') {
-        executeLanguageSearch();
-      }
-    }
-
-    function executeLanguageSearch() {
-      const q = document.getElementById('langSearchInput').value.trim().toLowerCase();
-      if (!q) return;
-
-      const found = AVAILABLE_LANGUAGES.find(lang => 
-        lang.name.toLowerCase().includes(q) | 
-        lang.code.toLowerCase() === q | 
-        lang.aliases.some(a => a.toLowerCase() === q)
-      );
-
-      const targetCode = found ? found.code : (q.length === 2 ? q : "bn");
-      applyTranslation(targetCode);
-    }
-
-    function applyTranslation(code) {
-      document.getElementById('langDropdown').classList.add('hidden');
-      const cleanUrl = window.location.href.split('#')[0];
-      window.open(`https://translate.google.com/translate?sl=auto&tl=${code}&u=${encodeURIComponent(cleanUrl)}`, '_blank');
-    }
-
-    // ড্রপডাউনের বাইরে ক্লিক করলে স্বয়ংক্রিয় বন্ধ হয়ে যাওয়া
-    document.addEventListener('click', function(e) {
-      const box = document.getElementById('langSearchInput');
-      const dropdown = document.getElementById('langDropdown');
-      if (dropdown && !dropdown.contains(e.target) && e.target !== box) {
-        dropdown.classList.add('hidden');
-      }
-    });
-
-    function executeLanguageSearchLegacy() {
-      const q = document.getElementById('langSearchInput').value.trim();
-      if (!q) return;
-      window.open(`https://translate.google.com/translate?sl=auto&tl=bn&u=${encodeURIComponent(window.location.href)}`, '_blank');
-    }
-
-    function likeArticle(id, btn) {
-      fetch(`/api/like/${id}`, { method: 'POST' })
-        .then(res => res.json())
-        .then(data => {
-          if (data.status === 'success') {
-            btn.querySelector('span').innerText = data.likes;
-          }
-        });
-    }
-
-    // প্রতি ৬০ সেকেন্ডে স্বয়ংক্রিয়ভাবে খবরের রোটেশন চালু রাখা
-    setTimeout(() => {
-      window.location.reload();
-    }, 60000);
-      // লাইভ ব্রেকিং নিউজ অটো-চেক এবং স্বয়ংক্রিয় বারে যুক্ত করা (প্রতি ২০ সেকেন্ড)
-    let knownTickerFirst = "";
-    function checkLiveBreakingNews() {
-      fetch('/api/live-ticker')
-        .then(res => res.json())
-        .then(data => {
-          if (data.status === 'success' && data.ticker && data.ticker.length > 0) {
-            const latest = data.ticker[0];
-            if (knownTickerFirst && knownTickerFirst !== latest) {
-              let updatedHtml = "";
-              data.ticker.forEach(item => {
-                updatedHtml += `<span class="mx-6 inline-flex items-center gap-2"><i class="fas fa-bolt text-amber-400 text-xs"></i> ${item}</span>`;
-              });
-              const boxA = document.getElementById('tickerContentA');
-              const boxB = document.getElementById('tickerContentB');
-              if (boxA && boxB) {
-                boxA.innerHTML = updatedHtml;
-                boxB.innerHTML = updatedHtml;
-              }
-            }
-            knownTickerFirst = latest;
-          }
-        })
-        .catch(() => {});
-    }
-    setInterval(checkLiveBreakingNews, 20000);
-  </script>
-
-<!-- Interactive Like, Share & Comment Engine -->
-<style>
-    .news-engagement-bar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 8px 12px;
-        margin-top: 12px;
-        border-top: 1px solid #f0f0f0;
-        background: #fafafa;
-        border-radius: 6px;
-        font-size: 13px;
-    }
-    .engagement-btn {
-        background: none;
-        border: none;
-        color: #555;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        font-weight: 500;
-        transition: color 0.2s;
-        padding: 4px 8px;
-    }
-    .engagement-btn:hover { color: #e11900; }
-    .engagement-btn.liked { color: #e11900; font-weight: 700; }
-    .comments-drawer {
-        display: none;
-        background: #ffffff;
-        border: 1px solid #e5e5e5;
-        border-radius: 6px;
-        padding: 12px;
-        margin-top: 8px;
-    }
-</style>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    // সংবাদের কার্ডগুলো খুঁজে সেগুলোতে অ্যাকশন বার যুক্ত করা
-    const articleCards = document.querySelectorAll(".recipe-card, .ndtv-card, .big-story-card, [class*='news-card'], .card, article");
-    
-    articleCards.forEach((card, idx) => {
-        if (card.querySelector(".news-engagement-bar")) return;
-
-        const titleEl = card.querySelector("h1, h2, h3, h4, h5, h6, .big-story-title, a");
-        const titleText = titleEl ? titleEl.innerText.trim() : ("News Article " + (idx + 1));
-        const articleId = "art_" + Math.abs(titleText.split("").reduce((a, b) => { a = ((a << 5) - a) + b.charCodeAt(0); return a & a }, 0));
-        const currentUrl = encodeURIComponent(window.location.origin + window.location.pathname);
-        const encodedTitle = encodeURIComponent(titleText);
-
-        // লাইক কাউন্ট
-        let likes = parseInt(localStorage.getItem("likes_" + articleId) || Math.floor(Math.random() * 15 + 12));
-        let isLiked = localStorage.getItem("user_liked_" + articleId) === "true";
-
-        const bar = document.createElement("div");
-        bar.className = "news-engagement-bar";
-        bar.innerHTML = `
-            <div class="d-flex align-items-center gap-2">
-                <button class="engagement-btn ${isLiked ? 'liked' : ''}" onclick="handleLikeClick('${articleId}', this)">
-                    <i class="${isLiked ? 'fas' : 'far'} fa-heart"></i> <span class="like-num">${likes}</span>
-                </button>
-                <button class="engagement-btn" onclick="toggleCommentBox('${articleId}')">
-                    <i class="far fa-comment-dots"></i> <span class="comment-num" id="count_${articleId}">0</span>
-                </button>
+    <!-- Global Footer (CNN/BBC Standard) -->
+    <footer class="bg-slate-950 text-slate-400 text-xs border-t-4 border-red-600 mt-16 pt-12 pb-8">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            <div>
+                <a href="/" class="flex items-center gap-2 mb-3">
+                    <span class="bg-red-600 text-white font-black px-2 py-0.5 rounded-sm">24</span>
+                    <span class="text-xl font-black text-white tracking-tight uppercase font-serif">Early News</span>
+                </a>
+                <p class="text-slate-400 leading-relaxed">
+                    আন্তর্জাতিক ও জাতীয় পর্যায়ের নির্ভরযোগ্য সংবাদের ডিজিটাল প্ল্যাটফর্ম। নিরপেক্ষ সংবাদ পরিবেশনই আমাদের মূল অঙ্গীকার।
+                </p>
             </div>
-            <div class="d-flex align-items-center gap-1">
-                <a href="https://api.whatsapp.com/send?text=${encodedTitle}%20${currentUrl}" target="_blank" class="engagement-btn text-success" title="Share on WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                <a href="https://www.facebook.com/sharer/sharer.php?u=${currentUrl}" target="_blank" class="engagement-btn text-primary" title="Share on Facebook"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://twitter.com/intent/tweet?text=${encodedTitle}&url=${currentUrl}" target="_blank" class="engagement-btn text-dark" title="Share on X"><i class="fab fa-x-twitter"></i></a>
-                <button class="engagement-btn" onclick="copyNewsLink(this)" title="Copy Link"><i class="far fa-clone"></i></button>
+            <div>
+                <h4 class="text-white font-bold uppercase tracking-wider mb-3">বিভাগসমূহ</h4>
+                <ul class="space-y-1.5">
+                    <li><a href="/?cat=India" class="hover:text-white transition">জাতীয় সংবাদ</a></li>
+                    <li><a href="/?cat=World" class="hover:text-white transition">আন্তর্জাতিক</a></li>
+                    <li><a href="/?cat=Business" class="hover:text-white transition">অর্থনীতি ও বাণিজ্য</a></li>
+                    <li><a href="/?cat=Technology" class="hover:text-white transition">তথ্যপ্রযুক্তি</a></li>
+                </ul>
             </div>
-        `;
-
-        // কমেন্ট ড্রয়ার
-        const commentBox = document.createElement("div");
-        commentBox.className = "comments-drawer";
-        commentBox.id = "drawer_" + articleId;
-        commentBox.innerHTML = `
-            <div class="comment-list mb-2" id="list_${articleId}" style="max-height: 140px; overflow-y: auto; font-size: 13px;"></div>
-            <form onsubmit="submitComment(event, '${articleId}')" class="d-flex gap-2">
-                <input type="text" class="form-control form-control-sm" placeholder="Your Name" id="name_${articleId}" style="width: 30%;" required>
-                <input type="text" class="form-control form-control-sm" placeholder="Write a comment..." id="msg_${articleId}" required>
-                <button type="submit" class="btn btn-sm btn-danger px-3">Post</button>
-            </form>
-        `;
-
-        card.appendChild(bar);
-        card.appendChild(commentBox);
-
-        // সেভ করা কমেন্ট লোড
-        renderComments(articleId);
-    });
-});
-
-function handleLikeClick(id, btn) {
-    let countEl = btn.querySelector(".like-num");
-    let current = parseInt(countEl.innerText);
-    let isLiked = localStorage.getItem("user_liked_" + id) === "true";
-
-    if (!isLiked) {
-        current += 1;
-        localStorage.setItem("user_liked_" + id, "true");
-        btn.classList.add("liked");
-        btn.querySelector("i").className = "fas fa-heart";
-    } else {
-        current -= 1;
-        localStorage.removeItem("user_liked_" + id);
-        btn.classList.remove("liked");
-        btn.querySelector("i").className = "far fa-heart";
-    }
-    localStorage.setItem("likes_" + id, current);
-    countEl.innerText = current;
-}
-
-function toggleCommentBox(id) {
-    const box = document.getElementById("drawer_" + id);
-    box.style.display = (box.style.display === "block") ? "none" : "block";
-}
-
-function submitComment(e, id) {
-    e.preventDefault();
-    const name = document.getElementById("name_" + id).value.trim();
-    const msg = document.getElementById("msg_" + id).value.trim();
-    if (!name || !msg) return;
-
-    let comments = JSON.parse(localStorage.getItem("comments_" + id) || "[]");
-    comments.push({ name, msg, time: "Just now" });
-    localStorage.setItem("comments_" + id, JSON.stringify(comments));
-
-    document.getElementById("msg_" + id).value = "";
-    renderComments(id);
-}
-
-function renderComments(id) {
-    let comments = JSON.parse(localStorage.getItem("comments_" + id) || "[]");
-    let listEl = document.getElementById("list_" + id);
-    let countEl = document.getElementById("count_" + id);
-    if (!listEl) return;
-
-    countEl.innerText = comments.length;
-    listEl.innerHTML = comments.length === 0 ? '<p class="text-muted small mb-0">No comments yet. Be the first to share your thoughts!</p>' : '';
-
-    comments.forEach(c => {
-        listEl.innerHTML += `
-            <div class="border-bottom py-1">
-                <span class="fw-bold text-dark">${c.name}:</span>
-                <span class="text-secondary">${c.msg}</span>
+            <div>
+                <h4 class="text-white font-bold uppercase tracking-wider mb-3">নীতিমালা ও পরিচিতি</h4>
+                <ul class="space-y-1.5">
+                    <li><a href="/about" class="hover:text-white transition">About Us (আমাদের সম্পর্কে)</a></li>
+                    <li><a href="/contact" class="hover:text-white transition">Contact Us (যোগাযোগ)</a></li>
+                    <li><a href="/privacy" class="hover:text-white transition">Privacy Policy (গোপনীয়তা নীতি)</a></li>
+                    <li><a href="/terms" class="hover:text-white transition">Terms of Service</a></li>
+                </ul>
             </div>
-        `;
-    });
-}
+            <div>
+                <h4 class="text-white font-bold uppercase tracking-wider mb-3">অ্যাডমিন ও সম্পাদকীয় ডেস্ক</h4>
+                <p class="text-slate-400 mb-3 leading-relaxed">
+                    অনুমোদিত সাংবাদিক ও প্রতিনিধিদের জন্য সুরক্ষিত সম্পাদকীয় পোর্টাল।
+                </p>
+                <a href="/login" class="inline-block bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded text-xs font-bold transition">
+                    লগইন করুন
+                </a>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 pt-6 border-t border-slate-900 flex flex-wrap justify-between items-center text-slate-500 gap-2">
+            <p>&copy; 2026 24 Early News Network. All rights reserved.</p>
+            <p class="font-mono">Google News Compliant &bull; Fact-Checked Wire Service</p>
+        </div>
+    </footer>
 
-function copyNewsLink(btn) {
-    navigator.clipboard.writeText(window.location.href);
-    let original = btn.innerHTML;
-    btn.innerHTML = '<i class="fas fa-check text-success"></i>';
-    setTimeout(() => { btn.innerHTML = original; }, 1800);
-}
-</script>
-<script>
-document.addEventListener("DOMContentLoaded", async function() {
-    try {
-        let countryCode = "IN";
-        let currency = "INR";
-        let symbol = "₹";
-        let fxRate = 95.0; // রিয়েল টাইম ফরেক্স রেট
-
-        // ১. দর্শকের দেশ ও স্থানীয় মুদ্রা শনাক্তকরণ
-        try {
-            let geoRes = await fetch("https://ipapi.co/json/");
-            let geoData = await geoRes.json();
-            if (geoData && geoData.currency) {
-                currency = geoData.currency;
-                countryCode = geoData.country_code || "IN";
-            }
-        } catch (e) {}
-
-        // কারেন্সি সিম্বল নির্ধারণ
-        if (currency === "USD") symbol = "$";
-        else if (currency === "INR") symbol = "₹";
-        else if (currency === "BDT") symbol = "৳";
-        else if (currency === "AED") symbol = "AED ";
-        else if (currency === "GBP") symbol = "£";
-        else if (currency === "EUR") symbol = "€";
-        else symbol = currency + " ";
-
-        // ২. লাইভ আন্তর্জাতিক বিনিময় হার সংগ্রহ
-        try {
-            let fxRes = await fetch("https://open.er-api.com/v6/latest/USD");
-            let fxData = await fxRes.json();
-            if (fxData && fxData.rates && fxData.rates[currency]) {
-                fxRate = fxData.rates[currency];
-            }
-        } catch(e) {}
-
-        // ৩. আন্তর্জাতিক স্পট রেট (প্রতি ট্রয় আউন্স = ৩১.১০৩৫ গ্রাম)
-        // Gold: ~$4,150/oz, Silver: ~$57/oz, Platinum: ~$1,625/oz, Diamond: 1ct VVS certified round-cut benchmark
-        let goldOunceUSD = 4150.0;
-        let silverOunceUSD = 57.0;
-        let platOunceUSD = 1625.0;
-        let diamondUSD = 5200.0;
-
-        let gold24kPerGram = ((goldOunceUSD / 31.1035) * fxRate).toFixed(0);
-        let gold22kPerGram = (gold24kPerGram * 0.916).toFixed(0);
-        let silverPerGram = ((silverOunceUSD / 31.1035) * fxRate).toFixed(1);
-        let platPerGram = ((platOunceUSD / 31.1035) * fxRate).toFixed(0);
-        let diamondPrice = (diamondUSD * fxRate).toFixed(0);
-
-        // স্ক্রিনে বিদ্যমান বুলিয়ন ডেস্কে মান বসানো
-        let g24El = document.getElementById("rate-gold-24k");
-        let silEl = document.getElementById("rate-silver");
-        let platEl = document.getElementById("rate-plat");
-        let diaEl = document.getElementById("rate-dia");
-
-        if (g24El) g24El.innerText = `${symbol}${Number(gold24kPerGram).toLocaleString()}/g`;
-        if (silEl) silEl.innerText = `${symbol}${Number(silverPerGram).toLocaleString()}/g`;
-        if (platEl) platEl.innerText = `${symbol}${Number(platPerGram).toLocaleString()}/g`;
-        if (diaEl) diaEl.innerText = `${symbol}${Number(diamondPrice).toLocaleString()}`;
-
-        // সাধারণ টেক্সট উপাদান থাকলে সেগুলোতেও স্বয়ংক্রিয় আপডেট
-        document.querySelectorAll("*").forEach(el => {
-            if (el.children.length === 0 && el.innerText) {
-                if (el.innerText.includes("Gold 24K:")) {
-                    el.innerText = `Gold 24K: ${symbol}${Number(gold24kPerGram).toLocaleString()}/g`;
-                } else if (el.innerText.includes("Silver:")) {
-                    el.innerText = `Silver: ${symbol}${Number(silverPerGram).toLocaleString()}/g`;
-                } else if (el.innerText.includes("Platinum:")) {
-                    el.innerText = `Platinum: ${symbol}${Number(platPerGram).toLocaleString()}/g`;
-                } else if (el.innerText.includes("Diamond 1ct:")) {
-                    el.innerText = `Diamond 1ct: ${symbol}${Number(diamondPrice).toLocaleString()}`;
-                }
-            }
+    <script>
+        const now = new Date();
+        document.getElementById('live-datetime').innerText = now.toLocaleString('en-US', { 
+            weekday: 'short', month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute:'2-digit' 
         });
-
-    } catch (err) {
-        console.log("Real-time metal feed active.");
-    }
-});
-</script>
-<script>
-async function refreshLiveBullionDesk() {
-    try {
-        // লাইভ স্পট গোল্ড ও কারেন্সি ডেটা ফেচ
-        const res = await fetch("https://open.er-api.com/v6/latest/USD");
-        const data = await res.json();
-        const inrRate = (data && data.rates && data.rates.INR) ? data.rates.INR : 92.5;
-
-        // আন্তর্জাতিক গোল্ড বেঞ্চমার্ক (প্রতি ট্রয় আউন্স = ৩১.১০৩৫ গ্রাম)
-        // ভারতের আজকের অফিশিয়াল বেস রেট সমন্বয়
-        const gold24k = 14744; // বেস রেট
-        const gold22k = Math.round(gold24k * (91.6 / 99.9)); // ₹13,515
-        const gold18k = Math.round(gold24k * (75.0 / 99.9)); // ₹11,058
-        const silver = 118;
-        const platinum = 4200;
-        const diamond = "₹4,50,000";
-
-        // স্ক্রিনে সরাসরি লাইভ টেক্সট আপডেট
-        document.querySelectorAll("*").forEach(el => {
-            if (el.children.length === 0 && el.innerText) {
-                if (el.innerText.includes("Gold 24K:")) {
-                    el.innerText = `Gold 24K: ₹${gold24k.toLocaleString("en-IN")}/g`;
-                } else if (el.innerText.includes("Gold 22K:")) {
-                    el.innerText = `Gold 22K: ₹${gold22k.toLocaleString("en-IN")}/g`;
-                } else if (el.innerText.includes("Silver:")) {
-                    el.innerText = `Silver: ₹${silver.toLocaleString("en-IN")}/g`;
-                } else if (el.innerText.includes("Platinum:")) {
-                    el.innerText = `Platinum: ₹${platinum.toLocaleString("en-IN")}/g`;
-                } else if (el.innerText.includes("Diamond 1ct:") || el.innerText.includes("Diamond:")) {
-                    el.innerText = `Diamond 1ct: ${diamond}`;
-                }
-            }
-        });
-
-        const countryTag = document.getElementById("user-country-tag");
-        if (countryTag) {
-            countryTag.innerHTML = `<i class="fas fa-certificate text-warning me-1"></i>India Bullion (Live Daily Updated)`;
-        }
-    } catch(e) {
-        console.log("Daily Bullion Auto-Update fallback active.");
-    }
-}
-document.addEventListener("DOMContentLoaded", refreshLiveBullionDesk);
-</script>
-
-<script>
-// ১. খাঁটি পঞ্জিকা ও সত্য বাজারদর ডেটা ইঞ্জিন
-function updateAccurateDailyData() {
-    const now = new Date();
-    
-    // হেডার বারের রিয়েল-টাইম ফরম্যাট
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    const liveDateText = now.toLocaleDateString('en-US', options);
-
-    // হেডার ডেট বার সিঙ্ক
-    document.querySelectorAll("*").forEach(el => {
-        if (el.children.length === 0 && el.innerText) {
-            if (/^(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday),/i.test(el.innerText.trim())) {
-                el.innerText = liveDateText;
-            }
-        }
-    });
-
-    const day = now.getDate();
-    const month = now.getMonth() + 1; // 1-12
-    const weekdayIdx = now.getDay(); // 0 (Sun) - 6 (Sat)
-
-    // ২. খাঁটি অফিসিয়াল বাজারদর (IBJA মানদণ্ড)
-    const verifiedRates = {
-        gold24k: "₹14,744/g",
-        gold22k: "₹13,515/g",
-        silver: "₹118/g",
-        platinum: "₹4,200/g",
-        diamond: "₹4,50,000"
-    };
-
-    // হেডারের বুলিয়ন বারের টেক্সট সরাসরি নির্ভুল মানে প্রতিস্থাপন
-    document.querySelectorAll("*").forEach(el => {
-        if (el.children.length === 0 && el.innerText) {
-            if (el.innerText.includes("Gold 24K:")) {
-                el.innerText = `Gold 24K: ${verifiedRates.gold24k}`;
-            } else if (el.innerText.includes("Silver:")) {
-                el.innerText = `Silver: ${verifiedRates.silver}`;
-            } else if (el.innerText.includes("Platinum:")) {
-                el.innerText = `Platinum: ${verifiedRates.platinum}`;
-            } else if (el.innerText.includes("Diamond 1ct:") || el.innerText.includes("Diamond:")) {
-                el.innerText = `Diamond 1ct: ${verifiedRates.diamond}`;
-            }
-        }
-    });
-
-    // ৩. বিশুদ্ধ বৈদিক পঞ্জিকা হিসাব (গুপ্তপ্রেস ধারা)
-    const bengaliDays = ["রবিবার", "সোমবার", "মঙ্গলবার", "বুধবার", "বৃহস্পতিবার", "শুক্রবার", "শনিবার"];
-    const tithis = [
-        "শুক্লা প্রতিপদ", "শুক্লা দ্বিতীয়া", "শুক্লা তৃতীয়া", "শুক্লা চতুর্থী", "শুক্লা পঞ্চমী",
-        "শুক্লা ষষ্ঠী", "শুক্লা সপ্তমী", "শুক্লা অষ্টমী", "শুক্লা নবমী", "শুক্লা দশমী",
-        "শুক্লা একাদশী", "শুক্লা দ্বাদশী", "শুক্লা ত্রয়োদশী (প্রদোষ ব্রত)", "শুক্লা চতুর্দশী", "পূর্ণিমা",
-        "কৃষ্ণা প্রতিপদ", "কৃষ্ণা দ্বিতীয়া", "কৃষ্ণা তৃতীয়া", "কৃষ্ণা চতুর্থী", "কৃষ্ণা পঞ্চমী",
-        "কৃষ্ণা ষষ্ঠী", "কৃষ্ণা সপ্তমী", "কৃষ্ণা অষ্টমী", "কৃষ্ণা নবমী", "কৃষ্ণা দশমী",
-        "কৃষ্ণা একাদশী", "কৃষ্ণা দ্বাদশী", "কৃষ্ণা ত্রয়োদশী (প্রদোষ ব্রত)", "কৃষ্ণা চতুর্দশী (মাসিক শিবরাত্রি)", "অমাবস্যা"
-    ];
-    const nakshatras = [
-        "অশ্বিনী", "ভরণী", "কৃত্তিকা", "রোহিণী", "মৃগশিরা", "আর্দ্রা", "পুনর্বসু", "পুষ্যা", "অশ্লেষা",
-        "মঘা", "পূর্বফল্গুনী", "উত্তরফল্গুনী", "হস্ত", "চিত্রা", "স্বাতী", "বিশাখা", "অনুরাধা",
-        "জ্যেষ্ঠা", "মূল", "পূর্বাষাঢ়া", "উত্তরাষাঢ়া", "শ্রবণা", "ধনিষ্ঠা", "শতভিষা", "পূর্বভাদ্রপদ", "উত্তরভাদ্রপদ", "রেবতী"
-    ];
-    const rahuTimes = [
-        "বিকেল ০৪:৩০ – ০৬:০০", // রবি
-        "সকাল ০৭:৩০ – ০৯:০০", // সোম
-        "বিকেল ০৩:০০ – ০৪:৩০", // মঙ্গল
-        "দুপুর ১২:০০ – ০১:৩০", // বুধ
-        "দুপুর ০১:৩০ – ০৩:০০", // বৃহস্পতি
-        "সকাল ১০:৩০ – ১২:০০", // শুক্র
-        "সকাল ০৯:০০ – ১০:৩০"  // শনি
-    ];
-
-    const curBar = bengaliDays[weekdayIdx];
-    const curTithi = tithis[(day - 1) % tithis.length];
-    const curNakshatra = nakshatras[(day + month * 2) % 27];
-    const curRahu = rahuTimes[weekdayIdx];
-    const curShubha = "সকাল ১১:৩৬ – দুপুর ১২:২৪ (অভিজিৎ/অমৃতযোগ)";
-
-    // বিশেষ ব্রত/উৎসব সত্য তথ্য
-    let eventNotice = "নিত্য পূজা ও শুভকর্মের অনুকূল দিন";
-    if (curTithi.includes("ত্রয়োদশী")) eventNotice = "আজ পরম পবিত্র প্রদোষ ব্রত (শিব আরাধনা)";
-    else if (curTithi.includes("কৃষ্ণা চতুর্দশী")) eventNotice = "আজ মাসিক শিবরাত্রি ব্রত";
-    else if (day >= 14 && day <= 16 && [1, 4, 7, 10].includes(month)) eventNotice = "আজ সৌর সংক্রান্তি";
-
-    // পঞ্জিকা এলিমেন্ট আপডেট
-    const pjDateEl = document.getElementById("pjDate");
-    const pjBarEl = document.getElementById("pjBar");
-    const pjTithiEl = document.getElementById("pjTithi");
-    const pjNakEl = document.getElementById("pjNakshatra");
-    const pjRahuEl = document.getElementById("pjRahu");
-    const pjShubhaEl = document.getElementById("pjShubha");
-    const pjEventsEl = document.getElementById("pjEventsBox");
-
-    if (pjDateEl) pjDateEl.innerText = liveDateText;
-    if (pjBarEl) pjBarEl.innerText = curBar;
-    if (pjTithiEl) pjTithiEl.innerText = curTithi;
-    if (pjNakEl) pjNakEl.innerText = curNakshatra;
-    if (pjRahuEl) pjRahuEl.innerText = curRahu;
-    if (pjShubhaEl) pjShubhaEl.innerText = curShubha;
-    if (pjEventsEl) pjEventsEl.innerText = `🚩 ব্রত ও তাৎপর্য: ${eventNotice}`;
-}
-
-// প্রতি মিনিটে স্বয়ংক্রিয় রিফ্রেশ যাতে রাত ১২টা পার হওয়ার সাথে সাথে নিজে থেকেই ডেটা বদলে যায়
-document.addEventListener("DOMContentLoaded", function() {
-    updateAccurateDailyData();
-    setInterval(updateAccurateDailyData, 60000);
-});
-</script>
-<!-- Dedicated 3-Language Global Switcher -->
-<div id="custom-lang-wrapper" style="display:inline-flex; align-items:center; margin: 0 8px; vertical-align: middle;">
-    <select id="userLangSelect" onchange="applyGlobalLanguage(this.value)" style="padding: 4px 8px; border-radius: 6px; border: 1px solid #ced4da; font-size: 13px; font-weight: bold; background: #ffffff; color: #212529; cursor: pointer; outline: none; box-shadow: 0 1px 3px rgba(0,0,0,0.08);">
-        <option value="en">English</option>
-        <option value="bn">বাংলা (Bengali)</option>
-        <option value="hi">हिन्दी (Hindi)</option>
-    </select>
-</div>
-
-
-<script type="text/javascript">
-function googleTranslateElementInit() {
-    new google.translate.TranslateElement({
-        pageLanguage: 'en',
-        includedLanguages: 'en,bn,hi',
-        autoDisplay: false
-    }, 'google_translate_element');
-}
-
-function applyGlobalLanguage(lang) {
-    if (!['en', 'bn', 'hi'].includes(lang)) lang = 'en';
-    localStorage.setItem("selected_portal_lang", lang);
-
-    if (lang === 'en') {
-        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=" + window.location.hostname + "; path=/;";
-        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=." + window.location.hostname + "; path=/;";
-    } else {
-        document.cookie = "googtrans=/en/" + lang + "; path=/;";
-        document.cookie = "googtrans=/en/" + lang + "; domain=" + window.location.hostname + "; path=/;";
-        document.cookie = "googtrans=/en/" + lang + "; domain=." + window.location.hostname + "; path=/;";
-    }
-
-    // পঞ্জিকা মডাল থাকলে তার ভাষা সিঙ্ক
-    if (typeof switchPanchangLang === 'function') {
-        switchPanchangLang(lang);
-    }
-
-    window.location.reload();
-}
-
-document.addEventListener("DOMContentLoaded", function() {
-    const currentLang = localStorage.getItem("selected_portal_lang") || "en";
-    const dropdown = document.getElementById("userLangSelect");
-    if (dropdown) dropdown.value = currentLang;
-
-    // হেডার বারে পুরোনো ১৯৫ দেশের সিলেক্টর থাকলে তার জায়গায় সুন্দরভাবে প্রতিস্থাপন
-    const oldCountryBox = document.querySelector(".search-language, [placeholder*='195 Countries']");
-    const myWrapper = document.getElementById("custom-lang-wrapper");
-    if (oldCountryBox && myWrapper && oldCountryBox.parentElement) {
-        oldCountryBox.parentElement.style.display = "none";
-    }
-});
-</script>
-
-<style>
-/* গুগল অনুবাদের বাড়তি বার বা ফ্রেম যেন সাইটের ডিজাইন নষ্ট না করে */
-.goog-te-banner-frame.skiptranslate, .goog-te-gadget-simple { display: none !important; }
-body { top: 0px !important; }
-</style>
+    </script>
 </body>
 </html>
