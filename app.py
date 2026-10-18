@@ -733,3 +733,7 @@ def api_daily_panchang():
 @app.route('/ads.txt')
 def ads_txt():
     return send_from_directory('static', 'ads.txt', mimetype='text/plain')
+
+@app.route('/ads.txt')
+def serve_ads_txt():
+    return send_from_directory('static', 'ads.txt', mimetype='text/plain')
