@@ -82,11 +82,75 @@
     <!-- Main Container -->
     <main class="max-w-7xl mx-auto px-4 py-8">
         
-        <!-- News Grid Feed -->
+        <!-- NDTV/BBC Standard News Layout: Big Lead + Compact Side/Bottom Feeds -->
         {% set display_articles = news if news else (news_list if news_list else []) %}
         {% if display_articles and display_articles|length > 0 %}
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-4">
-            {% for item in display_articles %}
+        
+        <!-- SECTION 1: TOP HERO (Big Lead News + Side Stories) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 my-6">
+            <!-- Big Breaking / Lead Story (Col 1-8) -->
+            <div class="lg:col-span-8 bg-white rounded-xl overflow-hidden shadow-xs border border-gray-200 flex flex-col justify-between group hover:shadow-md transition">
+                <div>
+                    <div class="relative aspect-[16/9] overflow-hidden bg-slate-900">
+                        <img src="{{ display_articles[0].image }}" alt="{{ display_articles[0].title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200';">
+                        <span class="absolute top-4 left-4 bg-red-600 text-white text-xs font-black uppercase tracking-wider px-3 py-1 rounded shadow">
+                            {{ display_articles[0].category if display_articles[0].category else 'Breaking Lead' }}
+                        </span>
+                    </div>
+                    <div class="p-6">
+                        <span class="text-xs text-slate-400 font-mono block mb-2">{{ display_articles[0].published }}</span>
+                        <h2 class="text-2xl md:text-3xl font-black text-slate-900 group-hover:text-red-600 transition leading-snug mb-3">
+                            <a href="{{ display_articles[0].link }}" class="translatable-text">{{ display_articles[0].title }}</a>
+                        </h2>
+                        <div class="text-sm text-slate-600 line-clamp-3 leading-relaxed translatable-text">
+                            {{ display_articles[0].summary | striptags | truncate(220) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="px-6 pb-5 pt-3 border-t border-gray-100 flex items-center justify-between text-xs text-slate-400">
+                    <span class="font-bold text-red-600 flex items-center gap-1">
+                        <a href="{{ display_articles[0].link }}" data-i18n="read_more">Read Full Story &rarr;</a>
+                    </span>
+                    <span class="font-mono text-[11px]">Primary Dispatch</span>
+                </div>
+            </div>
+
+            <!-- Side Stories (Col 9-12: Compact Vertical List) -->
+            <div class="lg:col-span-4 flex flex-col gap-4">
+                <div class="bg-red-700 text-white text-xs font-black uppercase px-3 py-2 rounded-t-lg tracking-wider" data-i18n="top_highlights">
+                    Top Highlights / শীর্ষ সংবাদ
+                </div>
+                {% for item in display_articles[1:4] %}
+                <div class="bg-white rounded-lg p-3.5 border border-gray-200 shadow-xs flex gap-3 group hover:shadow transition">
+                    {% if item.image %}
+                    <div class="w-24 h-20 shrink-0 rounded overflow-hidden bg-gray-100">
+                        <img src="{{ item.image }}" alt="{{ item.title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400';">
+                    </div>
+                    {% endif %}
+                    <div class="flex flex-col justify-between overflow-hidden">
+                        <div>
+                            <span class="text-[10px] font-bold text-red-600 uppercase block">{{ item.category if item.category else 'Update' }}</span>
+                            <h4 class="text-xs font-bold text-slate-900 group-hover:text-red-600 transition line-clamp-2 leading-tight mt-0.5">
+                                <a href="{{ item.link }}" class="translatable-text">{{ item.title }}</a>
+                            </h4>
+                        </div>
+                        <span class="text-[10px] text-slate-400 font-mono mt-1">{{ item.published }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- SECTION 2: SUBSEQUENT NEWS GRID -->
+        <div class="border-t-2 border-slate-900 pt-5 mb-5 flex justify-between items-center">
+            <h3 class="text-lg font-black uppercase tracking-tight text-slate-900 font-serif flex items-center gap-2" data-i18n="other_news">
+                <span class="w-2.5 h-2.5 bg-red-600 rounded-full"></span> Latest Dispatches &amp; Field Reports
+            </h3>
+            <span class="text-xs font-semibold text-slate-400 font-mono">Realtime Stream</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
+            {% for item in display_articles[4:] %}
             <article class="bg-white rounded-lg overflow-hidden shadow-xs border border-gray-200 flex flex-col justify-between group hover:shadow-md transition">
                 <div>
                     {% if item.image %}
@@ -94,6 +158,24 @@
                         <img src="{{ item.image }}" alt="{{ item.title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800';">
                     </div>
                     {% endif %}
+                    <div class="p-4">
+                        <span class="text-[10px] font-bold text-red-600 uppercase">{{ item.category if item.category else 'General' }}</span>
+                        <h4 class="text-sm font-bold text-slate-900 group-hover:text-red-600 transition leading-snug mt-1 mb-2">
+                            <a href="{{ item.link }}" class="translatable-text">{{ item.title }}</a>
+                        </h4>
+                        <div class="text-xs text-slate-600 line-clamp-2 leading-relaxed translatable-text">
+                            {{ item.summary | striptags | truncate(110) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="px-4 pb-3 pt-2 border-t border-gray-100 flex items-center justify-between text-[11px] text-slate-400">
+                    <span class="font-mono text-[10px]">{{ item.published }}</span>
+                    <a href="{{ item.link }}" class="text-red-600 font-bold hover:underline" data-i18n="read_more">Read More &rarr;</a>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        {% endif %}
                     <div class="p-4">
                         <span class="text-[10px] font-bold text-red-600 uppercase">{{ item.category if item.category else 'Top News' }}</span>
                         <h3 class="text-base font-bold text-gray-900 group-hover:text-red-600 transition leading-snug mt-1 mb-2">
@@ -184,29 +266,66 @@
 
     <!-- Script Engine -->
     <script>
+        // মেমরিতে আসল ইংরেজি টেক্সট সংরক্ষণ
+        const originalTextStore = new Map();
+
+        async function translateAllNews(targetLang) {
+            if (targetLang === 'en') {
+                originalTextStore.forEach((origText, element) => {
+                    element.innerText = origText;
+                });
+                return;
+            }
+
+            const elements = document.querySelectorAll('.translatable-text');
+            for (const el of elements) {
+                if (!originalTextStore.has(el)) {
+                    originalTextStore.set(el, el.innerText.trim());
+                }
+
+                const sourceText = originalTextStore.get(el);
+                if (!sourceText) continue;
+
+                try {
+                    // দ্রুতগতির ক্লায়েন্ট-সাইড অনুবাদ ইঞ্জিন
+                    const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${targetLang}&dt=t&q=${encodeURIComponent(sourceText)}`);
+                    const data = await res.json();
+                    if (data && data[0]) {
+                        const translated = data[0].map(s => s[0]).join('');
+                        el.innerText = translated;
+                    }
+                } catch (err) {
+                    console.error("Translation stream error:", err);
+                }
+            }
+        }
+
         const TRANSLATIONS = {
             en: {
                 live: "Live News", network: "Global Newsroom Network", editorial_desk: "Editorial Desk",
                 nav_home: "Home", nav_india: "India", nav_world: "World", nav_business: "Business", nav_tech: "Tech", nav_sports: "Sports",
                 nav_panchang: "Panchang", nav_horoscope: "Horoscope", breaking: "Breaking",
+                top_highlights: "Top Highlights", other_news: "Latest Dispatches & Field Reports",
                 ticker_1: "24 Early News delivers verified, real-time dispatches with full editorial governance.",
                 ticker_2: "Global breaking updates streaming 24/7 with strict fact-checking standards.",
                 ticker_3: "Independent ground reporting covering national affairs, economy, and technology.",
                 read_more: "Read More →", footer_network: "24 Early News Network", footer_rights: "Founded & Published by", footer_all: "All rights reserved."
             },
             bn: {
-                live: "লাইভ নিউজ", network: "স্ট্যান্ডার্ড নিউজরুম নেটওয়ার্ক", editorial_desk: "এডিটর ডেস্ক",
+                live: "লাইভ নিউজ", network: "আন্তর্জাতিক নিউজরুম নেটওয়ার্ক", editorial_desk: "এডিটর ডেস্ক",
                 nav_home: "হোম", nav_india: "ভারত", nav_world: "বিশ্ব", nav_business: "ব্যবসা", nav_tech: "প্রযুক্তি", nav_sports: "খেলাধুলা",
                 nav_panchang: "পঞ্জিকা", nav_horoscope: "রাশিফল", breaking: "ব্রেকিং নিউজ",
+                top_highlights: "শীর্ষ সংবাদ", other_news: "সর্বশেষ অন্যান্য সংবাদ ও গ্রাউন্ড রিপোর্ট",
                 ticker_1: "২৪ আর্লি নিউজ সম্পূর্ণ সম্পাদকীয় নিয়ম মেনে যাচাইকৃত এবং রিয়েল-টাইম সংবাদ পরিবেশন করে।",
                 ticker_2: "সারাদেশের গুরুত্বপূর্ণ ও সর্বশেষ ব্রেকিং আপডেট সরাসরি গ্রাউন্ড ডেস্কে।",
                 ticker_3: "জাতীয়, আন্তর্জাতিক ও অর্থনৈতিক খবরের নিরপেক্ষ ও বস্তুনিষ্ঠ পরিবেশনা।",
                 read_more: "আরও পড়ুন →", footer_network: "২৪ আর্লি নিউজ নেটওয়ার্ক", footer_rights: "প্রতিষ্ঠিত ও প্রকাশিত করেছেন", footer_all: "সর্বস্বত্ব সংরক্ষিত।"
             },
             hi: {
-                live: "लाइव न्यूज़", network: "स्टैंडर्ड न्यूज़रूम नेटवर्क", editorial_desk: "संपादकीय डेस्क",
+                live: "लाइव न्यूज़", network: "ग्लोबल न्यूज़रूम नेटवर्क", editorial_desk: "संपादकीय डेस्क",
                 nav_home: "होम", nav_india: "भारत", nav_world: "विश्व", nav_business: "व्यापार", nav_tech: "टेक", nav_sports: "खेल",
                 nav_panchang: "पंचांग", nav_horoscope: "राशिफल", breaking: "ब्रेकिंग न्यूज़",
+                top_highlights: "प्रमुख समाचार", other_news: "ताज़ा अन्य समाचार एवं ग्राउंड रिपोर्ट",
                 ticker_1: "24 Early News पूर्ण संपादकीय शासन के साथ सत्यापित, वास्तविक समय की खबरें प्रदान करता है।",
                 ticker_2: "देश और दुनिया की हर बड़ी और अहम खबर सबसे पहले हमारी टीम द्वारा।",
                 ticker_3: "राष्ट्रीय, अंतर्राष्ट्रीय, व्यापार और तकनीकी क्षेत्र की निष्पक्ष ग्राउंड रिपोर्ट।",
@@ -226,6 +345,9 @@
             });
             const selector = document.getElementById('siteLangSelector');
             if (selector) selector.value = lang;
+
+            // খবরের শিরোনাম ও বিবরণ সম্পূর্ণ অনুবাদ করা
+            translateAllNews(lang);
         }
 
         document.addEventListener('DOMContentLoaded', () => {
