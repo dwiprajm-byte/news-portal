@@ -178,57 +178,111 @@
         {% endif %}
     </main>
 
-    <!-- 🕉️ BONG CALENDAR MODAL -->
+    
+    <!-- 🕉️ BANGLA CALENDAR STYLE PANCHANG MODAL -->
     <div id="panchangModal" class="fixed inset-0 bg-black/75 z-[100] hidden flex items-center justify-center p-3 sm:p-4">
-        <div class="bg-white w-full max-w-xl max-h-[92vh] rounded-3xl overflow-hidden shadow-2xl relative flex flex-col border border-rose-200">
+        <div class="bg-white w-full max-w-xl max-h-[92vh] rounded-3xl overflow-hidden shadow-2xl relative flex flex-col border border-orange-200">
+            <!-- Close Button -->
             <button onclick="closeModal('panchangModal')" class="absolute top-4 right-4 z-20 bg-black/30 hover:bg-black/50 text-white w-8 h-8 rounded-full flex items-center justify-center transition">✕</button>
 
-            <div class="bg-gradient-to-b from-rose-500 via-rose-400 to-rose-200 text-white p-6 relative">
-                <div class="flex justify-between items-start mb-4">
-                    <span class="text-xl font-bold tracking-tight">বং ক্যালেন্ডার</span>
-                    <span class="bg-white text-rose-600 px-3 py-1 rounded-full text-xs font-bold shadow-xs">কলকাতা</span>
-                </div>
-                <div class="flex justify-between items-end">
-                    <div>
-                        <div class="text-7xl font-extrabold leading-none tracking-tighter mb-2">০১</div>
-                        <div class="text-2xl font-bold">কার্তিক ১৪৩৩</div>
-                        <div class="text-sm font-medium text-rose-50 mt-1">১৯ অক্টোবর ২০২৬ &bull; সোমবার</div>
+            <!-- Bangla Calendar App Exact Header Gradient -->
+            <div class="bg-gradient-to-b from-orange-500 via-rose-500 to-rose-400 text-white p-6 relative shadow-md">
+                <div class="flex justify-between items-start mb-3">
+                    <div class="text-lg font-black tracking-wide flex items-center gap-2">
+                        <span>📅</span> বাংলা ক্যালেন্ডার (Bangla Calendar)
                     </div>
-                    <div class="text-right text-xs space-y-1 font-medium bg-black/10 px-3 py-2 rounded-xl">
+                    <div class="bg-white/20 border border-white/30 px-3 py-1 rounded-full text-xs font-bold backdrop-blur-xs flex items-center gap-1">
+                        <i class="fas fa-map-marker-alt text-amber-200"></i> কলকাতা
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-end mt-2">
+                    <div>
+                        <div class="text-7xl font-black leading-none tracking-tighter mb-1.5 drop-shadow-sm">০১</div>
+                        <div class="text-2xl font-bold font-serif">কার্তিক ১৪৩৩</div>
+                        <div class="text-sm font-medium text-orange-50 mt-1">১৯ অক্টোবর ২০২৬ &bull; সোমবার</div>
+                    </div>
+                    <div class="text-right text-xs space-y-1 font-semibold bg-black/15 px-3.5 py-2.5 rounded-2xl backdrop-blur-xs border border-white/10">
                         <div>সূর্যোদয় ০৫:৩৮ 🌅</div>
                         <div>সূর্যাস্ত ১৭:০৪ 🌇</div>
                     </div>
                 </div>
-                <div class="flex justify-between items-center mt-5 pt-3 border-t border-white/20 text-xs">
-                    <span class="font-bold text-sm">মহাষ্টমী</span>
-                    <span class="bg-white/20 border border-white/40 px-2.5 py-0.5 rounded-full text-[11px] font-semibold">সূর্যসিদ্ধান্ত</span>
+
+                <div class="flex justify-between items-center mt-5 pt-3 border-t border-white/25 text-xs">
+                    <span class="font-extrabold text-sm tracking-wide">মহাষ্টমী / শুক্ল নবমী</span>
+                    <span class="bg-white/25 border border-white/40 px-3 py-0.5 rounded-full text-[11px] font-bold">সূর্যসিদ্ধান্ত পঞ্জিকা</span>
                 </div>
             </div>
 
-            <div class="p-6 overflow-y-auto space-y-5 text-sm">
-                <div class="bg-rose-50/60 rounded-2xl p-5 border border-rose-200">
-                    <h4 class="text-rose-600 font-extrabold text-base mb-1">তিথি সময়সূচী</h4>
-                    <p class="text-xs text-slate-700 leading-relaxed">
-                        এখন <strong>শুক্ল নবমী তিথি</strong>।<br>
-                        ২০ অক্টোবর ২০২৬ সকাল ০৯:২৯ (09:29 AM) এর পর শুক্ল দশমী তিথি শুরু।
-                    </p>
-                </div>
-                <div class="grid grid-cols-2 gap-3 text-xs">
-                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
-                        <span class="text-slate-400 font-bold block mb-1">নক্ষত্র স্থিতি</span>
-                        <strong class="text-slate-800">উত্তরাষাঢ়া নক্ষত্র</strong>
-                        <p class="text-[11px] text-slate-500 mt-0.5">অপরাহ্ন ০৪:১৮ পর্যন্ত, পর শ্রবণ শুরু</p>
+            <!-- Content Area -->
+            <div class="p-6 overflow-y-auto space-y-5 text-sm bg-slate-50/50">
+                <!-- Quick Navigation Tabs -->
+                <div class="grid grid-cols-3 gap-3 text-center">
+                    <div class="bg-white p-3 rounded-2xl border border-rose-100 shadow-xs flex flex-col items-center">
+                        <div class="w-10 h-10 rounded-xl bg-rose-500 text-white flex items-center justify-center text-base shadow mb-1"><i class="fas fa-calendar-alt"></i></div>
+                        <span class="text-[11px] font-bold text-rose-700">ক্যালেন্ডার</span>
                     </div>
-                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
-                        <span class="text-slate-400 font-bold block mb-1">অমৃতযোগ ও রাহুকাল</span>
-                        <strong class="text-green-700 block">অমৃতযোগ: সকাল ০৮:১৫ - ১০:২০</strong>
-                        <span class="text-red-600 text-[11px]">রাহুকাল: ১৬:৩০ - ১৮:০০ (বর্জনীয়)</span>
+                    <div class="bg-white p-3 rounded-2xl border border-rose-100 shadow-xs flex flex-col items-center">
+                        <div class="w-10 h-10 rounded-xl bg-rose-500 text-white flex items-center justify-center text-base shadow mb-1"><i class="fas fa-clock"></i></div>
+                        <span class="text-[11px] font-bold text-rose-700">আজকের তিথি</span>
+                    </div>
+                    <div class="bg-white p-3 rounded-2xl border border-rose-100 shadow-xs flex flex-col items-center">
+                        <div class="w-10 h-10 rounded-xl bg-rose-500 text-white flex items-center justify-center text-base shadow mb-1"><i class="fas fa-info-circle"></i></div>
+                        <span class="text-[11px] font-bold text-rose-700">বিবিধ</span>
+                    </div>
+                </div>
+
+                <!-- Tithi Timing Box (Exact 'কখন লাগছে, কখন ছাড়ছে') -->
+                <div class="bg-white rounded-2xl p-5 border border-rose-200 shadow-xs space-y-3">
+                    <div class="flex items-center gap-2 text-rose-600 font-extrabold text-sm border-b border-rose-100 pb-2">
+                        <i class="fas fa-hourglass-half"></i> তিথি ও নক্ষত্রের সময়সূচী (কখন লাগছে, কখন ছাড়ছে)
+                    </div>
+                    <div class="text-xs text-slate-700 space-y-2">
+                        <p><strong>শুক্ল নবমী তিথি:</strong> এখন শুক্ল নবমী তিথি চলছে। এটি শেষ হবে <strong>২০ অক্টোবর ২০২৬ সকাল ০৯:২৯ মিনিটে</strong>, এরপর শুক্ল দশমী তিথি শুরু হইবে।</p>
+                        <p><strong>নক্ষত্র স্থিতি:</strong> উত্তরাষাঢ়া নক্ষত্র অপরাহ্ন ০৪:১৮ পর্যন্ত বলবৎ থাকিবে, তৎপরে শ্রবণ নক্ষত্র আরম্ভ।</p>
+                    </div>
+                </div>
+
+                <!-- Auspicious & Inauspicious Timings -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                    <div class="bg-emerald-50/80 p-3.5 rounded-xl border border-emerald-200">
+                        <span class="text-emerald-800 font-bold block mb-1">🟢 শুভ মুহূর্ত ও অমৃতযোগ</span>
+                        <p class="text-slate-700 font-medium">অভিজিৎ মুহূর্ত: ১১:৩৮ - ১২:২৬<br>অমৃতযোগ: সকাল ০৮:১৫ - ১০:২০</p>
+                    </div>
+                    <div class="bg-rose-50/80 p-3.5 rounded-xl border border-rose-200">
+                        <span class="text-rose-800 font-bold block mb-1">🔴 রাহুকাল ও বর্জনীয় সময়</span>
+                        <p class="text-slate-700 font-medium">রাহুকাল: ১৬:৩০ – ১৮:০০<br>কালবেলা: ০৬:১২ – ০৭:৪০</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- ✨ HOROSCOPE MODAL (রাশিফল) -->
+    <div id="horoscopeModal" class="fixed inset-0 bg-black/75 z-[100] hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-4xl max-h-[90vh] rounded-3xl overflow-y-auto shadow-2xl p-6 md:p-8 relative border-t-4 border-rose-500">
+            <button onclick="closeModal('horoscopeModal')" class="absolute top-4 right-4 bg-slate-100 hover:bg-slate-200 text-slate-700 w-8 h-8 rounded-full font-bold flex items-center justify-center transition">✕</button>
+            <div class="border-b border-slate-200 pb-4 mb-6">
+                <h3 class="text-2xl font-black text-slate-900">✨ আজকের ১২ রাশির দৈনিক রাশিফল</h3>
+                <p class="text-xs text-slate-500 mt-1">বৈদিক জ্যোতিষশাস্ত্রের নিখুঁত পূর্বাভাষ অনুযায়ী আজকের দিনটি কেমন যাবে</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 shadow-2xs"><strong class="text-rose-600 text-sm">♈ মেষ:</strong> কর্মক্ষেত্রে নতুন সুযোগ। আর্থিক লেনদেনে সতর্ক থাকুন।</div>
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 shadow-2xs"><strong class="text-rose-600 text-sm">♉ বৃষ:</strong> পারিবারিক শান্তি বজায় থাকবে। ব্যবসায় শুভ লাভ।</div>
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 shadow-2xs"><strong class="text-rose-600 text-sm">♊ মিথুন:</strong> সৃজনশীল কাজে সাফল্য। ভ্রমণের সম্ভাবনা।</div>
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 shadow-2xs"><strong class="text-rose-600 text-sm">♋ কর্কট:</strong> মানসিক প্রফুল্লতা বৃদ্ধি। আটকে থাকা অর্থ প্রাপ্তি।</div>
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 shadow-2xs"><strong class="text-rose-600 text-sm">♌ সিংহ:</strong> সুনাম বৃদ্ধি পাবে। গুরুজনদের পরামর্শ লাভদায়ক।</div>
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 shadow-2xs"><strong class="text-rose-600 text-sm">♍ কন্যা:</strong> ব্যবসায় নতুন অংশীদারিত্ব। শিক্ষার্থীদের মনোযোগ বৃদ্ধি।</div>
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 shadow-2xs"><strong class="text-rose-600 text-sm">♎ তুলা:</strong> আয়ের নতুন উৎস উন্মোচিত হতে পারে। মন শান্ত থাকবে।</div>
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 shadow-2xs"><strong class="text-rose-600 text-sm">♏ বৃশ্চিক:</strong> দায়িত্ব বৃদ্ধি পাবে। ধৈর্য ধারণ করা শ্রেয়।</div>
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 shadow-2xs"><strong class="text-rose-600 text-sm">♐ ধনু:</strong> ভাগ্য সহায় থাকবে। দূর যোগাযোগ থেকে সুসংবাদ।</div>
+                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200"><strong class="text-rose-600 text-sm">♑ মকর:</strong> পুরোনো সমস্যার সমাধান। পরিবারের সঙ্গে আনন্দময় সময়।</div>
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 shadow-2xs"><strong class="text-rose-600 text-sm">♒ কুম্ভ:</strong> নতুন উদ্যোগ সফল হবে। আর্থিক স্থায়িত্ব বজায় থাকবে।</div>
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 shadow-2xs"><strong class="text-rose-600 text-sm">♓ মীন:</strong> আধ্যাত্মিক চিন্তায় শান্তি। গৃহপরিবেশ আনন্দমুখর থাকবে।</div>
+            </div>
+        </div>
+    </div>
+    
     <!-- ✨ HOROSCOPE MODAL -->
     <div id="horoscopeModal" class="fixed inset-0 bg-black/70 z-[100] hidden flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-4xl max-h-[90vh] rounded-2xl overflow-y-auto shadow-2xl p-6 md:p-8 relative border-t-4 border-indigo-600">
