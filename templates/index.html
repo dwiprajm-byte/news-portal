@@ -179,24 +179,22 @@
     </main>
 
     
-    <!-- 🕉️ BANGLA CALENDAR STYLE PANCHANG MODAL -->
+    
+    <!-- 🕉️ PANCHANG MODAL -->
     <div id="panchangModal" class="fixed inset-0 bg-black/75 z-[100] hidden flex items-center justify-center p-3 sm:p-4">
         <div class="bg-white w-full max-w-xl max-h-[92vh] rounded-3xl overflow-hidden shadow-2xl relative flex flex-col border border-orange-200">
             <!-- Close Button -->
             <button onclick="closeModal('panchangModal')" class="absolute top-4 right-4 z-20 bg-black/30 hover:bg-black/50 text-white w-8 h-8 rounded-full flex items-center justify-center transition">✕</button>
 
-            <!-- Bangla Calendar App Exact Header Gradient -->
+            <!-- Header Gradient without calendar title text -->
             <div class="bg-gradient-to-b from-orange-500 via-rose-500 to-rose-400 text-white p-6 relative shadow-md">
-                <div class="flex justify-between items-start mb-3">
-                    <div class="text-lg font-black tracking-wide flex items-center gap-2">
-                        <span>📅</span> বাংলা ক্যালেন্ডার (Bangla Calendar)
-                    </div>
+                <div class="flex justify-end items-start mb-2">
                     <div class="bg-white/20 border border-white/30 px-3 py-1 rounded-full text-xs font-bold backdrop-blur-xs flex items-center gap-1">
                         <i class="fas fa-map-marker-alt text-amber-200"></i> কলকাতা
                     </div>
                 </div>
 
-                <div class="flex justify-between items-end mt-2">
+                <div class="flex justify-between items-end mt-1">
                     <div>
                         <div class="text-7xl font-black leading-none tracking-tighter mb-1.5 drop-shadow-sm">০১</div>
                         <div class="text-2xl font-bold font-serif">কার্তিক ১৪৩৩</div>
@@ -216,23 +214,7 @@
 
             <!-- Content Area -->
             <div class="p-6 overflow-y-auto space-y-5 text-sm bg-slate-50/50">
-                <!-- Quick Navigation Tabs -->
-                <div class="grid grid-cols-3 gap-3 text-center">
-                    <div class="bg-white p-3 rounded-2xl border border-rose-100 shadow-xs flex flex-col items-center">
-                        <div class="w-10 h-10 rounded-xl bg-rose-500 text-white flex items-center justify-center text-base shadow mb-1"><i class="fas fa-calendar-alt"></i></div>
-                        <span class="text-[11px] font-bold text-rose-700">ক্যালেন্ডার</span>
-                    </div>
-                    <div class="bg-white p-3 rounded-2xl border border-rose-100 shadow-xs flex flex-col items-center">
-                        <div class="w-10 h-10 rounded-xl bg-rose-500 text-white flex items-center justify-center text-base shadow mb-1"><i class="fas fa-clock"></i></div>
-                        <span class="text-[11px] font-bold text-rose-700">আজকের তিথি</span>
-                    </div>
-                    <div class="bg-white p-3 rounded-2xl border border-rose-100 shadow-xs flex flex-col items-center">
-                        <div class="w-10 h-10 rounded-xl bg-rose-500 text-white flex items-center justify-center text-base shadow mb-1"><i class="fas fa-info-circle"></i></div>
-                        <span class="text-[11px] font-bold text-rose-700">বিবিধ</span>
-                    </div>
-                </div>
-
-                <!-- Tithi Timing Box (Exact 'কখন লাগছে, কখন ছাড়ছে') -->
+                <!-- Tithi Timing Box -->
                 <div class="bg-white rounded-2xl p-5 border border-rose-200 shadow-xs space-y-3">
                     <div class="flex items-center gap-2 text-rose-600 font-extrabold text-sm border-b border-rose-100 pb-2">
                         <i class="fas fa-hourglass-half"></i> তিথি ও নক্ষত্রের সময়সূচী (কখন লাগছে, কখন ছাড়ছে)
@@ -257,7 +239,7 @@
             </div>
         </div>
     </div>
-
+    
     <!-- ✨ HOROSCOPE MODAL (রাশিফল) -->
     <div id="horoscopeModal" class="fixed inset-0 bg-black/75 z-[100] hidden flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-4xl max-h-[90vh] rounded-3xl overflow-y-auto shadow-2xl p-6 md:p-8 relative border-t-4 border-rose-500">
