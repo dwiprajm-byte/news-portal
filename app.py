@@ -154,7 +154,7 @@ def format_human_editorial_article(title, summary, category, location, author):
     </div>
     '''
 
-# ২. উচ্চ ক্ষমতাসম্পন্ন স্বয়ংক্রিয় গুগল ফিড স্ক্র্যাপার ও ইনজেস্টর
+# ২. উচ্চ ক্ষমতাসম্পন্ন স্বয়ংক্রিয় গুগল ফিড স্ক্র্যাপার (প্রতি ১ মিনিটে ১টি ক্যাটাগরি)
 def high_volume_news_crawler():
     FEEDS = [
         ('India', 'https://news.google.com/rss/search?q=India+top+news+when:24h&hl=en-IN&gl=IN&ceid=IN:en'),
@@ -169,40 +169,42 @@ def high_volume_news_crawler():
         ('Education', 'https://news.google.com/rss/search?q=Education+Jobs+Careers+India+when:24h&hl=en-IN&gl=IN&ceid=IN:en')
     ]
 
+    category_index = 0
+    total_categories = len(FEEDS)
+
     while True:
         try:
-            for cat, feed_url in FEEDS:
-                try:
-                    parsed = feedparser.parse(feed_url)
-                    for entry in parsed.entries[:5]:  # প্রতি সাইকেলে প্রতিটি ক্যাটাগরি থেকে ৫টি করে সংগ্রহ
-                        raw_title = entry.get('title', '').split(' - ')[0].strip()
-                        raw_desc = entry.get('summary', entry.get('description', ''))
-                        
-                        if not raw_title:
-                            continue
+            # প্রতি সাইকেলে ক্রমান্বয়ে ১টি নির্দিষ্ট ক্যাটাগরি নির্বাচন
+            cat, feed_url = FEEDS[category_index]
+            category_index = (category_index + 1) % total_categories
 
-                        art_id = str(int(time.time() * 1000))
-                        img = CATEGORY_IMAGES.get(cat, CATEGORY_IMAGES['India'])
-                        article_html = format_human_editorial_article(raw_title, raw_desc, cat, "Kolkata", "DWIPRAJ MALLICK")
-
-                        article_data = {
-                            'id': art_id,
-                            'title': raw_title,
-                            'summary': article_html,
-                            'category': cat,
-                            'link': f"/news/{art_id}",
-                            'image': img,
-                            'published': datetime.now().strftime("%a, %d %b %Y %H:%M:%S GMT")
-                        }
-                        save_article_to_db(article_data)
-                except Exception:
+            parsed = feedparser.parse(feed_url)
+            for entry in parsed.entries[:5]:  # নির্বাচিত ক্যাটাগরি থেকে শীর্ষ ৫টি খবর প্রসেস করা
+                raw_title = entry.get('title', '').split(' - ')[0].strip()
+                raw_desc = entry.get('summary', entry.get('description', ''))
+                
+                if not raw_title:
                     continue
 
+                art_id = str(int(time.time() * 1000))
+                img = CATEGORY_IMAGES.get(cat, CATEGORY_IMAGES['India'])
+                article_html = format_human_editorial_article(raw_title, raw_desc, cat, "Kolkata", "DWIPRAJ MALLICK")
+
+                article_data = {
+                    'id': art_id,
+                    'title': raw_title,
+                    'summary': article_html,
+                    'category': cat,
+                    'link': f"/news/{art_id}",
+                    'image': img,
+                    'published': datetime.now().strftime("%a, %d %b %Y %H:%M:%S GMT")
+                }
+                save_article_to_db(article_data)
         except Exception:
             pass
 
-        # প্রতি ১০ মিনিট পর পর স্বয়ংক্রিয়ভাবে চক্র চলতে থাকবে (সারাদিনে কয়েকশো নতুন খবর যুক্ত হবে)
-        time.sleep(600)
+        # প্রতি ১ মিনিট অন্তর ব্যাকগ্রাউন্ডে চেক করবে
+        time.sleep(60)
 
 # ব্যাকগ্রাউন্ডে স্বয়ংক্রিয় স্ক্র্যাপার চালু
 crawler_thread = threading.Thread(target=high_volume_news_crawler, daemon=True)
