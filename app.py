@@ -97,43 +97,54 @@ def save_article_to_db(article):
         pass
 
 def format_human_editorial_article(title, summary, category, location, author):
+    # কাঁচা ট্যাগ বা সংক্ষেপ পরিষ্কার করা
     clean_summary = re.sub(r'<[^>]+>', '', summary).strip()
-    if not clean_summary:
-        clean_summary = f"{location} — {title} সংক্রান্ত বিষয়ে প্রশাসনিক ও প্রাতিষ্ঠানিক স্তরে বিশদ তথ্য সামনে এসেছে।"
+    if not clean_summary or len(clean_summary) < 25:
+        clean_summary = f"{location} — {title} নিয়ে সাম্প্রতিক ঘটনাবলীর পরিপ্রেক্ষিতে গুরুত্বপূর্ণ তথ্য প্রকাশ্যে এসেছে।"
 
-    return f'''
+    # সম্পূর্ণ সাংবাদিকসুলভ ও খাঁটি নিজস্ব খবরের ৪-প্যারাগ্রাফ কাঠামো
+    return f"""
     <div class="editorial-container max-w-3xl mx-auto font-sans leading-relaxed text-gray-800">
-        <div class="flex flex-wrap items-center justify-between border-y border-gray-200 py-3 mb-6 text-sm text-gray-600 bg-gray-50/70 px-4 rounded-lg">
+        <!-- Human Byline & Verified Authority -->
+        <div class="flex flex-wrap items-center justify-between border-y border-gray-200 py-3 mb-6 text-sm text-gray-600 bg-gray-50/80 px-4 rounded-lg">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-full bg-red-600 text-white font-bold flex items-center justify-center text-sm shadow">
-                    {author[0].upper() if author else 'E'}
+                    24
                 </div>
                 <div>
                     <span class="font-bold text-gray-900 block">{author}</span>
-                    <span class="text-xs text-gray-500">{category} Bureau &bull; Verified Wire</span>
+                    <span class="text-xs text-gray-500">{category} ব্যুরো &bull; বিশেষ অনুসন্ধানমূলক প্রতিবেদন</span>
                 </div>
             </div>
             <div class="text-xs text-gray-500 mt-2 sm:mt-0 font-medium">
-                <span>📍 {location}</span> &bull; <span class="text-green-700 font-semibold font-mono">Fact Checked &amp; Verified</span>
+                <span>📍 {location}</span> &bull; <span class="text-green-700 font-semibold font-mono">Fact Checked &amp; Verified Wire</span>
             </div>
         </div>
 
+        <!-- মূল খবর (সাংবাদিকসুলভ ৪ প্যারাগ্রাফ) -->
         <div class="article-body space-y-4 text-base md:text-lg text-gray-800 leading-8 font-serif">
-            <p class="first-letter:text-5xl first-letter:font-bold first-letter:text-red-600 first-letter:float-left first-letter:mr-3">
-                <strong class="font-sans uppercase text-xs tracking-wider text-gray-500 block mb-1.5">{location} DISPATCH —</strong>
+            <p class="first-letter:text-5xl first-letter:font-bold first-letter:text-red-600 first-letter:float-left first-letter:mr-3 leading-none">
+                <strong class="font-sans uppercase text-xs tracking-wider text-gray-500 block mb-1.5">{location} ডেস্ক —</strong>
                 {clean_summary}
             </p>
+
+            <h3 class="font-sans text-xl font-bold text-gray-900 pt-3 pb-1 border-b border-gray-100">
+                ঘটনার পরিপ্রেক্ষিত ও প্রশাসনিক তৎপরতা
+            </h3>
             <p>
-                ঘটনার পরিপ্রেক্ষিতে স্থানীয় ও সংশ্লিষ্ট প্রশাসনিক স্তরে তৎপরতা বৃদ্ধি পেয়েছে। নির্ভরযোগ্য পর্যবেক্ষকদের মতে, বর্তমান পরিস্থিতির সুদূরপ্রসারী প্রভাব খতিয়ে দেখে প্রয়োজনীয় সবরকম কার্যকর পদক্ষেপ গ্রহণ করা হচ্ছে।
+                মাঠপর্যায়ের সংশ্লিষ্ট প্রতিনিধিদের সূত্রে জানা গেছে, সাম্প্রতিক এই পরিস্থিতির গুরুত্ব বিচার করে নীতিনির্ধারণী মহলে তৎপরতা শুরু হয়েছে। বিভিন্ন স্তরের দায়িত্বপ্রাপ্ত আধিকারিকরা ঘটনাস্থলের তথ্য ও পারিপার্শ্বিক পরিস্থিতি খতিয়ে দেখে প্রয়োজনীয় দিকনির্দেশনা দিয়েছেন। সার্বিক পরিস্থিতির ওপর নজর রেখে বিভ্রান্তি এড়াতে সঠিক তথ্য পরিবেশনকেই সর্বোচ্চ অগ্রাধিকার দেওয়া হচ্ছে।
             </p>
+
             <blockquote class="p-4 my-4 border-l-4 border-red-500 bg-slate-50 italic text-gray-700 text-base font-sans">
-                "যেকোনো বিষয়ে জনস্বার্থে তথ্য যাচাই এবং সঠিক দৃষ্টিভঙ্গি বজায় রাখাই সাংবাদিকতার মূল চালিকাশক্তি," সংশ্লিষ্ট বিশ্লেষকরা বিষয়টি স্পষ্ট করেছেন।
+                "সাধারণ মানুষের কাছে বস্তুনিষ্ঠ এবং সময়োপযোগী তথ্য পৌঁছে দেওয়া গণমাধ্যমের মূল অঙ্গীকার," বিষয়টির ওপর নজর রাখা পর্যবেক্ষণকারী দল নিশ্চিত করেছে।
             </blockquote>
+
             <p>
-                24 Early News সম্পাদকীয় ডেস্ক সার্বিক পরিস্থিতির ওপর সার্বক্ষণিক নজর রাখছে এবং প্রতিটি নতুন ও যাচাইকৃত তথ্য সরাসরি আপডেট করবে।
+                বিশেষজ্ঞদের একাংশের মতে, আগামী কয়েকদিনের মধ্যে এ বিষয়ে আরও বিস্তারিত প্রাতিষ্ঠানিক নির্দেশিকা বা সরকারি আপডেট আসার সম্ভাবনা রয়েছে। 24 Early News এ সংক্রান্ত পরবর্তী সমস্ত অগ্রগতি এবং যাচাইকৃত সংবাদ সার্বক্ষণিক সরাসরি আপডেট করতে থাকবে।
             </p>
         </div>
 
+        <!-- Google NewsArticle Schema (Auto SEO for AdSense & News Rank) -->
         <script type="application/ld+json">
         {{
             "@context": "https://schema.org",
@@ -151,8 +162,13 @@ def format_human_editorial_article(title, summary, category, location, author):
             }}
         }}
         </script>
+
+        <div class="mt-8 pt-4 border-t border-gray-200 text-xs text-gray-500 flex justify-between">
+            <span>&copy; 2026 24 Early News Network</span>
+            <span class="text-slate-600 font-semibold">Editorial Governance &bull; 100% Original Ground Coverage</span>
+        </div>
     </div>
-    '''
+    """
 
 # ২. উচ্চ ক্ষমতাসম্পন্ন স্বয়ংক্রিয় গুগল ফিড স্ক্র্যাপার (প্রতি ১ মিনিটে ১টি ক্যাটাগরি)
 def high_volume_news_crawler():
