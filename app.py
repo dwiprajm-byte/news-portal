@@ -5,7 +5,7 @@ from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 
 app = Flask(__name__)
-app.secret_key = "24earlynews_high_volume_scale_key_2026"
+app.secret_key = "24earlynews_auto_stream_key_2026"
 
 DATA_FILE = "articles_store.json"
 
@@ -24,61 +24,15 @@ def get_articles():
         except Exception:
             pass
 
-    # ডিফল্ট হাই-ভলিউম নিউজ ব্যাংক
     return [
         {
-            'id': '301',
-            'title': '24 Early News High-Volume Wire: 1000+ Daily Verified Dispatches Active',
-            'summary': 'Kolkata Newsroom — System successfully scaled to handle high-frequency news ingestion across regional, national, and international categories with strict duplicate prevention.',
+            'id': '401',
+            'title': '24 Early News Automated Wire: Live Feed Streams 1000+ Daily Dispatches',
+            'summary': 'Kolkata Newsroom — Fully automated background ingestion engine activated, ensuring round-the-clock verified reporting across all categories with strict duplicate filtering.',
             'category': 'India',
-            'link': '/news/301',
+            'link': '/news/401',
             'image': 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200',
-            'published': 'Mon, 19 Oct 2026 14:30:00 GMT'
-        },
-        {
-            'id': '302',
-            'title': 'West Bengal Industrial Corridors Report Surge in MSME Investments',
-            'summary': 'Regional Bureau — State commercial centers observe accelerated growth in manufacturing and automotive component distribution networks.',
-            'category': 'Regional',
-            'link': '/news/302',
-            'image': 'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=800',
-            'published': 'Mon, 19 Oct 2026 14:15:00 GMT'
-        },
-        {
-            'id': '303',
-            'title': 'Global Technology Giants Unveil AI-Driven Infrastructure Standards',
-            'summary': 'Tech Desk — International consortia establish collaborative protocols for secure cloud computing and real-time data processing.',
-            'category': 'Technology',
-            'link': '/news/303',
-            'image': 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800',
-            'published': 'Mon, 19 Oct 2026 14:00:00 GMT'
-        },
-        {
-            'id': '304',
-            'title': 'Financial Markets Review: Banking and Energy Stocks Lead Indices',
-            'summary': 'Business Desk — Institutional investors maintain positive outlook as corporate earnings reports surpass quarterly projections.',
-            'category': 'Business',
-            'link': '/news/304',
-            'image': 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800',
-            'published': 'Mon, 19 Oct 2026 13:45:00 GMT'
-        },
-        {
-            'id': '305',
-            'title': 'National Sports Council Announces New Grassroots Training Facilities',
-            'summary': 'Sports Bureau — Multi-discipline athletic complexes planned across semi-urban districts to foster emerging athletic talent.',
-            'category': 'Sports',
-            'link': '/news/305',
-            'image': 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800',
-            'published': 'Mon, 19 Oct 2026 13:30:00 GMT'
-        },
-        {
-            'id': '306',
-            'title': 'International Climate Summit Focuses on Sustainable Urban Planning',
-            'summary': 'World Desk — Global delegates deliberate on carbon-neutral construction policies and public transit optimization.',
-            'category': 'World',
-            'link': '/news/306',
-            'image': 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800',
-            'published': 'Mon, 19 Oct 2026 13:00:00 GMT'
+            'published': 'Mon, 19 Oct 2026 15:00:00 GMT'
         }
     ]
 
@@ -134,12 +88,10 @@ def submit_news():
             all_news = get_articles()
             new_norm = clean_news_title(title)
             
-            # ডুপ্লিকেট চেকিং
             is_duplicate = any(clean_news_title(item.get('title', '')) == new_norm for item in all_news)
             
             if not is_duplicate:
                 all_news.insert(0, new_article)
-                # হাই ভলিউম স্টোরেজ মেইনটেইন করার জন্য মেমরি অপ্টিমাইজড সেভ
                 with open(DATA_FILE, "w", encoding="utf-8") as f:
                     json.dump(all_news[:5000], f, ensure_ascii=False, indent=2)
 
