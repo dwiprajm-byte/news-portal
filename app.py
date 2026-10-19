@@ -1,6 +1,7 @@
-﻿import os
+import os
 import re
 import time
+import json
 import sqlite3
 import threading
 from datetime import datetime
@@ -8,11 +9,10 @@ from flask import Flask, render_template, request, redirect, url_for, send_from_
 import feedparser
 
 app = Flask(__name__)
-app.secret_key = "early_news_master_automated_engine_2026"
+app.secret_key = "24earlynews_master_hardened_key_2026"
 
 DB_FILE = "database.db"
 
-# ১. স্থায়ী SQLite ডেটাবেস ইনিশিয়ালাইজেশন (খবর কোনোদিন মুছবে না)
 def init_db():
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
@@ -50,6 +50,11 @@ CATEGORY_IMAGES = {
     'Weather': 'https://images.unsplash.com/photo-1534088568595-a066f410bcda?w=1200'
 }
 
+def clean_news_title(raw_title):
+    t = re.sub(r'\s*-[^-]+$', '', raw_title)
+    t = re.sub(r'[^\w\s\u0980-\u09FF]', '', t).strip().lower()
+    return t
+
 def get_all_articles():
     try:
         conn = sqlite3.connect(DB_FILE)
@@ -79,12 +84,18 @@ def save_article_to_db(article):
     try:
         conn = sqlite3.connect(DB_FILE)
         cursor = conn.cursor()
+        norm_title = clean_news_title(article['title'])
+        cursor.execute("SELECT id FROM articles WHERE LOWER(REPLACE(title, ' ', '')) = ?", (norm_title.replace(' ', ''),))
+        if cursor.fetchone():
+            conn.close()
+            return
+            
         cursor.execute('''
             INSERT OR IGNORE INTO articles (id, title, summary, category, link, image, published)
             VALUES (?, ?, ?, ?, ?, ?, ?)
         ''', (
             article['id'],
-            article['title'],
+            article['title'].strip(),
             article['summary'],
             article['category'],
             article['link'],
@@ -97,15 +108,12 @@ def save_article_to_db(article):
         pass
 
 def format_human_editorial_article(title, summary, category, location, author):
-    # কাঁচা ট্যাগ বা সংক্ষেপ পরিষ্কার করা
     clean_summary = re.sub(r'<[^>]+>', '', summary).strip()
     if not clean_summary or len(clean_summary) < 25:
         clean_summary = f"{location} — {title} নিয়ে সাম্প্রতিক ঘটনাবলীর পরিপ্রেক্ষিতে গুরুত্বপূর্ণ তথ্য প্রকাশ্যে এসেছে।"
 
-    # সম্পূর্ণ সাংবাদিকসুলভ ও খাঁটি নিজস্ব খবরের ৪-প্যারাগ্রাফ কাঠামো
-    return f"""
+    return f'''
     <div class="editorial-container max-w-3xl mx-auto font-sans leading-relaxed text-gray-800">
-        <!-- Human Byline & Verified Authority -->
         <div class="flex flex-wrap items-center justify-between border-y border-gray-200 py-3 mb-6 text-sm text-gray-600 bg-gray-50/80 px-4 rounded-lg">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-full bg-red-600 text-white font-bold flex items-center justify-center text-sm shadow">
@@ -121,7 +129,6 @@ def format_human_editorial_article(title, summary, category, location, author):
             </div>
         </div>
 
-        <!-- মূল খবর (সাংবাদিকসুলভ ৪ প্যারাগ্রাফ) -->
         <div class="article-body space-y-4 text-base md:text-lg text-gray-800 leading-8 font-serif">
             <p class="first-letter:text-5xl first-letter:font-bold first-letter:text-red-600 first-letter:float-left first-letter:mr-3 leading-none">
                 <strong class="font-sans uppercase text-xs tracking-wider text-gray-500 block mb-1.5">{location} ডেস্ক —</strong>
@@ -132,19 +139,18 @@ def format_human_editorial_article(title, summary, category, location, author):
                 ঘটনার পরিপ্রেক্ষিত ও প্রশাসনিক তৎপরতা
             </h3>
             <p>
-                মাঠপর্যায়ের সংশ্লিষ্ট প্রতিনিধিদের সূত্রে জানা গেছে, সাম্প্রতিক এই পরিস্থিতির গুরুত্ব বিচার করে নীতিনির্ধারণী মহলে তৎপরতা শুরু হয়েছে। বিভিন্ন স্তরের দায়িত্বপ্রাপ্ত আধিকারিকরা ঘটনাস্থলের তথ্য ও পারিপার্শ্বিক পরিস্থিতি খতিয়ে দেখে প্রয়োজনীয় দিকনির্দেশনা দিয়েছেন। সার্বিক পরিস্থিতির ওপর নজর রেখে বিভ্রান্তি এড়াতে সঠিক তথ্য পরিবেশনকেই সর্বোচ্চ অগ্রাধিকার দেওয়া হচ্ছে।
+                মাঠপর্যায়ের সংশ্লিষ্ট প্রতিনিধিদের সূত্রে জানা গেছে, সাম্প্রতিক এই পরিস্থিতির গুরুত্ব বিচার করে নীতিনির্ধারণী মহলে তৎপরতা শুরু হয়েছে। বিভিন্ন স্তরের দায়িত্বপ্রাপ্ত আধিকারিকরা ঘটনাস্থলের তথ্য ও পারিপার্শ্বিক পরিস্থিতি খতিয়ে দেখে প্রয়োজনীয় দিকনির্দেশনা দিয়েছেন। সার্বিক পরিস্থিতির ওপর নজর রেখে বিভ্রান্তি এড়াতে সঠিক তথ্য পরিবেশনকেই সর্বোচ্চ অগ্রাধিকার দেওয়া হচ্ছে।
             </p>
 
             <blockquote class="p-4 my-4 border-l-4 border-red-500 bg-slate-50 italic text-gray-700 text-base font-sans">
-                "সাধারণ মানুষের কাছে বস্তুনিষ্ঠ এবং সময়োপযোগী তথ্য পৌঁছে দেওয়া গণমাধ্যমের মূল অঙ্গীকার," বিষয়টির ওপর নজর রাখা পর্যবেক্ষণকারী দল নিশ্চিত করেছে।
+                "সাধারণ মানুষের কাছে বস্তুনিষ্ঠ এবং সময়োপযোগী তথ্য পৌঁছে দেওয়া গণমাধ্যমের মূল অঙ্গীকার," বিষয়টির ওপর নজর রাখা পর্যবেক্ষণকারী দল নিশ্চিত করেছে।
             </blockquote>
 
             <p>
-                বিশেষজ্ঞদের একাংশের মতে, আগামী কয়েকদিনের মধ্যে এ বিষয়ে আরও বিস্তারিত প্রাতিষ্ঠানিক নির্দেশিকা বা সরকারি আপডেট আসার সম্ভাবনা রয়েছে। 24 Early News এ সংক্রান্ত পরবর্তী সমস্ত অগ্রগতি এবং যাচাইকৃত সংবাদ সার্বক্ষণিক সরাসরি আপডেট করতে থাকবে।
+                বিশেষজ্ঞদের একাংশের মতে, আগামী কয়েকদিনের মধ্যে এ বিষয়ে আরও বিস্তারিত প্রাতিষ্ঠানিক নির্দেশিকা বা সরকারি আপডেট আসার সম্ভাবনা রয়েছে। 24 Early News এ সংক্রান্ত পরবর্তী সমস্ত অগ্রগতি এবং যাচাইকৃত সংবাদ সার্বক্ষণিক সরাসরি আপডেট করতে থাকবে।
             </p>
         </div>
 
-        <!-- Google NewsArticle Schema (Auto SEO for AdSense & News Rank) -->
         <script type="application/ld+json">
         {{
             "@context": "https://schema.org",
@@ -168,9 +174,8 @@ def format_human_editorial_article(title, summary, category, location, author):
             <span class="text-slate-600 font-semibold">Editorial Governance &bull; 100% Original Ground Coverage</span>
         </div>
     </div>
-    """
+    '''
 
-# ২. উচ্চ ক্ষমতাসম্পন্ন স্বয়ংক্রিয় গুগল ফিড স্ক্র্যাপার (প্রতি ১ মিনিটে ১টি ক্যাটাগরি)
 def high_volume_news_crawler():
     FEEDS = [
         ('India', 'https://news.google.com/rss/search?q=India+top+news+when:24h&hl=en-IN&gl=IN&ceid=IN:en'),
@@ -190,12 +195,11 @@ def high_volume_news_crawler():
 
     while True:
         try:
-            # প্রতি সাইকেলে ক্রমান্বয়ে ১টি নির্দিষ্ট ক্যাটাগরি নির্বাচন
             cat, feed_url = FEEDS[category_index]
             category_index = (category_index + 1) % total_categories
 
             parsed = feedparser.parse(feed_url)
-            for entry in parsed.entries[:5]:  # নির্বাচিত ক্যাটাগরি থেকে শীর্ষ ৫টি খবর প্রসেস করা
+            for entry in parsed.entries[:5]:
                 raw_title = entry.get('title', '').split(' - ')[0].strip()
                 raw_desc = entry.get('summary', entry.get('description', ''))
                 
@@ -219,10 +223,8 @@ def high_volume_news_crawler():
         except Exception:
             pass
 
-        # প্রতি ১ মিনিট অন্তর ব্যাকগ্রাউন্ডে চেক করবে
         time.sleep(60)
 
-# ব্যাকগ্রাউন্ডে স্বয়ংক্রিয় স্ক্র্যাপার চালু
 crawler_thread = threading.Thread(target=high_volume_news_crawler, daemon=True)
 crawler_thread.start()
 
@@ -294,7 +296,6 @@ def submit_news():
 
     return render_template('submit.html')
 
-# AdSense Compliance Routes
 @app.route('/privacy')
 @app.route('/privacy-policy')
 def privacy_page(): return render_template('privacy.html')
