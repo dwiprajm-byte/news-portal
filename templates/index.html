@@ -8,14 +8,28 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=pub-9701604898518993" crossorigin="anonymous"></script>
     <meta name="google-adsense-account" content="pub-9701604898518993">
+    <style>
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        .animate-marquee {
+            display: inline-block;
+            white-space: nowrap;
+            animation: marquee 35s linear infinite;
+        }
+        .animate-marquee:hover {
+            animation-play-state: paused;
+        }
+    </style>
 </head>
 <body class="bg-gray-100 text-gray-900 font-sans antialiased">
 
-    <!-- NDTV Style Top Bar -->
+    <!-- Top Bar with Language Selector -->
     <div class="bg-neutral-900 text-white text-xs py-2 px-4 border-b border-neutral-800">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <span class="bg-red-600 text-white font-bold px-2 py-0.5 rounded text-[10px] uppercase tracking-wider animate-pulse" data-i18n="live">Live</span>
+                <span class="bg-red-600 text-white font-bold px-2 py-0.5 rounded text-[10px] uppercase tracking-wider animate-pulse" data-i18n="live">Live News</span>
                 <span class="text-gray-300 font-medium" data-i18n="network">Global Newsroom Network</span>
             </div>
             
@@ -33,29 +47,35 @@
         </div>
     </div>
 
-    <!-- NDTV Red Header -->
+    <!-- Main Header -->
     <header class="bg-red-700 text-white shadow-md sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
             <a href="/" class="flex items-center gap-2">
                 <span class="bg-white text-red-700 font-black px-2.5 py-1 text-lg rounded-sm">24</span>
                 <span class="text-3xl font-black tracking-wider uppercase font-serif">EARLY NEWS</span>
             </a>
-            <nav class="hidden lg:flex items-center gap-6 text-sm font-bold uppercase text-white">
+            <nav class="hidden lg:flex items-center gap-5 text-sm font-bold uppercase text-white">
                 <a href="/" class="border-b-2 border-white pb-1" data-i18n="nav_home">Home</a>
                 <a href="/?cat=India" class="hover:text-gray-200 transition" data-i18n="nav_india">India</a>
                 <a href="/?cat=World" class="hover:text-gray-200 transition" data-i18n="nav_world">World</a>
                 <a href="/?cat=Business" class="hover:text-gray-200 transition" data-i18n="nav_business">Business</a>
                 <a href="/?cat=Technology" class="hover:text-gray-200 transition" data-i18n="nav_tech">Tech</a>
                 <a href="/?cat=Sports" class="hover:text-gray-200 transition" data-i18n="nav_sports">Sports</a>
+                <a href="javascript:void(0)" onclick="openModal('panchangModal')" class="hover:text-gray-200 transition cursor-pointer text-slate-200" data-i18n="nav_panchang">পঞ্জিকা</a>
+                <a href="javascript:void(0)" onclick="openModal('horoscopeModal')" class="hover:text-gray-200 transition cursor-pointer text-slate-200" data-i18n="nav_horoscope">রাশিফল</a>
             </nav>
         </div>
     </header>
 
-    <!-- Breaking News Ticker Bar -->
-    <div class="bg-neutral-900 text-white text-xs border-b border-neutral-800 py-2">
-        <div class="max-w-7xl mx-auto px-4 flex items-center gap-3">
-            <span class="bg-red-600 text-white font-bold px-2 py-0.5 text-[10px] uppercase" data-i18n="trending">Trending</span>
-            <span class="text-gray-300 truncate" data-i18n="ticker_text">24 Early News delivers verified, real-time dispatches with full editorial governance.</span>
+    <!-- Running Smooth Breaking News Ticker Bar -->
+    <div class="bg-neutral-900 text-white text-xs border-b border-neutral-800 py-2 overflow-hidden relative flex items-center">
+        <div class="bg-red-600 text-white font-bold px-3 py-1 text-[10px] uppercase z-10 shrink-0 ml-2 shadow" data-i18n="breaking">Breaking</div>
+        <div class="overflow-hidden w-full whitespace-nowrap">
+            <div class="animate-marquee text-gray-200 font-medium text-xs">
+                <span class="mx-4">&bull;</span> <span data-i18n="ticker_1">24 Early News delivers verified, real-time dispatches with full editorial governance.</span>
+                <span class="mx-4">&bull;</span> <span data-i18n="ticker_2">সর্বশেষ আপডেট: বিশ্বজুড়ে নিরপেক্ষ ও সত্যনিষ্ঠ সংবাদ পরিবেশন অব্যাহত রয়েছে।</span>
+                <span class="mx-4">&bull;</span> <span data-i18n="ticker_3">ताज़ा ख़बरें: सभी प्रमुख राष्ट्रीय और अंतर्राष्ट्रीय मुद्दों पर विशेष ग्राउंड रिपोर्ट।</span>
+            </div>
         </div>
     </div>
 
@@ -65,7 +85,7 @@
         <!-- News Grid Feed -->
         {% set display_articles = news if news else (news_list if news_list else []) %}
         {% if display_articles and display_articles|length > 0 %}
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-4">
             {% for item in display_articles %}
             <article class="bg-white rounded-lg overflow-hidden shadow-xs border border-gray-200 flex flex-col justify-between group hover:shadow-md transition">
                 <div>
@@ -94,6 +114,63 @@
         {% endif %}
     </main>
 
+    <!-- 🕉️ PANCHANG MODAL -->
+    <div id="panchangModal" class="fixed inset-0 bg-black/70 z-[100] hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-3xl max-h-[90vh] rounded-2xl overflow-y-auto shadow-2xl p-6 md:p-8 relative border-t-4 border-amber-500">
+            <button onclick="closeModal('panchangModal')" class="absolute top-4 right-4 bg-slate-100 hover:bg-slate-200 text-slate-700 w-8 h-8 rounded-full font-bold flex items-center justify-center transition">✕</button>
+            <div class="flex items-center gap-3 border-b border-amber-100 pb-4 mb-6">
+                <span class="text-3xl">🕉️</span>
+                <div>
+                    <h3 class="text-xl font-extrabold text-slate-900">বিশুদ্ধ বৈদিক পঞ্জিকা</h3>
+                    <p class="text-xs text-slate-500">তিথি ও নক্ষত্রের শুরু ও শেষের সঠিক সময়সূচী (কখন লাগছে ও কখন ছাড়ছে)</p>
+                </div>
+            </div>
+            <div class="space-y-4 text-sm text-slate-700">
+                <div class="bg-amber-50 p-4 rounded-xl border border-amber-200">
+                    <strong class="text-red-700 block mb-1">📅 আজকের তিথি (Tithi Timing):</strong>
+                    <p class="text-xs text-slate-700">শুক্লা অষ্টমী তিথি - শুরু: গতকাল রাত্রি ০৯:১২ মিঃ | সমাপ্তি: আজ সন্ধ্যা ০৬:৪৫ মিঃ পর্যন্ত।</p>
+                </div>
+                <div class="bg-amber-50 p-4 rounded-xl border border-amber-200">
+                    <strong class="text-slate-900 block mb-1">✨ নক্ষত্র স্থতিকাল (Nakshatra Timing):</strong>
+                    <p class="text-xs text-slate-700">উত্তরাষাঢ়া নক্ষত্র - স্থিতি: অপরাহ্ন ০৪:১৮ মিঃ পর্যন্ত, তাহার পর শ্রবণ নক্ষত্র লাগিতেছে।</p>
+                </div>
+                <div class="bg-green-50 p-4 rounded-xl border border-green-200">
+                    <strong class="text-green-800 block mb-1">🟢 শুভ মুহূর্ত ও অমৃতযোগ:</strong>
+                    <p class="text-xs text-slate-700">অভিজিৎ মুহূর্ত: বেলা ১১:৩৮ মিঃ থেকে দুপুর ১২:২৬ মিঃ পর্যন্ত।</p>
+                </div>
+                <div class="bg-red-50 p-4 rounded-xl border border-red-200">
+                    <strong class="text-red-800 block mb-1">🔴 রাহুকাল ও কালবেলা:</strong>
+                    <p class="text-xs text-slate-700">রাহুকাল: বিকাল ০৪:৩০ মিঃ – সন্ধ্যা ০৬:০০ মিঃ (শুভ কার্য বর্জনীয়)।</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ✨ HOROSCOPE MODAL -->
+    <div id="horoscopeModal" class="fixed inset-0 bg-black/70 z-[100] hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-4xl max-h-[90vh] rounded-2xl overflow-y-auto shadow-2xl p-6 md:p-8 relative border-t-4 border-indigo-600">
+            <button onclick="closeModal('horoscopeModal')" class="absolute top-4 right-4 bg-slate-100 hover:bg-slate-200 text-slate-700 w-8 h-8 rounded-full font-bold flex items-center justify-center transition">✕</button>
+            <div class="border-b border-slate-200 pb-4 mb-6">
+                <h3 class="text-2xl font-black text-slate-900">✨ আজকের ১২ রাশির দৈনিক রাশিফল</h3>
+                <p class="text-xs text-slate-500 mt-1">বৈদিক জ্যোতিষশাস্ত্রের পূর্বাভাষ অনুযায়ী আজকের দিনটি কেমন যাবে</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
+                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200"><strong class="text-red-600 text-sm">♈ মেষ:</strong> কর্মক্ষেত্রে নতুন সুযোগ। আর্থিক লেনদেনে সতর্ক থাকুন।</div>
+                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200"><strong class="text-red-600 text-sm">♉ বৃষ:</strong> পারিবারিক শান্তি বজায় থাকবে। ব্যবসায় শুভ লাভ।</div>
+                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200"><strong class="text-red-600 text-sm">♊ মিথুন:</strong> সৃজনশীল কাজে সাফল্য। ভ্রমণের সম্ভাবনা।</div>
+                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200"><strong class="text-red-600 text-sm">♋ কর্কট:</strong> মানসিক প্রফুল্লতা বৃদ্ধি। আটকে থাকা অর্থ প্রাপ্তি।</div>
+                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200"><strong class="text-red-600 text-sm">♌ সিংহ:</strong> সুনাম বৃদ্ধি পাবে। গুরুজনদের পরামর্শ লাভদায়ক।</div>
+                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200"><strong class="text-red-600 text-sm">♍ কন্যা:</strong> ব্যবসায় নতুন অংশীদারিত্ব। শিক্ষার্থীদের মনোযোগ বৃদ্ধি।</div>
+                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200"><strong class="text-red-600 text-sm">♎ তুলা:</strong> আয়ের নতুন উৎস উন্মোচিত হতে পারে। মন শান্ত থাকবে।</div>
+                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200"><strong class="text-red-600 text-sm">♏ বৃশ্চিক:</strong> দায়িত্ব বৃদ্ধি পাবে। ধৈর্য ধারণ করা শ্রেয়।</div>
+                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200"><strong class="text-red-600 text-sm">♐ ধনু:</strong> ভাগ্য সহায় থাকবে। দূর যোগাযোগ থেকে সুসংবাদ।</div>
+                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200"><strong class="text-red-600 text-sm">♑ মকর:</strong> পুরোনো সমস্যার সমাধান। পরিবারের সঙ্গে আনন্দময় সময়।</div>
+                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200"><strong class="text-red-600 text-sm">♒ কুম্ভ:</strong> নতুন উদ্যোগ সফল হবে। আর্থিক স্থায়িত্ব বজায় থাকবে।</div>
+                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200"><strong class="text-red-600 text-sm">♓ মীন:</strong> আধ্যাত্মিক চিন্তায় শান্তি। গৃহপরিবেশ আনন্দমুখর থাকবে।</div>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="bg-neutral-900 text-gray-400 text-xs border-t-4 border-red-600 mt-16 py-8 text-center">
         <p>&copy; 2026 <strong data-i18n="footer_network">24 Early News Network</strong>. <span data-i18n="footer_rights">Founded &amp; Published by</span> <strong>DWIPRAJ MALLICK</strong>. <span data-i18n="footer_all">All rights reserved.</span></p>
@@ -105,28 +182,40 @@
         </div>
     </footer>
 
-    <!-- Instant 3-Language Script Engine -->
+    <!-- Script Engine -->
     <script>
         const TRANSLATIONS = {
             en: {
-                live: "Live", network: "Global Newsroom Network", editorial_desk: "Editorial Desk",
+                live: "Live News", network: "Global Newsroom Network", editorial_desk: "Editorial Desk",
                 nav_home: "Home", nav_india: "India", nav_world: "World", nav_business: "Business", nav_tech: "Tech", nav_sports: "Sports",
-                trending: "Trending", ticker_text: "24 Early News delivers verified, real-time dispatches with full editorial governance.",
+                nav_panchang: "Panchang", nav_horoscope: "Horoscope", breaking: "Breaking",
+                ticker_1: "24 Early News delivers verified, real-time dispatches with full editorial governance.",
+                ticker_2: "Global breaking updates streaming 24/7 with strict fact-checking standards.",
+                ticker_3: "Independent ground reporting covering national affairs, economy, and technology.",
                 read_more: "Read More →", footer_network: "24 Early News Network", footer_rights: "Founded & Published by", footer_all: "All rights reserved."
             },
             bn: {
-                live: "লাইভ", network: "স্ট্যান্ডার্ড নিউজরুম নেটওয়ার্ক", editorial_desk: "এডিটর ডেস্ক",
+                live: "লাইভ নিউজ", network: "স্ট্যান্ডার্ড নিউজরুম নেটওয়ার্ক", editorial_desk: "এডিটর ডেস্ক",
                 nav_home: "হোম", nav_india: "ভারত", nav_world: "বিশ্ব", nav_business: "ব্যবসা", nav_tech: "প্রযুক্তি", nav_sports: "খেলাধুলা",
-                trending: "ট্রেন্ডিং", ticker_text: "২৪ আর্লি নিউজ সম্পূর্ণ সম্পাদকীয় নিয়ম মেনে যাচাইকৃত এবং রিয়েল-টাইম সংবাদ পরিবেশন করে।",
+                nav_panchang: "পঞ্জিকা", nav_horoscope: "রাশিফল", breaking: "ব্রেকিং নিউজ",
+                ticker_1: "২৪ আর্লি নিউজ সম্পূর্ণ সম্পাদকীয় নিয়ম মেনে যাচাইকৃত এবং রিয়েল-টাইম সংবাদ পরিবেশন করে।",
+                ticker_2: "সারাদেশের গুরুত্বপূর্ণ ও সর্বশেষ ব্রেকিং আপডেট সরাসরি গ্রাউন্ড ডেস্কে।",
+                ticker_3: "জাতীয়, আন্তর্জাতিক ও অর্থনৈতিক খবরের নিরপেক্ষ ও বস্তুনিষ্ঠ পরিবেশনা।",
                 read_more: "আরও পড়ুন →", footer_network: "২৪ আর্লি নিউজ নেটওয়ার্ক", footer_rights: "প্রতিষ্ঠিত ও প্রকাশিত করেছেন", footer_all: "সর্বস্বত্ব সংরক্ষিত।"
             },
             hi: {
-                live: "लाइव", network: "स्टैंडर्ड न्यूज़रूम नेटवर्क", editorial_desk: "संपादकीय डेस्क",
+                live: "लाइव न्यूज़", network: "स्टैंडर्ड न्यूज़रूम नेटवर्क", editorial_desk: "संपादकीय डेस्क",
                 nav_home: "होम", nav_india: "भारत", nav_world: "विश्व", nav_business: "व्यापार", nav_tech: "टेक", nav_sports: "खेल",
-                trending: "ट्रेंडिंग", ticker_text: "24 Early News पूर्ण संपादकीय शासन के साथ सत्यापित, वास्तविक समय की खबरें प्रदान करता है।",
+                nav_panchang: "पंचांग", nav_horoscope: "राशिफल", breaking: "ब्रेकिंग न्यूज़",
+                ticker_1: "24 Early News पूर्ण संपादकीय शासन के साथ सत्यापित, वास्तविक समय की खबरें प्रदान करता है।",
+                ticker_2: "देश और दुनिया की हर बड़ी और अहम खबर सबसे पहले हमारी टीम द्वारा।",
+                ticker_3: "राष्ट्रीय, अंतर्राष्ट्रीय, व्यापार और तकनीकी क्षेत्र की निष्पक्ष ग्राउंड रिपोर्ट।",
                 read_more: "और पढ़ें →", footer_network: "24 अर्ली न्यूज़ नेटवर्क", footer_rights: "संस्थापित एवं प्रकाशित", footer_all: "सर्वाधिकार सुरक्षित।"
             }
         };
+
+        function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
         function changeLanguage(lang) {
             localStorage.setItem('selected_site_lang', lang);
