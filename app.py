@@ -1,12 +1,18 @@
-﻿from flask import Flask, render_template, request, redirect, url_for, send_from_directory
-from datetime import datetime
-import json
 import os
+import re
+import json
+from datetime import datetime
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 
 app = Flask(__name__)
-app.secret_key = "24earlynews_rock_solid_key_2026"
+app.secret_key = "24earlynews_master_rock_solid_key_2026"
 
 DATA_FILE = "articles_store.json"
+
+def clean_news_title(raw_title):
+    t = re.sub(r'\s*-[^-]+$', '', raw_title)
+    t = re.sub(r'[^\w\s\u0980-\u09FF]', '', t).strip().lower()
+    return t
 
 def get_articles():
     if os.path.exists(DATA_FILE):
@@ -18,7 +24,6 @@ def get_articles():
         except Exception:
             pass
 
-    # ডিফল্ট নিশ্চিত খবর
     return [
         {
             'id': '101',
@@ -27,27 +32,62 @@ def get_articles():
             'category': 'India',
             'link': '/news/101',
             'image': 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1000',
-            'published': datetime.now().strftime("%a, %d %b %Y %H:%M:%S GMT")
+            'published': 'Mon, 19 Oct 2026 13:30:00 GMT'
         },
         {
             'id': '102',
-            'title': 'Global Economic Outlook: Technology and Market Trends for 2026',
-            'summary': 'Market analysts review major industrial developments and digital media growth trends across Asian and global exchanges.',
-            'category': 'Business',
+            'title': 'West Bengal Infrastructure & Urban Transit Projects Progress in 2026',
+            'summary': 'Kolkata Bureau — State authorities review ongoing roadway and transit development projects to improve connectivity across major regional centers.',
+            'category': 'Regional',
             'link': '/news/102',
-            'image': 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800',
-            'published': datetime.now().strftime("%a, %d %b %Y %H:%M:%S GMT")
+            'image': 'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=800',
+            'published': 'Mon, 19 Oct 2026 13:15:00 GMT'
         },
         {
             'id': '103',
-            'title': 'Digital Media and Ground Journalism: A Shift Toward Verified Wire Services',
-            'summary': 'The demand for transparent, fact-checked editorial standards continues to rise as newsrooms implement strict verification protocols.',
-            'category': 'Technology',
+            'title': 'Global Financial Markets & Technology Stocks Show Steady Movement',
+            'summary': 'Mumbai Desk — Analysts observe stable trading across key indices as technological innovations drive enterprise investment trends.',
+            'category': 'Business',
             'link': '/news/103',
+            'image': 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800',
+            'published': 'Mon, 19 Oct 2026 13:00:00 GMT'
+        },
+        {
+            'id': '104',
+            'title': 'Digital Telecommunications & Artificial Intelligence Policy Updates',
+            'summary': 'New Delhi — Regulatory authorities issue framework recommendations regarding digital safety and responsible technology integration.',
+            'category': 'Technology',
+            'link': '/news/104',
             'image': 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800',
-            'published': datetime.now().strftime("%a, %d %b %Y %H:%M:%S GMT")
+            'published': 'Mon, 19 Oct 2026 12:45:00 GMT'
+        },
+        {
+            'id': '105',
+            'title': 'National Sports Federation Outlines Preparations for Upcoming Tournament',
+            'summary': 'Sports Desk — Athletes begin rigorous camp training as the national federation finalizes squad selections for regional championships.',
+            'category': 'Sports',
+            'link': '/news/105',
+            'image': 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800',
+            'published': 'Mon, 19 Oct 2026 12:30:00 GMT'
         }
     ]
+
+def save_article_without_duplicate(new_article):
+    try:
+        all_news = get_articles()
+        new_norm = clean_news_title(new_article['title'])
+        
+        # ডুপ্লিকেট টাইটেল রোধ
+        for item in all_news:
+            if clean_news_title(item.get('title', '')) == new_norm:
+                return False
+                
+        all_news.insert(0, new_article)
+        with open(DATA_FILE, "w", encoding="utf-8") as f:
+            json.dump(all_news, f, ensure_ascii=False, indent=2)
+        return True
+    except Exception:
+        return False
 
 @app.route('/')
 def home():
@@ -98,14 +138,7 @@ def submit_news():
                 'published': datetime.now().strftime("%a, %d %b %Y %H:%M:%S GMT")
             }
 
-            all_news = get_articles()
-            all_news.insert(0, new_article)
-            try:
-                with open(DATA_FILE, "w", encoding="utf-8") as f:
-                    json.dump(all_news, f, ensure_ascii=False, indent=2)
-            except Exception:
-                pass
-
+            save_article_without_duplicate(new_article)
             return redirect(f"/news/{new_id}")
         except Exception as e:
             return f"Submission Error: {str(e)}", 500
