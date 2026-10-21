@@ -1,11 +1,11 @@
 ﻿import os
 import re
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 
 app = Flask(__name__)
-app.secret_key = "24earlynews_master_auto_wire_2026"
+app.secret_key = "24earlynews_unlimited_seo_wire_2026"
 
 DATA_FILE = "articles_store.json"
 
@@ -14,82 +14,86 @@ def clean_news_title(raw_title):
     t = re.sub(r'[^\w\s\u0980-\u09FF]', '', t).strip().lower()
     return t
 
+def generate_bulk_seo_news():
+    # হাজার হাজার খবরের ডাটাভাণ্ডার (এসইও ও হিউম্যান জার্নালিজম ফ্রেন্ডলি)
+    categories = ['India', 'World', 'Business', 'Technology', 'Sports', 'Regional']
+    locations = ['Kolkata', 'New Delhi', 'Mumbai', 'Bengaluru', 'Chennai', 'Hyderabad', 'Kalyani', 'Barachampa', 'Bongaon']
+    
+    generated = []
+    
+    # বিভিন্ন ক্যাটাগরির প্রিমিয়াম কনটেন্ট টেমপ্লেট
+    templates = [
+        ("Major Policy Shift Announced by Regulatory Authorities to Boost Digital Sector Growth", 
+         "Comprehensive framework reforms introduced to streamline enterprise compliance, safeguard consumer data privacy, and foster indigenous technological innovation across domestic markets."),
+        ("Infrastructure Modernization Projects Witness Rapid Execution Across Urban Centers", 
+         "State and municipal engineering divisions accelerate roadway, metro rail, and utility pipeline upgrades, aiming to reduce transit congestion and improve regional mobility."),
+        ("Quarterly Financial Results Reflect Resilient Corporate Performance and Strong Demand", 
+         "Leading banking, manufacturing, and retail enterprises report robust revenue growth, beating market consensus estimates and strengthening investor confidence worldwide."),
+        ("National Research Institutes Unveil Breakthrough Innovations in Renewable Energy Systems", 
+         "Scientists demonstrate next-generation photovoltaic efficiencies and high-capacity grid battery storage solutions, marking a milestone toward carbon neutrality targets."),
+        ("International Sports Federations Finalize Squad Selections and Training Schedules", 
+         "Athletic committees conduct rigorous conditioning camps, implementing sports science metrics and tactical drills ahead of upcoming continental championships."),
+        ("Agricultural Extension Programs Promote Water-Efficient Micro-Irrigation Technologies", 
+         "Agronomists conduct regional field workshops to train farming communities on automated drip irrigation and soil health card utilization for winter crop cycles.")
+    ]
+
+    base_time = datetime.now()
+    
+    # হাজার খানেক ইউনিক খবর তৈরি করার লুপ
+    news_id_counter = 9000
+    for i in range(1200):
+        tmpl = templates[i % len(templates)]
+        cat = categories[i % len(categories)]
+        loc = locations[i % len(locations)]
+        
+        # ইউনিক ভ্যারিয়েশন তৈরি
+        title_suffix = f" — Edition {i+1}" if i > 5 else ""
+        full_title = f"{tmpl[0]}{title_suffix}"
+        
+        # প্রফেশনাল হিউম্যান রিপোর্টিং স্টাইল সামারি
+        summary_text = f"{loc} Bureau — {tmpl[1]} Editorial field dispatches confirm that specialized committees are closely monitoring implementation milestones to ensure absolute transparency and operational compliance."
+
+        pub_time = base_time - timedelta(minutes=i * 15)
+        
+        img_urls = [
+            "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1000",
+            "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=1000",
+            "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=1000",
+            "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1000",
+            "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1000"
+        ]
+
+        item = {
+            'id': str(news_id_counter + i),
+            'title': full_title,
+            'summary': summary_text,
+            'category': cat,
+            'link': f"/news/{news_id_counter + i}",
+            'image': img_urls[i % len(img_urls)],
+            'published': pub_time.strftime("%a, %d %b %Y %H:%M:%S GMT")
+        }
+        generated.append(item)
+        
+    return generated
+
 def get_articles():
     if os.path.exists(DATA_FILE):
         try:
             with open(DATA_FILE, "r", encoding="utf-8") as f:
                 items = json.load(f)
-                if isinstance(items, list) and len(items) > 0:
+                if isinstance(items, list) and len(items) > 10:
                     return items
         except Exception:
             pass
 
-    # ব্যাকআপ সমৃদ্ধ নিউজ ফিড (বিভিন্ন ক্যাটাগরির একাধিক তাজা খবর)
-    return [
-        {
-            'id': '501',
-            'title': 'Kolkata Metro Expands Intelligent Signaling for High-Frequency Commuter Traffic',
-            'summary': 'Kolkata Bureau — Metro railway authorities introduce upgraded rake monitoring systems and automated digital passes to streamline passenger transit across urban corridors.',
-            'category': 'Regional',
-            'link': '/news/501',
-            'image': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=1200',
-            'published': 'Wed, 21 Oct 2026 08:00:00 GMT'
-        },
-        {
-            'id': '502',
-            'title': 'National Green Energy Mission Accelerates Solar Grid Expansion Nationwide',
-            'summary': 'New Delhi — Ministry officials review large-scale renewable infrastructure targets, emphasizing decentralized photovoltaic installations and battery storage deployment.',
-            'category': 'India',
-            'link': '/news/502',
-            'image': 'https://images.unsplash.com/photo-1509391365330-2e843beeb9c7?w=800',
-            'published': 'Wed, 21 Oct 2026 07:30:00 GMT'
-        },
-        {
-            'id': '503',
-            'title': 'Global Semiconductor Supply Chains Stabilize Amid Strong Enterprise Demand',
-            'summary': 'Technology Desk — Major microchip fabrication units report consistent output yields, fulfilling industrial requirements for automotive and consumer electronics sectors.',
-            'category': 'Technology',
-            'link': '/news/503',
-            'image': 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800',
-            'published': 'Wed, 21 Oct 2026 07:00:00 GMT'
-        },
-        {
-            'id': '504',
-            'title': 'Indian Cricket Squad Finalizes Strategy for Upcoming International Test Series',
-            'summary': 'Sports Bureau — National selectors confirm the touring squad following rigorous training sessions, highlighting bowling depth and batting adaptability.',
-            'category': 'Sports',
-            'link': '/news/504',
-            'image': 'https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=800',
-            'published': 'Wed, 21 Oct 2026 06:30:00 GMT'
-        },
-        {
-            'id': '505',
-            'title': 'Global Financial Markets Record Steady Gains Driven by Corporate Earnings',
-            'summary': 'Business Wire — Analysts observe resilient trading activity across major exchange indices as multinational corporations release optimistic quarterly forecasts.',
-            'category': 'Business',
-            'link': '/news/505',
-            'image': 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800',
-            'published': 'Wed, 21 Oct 2026 06:00:00 GMT'
-        },
-        {
-            'id': '506',
-            'title': 'Agricultural Department Introduces Smart Irrigation Guidelines for Winter Crops',
-            'summary': 'West Bengal Desk — Agricultural extension officers conduct regional workshops promoting water-efficient micro-irrigation techniques to maximize crop yields.',
-            'category': 'Regional',
-            'link': '/news/506',
-            'image': 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=800',
-            'published': 'Wed, 21 Oct 2026 05:30:00 GMT'
-        },
-        {
-            'id': '507',
-            'title': 'International Space Research Agency Plans Next-Generation Climate Satellite',
-            'summary': 'World Desk — Space scientists unveil advanced orbital payload architectures designed for real-time atmospheric tracking and disaster mitigation support.',
-            'category': 'World',
-            'link': '/news/507',
-            'image': 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800',
-            'published': 'Wed, 21 Oct 2026 05:00:00 GMT'
-        }
-    ]
+    # যদি ফাইল না থাকে তবে তাৎক্ষণিকভাবে ১২০০+ এসইও অপ্টিমাইজড খবর জেনারেট করে সেভ করা
+    bulk_data = generate_bulk_seo_news()
+    try:
+        with open(DATA_FILE, "w", encoding="utf-8") as f:
+            json.dump(bulk_data, f, ensure_ascii=False, indent=2)
+    except Exception:
+        pass
+    return bulk_data
 
 @app.route('/')
 def home():
@@ -150,7 +154,7 @@ def submit_news():
                 with open(DATA_FILE, "w", encoding="utf-8") as f:
                     json.dump(all_news[:5000], f, ensure_ascii=False, indent=2)
 
-            return redirect(url_for('home'))
+            return redirect(f"/news/{new_id}")
         except Exception as e:
             return f"Submission Error: {str(e)}", 500
 
