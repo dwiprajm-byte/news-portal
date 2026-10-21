@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -389,5 +389,12 @@
             changeLanguage(savedLang);
         });
     </script>
+    <!-- Auto-Refresh Live Rotation Script (Every 1 Minute) -->
+    <script>
+        setTimeout(function(){
+            window.location.reload(true);
+        }, 60000); // 60000 ms = 1 Minute
+    </script>
 </body>
 </html>
+

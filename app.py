@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 
 app = Flask(__name__)
-app.secret_key = "24earlynews_20k_words_ultimate_2026"
+app.secret_key = "24earlynews_1min_live_rotation_2026"
 
 DATA_FILE = "articles_store.json"
 
@@ -14,11 +14,10 @@ def clean_news_title(raw_title):
     t = re.sub(r'[^\w\s\u0980-\u09FF]', '', t).strip().lower()
     return t
 
-def generate_20k_word_articles():
+def generate_live_rotation_articles():
     categories = ['India', 'World', 'Business', 'Technology', 'Sports', 'Regional']
     bureaus = ['Kolkata Special Investigation Bureau', 'New Delhi National Newsroom', 'Mumbai Financial Intelligence Unit', 'Global Affairs Analytical Desk', 'Technology & Public Policy Wire']
     
-    # বিশাল পরিসরের গভীর এবং তথ্যসমৃদ্ধ লং-ফর্ম কনটেন্ট টেমপ্লেট
     longform_templates = [
         ("Comprehensive Masterclass and Deep-Dive Analysis on National Infrastructure, Digital Transformation and Policy Reforms", 
          "An exhaustive investigative report evaluating sweeping economic adjustments, technological integration, budgetary allocations, and civic development milestones designed to optimize regional productivity and public transparency."),
@@ -40,9 +39,8 @@ def generate_20k_word_articles():
         cat = categories[i % len(categories)]
         bureau = bureaus[i % len(bureaus)]
         
-        article_title = f"{tmpl[0]} — Special Monograph Vol. {i+1}" if i > 5 else tmpl[0]
+        article_title = f"{tmpl[0]} — Live Edition Vol. {i+1}" if i > 5 else tmpl[0]
         
-        # ২০,০০০ শব্দের ব্যাপ্তির সমতুল্য গভীর ও বহুস্তর বিশিষ্ট প্রফেশনাল প্রতিবেদন বডি
         massive_body = f"""{bureau} — {tmpl[1]} Official field dispatches, comprehensive archival audits, and executive oversight summaries confirm that independent regulatory bodies are maintaining rigorous scrutiny to ensure absolute compliance with national developmental benchmarks.
 
 ### Section 1: Executive Summary, Historical Context and Foundational Objectives
@@ -77,11 +75,11 @@ As the development trajectory unfolds into subsequent operational phases, indepe
         ]
 
         item = {
-            'id': str(12000 + i),
+            'id': str(13000 + i),
             'title': article_title,
             'summary': massive_body.strip(),
             'category': cat,
-            'link': f"/news/{12000 + i}",
+            'link': f"/news/{13000 + i}",
             'image': image_pool[i % len(image_pool)],
             'published': pub_time.strftime("%a, %d %b %Y %H:%M:%S GMT")
         }
@@ -99,7 +97,7 @@ def get_articles():
         except Exception:
             pass
 
-    fresh_data = generate_20k_word_articles()
+    fresh_data = generate_live_rotation_articles()
     try:
         with open(DATA_FILE, "w", encoding="utf-8") as f:
             json.dump(fresh_data, f, ensure_ascii=False, indent=2)
