@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 
 app = Flask(__name__)
-app.secret_key = "24earlynews_ultra_seo_longform_2026"
+app.secret_key = "24earlynews_safe_clean_secure_2026"
 
 DATA_FILE = "articles_store.json"
 
@@ -14,68 +14,51 @@ def clean_news_title(raw_title):
     t = re.sub(r'[^\w\s\u0980-\u09FF]', '', t).strip().lower()
     return t
 
-def generate_deep_seo_articles():
+def generate_safe_professional_news():
     categories = ['India', 'World', 'Business', 'Technology', 'Sports', 'Regional']
-    bureaus = ['Kolkata Special Investigation Desk', 'New Delhi National Bureau', 'Mumbai Financial Intelligence Unit', 'Global Affairs Newsroom', 'Technology & Innovation Wire']
+    bureaus = ['Kolkata Editorial Desk', 'New Delhi National Bureau', 'Mumbai Financial Wire', 'National Press Service', 'Regional Reporting Unit']
     
-    # গুগলের এসইও ট্রেন্ডিং গাইডলাইন মেনে দীর্ঘ ও প্রফেশনাল আর্টিকেলের কাঠামো
-    seo_templates = [
-        ("Comprehensive National Infrastructure & Digital Transformation Roadmap for 2026", 
-         "An in-depth investigative report analyzing the sweeping policy shifts, budgetary allocations, and technological integration driving regional and national development. Experts evaluate the long-term socioeconomic impact, employment generation metrics, and administrative transparency frameworks established by regulatory authorities."),
-        ("Global Economic Resilience: Market Dynamics, Technological Innovation and Trade Strategies", 
-         "A meticulous financial analysis reviewing macroeconomic indicators, multinational corporate earnings reports, supply chain optimizations, and monetary policy adjustments across major international exchanges amidst shifting geopolitical landscapes."),
-        ("Next-Generation Artificial Intelligence Governance and Cybersecurity Frameworks", 
-         "An extensive examination of emerging regulatory standards for secure cloud computing, data privacy compliance, enterprise automation protocols, and the ethical deployment of artificial intelligence across critical public and private sectors."),
-        ("Sustainable Environmental Engineering and Renewable Energy Transition Strategies", 
-         "A comprehensive overview of large-scale photovoltaic installations, decentralized smart grid deployments, zero-discharge industrial manufacturing norms, and international climate observation telemetry data aimed at achieving carbon neutrality goals."),
-        ("Elite Athletic Training Methodologies and Sports Science Integration in International Championships", 
-         "An exhaustive sports journalism feature detailing tactical conditioning camps, biometric performance analytics, nutritional science applications, and squad selections across national sports federations preparing for global tournaments.")
+    safe_templates = [
+        ("Comprehensive Review of Regional Infrastructure and Urban Transit Expansion", 
+         "State municipal authorities release evaluation metrics highlighting accelerated execution timelines, transparent resource allocation, and stringent safety protocols across civic development works."),
+        ("Financial Market Analysis Highlights Steady Performance Across Key Industrial Indices", 
+         "Institutional brokerage summaries indicate positive investor sentiment driven by robust corporate earnings reports and consistent domestic liquidity management measures."),
+        ("Digital Governance Initiatives Expand Access to Essential Public Services in Rural Districts", 
+         "Administrative departments scale up high-speed optical fiber connectivity and digital kiosk networks, facilitating seamless certificate issuance and grievance redressal for citizens."),
+        ("Environmental Protection Boards Enforce Standard Compliance for Industrial Units", 
+         "Regional pollution control boards conduct comprehensive facility audits, mandating advanced effluent treatment installations and continuous emission tracking to protect ecological balance."),
+        ("National Athletic Federation Outlines Structured Training Regimens for Upcoming International Events", 
+         "Sports science experts collaborate with national coaches to implement advanced conditioning protocols, biometric performance monitoring, and tactical preparation camps for elite competitors.")
     ]
 
     base_time = datetime.now()
     all_articles = []
     
-    # হাজার হাজার দীর্ঘ ফরম্যাট এসইও অপ্টিমাইজড খবর তৈরি
-    for i in range(1800):
-        tmpl = seo_templates[i % len(seo_templates)]
+    for i in range(1200):
+        tmpl = safe_templates[i % len(safe_templates)]
         cat = categories[i % len(categories)]
         bureau = bureaus[i % len(bureaus)]
         
-        unique_title = f"{tmpl[0]} — Special Report Vol. {i+1}" if i > 5 else tmpl[0]
-        
-        # ৫০০০ শব্দের মধ্যে বিস্তারিত ও আকর্ষণীয় হিউম্যান জার্নালিজম স্টাইল বডি টেক্সট
-        detailed_body = f"""
-        {bureau} — In a rapidly evolving landscape, {tmpl[1]} 
-        
-        Detailed investigations and official press dispatches indicate that multi-sectoral committees are closely monitoring implementation milestones. Analysts point out that structural reforms, rigorous compliance protocols, and proactive stakeholder engagement remain the cornerstone of this initiative. 
-        
-        ### Background and Strategic Objectives
-        The primary objective centers around establishing sustainable operational benchmarks while maximizing public accountability and economic efficiency. Over the past fiscal cycles, stakeholders have observed significant improvements in resource allocation, digital transparency, and technological adoption. Independent economic observers note that these proactive measures insulate domestic markets from external volatilities.
-        
-        ### Comprehensive Impact Assessment
-        Industry leaders and policy makers have lauded the comprehensive approach adopted by the governing bodies. Key performance indicators suggest a measurable surge in productivity, enhanced consumer protection, and accelerated infrastructural execution. Furthermore, specialized working groups continue to evaluate feedback from grassroots entities to refine tactical execution.
-        
-        ### Future Outlook and Expert Perspectives
-        As the roadmap unfolds into subsequent phases, international observers maintain an optimistic outlook. Continued investment in digital infrastructure, human capital development, and transparent governance is expected to yield compounding dividends well into the future. Editorial follow-ups will track real-time developments as official bodies release quarterly progress audits.
-        """
+        unique_title = f"{tmpl[0]} — Bulletin #{i+1}" if i > 5 else tmpl[0]
+        summary_text = f"{bureau} — {tmpl[1]} Independent field correspondents confirm that official monitoring bodies are maintaining rigorous oversight to ensure complete adherence to regulatory standards and public accountability."
 
-        pub_time = base_time - timedelta(minutes=i * 8)
+        pub_time = base_time - timedelta(minutes=i * 10)
         
-        image_gallery = [
-            "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200",
-            "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=1200",
-            "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=1200",
-            "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1200",
-            "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200"
+        image_pool = [
+            "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1000",
+            "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=1000",
+            "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=1000",
+            "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1000",
+            "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1000"
         ]
 
         item = {
-            'id': str(9000 + i),
+            'id': str(9500 + i),
             'title': unique_title,
-            'summary': detailed_body.strip(),
+            'summary': summary_text,
             'category': cat,
-            'link': f"/news/{9000 + i}",
-            'image': image_gallery[i % len(image_gallery)],
+            'link': f"/news/{9500 + i}",
+            'image': image_pool[i % len(image_pool)],
             'published': pub_time.strftime("%a, %d %b %Y %H:%M:%S GMT")
         }
         all_articles.append(item)
@@ -92,7 +75,7 @@ def get_articles():
         except Exception:
             pass
 
-    fresh_data = generate_deep_seo_articles()
+    fresh_data = generate_safe_professional_news()
     try:
         with open(DATA_FILE, "w", encoding="utf-8") as f:
             json.dump(fresh_data, f, ensure_ascii=False, indent=2)
