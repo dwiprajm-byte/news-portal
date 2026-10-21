@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 
 app = Flask(__name__)
-app.secret_key = "24earlynews_strict_seo_standard_2026"
+app.secret_key = "24earlynews_perfect_seo_rendering_2026"
 
 DATA_FILE = "articles_store.json"
 
@@ -14,12 +14,12 @@ def clean_news_title(raw_title):
     t = re.sub(r'[^\w\s\u0980-\u09FF]', '', t).strip().lower()
     return t
 
-def generate_strict_seo_articles():
+def generate_seo_longform_articles():
     categories = ['India', 'World', 'Business', 'Technology', 'Sports', 'Regional']
     bureaus = ['Kolkata Bureau', 'New Delhi Desk', 'Mumbai Financial Wire', 'National Press Service', 'Editorial Investigation Wing']
     
-    # গুগলের ৯টি এসইও ধাপ (Title, Dateline, Lead Paragraph, Sub-headings, Long-form) মেনে তৈরি টেমপ্লেট
-    seo_standards = [
+    # গুগলের এসইও ট্রেন্ডিং এবং প্রফেশনাল সাংবাদিকতার নিয়ম মেনে দীর্ঘ ফরম্যাট টেমপ্লেট
+    seo_templates = [
         ("Comprehensive Analysis of National Infrastructure, Digital Growth and Policy Reforms", 
          "An investigative overview examining sweeping economic adjustments, technological integration, and civic development milestones designed to optimize regional productivity and public transparency."),
         ("Global Economic Trends: Market Resilience, Corporate Earnings and Trade Dynamics", 
@@ -36,26 +36,23 @@ def generate_strict_seo_articles():
     all_articles = []
     
     for i in range(1500):
-        tmpl = seo_standards[i % len(seo_standards)]
+        tmpl = seo_templates[i % len(seo_templates)]
         cat = categories[i % len(categories)]
         bureau = bureaus[i % len(bureaus)]
         
-        # ১. এসইও ফ্রেন্ডলি আকর্ষণীয় শিরোনাম
-        seo_title = f"{tmpl[0]} — Update #{i+1}" if i > 5 else tmpl[0]
+        seo_title = f"{tmpl[0]} — Report #{i+1}" if i > 5 else tmpl[0]
         
-        # ৩, ৪, ৫, ৬ নম্বর ধাপ মেনে হিউম্যান জার্নালিজম ও সাব-হেডিংযুক্ত বিস্তারিত ফরম্যাট
-        seo_body = f"""
-        {bureau} — {tmpl[1]} Official field dispatches confirm that independent oversight committees are maintaining rigorous scrutiny to ensure absolute compliance with national benchmarks.
+        # এসইও ফ্রেন্ডলি প্রফেশনাল প্যারাগ্রাফ ও সাব-হেডিং স্ট্রাকচার
+        seo_body = f"""{bureau} — {tmpl[1]} Official field dispatches confirm that independent oversight committees are maintaining rigorous scrutiny to ensure absolute compliance with national benchmarks.
 
-        ### Executive Summary and Core Objectives
-        The primary focus centers around establishing sustainable operational frameworks while maximizing economic efficiency and public accountability. Over recent fiscal cycles, stakeholders have observed measurable improvements in resource allocation, digital transparency, and technological adoption.
+### Executive Summary and Core Objectives
+The primary focus centers around establishing sustainable operational frameworks while maximizing economic efficiency and public accountability. Over recent fiscal cycles, stakeholders have observed measurable improvements in resource allocation, digital transparency, and technological adoption.
 
-        ### Strategic Implementation and Expert Perspectives
-        Industry leaders and policy analysts have lauded the comprehensive approach adopted by governing bodies. Key performance indicators suggest a steady surge in productivity, enhanced consumer protection, and accelerated infrastructural execution. Specialized working groups continue to evaluate grassroots feedback to refine tactical deployment.
+### Strategic Implementation and Expert Perspectives
+Industry leaders and policy analysts have lauded the comprehensive approach adopted by governing bodies. Key performance indicators suggest a steady surge in productivity, enhanced consumer protection, and accelerated infrastructural execution. Specialized working groups continue to evaluate grassroots feedback to refine tactical deployment.
 
-        ### Future Outlook and Market Implications
-        As the development roadmap unfolds into subsequent phases, international observers maintain an optimistic outlook. Continued investment in digital infrastructure, human capital development, and transparent governance is expected to yield compounding dividends across regional and national sectors.
-        """
+### Future Outlook and Market Implications
+As the development roadmap unfolds into subsequent phases, international observers maintain an optimistic outlook. Continued investment in digital infrastructure, human capital development, and transparent governance is expected to yield compounding dividends across regional and national sectors."""
 
         pub_time = base_time - timedelta(minutes=i * 10)
         
@@ -68,11 +65,11 @@ def generate_strict_seo_articles():
         ]
 
         item = {
-            'id': str(10000 + i),
+            'id': str(11000 + i),
             'title': seo_title,
             'summary': seo_body.strip(),
             'category': cat,
-            'link': f"/news/{10000 + i}",
+            'link': f"/news/{11000 + i}",
             'image': image_pool[i % len(image_pool)],
             'published': pub_time.strftime("%a, %d %b %Y %H:%M:%S GMT")
         }
@@ -90,7 +87,7 @@ def get_articles():
         except Exception:
             pass
 
-    fresh_data = generate_strict_seo_articles()
+    fresh_data = generate_seo_longform_articles()
     try:
         with open(DATA_FILE, "w", encoding="utf-8") as f:
             json.dump(fresh_data, f, ensure_ascii=False, indent=2)
