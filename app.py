@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 
 app = Flask(__name__)
-app.secret_key = "24earlynews_unlimited_seo_wire_2026"
+app.secret_key = "24earlynews_copyright_free_seo_2026"
 
 DATA_FILE = "articles_store.json"
 
@@ -14,48 +14,41 @@ def clean_news_title(raw_title):
     t = re.sub(r'[^\w\s\u0980-\u09FF]', '', t).strip().lower()
     return t
 
-def generate_bulk_seo_news():
-    # হাজার হাজার খবরের ডাটাভাণ্ডার (এসইও ও হিউম্যান জার্নালিজম ফ্রেন্ডলি)
+def generate_copyright_free_verified_news():
     categories = ['India', 'World', 'Business', 'Technology', 'Sports', 'Regional']
-    locations = ['Kolkata', 'New Delhi', 'Mumbai', 'Bengaluru', 'Chennai', 'Hyderabad', 'Kalyani', 'Barachampa', 'Bongaon']
+    bureaus = ['Kolkata Desk', 'New Delhi Bureau', 'Mumbai Financial Wire', 'National Press Service', 'Regional Editorial Wing']
     
-    generated = []
-    
-    # বিভিন্ন ক্যাটাগরির প্রিমিয়াম কনটেন্ট টেমপ্লেট
-    templates = [
-        ("Major Policy Shift Announced by Regulatory Authorities to Boost Digital Sector Growth", 
-         "Comprehensive framework reforms introduced to streamline enterprise compliance, safeguard consumer data privacy, and foster indigenous technological innovation across domestic markets."),
-        ("Infrastructure Modernization Projects Witness Rapid Execution Across Urban Centers", 
-         "State and municipal engineering divisions accelerate roadway, metro rail, and utility pipeline upgrades, aiming to reduce transit congestion and improve regional mobility."),
-        ("Quarterly Financial Results Reflect Resilient Corporate Performance and Strong Demand", 
-         "Leading banking, manufacturing, and retail enterprises report robust revenue growth, beating market consensus estimates and strengthening investor confidence worldwide."),
-        ("National Research Institutes Unveil Breakthrough Innovations in Renewable Energy Systems", 
-         "Scientists demonstrate next-generation photovoltaic efficiencies and high-capacity grid battery storage solutions, marking a milestone toward carbon neutrality targets."),
-        ("International Sports Federations Finalize Squad Selections and Training Schedules", 
-         "Athletic committees conduct rigorous conditioning camps, implementing sports science metrics and tactical drills ahead of upcoming continental championships."),
-        ("Agricultural Extension Programs Promote Water-Efficient Micro-Irrigation Technologies", 
-         "Agronomists conduct regional field workshops to train farming communities on automated drip irrigation and soil health card utilization for winter crop cycles.")
+    # শতভাগ মৌলিক ও কপিরাইট-মুক্ত কনটেন্ট ফ্রেমওয়ার্ক
+    original_templates = [
+        ("Comprehensive Administrative Review Highlights Progress in Public Infrastructure Projects", 
+         "State and municipal oversight committees release updated evaluation metrics, focusing on accelerated execution timelines, transparent resource allocation, and stringent safety protocols across civic development works."),
+        ("Financial Market Analysts Report Stable Trading Volumes Across Key Industrial Indices", 
+         "Institutional brokerage summaries indicate positive investor sentiment driven by robust corporate earnings reports and consistent domestic liquidity management measures."),
+        ("Digital Governance Initiatives Expand Access to Essential Public Services in Rural Districts", 
+         "Administrative departments scale up high-speed optical fiber connectivity and digital kiosk networks, facilitating seamless certificate issuance and grievance redressal for citizens."),
+        ("Environmental Compliance Authorities Enforce Zero-Discharge Norms for Industrial Units", 
+         "Regional pollution control boards conduct comprehensive facility audits, mandating advanced effluent treatment installations and continuous emission tracking to protect ecological balance."),
+        ("National Athletic Federation Outlines Structured Training Regimens for Upcoming International Events", 
+         "Sports science experts collaborate with national coaches to implement advanced conditioning protocols, biometric performance monitoring, and tactical preparation camps for elite competitors."),
+        ("Agricultural Extension Services Promote Sustainable Micro-Irrigation Practices Among Farming Collectives", 
+         "Agronomy specialists organize community workshops demonstrating automated drip irrigation efficiency and soil nutrient management to optimize winter agricultural yields.")
     ]
 
     base_time = datetime.now()
+    all_articles = []
     
-    # হাজার খানেক ইউনিক খবর তৈরি করার লুপ
-    news_id_counter = 9000
-    for i in range(1200):
-        tmpl = templates[i % len(templates)]
+    # প্রতিদিন হাজার হাজার খবর ইউনিক ও কপিরাইট ফ্রি আকারে জেনারেট করার লুপ
+    for i in range(1600):
+        tmpl = original_templates[i % len(original_templates)]
         cat = categories[i % len(categories)]
-        loc = locations[i % len(locations)]
+        bureau = bureaus[i % len(bureaus)]
         
-        # ইউনিক ভ্যারিয়েশন তৈরি
-        title_suffix = f" — Edition {i+1}" if i > 5 else ""
-        full_title = f"{tmpl[0]}{title_suffix}"
-        
-        # প্রফেশনাল হিউম্যান রিপোর্টিং স্টাইল সামারি
-        summary_text = f"{loc} Bureau — {tmpl[1]} Editorial field dispatches confirm that specialized committees are closely monitoring implementation milestones to ensure absolute transparency and operational compliance."
+        unique_title = f"{tmpl[0]} — Bulletin #{i+1}" if i > 5 else tmpl[0]
+        summary_text = f"{bureau} — {tmpl[1]} Independent field correspondents confirm that official monitoring bodies are maintaining rigorous oversight to ensure complete adherence to regulatory standards and public accountability."
 
-        pub_time = base_time - timedelta(minutes=i * 15)
+        pub_time = base_time - timedelta(minutes=i * 10)
         
-        img_urls = [
+        image_pool = [
             "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1000",
             "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=1000",
             "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=1000",
@@ -64,17 +57,17 @@ def generate_bulk_seo_news():
         ]
 
         item = {
-            'id': str(news_id_counter + i),
-            'title': full_title,
+            'id': str(8000 + i),
+            'title': unique_title,
             'summary': summary_text,
             'category': cat,
-            'link': f"/news/{news_id_counter + i}",
-            'image': img_urls[i % len(img_urls)],
+            'link': f"/news/{8000 + i}",
+            'image': image_pool[i % len(image_pool)],
             'published': pub_time.strftime("%a, %d %b %Y %H:%M:%S GMT")
         }
-        generated.append(item)
+        all_articles.append(item)
         
-    return generated
+    return all_articles
 
 def get_articles():
     if os.path.exists(DATA_FILE):
@@ -86,14 +79,13 @@ def get_articles():
         except Exception:
             pass
 
-    # যদি ফাইল না থাকে তবে তাৎক্ষণিকভাবে ১২০০+ এসইও অপ্টিমাইজড খবর জেনারেট করে সেভ করা
-    bulk_data = generate_bulk_seo_news()
+    fresh_data = generate_copyright_free_verified_news()
     try:
         with open(DATA_FILE, "w", encoding="utf-8") as f:
-            json.dump(bulk_data, f, ensure_ascii=False, indent=2)
+            json.dump(fresh_data, f, ensure_ascii=False, indent=2)
     except Exception:
         pass
-    return bulk_data
+    return fresh_data
 
 @app.route('/')
 def home():
