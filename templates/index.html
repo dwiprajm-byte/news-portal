@@ -186,35 +186,35 @@
             <div class="bg-gradient-to-b from-orange-500 via-rose-500 to-rose-400 text-white p-6 relative shadow-md">
                 <div class="flex justify-end items-start mb-2">
                     <div class="bg-white/20 border border-white/30 px-3 py-1 rounded-full text-xs font-bold backdrop-blur-xs flex items-center gap-1">
-                        <i class="fas fa-map-marker-alt text-amber-200"></i> কলকাতা
+                        <i class="fas fa-map-marker-alt text-amber-200"></i> <span data-i18n="kolkata">কলকাতা</span>
                     </div>
                 </div>
 
                 <div class="flex justify-between items-end mt-1">
                     <div>
                         <div class="text-7xl font-black leading-none tracking-tighter mb-1.5 drop-shadow-sm">০১</div>
-                        <div class="text-2xl font-bold font-serif">কার্তিক ১৪৩৩</div>
-                        <div class="text-sm font-medium text-orange-50 mt-1">১৯ অক্টোবর ২০২৬ &bull; সোমবার</div>
+                        <div class="text-2xl font-bold font-serif" data-i18n="kartik_date">কার্তিক ১৪৩৩</div>
+                        <div class="text-sm font-medium text-orange-50 mt-1" data-i18n="date_str">১৯ অক্টোবর ২০২৬ &bull; সোমবার</div>
                     </div>
                     <div class="text-right text-xs space-y-1 font-semibold bg-black/15 px-3.5 py-2.5 rounded-2xl backdrop-blur-xs border border-white/10">
-                        <div>সূর্যোদয় ০৫:৩৮ 🌅</div>
-                        <div>সূর্যাস্ত ১৭:০৪ 🌇</div>
+                        <div data-i18n="sunrise">সূর্যোদয় ০৫:৩৮ 🌅</div>
+                        <div data-i18n="sunset">সূর্যাস্ত ১৭:০৪ 🌇</div>
                     </div>
                 </div>
 
                 <div class="flex justify-between items-center mt-5 pt-3 border-t border-white/25 text-xs">
-                    <span class="font-extrabold text-sm tracking-wide">মহাষ্টমী / শুক্ল নবমী</span>
-                    <span class="bg-white/25 border border-white/40 px-3 py-0.5 rounded-full text-[11px] font-bold">সূর্যসিদ্ধান্ত পঞ্জিকা</span>
+                    <span class="font-extrabold text-sm tracking-wide" data-i18n="tithi_title">মহাষ্টমী / শুক্ল নবমী</span>
+                    <span class="bg-white/25 border border-white/40 px-3 py-0.5 rounded-full text-[11px] font-bold" data-i18n="panchang_type">সূর্যসিদ্ধান্ত পঞ্জিকা</span>
                 </div>
             </div>
 
             <div class="p-6 overflow-y-auto space-y-5 text-sm bg-slate-50/50">
                 <div class="bg-white rounded-2xl p-5 border border-rose-200 shadow-xs space-y-3">
                     <div class="flex items-center gap-2 text-rose-600 font-extrabold text-sm border-b border-rose-100 pb-2">
-                        <i class="fas fa-hourglass-half"></i> তিথি ও নক্ষত্রের সময়সূচী
+                        <i class="fas fa-hourglass-half"></i> <span data-i18n="tithi_heading">তিথি ও নক্ষত্রের সময়সূচী</span>
                     </div>
                     <div class="text-xs text-slate-700 space-y-2">
-                        <p><strong>শুক্ল নবমী তিথি:</strong> এখন শুক্ল নবমী তিথি চলছে। এটি শেষ হবে <strong>২০ অক্টোবর ২০২৬ সকাল ০৯:২৯ মিনিটে</strong>, এরপর শুক্ল দশমী তিথি শুরু হইবে।</p>
+                        <p><strong data-i18n="tithi_label">শুক্ল নবমী তিথি:</strong> <span data-i18n="tithi_desc">এখন শুক্ল নবমী তিথি চলছে। এটি শেষ হবে ২০ অক্টোবর ২০২৬ সকাল ০৯:২৯ মিনিটে, এরপর শুক্ল দশমী তিথি শুরু হইবে।</span></p>
                     </div>
                 </div>
             </div>
@@ -226,12 +226,12 @@
         <div class="bg-white w-full max-w-4xl max-h-[90vh] rounded-3xl overflow-y-auto shadow-2xl p-6 md:p-8 relative border-t-4 border-rose-500">
             <button onclick="closeModal('horoscopeModal')" class="absolute top-4 right-4 bg-slate-100 hover:bg-slate-200 text-slate-700 w-8 h-8 rounded-full font-bold flex items-center justify-center transition">✕</button>
             <div class="border-b border-slate-200 pb-4 mb-6">
-                <h3 class="text-2xl font-black text-slate-900">✨ আজকের ১২ রাশির দৈনিক রাশিফল</h3>
+                <h3 class="text-2xl font-black text-slate-900" data-i18n="horoscope_title">✨ আজকের ১২ রাশির দৈনিক রাশিফল</h3>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
-                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200"><strong class="text-rose-600 text-sm">♈ মেষ:</strong> কর্মক্ষেত্রে নতুন সুযোগ।</div>
-                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200"><strong class="text-rose-600 text-sm">♉ বৃষ:</strong> পারিবারিক শান্তি বজায় থাকবে।</div>
-                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200"><strong class="text-rose-600 text-sm">♊ মিথুন:</strong> সৃজনশীল কাজে সাফল্য।</div>
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200"><strong class="text-rose-600 text-sm" data-i18n="mesh">♈ মেষ:</strong> <span data-i18n="mesh_desc">কর্মক্ষেত্রে নতুন সুযোগ।</span></div>
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200"><strong class="text-rose-600 text-sm" data-i18n="vrish">♉ বৃষ:</strong> <span data-i18n="vrish_desc">পারিবারিক শান্তি বজায় থাকবে।</span></div>
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200"><strong class="text-rose-600 text-sm" data-i18n="mithun">♊ মিথুন:</strong> <span data-i18n="mithun_desc">সৃজনশীল কাজে সাফল্য।</span></div>
             </div>
         </div>
     </div>
@@ -247,7 +247,7 @@
         </div>
     </footer>
 
-    <!-- Instant Real-Time Translation Stream Engine -->
+    <!-- Comprehensive Multilingual Sync Engine -->
     <script>
         const originalTextStore = new Map();
 
@@ -290,7 +290,14 @@
                 ticker_1: "24 Early News delivers verified, real-time dispatches with full editorial governance.",
                 ticker_2: "Global breaking updates streaming 24/7 with strict fact-checking standards.",
                 ticker_3: "Real-time updates covering major regional and national developments.",
-                read_more: "Read More →", footer_network: "24 Early News Network", footer_rights: "Founded & Published by", footer_all: "All rights reserved."
+                read_more: "Read More →", footer_network: "24 Early News Network", footer_rights: "Founded & Published by", footer_all: "All rights reserved.",
+                kolkata: "Kolkata", kartik_date: "Kartik 1433", date_str: "19 Oct 2026 • Monday", sunrise: "Sunrise 05:38 🌅", sunset: "Sunset 17:04 🌇",
+                tithi_title: "Mahashtami / Shukla Navami", panchang_type: "Suryasiddhanta Panchang", tithi_heading: "Tithi & Nakshatra Schedule",
+                tithi_label: "Shukla Navami Tithi:", tithi_desc: "Shukla Navami tithi is currently active. It concludes on 20 Oct 2026 at 09:29 AM, followed by Shukla Dashami.",
+                horoscope_title: "✨ Daily Horoscope for 12 Zodiac Signs",
+                mesh: "♈ Aries:", mesh_desc: "New career opportunities emerge. Exercise financial caution.",
+                vrish: "♉ Taurus:", vrish_desc: "Family harmony prevails. Favorable gains in business.",
+                mithun: "♊ Gemini:", mithun_desc: "Success in creative endeavors. Travel possibilities exist."
             },
             bn: {
                 live: "লাইভ নিউজ", network: "আন্তর্জাতিক নিউজরুম নেটওয়ার্ক", editorial_desk: "এডিটর ডেস্ক",
@@ -300,16 +307,31 @@
                 ticker_1: "২৪ আর্লি নিউজ সম্পূর্ণ সম্পাদকীয় নিয়ম মেনে যাচাইকৃত এবং রিয়েল-টাইম সংবাদ পরিবেশন করে।",
                 ticker_2: "সারাদেশের গুরুত্বপূর্ণ ও সর্বশেষ ব্রেকিং আপডেট সরাসরি গ্রাউন্ড ডেস্কে।",
                 ticker_3: "তাড়াতাড়ি তাজা খবর পড়তে সঙ্গে থাকুন।",
-                read_more: "আরও পড়ুন →", footer_network: "২৪ আর্লি নিউজ নেটওয়ার্ক", footer_rights: "প্রতিষ্ঠিত ও প্রকাশিত করেছেন", footer_all: "সর্বস্বত্ব সংরক্ষিত।"
+                read_more: "আরও পড়ুন →", footer_network: "২৪ আর্লি নিউজ নেটওয়ার্ক", footer_rights: "প্রতিষ্ঠিত ও প্রকাশিত করেছেন", footer_all: "সর্বস্বত্ব সংরক্ষিত。",
+                kolkata: "কলকাতা", kartik_date: "কার্তিক ১৪৩৩", date_str: "১৯ অক্টোবর ২০২৬ • সোমবার", sunrise: "সূর্যোদয় ০৫:৩৮ 🌅", sunset: "সূর্যাস্ত ১৭:০৪ 🌇",
+                tithi_title: "মহাষ্টমী / শুক্ল নবমী", panchang_type: "সূর্যসিদ্ধান্ত পঞ্জিকা", tithi_heading: "তিথি ও নক্ষত্রের সময়সূচী",
+                tithi_label: "শুক্ল নবমী তিথি:", tithi_desc: "এখন শুক্ল নবমী তিথি চলছে। এটি শেষ হবে ২০ অক্টোবর ২০২৬ সকাল ০৯:২৯ মিনিটে, এরপর শুক্ল দশমী তিথি শুরু হইবে।",
+                horoscope_title: "✨ আজকের ১২ রাশির দৈনিক রাশিফল",
+                mesh: "♈ মেষ:", mesh_desc: "কর্মক্ষেত্রে নতুন সুযোগ। আর্থিক লেনদেনে সতর্ক থাকুন।",
+                vrish: "♉ বৃষ:", vrish_desc: "পারিবারিক শান্তি বজায় থাকবে। ব্যবসায় শুভ লাভ।",
+                mithun: "♊ মিথুন:", mithun_desc: "সৃজনশীল কাজে সাফল্য। ভ্রমণের সম্ভাবনা।"
             },
             hi: {
                 live: "लाइव न्यूज़", network: "ग्लोबल न्यूज़रूम नेटवर्क", editorial_desk: "संपादकीय डेस्क",
                 nav_home: "होम", nav_india: "भारत", nav_world: "विश्व", nav_business: "व्यापार", nav_tech: "टेक", nav_sports: "खेल",
                 nav_panchang: "पंचांग", nav_horoscope: "राशिफल", breaking: "ब्रेकिंग न्यूज़",
+                top_highlights: "प्रमुख समाचार", other_news: "ताज़ा अन्य समाचार एवं ग्राउंड रिपोर्ट",
                 ticker_1: "24 Early News पूर्ण संपादकीय शासन के साथ सत्यापित, वास्तविक समय की खबरें प्रदान करता है।",
                 ticker_2: "देश और दुनिया की हर बड़ी और अहम खबर सबसे पहले हमारी टीम द्वारा।",
                 ticker_3: "ताज़ा और सटीक खबरों के लिए बने रहें।",
-                read_more: "और पढ़ें →", footer_network: "24 अर्ली न्यूज़ नेटवर्क", footer_rights: "संस्थापित एवं प्रकाशित", footer_all: "सर्वाधिकार सुरक्षित।"
+                read_more: "और पढ़ें →", footer_network: "24 अर्ली न्यूज़ नेटवर्क", footer_rights: "संस्थापित एवं प्रकाशित", footer_all: "सर्वाधिकार सुरक्षित।",
+                kolkata: "कोलकाता", kartik_date: "कार्तिक 1433", date_str: "19 अक्टूबर 2026 • सोमवार", sunrise: "सूर्योदय 05:38 🌅", sunset: "सूर्यास्त 17:04 🌇",
+                tithi_title: "महाअष्टमी / शुक्ल नवमी", panchang_type: "সূর্যসিদ্ধান্ত পঞ্জিকা", tithi_heading: "तिथि एवं नक्षत्र समय-सारणी",
+                tithi_label: "शुक्ल नवमी तिथि:", tithi_desc: "अभी शुक्ल नवमी तिथि चल रही है। यह 20 अक्टूबर 2026 को सुबह 09:29 बजे समाप्त होगी, जिसके बाद शुक्ल दशमी शुरू होगी।",
+                horoscope_title: "✨ आज का 12 राशियों का दैनिक राशिफल",
+                mesh: "♈ मेष:", mesh_desc: "कार्यक्षेत्र में नए अवसर। वित्तीय लेन-देन में सतर्क रहें।",
+                vrish: "♉ वृष:", vrish_desc: "पारिवारिक शांति बनी रहेगी। व्यापार में शुभ लाभ।",
+                mithun: "♊ मिथुन:", mithun_desc: "रचनात्मक कार्यों में सफलता। यात्रा की संभावना।"
             }
         };
 

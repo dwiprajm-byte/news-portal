@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 
 app = Flask(__name__)
-app.secret_key = "24earlynews_full_language_sync_2026"
+app.secret_key = "24earlynews_perfect_lang_sync_2026"
 
 DATA_FILE = "articles_store.json"
 
@@ -13,69 +13,6 @@ def clean_news_title(raw_title):
     t = re.sub(r'\s*-[^-]+$', '', raw_title)
     t = re.sub(r'[^\w\s\u0980-\u09FF]', '', t).strip().lower()
     return t
-
-def generate_multilingual_news():
-    categories = ['India', 'World', 'Business', 'Technology', 'Sports', 'Regional']
-    bureaus = ['Kolkata Bureau', 'New Delhi Desk', 'Mumbai Financial Wire', 'National Press Service', 'Editorial Desk']
-    
-    templates = [
-        ("Comprehensive Analysis of National Infrastructure, Digital Growth and Policy Reforms", 
-         "An investigative overview examining sweeping economic adjustments, technological integration, and civic development milestones designed to optimize regional productivity and public transparency."),
-        ("Global Economic Trends: Market Resilience, Corporate Earnings and Trade Dynamics", 
-         "A meticulous financial report reviewing macroeconomic indicators, multinational corporate performance, supply chain efficiencies, and monetary policy adjustments across international exchanges."),
-        ("Next-Generation Artificial Intelligence Governance and Cybersecurity Compliance Frameworks", 
-         "An extensive examination of emerging regulatory standards for secure cloud computing, data privacy protocols, enterprise automation, and ethical deployment across critical sectors."),
-        ("Sustainable Environmental Engineering and Renewable Energy Transition Strategies", 
-         "A detailed report outlining large-scale photovoltaic installations, decentralized smart grid deployments, zero-discharge manufacturing norms, and climate telemetry data analysis."),
-        ("Elite Athletic Training Methodologies and Sports Science Integration in Major Championships", 
-         "An exhaustive sports journalism feature detailing tactical conditioning camps, biometric performance analytics, nutritional science applications, and squad selections across national federations.")
-    ]
-
-    category_images = {
-        'India': ["https://images.unsplash.com/photo-1587474260584-136574528ed5?w=1200", "https://images.unsplash.com/photo-1532375810709-75b1da00537c?w=1200"],
-        'World': ["https://images.unsplash.com/photo-1529101091764-c3526daf38fe?w=1200", "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200"],
-        'Business': ["https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1200", "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200"],
-        'Technology': ["https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200", "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1200"],
-        'Sports': ["https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=1200", "https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=1200"],
-        'Regional': ["https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=1200", "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=1200"]
-    }
-
-    base_time = datetime.now()
-    all_articles = []
-    
-    for i in range(1200):
-        tmpl = templates[i % len(templates)]
-        cat = categories[i % len(categories)]
-        bureau = bureaus[i % len(bureaus)]
-        
-        title = f"{tmpl[0]} — Report Vol. {i+1}" if i > 5 else tmpl[0]
-        body = f"""{bureau} — {tmpl[1]} Official field dispatches confirm that independent oversight committees are maintaining rigorous scrutiny to ensure absolute compliance with national benchmarks.
-
-### Executive Summary and Core Objectives
-The primary focus centers around establishing sustainable operational frameworks while maximizing economic efficiency and public accountability. Over recent fiscal cycles, stakeholders have observed measurable improvements in resource allocation, digital transparency, and technological adoption.
-
-### Strategic Implementation and Expert Perspectives
-Industry leaders and policy analysts have lauded the comprehensive approach adopted by governing bodies. Key performance indicators suggest a steady surge in productivity, enhanced consumer protection, and accelerated infrastructural execution. Specialized working groups continue to evaluate grassroots feedback to refine tactical deployment.
-
-### Future Outlook and Market Implications
-As the development roadmap unfolds into subsequent phases, international observers maintain an optimistic outlook. Continued investment in digital infrastructure, human capital development, and transparent governance is expected to yield compounding dividends across regional and national sectors."""
-
-        pub_time = base_time - timedelta(minutes=i * 10)
-        pool = category_images.get(cat, category_images['India'])
-        img = pool[i % len(pool)]
-
-        item = {
-            'id': str(15000 + i),
-            'title': title,
-            'summary': body.strip(),
-            'category': cat,
-            'link': f"/news/{15000 + i}",
-            'image': img,
-            'published': pub_time.strftime("%a, %d %b %Y %H:%M:%S GMT")
-        }
-        all_articles.append(item)
-        
-    return all_articles
 
 def get_articles():
     if os.path.exists(DATA_FILE):
@@ -86,14 +23,7 @@ def get_articles():
                     return items
         except Exception:
             pass
-
-    fresh_data = generate_multilingual_news()
-    try:
-        with open(DATA_FILE, "w", encoding="utf-8") as f:
-            json.dump(fresh_data, f, ensure_ascii=False, indent=2)
-    except Exception:
-        pass
-    return fresh_data
+    return []
 
 @app.route('/')
 def home():
@@ -145,14 +75,9 @@ def submit_news():
             }
 
             all_news = get_articles()
-            new_norm = clean_news_title(title)
-            
-            is_duplicate = any(clean_news_title(item.get('title', '')) == new_norm for item in all_news)
-            
-            if not is_duplicate:
-                all_news.insert(0, new_article)
-                with open(DATA_FILE, "w", encoding="utf-8") as f:
-                    json.dump(all_news[:5000], f, ensure_ascii=False, indent=2)
+            all_news.insert(0, new_article)
+            with open(DATA_FILE, "w", encoding="utf-8") as f:
+                json.dump(all_news[:5000], f, ensure_ascii=False, indent=2)
 
             return redirect(f"/news/{new_id}")
         except Exception as e:
