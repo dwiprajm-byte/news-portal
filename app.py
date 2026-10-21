@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 
 app = Flask(__name__)
-app.secret_key = "24earlynews_1min_live_rotation_2026"
+app.secret_key = "24earlynews_copyright_free_real_images_2026"
 
 DATA_FILE = "articles_store.json"
 
@@ -14,10 +14,44 @@ def clean_news_title(raw_title):
     t = re.sub(r'[^\w\s\u0980-\u09FF]', '', t).strip().lower()
     return t
 
-def generate_live_rotation_articles():
+def generate_real_image_news():
     categories = ['India', 'World', 'Business', 'Technology', 'Sports', 'Regional']
     bureaus = ['Kolkata Special Investigation Bureau', 'New Delhi National Newsroom', 'Mumbai Financial Intelligence Unit', 'Global Affairs Analytical Desk', 'Technology & Public Policy Wire']
     
+    # খবরের ক্যাটাগরি অনুযায়ী শতভাগ রিয়েল ও কপিরাইট-মুক্ত অফিশিয়াল প্রেস ইমেজ পুল
+    category_images = {
+        'India': [
+            "https://images.unsplash.com/photo-1587474260584-136574528ed5?w=1200",
+            "https://images.unsplash.com/photo-1532375810709-75b1da00537c?w=1200",
+            "https://images.unsplash.com/photo-1590001155093-a3c68ab0acfb?w=1200"
+        ],
+        'World': [
+            "https://images.unsplash.com/photo-1529101091764-c3526daf38fe?w=1200",
+            "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200",
+            "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=1200"
+        ],
+        'Business': [
+            "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1200",
+            "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200",
+            "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=1200"
+        ],
+        'Technology': [
+            "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200",
+            "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1200",
+            "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1200"
+        ],
+        'Sports': [
+            "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=1200",
+            "https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=1200",
+            "https://images.unsplash.com/photo-1517649763962-0c623066013b?w=1200"
+        ],
+        'Regional': [
+            "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=1200",
+            "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=1200",
+            "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1200"
+        ]
+    }
+
     longform_templates = [
         ("Comprehensive Masterclass and Deep-Dive Analysis on National Infrastructure, Digital Transformation and Policy Reforms", 
          "An exhaustive investigative report evaluating sweeping economic adjustments, technological integration, budgetary allocations, and civic development milestones designed to optimize regional productivity and public transparency."),
@@ -39,7 +73,7 @@ def generate_live_rotation_articles():
         cat = categories[i % len(categories)]
         bureau = bureaus[i % len(bureaus)]
         
-        article_title = f"{tmpl[0]} — Live Edition Vol. {i+1}" if i > 5 else tmpl[0]
+        article_title = f"{tmpl[0]} — Real Wire Edition Vol. {i+1}" if i > 5 else tmpl[0]
         
         massive_body = f"""{bureau} — {tmpl[1]} Official field dispatches, comprehensive archival audits, and executive oversight summaries confirm that independent regulatory bodies are maintaining rigorous scrutiny to ensure absolute compliance with national developmental benchmarks.
 
@@ -66,21 +100,17 @@ As the development trajectory unfolds into subsequent operational phases, indepe
 
         pub_time = base_time - timedelta(minutes=i * 10)
         
-        image_pool = [
-            "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200",
-            "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=1200",
-            "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=1200",
-            "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1200",
-            "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200"
-        ]
+        # ক্যাটাগরি অনুযায়ী রিয়েল ছবি সিলেক্ট করা
+        pool = category_images.get(cat, category_images['India'])
+        selected_img = pool[i % len(pool)]
 
         item = {
-            'id': str(13000 + i),
+            'id': str(14000 + i),
             'title': article_title,
             'summary': massive_body.strip(),
             'category': cat,
-            'link': f"/news/{13000 + i}",
-            'image': image_pool[i % len(image_pool)],
+            'link': f"/news/{14000 + i}",
+            'image': selected_img,
             'published': pub_time.strftime("%a, %d %b %Y %H:%M:%S GMT")
         }
         all_articles.append(item)
@@ -97,7 +127,7 @@ def get_articles():
         except Exception:
             pass
 
-    fresh_data = generate_live_rotation_articles()
+    fresh_data = generate_real_image_news()
     try:
         with open(DATA_FILE, "w", encoding="utf-8") as f:
             json.dump(fresh_data, f, ensure_ascii=False, indent=2)
@@ -142,7 +172,7 @@ def submit_news():
 
             new_id = str(int(datetime.now().timestamp() * 1000))
             if not img_url:
-                img_url = 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1000'
+                img_url = 'https://images.unsplash.com/photo-1587474260584-136574528ed5?w=1200'
 
             new_article = {
                 'id': new_id,
