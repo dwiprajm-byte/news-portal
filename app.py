@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 
 app = Flask(__name__)
-app.secret_key = "24earlynews_copyright_free_real_images_2026"
+app.secret_key = "24earlynews_full_language_sync_2026"
 
 DATA_FILE = "articles_store.json"
 
@@ -14,103 +14,63 @@ def clean_news_title(raw_title):
     t = re.sub(r'[^\w\s\u0980-\u09FF]', '', t).strip().lower()
     return t
 
-def generate_real_image_news():
+def generate_multilingual_news():
     categories = ['India', 'World', 'Business', 'Technology', 'Sports', 'Regional']
-    bureaus = ['Kolkata Special Investigation Bureau', 'New Delhi National Newsroom', 'Mumbai Financial Intelligence Unit', 'Global Affairs Analytical Desk', 'Technology & Public Policy Wire']
+    bureaus = ['Kolkata Bureau', 'New Delhi Desk', 'Mumbai Financial Wire', 'National Press Service', 'Editorial Desk']
     
-    # খবরের ক্যাটাগরি অনুযায়ী শতভাগ রিয়েল ও কপিরাইট-মুক্ত অফিশিয়াল প্রেস ইমেজ পুল
-    category_images = {
-        'India': [
-            "https://images.unsplash.com/photo-1587474260584-136574528ed5?w=1200",
-            "https://images.unsplash.com/photo-1532375810709-75b1da00537c?w=1200",
-            "https://images.unsplash.com/photo-1590001155093-a3c68ab0acfb?w=1200"
-        ],
-        'World': [
-            "https://images.unsplash.com/photo-1529101091764-c3526daf38fe?w=1200",
-            "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200",
-            "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=1200"
-        ],
-        'Business': [
-            "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1200",
-            "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200",
-            "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=1200"
-        ],
-        'Technology': [
-            "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200",
-            "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1200",
-            "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1200"
-        ],
-        'Sports': [
-            "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=1200",
-            "https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=1200",
-            "https://images.unsplash.com/photo-1517649763962-0c623066013b?w=1200"
-        ],
-        'Regional': [
-            "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=1200",
-            "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=1200",
-            "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1200"
-        ]
-    }
-
-    longform_templates = [
-        ("Comprehensive Masterclass and Deep-Dive Analysis on National Infrastructure, Digital Transformation and Policy Reforms", 
-         "An exhaustive investigative report evaluating sweeping economic adjustments, technological integration, budgetary allocations, and civic development milestones designed to optimize regional productivity and public transparency."),
-        ("Global Economic Resilience: Macroeconomic Indicators, Corporate Earnings, Supply Chain Dynamics and Trade Strategies", 
-         "A meticulous financial monograph reviewing macroeconomic shifts, multinational corporate performance, supply chain efficiencies, and monetary policy adjustments across international financial exchanges."),
-        ("Next-Generation Artificial Intelligence Governance, Data Privacy Compliance and Enterprise Automation Frameworks", 
-         "An extensive examination of emerging regulatory standards for secure cloud computing, cryptographic data protection, enterprise automation protocols, and ethical deployment across critical sectors."),
-        ("Sustainable Environmental Engineering, Renewable Energy Transition and Zero-Discharge Industrial Ecosystems", 
+    templates = [
+        ("Comprehensive Analysis of National Infrastructure, Digital Growth and Policy Reforms", 
+         "An investigative overview examining sweeping economic adjustments, technological integration, and civic development milestones designed to optimize regional productivity and public transparency."),
+        ("Global Economic Trends: Market Resilience, Corporate Earnings and Trade Dynamics", 
+         "A meticulous financial report reviewing macroeconomic indicators, multinational corporate performance, supply chain efficiencies, and monetary policy adjustments across international exchanges."),
+        ("Next-Generation Artificial Intelligence Governance and Cybersecurity Compliance Frameworks", 
+         "An extensive examination of emerging regulatory standards for secure cloud computing, data privacy protocols, enterprise automation, and ethical deployment across critical sectors."),
+        ("Sustainable Environmental Engineering and Renewable Energy Transition Strategies", 
          "A detailed report outlining large-scale photovoltaic installations, decentralized smart grid deployments, zero-discharge manufacturing norms, and climate telemetry data analysis."),
-        ("Elite Athletic Training Methodologies, Sports Science Integration and Tactical Biometrics in Major International Championships", 
+        ("Elite Athletic Training Methodologies and Sports Science Integration in Major Championships", 
          "An exhaustive sports journalism feature detailing tactical conditioning camps, biometric performance analytics, nutritional science applications, and squad selections across national federations.")
     ]
+
+    category_images = {
+        'India': ["https://images.unsplash.com/photo-1587474260584-136574528ed5?w=1200", "https://images.unsplash.com/photo-1532375810709-75b1da00537c?w=1200"],
+        'World': ["https://images.unsplash.com/photo-1529101091764-c3526daf38fe?w=1200", "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200"],
+        'Business': ["https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1200", "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200"],
+        'Technology': ["https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200", "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1200"],
+        'Sports': ["https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=1200", "https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=1200"],
+        'Regional': ["https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=1200", "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=1200"]
+    }
 
     base_time = datetime.now()
     all_articles = []
     
     for i in range(1200):
-        tmpl = longform_templates[i % len(longform_templates)]
+        tmpl = templates[i % len(templates)]
         cat = categories[i % len(categories)]
         bureau = bureaus[i % len(bureaus)]
         
-        article_title = f"{tmpl[0]} — Real Wire Edition Vol. {i+1}" if i > 5 else tmpl[0]
-        
-        massive_body = f"""{bureau} — {tmpl[1]} Official field dispatches, comprehensive archival audits, and executive oversight summaries confirm that independent regulatory bodies are maintaining rigorous scrutiny to ensure absolute compliance with national developmental benchmarks.
+        title = f"{tmpl[0]} — Report Vol. {i+1}" if i > 5 else tmpl[0]
+        body = f"""{bureau} — {tmpl[1]} Official field dispatches confirm that independent oversight committees are maintaining rigorous scrutiny to ensure absolute compliance with national benchmarks.
 
-### Section 1: Executive Summary, Historical Context and Foundational Objectives
-The primary focus centers around establishing sustainable operational frameworks while maximizing economic efficiency, administrative transparency, and public accountability. Over recent fiscal cycles, international stakeholders and domestic policymakers have observed measurable improvements in resource allocation, digital public infrastructure, and technological adoption across both urban and rural jurisdictions.
+### Executive Summary and Core Objectives
+The primary focus centers around establishing sustainable operational frameworks while maximizing economic efficiency and public accountability. Over recent fiscal cycles, stakeholders have observed measurable improvements in resource allocation, digital transparency, and technological adoption.
 
-### Section 2: Macroeconomic Policy Shifts and Structural Reform Mechanics
-In-depth evaluations conducted by specialized economic think-tanks indicate that proactive fiscal management has substantially insulated domestic markets from external geopolitical volatilities. Structural adjustments, streamlined taxation protocols, and targeted capital expenditure have generated robust employment metrics and strengthened investor confidence across diverse industrial sectors.
+### Strategic Implementation and Expert Perspectives
+Industry leaders and policy analysts have lauded the comprehensive approach adopted by governing bodies. Key performance indicators suggest a steady surge in productivity, enhanced consumer protection, and accelerated infrastructural execution. Specialized working groups continue to evaluate grassroots feedback to refine tactical deployment.
 
-### Section 3: Technological Integration and Digital Governance Protocols
-As digital transformation accelerates, governing bodies have implemented advanced regulatory frameworks to safeguard consumer data privacy, promote indigenous technological innovation, and secure critical enterprise cloud infrastructure. Cross-sectoral working groups continue to evaluate stakeholder feedback, ensuring that technological adoption remains equitable, secure, and fully aligned with constitutional standards.
-
-### Section 4: Environmental Sustainability and Renewable Energy Paradigms
-Confronting global climate anomalies, national engineering divisions have scaled up photovoltaic generation capacity, decentralized smart grid distribution, and stringent zero-discharge industrial compliance audits. Telemetric data analytics provide continuous environmental monitoring, establishing a robust foundation for long-term ecological preservation and carbon neutrality objectives.
-
-### Section 5: Grassroots Socioeconomic Impact and Community Engagement
-Beyond macroeconomic metrics, localized field reports emphasize the tangible benefits experienced by regional communities. Expanded optical fiber networks, automated agricultural micro-irrigation extension services, and enhanced public transit corridors have collectively elevated living standards and bridged developmental disparities across remote districts.
-
-### Section 6: Global Perspectives, Expert Evaluations and Comparative Benchmarks
-International financial institutions and multilateral trade organizations have lauded the pragmatic policy formulation demonstrated by regional authorities. Comparative benchmarking against global economies reveals superior resilience in supply chain logistics, foreign direct investment inflows, and consumer price stability.
-
-### Section 7: Future Outlook, Strategic Roadmap and Concluding Recommendations
-As the development trajectory unfolds into subsequent operational phases, independent analysts maintain an optimistic outlook. Continued capital commitment toward human capital development, advanced artificial intelligence governance, and resilient infrastructural networks will undoubtedly yield compounding socioeconomic dividends well into the next decade. Continuous editorial tracking and quarterly progress audits will remain available as official documentation is released."""
+### Future Outlook and Market Implications
+As the development roadmap unfolds into subsequent phases, international observers maintain an optimistic outlook. Continued investment in digital infrastructure, human capital development, and transparent governance is expected to yield compounding dividends across regional and national sectors."""
 
         pub_time = base_time - timedelta(minutes=i * 10)
-        
-        # ক্যাটাগরি অনুযায়ী রিয়েল ছবি সিলেক্ট করা
         pool = category_images.get(cat, category_images['India'])
-        selected_img = pool[i % len(pool)]
+        img = pool[i % len(pool)]
 
         item = {
-            'id': str(14000 + i),
-            'title': article_title,
-            'summary': massive_body.strip(),
+            'id': str(15000 + i),
+            'title': title,
+            'summary': body.strip(),
             'category': cat,
-            'link': f"/news/{14000 + i}",
-            'image': selected_img,
+            'link': f"/news/{15000 + i}",
+            'image': img,
             'published': pub_time.strftime("%a, %d %b %Y %H:%M:%S GMT")
         }
         all_articles.append(item)
@@ -127,7 +87,7 @@ def get_articles():
         except Exception:
             pass
 
-    fresh_data = generate_real_image_news()
+    fresh_data = generate_multilingual_news()
     try:
         with open(DATA_FILE, "w", encoding="utf-8") as f:
             json.dump(fresh_data, f, ensure_ascii=False, indent=2)
