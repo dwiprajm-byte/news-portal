@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 
 app = Flask(__name__)
-app.secret_key = "24earlynews_safe_clean_secure_2026"
+app.secret_key = "24earlynews_strict_seo_standard_2026"
 
 DATA_FILE = "articles_store.json"
 
@@ -14,50 +14,65 @@ def clean_news_title(raw_title):
     t = re.sub(r'[^\w\s\u0980-\u09FF]', '', t).strip().lower()
     return t
 
-def generate_safe_professional_news():
+def generate_strict_seo_articles():
     categories = ['India', 'World', 'Business', 'Technology', 'Sports', 'Regional']
-    bureaus = ['Kolkata Editorial Desk', 'New Delhi National Bureau', 'Mumbai Financial Wire', 'National Press Service', 'Regional Reporting Unit']
+    bureaus = ['Kolkata Bureau', 'New Delhi Desk', 'Mumbai Financial Wire', 'National Press Service', 'Editorial Investigation Wing']
     
-    safe_templates = [
-        ("Comprehensive Review of Regional Infrastructure and Urban Transit Expansion", 
-         "State municipal authorities release evaluation metrics highlighting accelerated execution timelines, transparent resource allocation, and stringent safety protocols across civic development works."),
-        ("Financial Market Analysis Highlights Steady Performance Across Key Industrial Indices", 
-         "Institutional brokerage summaries indicate positive investor sentiment driven by robust corporate earnings reports and consistent domestic liquidity management measures."),
-        ("Digital Governance Initiatives Expand Access to Essential Public Services in Rural Districts", 
-         "Administrative departments scale up high-speed optical fiber connectivity and digital kiosk networks, facilitating seamless certificate issuance and grievance redressal for citizens."),
-        ("Environmental Protection Boards Enforce Standard Compliance for Industrial Units", 
-         "Regional pollution control boards conduct comprehensive facility audits, mandating advanced effluent treatment installations and continuous emission tracking to protect ecological balance."),
-        ("National Athletic Federation Outlines Structured Training Regimens for Upcoming International Events", 
-         "Sports science experts collaborate with national coaches to implement advanced conditioning protocols, biometric performance monitoring, and tactical preparation camps for elite competitors.")
+    # গুগলের ৯টি এসইও ধাপ (Title, Dateline, Lead Paragraph, Sub-headings, Long-form) মেনে তৈরি টেমপ্লেট
+    seo_standards = [
+        ("Comprehensive Analysis of National Infrastructure, Digital Growth and Policy Reforms", 
+         "An investigative overview examining sweeping economic adjustments, technological integration, and civic development milestones designed to optimize regional productivity and public transparency."),
+        ("Global Economic Trends: Market Resilience, Corporate Earnings and Trade Dynamics", 
+         "A meticulous financial report reviewing macroeconomic indicators, multinational corporate performance, supply chain efficiencies, and monetary policy adjustments across international exchanges."),
+        ("Next-Generation Artificial Intelligence Governance and Cybersecurity Compliance Frameworks", 
+         "An extensive examination of emerging regulatory standards for secure cloud computing, data privacy protocols, enterprise automation, and ethical deployment across critical sectors."),
+        ("Sustainable Environmental Engineering and Renewable Energy Transition Strategies", 
+         "A detailed report outlining large-scale photovoltaic installations, decentralized smart grid deployments, zero-discharge manufacturing norms, and climate telemetry data analysis."),
+        ("Elite Athletic Training Methodologies and Sports Science Integration in Major Championships", 
+         "An exhaustive sports journalism feature detailing tactical conditioning camps, biometric performance analytics, nutritional science applications, and squad selections across national federations.")
     ]
 
     base_time = datetime.now()
     all_articles = []
     
-    for i in range(1200):
-        tmpl = safe_templates[i % len(safe_templates)]
+    for i in range(1500):
+        tmpl = seo_standards[i % len(seo_standards)]
         cat = categories[i % len(categories)]
         bureau = bureaus[i % len(bureaus)]
         
-        unique_title = f"{tmpl[0]} — Bulletin #{i+1}" if i > 5 else tmpl[0]
-        summary_text = f"{bureau} — {tmpl[1]} Independent field correspondents confirm that official monitoring bodies are maintaining rigorous oversight to ensure complete adherence to regulatory standards and public accountability."
+        # ১. এসইও ফ্রেন্ডলি আকর্ষণীয় শিরোনাম
+        seo_title = f"{tmpl[0]} — Update #{i+1}" if i > 5 else tmpl[0]
+        
+        # ৩, ৪, ৫, ৬ নম্বর ধাপ মেনে হিউম্যান জার্নালিজম ও সাব-হেডিংযুক্ত বিস্তারিত ফরম্যাট
+        seo_body = f"""
+        {bureau} — {tmpl[1]} Official field dispatches confirm that independent oversight committees are maintaining rigorous scrutiny to ensure absolute compliance with national benchmarks.
+
+        ### Executive Summary and Core Objectives
+        The primary focus centers around establishing sustainable operational frameworks while maximizing economic efficiency and public accountability. Over recent fiscal cycles, stakeholders have observed measurable improvements in resource allocation, digital transparency, and technological adoption.
+
+        ### Strategic Implementation and Expert Perspectives
+        Industry leaders and policy analysts have lauded the comprehensive approach adopted by governing bodies. Key performance indicators suggest a steady surge in productivity, enhanced consumer protection, and accelerated infrastructural execution. Specialized working groups continue to evaluate grassroots feedback to refine tactical deployment.
+
+        ### Future Outlook and Market Implications
+        As the development roadmap unfolds into subsequent phases, international observers maintain an optimistic outlook. Continued investment in digital infrastructure, human capital development, and transparent governance is expected to yield compounding dividends across regional and national sectors.
+        """
 
         pub_time = base_time - timedelta(minutes=i * 10)
         
         image_pool = [
-            "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1000",
-            "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=1000",
-            "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=1000",
-            "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1000",
-            "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1000"
+            "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200",
+            "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=1200",
+            "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=1200",
+            "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1200",
+            "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200"
         ]
 
         item = {
-            'id': str(9500 + i),
-            'title': unique_title,
-            'summary': summary_text,
+            'id': str(10000 + i),
+            'title': seo_title,
+            'summary': seo_body.strip(),
             'category': cat,
-            'link': f"/news/{9500 + i}",
+            'link': f"/news/{10000 + i}",
             'image': image_pool[i % len(image_pool)],
             'published': pub_time.strftime("%a, %d %b %Y %H:%M:%S GMT")
         }
@@ -75,7 +90,7 @@ def get_articles():
         except Exception:
             pass
 
-    fresh_data = generate_safe_professional_news()
+    fresh_data = generate_strict_seo_articles()
     try:
         with open(DATA_FILE, "w", encoding="utf-8") as f:
             json.dump(fresh_data, f, ensure_ascii=False, indent=2)
