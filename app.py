@@ -4,29 +4,35 @@ import xml.etree.ElementTree as ET
 from datetime import datetime
 import json
 import os
+import re
 
 app = Flask(__name__)
 
 DB_FILE = "news_store.json"
 
-# প্রতিটি ক্যাটাগরির জন্য সুনির্দিষ্ট এবং শক্তিশালী RSS ফিড ইউআরএল
 RSS_FEEDS = {
     "India": [
-        "https://news.google.com/rss/search?q=India+news&hl=en-IN&gl=IN&ceid=IN:en",
-        "https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRFZxYUdjU0FtVnVHZ0pWVXlnQVAB?hl=en-IN&gl=IN&ceid=IN:en"
+        "https://news.google.com/rss/search?q=India+news&hl=en-IN&gl=IN&ceid=IN:en"
     ],
     "World": [
-        "https://news.google.com/rss/search?q=World+news&hl=en-US&gl=US&ceid=US:en",
-        "https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGx6TVdZU0FtVnVHZ0pWVXlnQVAB?hl=en-US&gl=US&ceid=US:en"
+        "https://news.google.com/rss/search?q=World+news&hl=en-US&gl=US&ceid=US:en"
     ],
     "Business": [
-        "https://news.google.com/rss/search?q=Business+economy+news&hl=en-IN&gl=IN&ceid=IN:en",
-        "https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGx6TVdZU0FtVnVHZ0pWVXlnQVAB?hl=en-IN&gl=IN&ceid=IN:en"
+        "https://news.google.com/rss/search?q=Business+economy+news&hl=en-IN&gl=IN&ceid=IN:en"
     ],
     "Technology": [
-        "https://news.google.com/rss/search?q=Technology+AI+gadgets+news&hl=en-IN&gl=IN&ceid=IN:en"
+        "https://news.google.com/rss/search?q=Technology+AI+news&hl=en-IN&gl=IN&ceid=IN:en"
     ]
 }
+
+def clean_news_text(text):
+    if not text:
+        return ""
+    # অন্য কোনো ওয়েবসাইটের নাম বা ব্র্যান্ড থাকলে তা রিমভ করার ফিল্টার
+    unwanted_names = ["News24", "NEWS24", "News 24", "NDTV", "Aaj Tak", "Zee News", "ABP Live", "News18"]
+    for name in unwanted_names:
+        text = re.sub(re.escape(name), "24 Early News", text, flags=re.IGNORECASE)
+    return text
 
 def load_saved_news():
     if os.path.exists(DB_FILE):
@@ -61,12 +67,14 @@ def fetch_and_accumulate_news():
                     channel = root.find('channel')
                     if channel is not None:
                         for item in channel.findall('item'):
-                            title = item.find('title').text if item.find('title') is not None else ''
+                            raw_title = item.find('title').text if item.find('title') is not None else ''
                             link = item.find('link').text if item.find('link') is not None else ''
                             pubDate = item.find('pubDate').text if item.find('pubDate') is not None else datetime.now().strftime('%d %b %Y')
                             
+                            # অন্য ওয়েবসাইটের নাম ফিল্টার করে মুছে ফেলা
+                            title = clean_news_text(raw_title)
+                            
                             if link and link not in existing_links:
-                                # কপিরাইট মুক্ত নিরাপদ ও প্রাসঙ্গিক ছবি নির্বাচন
                                 img_url = "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?auto=format&fit=crop&w=800&q=80"
                                 if category == "Technology":
                                     img_url = "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80"
