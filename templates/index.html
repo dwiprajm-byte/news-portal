@@ -5,23 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="canonical" href="https://24earlynews.com/">
     
-    <!-- Security Headers (Hacked-Protected & CSP) -->
+    <!-- Security & Performance Headers -->
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta http-equiv="X-Frame-Options" content="DENY">
     <meta http-equiv="X-XSS-Protection" content="1; mode=block">
     
     <title>24 Early News - Live News Portal</title>
     
-    <!-- Preconnect for Lightning Fast Asset Loading -->
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    
     <script src="https://cdn.tailwindcss.com" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
     
     <style>
         .dropdown:hover .dropdown-menu { display: block; }
-        /* Performance Optimization: Content Visibility */
         main { content-visibility: auto; }
     </style>
 </head>
@@ -195,7 +190,7 @@
         </div>
     </div>
 
-    <!-- Main Content Area -->
+    <!-- Main Content Area with Identical News Portal Grid Structure -->
     <main class="max-w-7xl mx-auto px-4 py-6">
         <div class="text-xs font-black uppercase text-red-600 tracking-wider mb-3 flex items-center gap-2">
             <span class="w-2 h-2 bg-red-600 rounded-full animate-ping"></span> <span data-translate="topnews">Top News & Live Dispatches</span>
@@ -203,6 +198,7 @@
 
         {% if news and news|length > 0 %}
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- Left Big Featured Headline (Top Lead Story) -->
             <div class="lg:col-span-8 bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 flex flex-col justify-between">
                 <div>
                     <div class="relative aspect-[16/9] overflow-hidden bg-slate-900">
@@ -227,7 +223,7 @@
                 </div>
             </div>
 
-            <!-- Right Side Highlights -->
+            <!-- Right Side Highlights & Secondary Feed -->
             <div class="lg:col-span-4 flex flex-col gap-5">
                 <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-center shadow-xs">
                     <span class="text-[10px] font-bold text-amber-700 uppercase tracking-widest block mb-2" data-translate="ad">Advertisement</span>
@@ -251,7 +247,7 @@
                 </div>
 
                 <div class="bg-blue-600 text-white text-xs font-black uppercase px-3 py-2.5 rounded-t-lg tracking-wider" data-translate="tophighlights">Top Highlights</div>
-                {% for item in news[1:5] %}
+                {% for item in news[1:6] %}
                 <div class="bg-white rounded-lg p-3 border border-gray-200 shadow-xs flex gap-3 hover:border-red-500 transition">
                     {% if item.image %}
                     <div class="w-24 h-20 shrink-0 rounded overflow-hidden bg-gray-100">
@@ -266,6 +262,34 @@
                             </h4>
                         </div>
                         <span class="text-[10px] text-slate-400 font-mono">{{ item.published }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Additional Continuous News Grid (Below Featured Section) -->
+        <div class="mt-8">
+            <div class="bg-blue-600 text-white text-xs font-black uppercase px-4 py-2.5 rounded-t-lg tracking-wider mb-4 flex items-center justify-between">
+                <span><i class="fa-solid fa-newspaper"></i> <span data-translate="latestdispatches">Latest Regional & Global Dispatches</span></span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {% for item in news[6:15] %}
+                <div class="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 flex flex-col justify-between hover:border-blue-500 transition">
+                    <div>
+                        <div class="aspect-[16/9] overflow-hidden bg-slate-900">
+                            <img src="{{ item.image }}" alt="{{ item.title }}" loading="lazy" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-4">
+                            <span class="text-[10px] font-bold text-red-600 uppercase block mb-1">{{ item.category }}</span>
+                            <h3 class="text-sm font-bold text-slate-900 line-clamp-2 hover:text-blue-600 transition">
+                                <a href="{{ item.link }}" target="_blank" rel="noopener noreferrer">{{ item.title }}</a>
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="px-4 pb-4 pt-2 border-t border-gray-100 flex justify-between items-center text-[11px]">
+                        <span class="text-slate-400 font-mono">{{ item.published }}</span>
+                        <a href="{{ item.link }}" target="_blank" rel="noopener noreferrer" class="font-bold text-blue-600 hover:underline" data-translate="read">Read →</a>
                     </div>
                 </div>
                 {% endfor %}
@@ -324,8 +348,7 @@
                 adspot: "Special Featured Brand Partner Spot", livetvstreams: "Live TV & Streams", watchlive: "Watch Live",
                 tophighlights: "Top Highlights", footerdesc: "Autonomous real-time global news aggregation network delivering verified reports across all regions.",
                 quickaccess: "Quick Access", legal: "Legal", about: "About Us", privacy: "Privacy Policy", terms: "Terms of Service",
-                contact: "Contact Us", contacttitle: "Contact", cricket: "Cricket", othersports: "Other Sports", business: "Business",
-                education: "Education"
+                contact: "Contact Us", contacttitle: "Contact", latestdispatches: "Latest Regional & Global Dispatches", read: "Read"
             },
             hi: {
                 home: "होम", livetv: "लाइव टीवी", latest: "ताज़ा खबर", india: "भारत", cities: "शहर", world: "दुनिया",
@@ -335,8 +358,7 @@
                 adspot: "विशेष ब्रांड पार्टनर स्पॉट", livetvstreams: "लाइव टीवी और स्ट्रीम", watchlive: "लाइव देखें",
                 tophighlights: "मुख्य हाइलाइट्स", footerdesc: "स्वायत्त रीयल-टाइम वैश्विक समाचार एकत्रीकरण नेटवर्क।",
                 quickaccess: "त्वरित पहुंच", legal: "कानूनी", about: "हमारे बारे में", privacy: "गोपनीयता नीति", terms: "सेवा की शर्तें",
-                contact: "संपर्क करें", contacttitle: "संपर्क", cricket: "क्रिकेट", othersports: "अन्य खेल", business: "व्यापार",
-                education: "शिक्षा"
+                contact: "संपर्क करें", contacttitle: "संपर्क", latestdispatches: "नवीनतम क्षेत्रीय और वैश्विक समाचार", read: "पढ़ें"
             },
             bn: {
                 home: "হোম", livetv: "লাইভ টিভি", latest: "সর্বশেষ", india: "ভারত", cities: "শহর", world: "বিশ্ব",
@@ -346,8 +368,7 @@
                 adspot: "বিশেষ ব্র্যান্ড পার্টনার স্পট", livetvstreams: "লাইভ টিভি ও স্ট্রিম", watchlive: "লাইভ দেখুন",
                 tophighlights: "শীর্ষ হাইলাইট", footerdesc: "স্বয়ংক্রিয় রিয়েল-টাইম বৈশ্বিক সংবাদ নেটওয়ার্ক।",
                 quickaccess: "দ্রুত প্রবেশাধিকার", legal: "আইনি", about: "আমাদের সম্পর্কে", privacy: "গোপনীয়তা নীতি", terms: "ব্যবহারের শর্তাবলী",
-                contact: "যোগাযোগ করুন", contacttitle: "যোগাযোগ", cricket: "ক্রিকেট", othersports: "অন্যান্য খেলা", business: "ব্যবসা",
-                education: "शिक्षा"
+                contact: "যোগাযোগ করুন", contacttitle: "যোগাযোগ", latestdispatches: "সর্বশেষ আঞ্চলিক ও বৈশ্বিক সংবাদ", read: "পড়ুন"
             }
         };
 
