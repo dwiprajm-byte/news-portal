@@ -10,8 +10,8 @@
 </head>
 <body class="bg-gray-100 text-gray-900 font-sans" id="bodyTheme">
     
-    <!-- Top Utility Bar -->
-    <div class="bg-blue-900 text-white text-xs py-1.5 px-4 flex justify-between items-center">
+    <!-- Top Utility Bar (Matching Screenshot 1) -->
+    <div class="bg-blue-900 text-white text-xs py-1.5 px-4 flex justify-between items-center border-b border-blue-800">
         <div class="flex items-center gap-3">
             <span class="bg-red-600 text-white font-bold px-2 py-0.5 rounded text-[10px] uppercase animate-pulse">Live</span>
             <span>Sat, Nov 14, 2026</span>
@@ -21,7 +21,7 @@
         </div>
     </div>
 
-    <!-- Main Header with Logo -->
+    <!-- Main Header with Logo & Navigation (Matching Screenshot 1) -->
     <header class="bg-blue-950 text-white shadow-md sticky top-0 z-50 border-b-4 border-red-600">
         <div class="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
             <a href="/" class="flex items-center gap-2">
@@ -29,7 +29,6 @@
                 <span class="text-2xl font-black tracking-wider uppercase font-serif">EARLY NEWS</span>
             </a>
             
-            <!-- Navbar Categories (Matching Screenshot Style) -->
             <nav class="hidden xl:flex items-center gap-4 text-xs font-bold uppercase">
                 <a href="/" class="hover:text-red-400 py-2 border-b-2 border-red-600">Home</a>
                 <a href="/?cat=India" class="hover:text-red-400 py-2">India</a>
@@ -55,7 +54,7 @@
         </div>
     </div>
 
-    <!-- Breaking News Ticker Bar -->
+    <!-- Breaking News Ticker -->
     <div class="max-w-7xl mx-auto px-4 mt-4">
         <div class="bg-amber-600 text-white text-xs font-bold flex items-center rounded shadow-xs overflow-hidden">
             <div class="bg-amber-800 px-3 py-2 uppercase tracking-wide shrink-0">Breaking News</div>
@@ -72,7 +71,7 @@
     <!-- Main Content Area -->
     <main class="max-w-7xl mx-auto px-4 py-6">
         <div class="text-xs font-black uppercase text-red-600 tracking-wider mb-3 flex items-center gap-2">
-            <span class="w-2 h-2 bg-red-600 rounded-full animate-ping"></span> Top News
+            <span class="w-2 h-2 bg-red-600 rounded-full animate-ping"></span> Top News & Live Dispatches
         </div>
 
         {% if news and news|length > 0 %}
@@ -105,7 +104,7 @@
             <!-- Right Side Highlights -->
             <div class="lg:col-span-4 flex flex-col gap-3.5">
                 <div class="bg-blue-950 text-white text-xs font-black uppercase px-3 py-2.5 rounded-t-lg tracking-wider">Top Highlights</div>
-                {% for item in news[1:5] %}
+                {% for item in news[1:6] %}
                 <div class="bg-white rounded-lg p-3 border border-gray-200 shadow-xs flex gap-3 hover:border-red-500 transition">
                     {% if item.image %}
                     <div class="w-24 h-20 shrink-0 rounded overflow-hidden bg-gray-100">
@@ -128,15 +127,58 @@
         {% endif %}
     </main>
 
-    <!-- Footer Area -->
-    <footer class="bg-blue-950 text-gray-400 text-xs border-t-4 border-red-600 mt-16 py-8 text-center">
-        <div class="mb-4 flex flex-wrap justify-center gap-6 font-semibold uppercase text-gray-300">
-            <a href="/about" class="hover:text-white">About Us</a>
-            <a href="/privacy" class="hover:text-white">Privacy Policy</a>
-            <a href="/terms" class="hover:text-white">Terms of Service</a>
-            <a href="/contact" class="hover:text-white">Contact Us</a>
+    <!-- Professional Multi-Column Footer (Matching Screenshot 2 Style) -->
+    <footer class="bg-blue-950 text-gray-300 text-xs border-t-4 border-red-600 mt-20 pt-12 pb-8">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
+            <!-- Col 1: Logo & Social -->
+            <div>
+                <div class="flex items-center gap-2 mb-4">
+                    <span class="bg-red-600 text-white font-black px-2.5 py-1 text-lg rounded">24</span>
+                    <span class="text-xl font-black tracking-wider uppercase font-serif text-white">EARLY NEWS</span>
+                </div>
+                <p class="text-gray-400 text-xs mb-4">Autonomous real-time global news aggregation network delivering verified reports across all regions.</p>
+                <div class="flex gap-3 text-sm">
+                    <a href="#" class="w-8 h-8 bg-blue-900 rounded-full flex items-center justify-center hover:bg-red-600 transition"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="w-8 h-8 bg-blue-900 rounded-full flex items-center justify-center hover:bg-red-600 transition"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="#" class="w-8 h-8 bg-blue-900 rounded-full flex items-center justify-center hover:bg-red-600 transition"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+
+            <!-- Col 2: Quick Access -->
+            <div>
+                <h3 class="text-white font-bold uppercase text-sm mb-4 tracking-wider border-b border-blue-900 pb-2">Quick Access</h3>
+                <ul class="space-y-2">
+                    <li><a href="/" class="hover:text-white">Home</a></li>
+                    <li><a href="/?cat=India" class="hover:text-white">India News</a></li>
+                    <li><a href="/?cat=World" class="hover:text-white">World Updates</a></li>
+                    <li><a href="/?cat=Business" class="hover:text-white">Business & Economy</a></li>
+                    <li><a href="/?cat=Technology" class="hover:text-white">Technology & AI</a></li>
+                </ul>
+            </div>
+
+            <!-- Col 3: Legal & Company -->
+            <div>
+                <h3 class="text-white font-bold uppercase text-sm mb-4 tracking-wider border-b border-blue-900 pb-2">Legal & Company</h3>
+                <ul class="space-y-2">
+                    <li><a href="/about" class="hover:text-white">About Us</a></li>
+                    <li><a href="/privacy" class="hover:text-white">Privacy Policy</a></li>
+                    <li><a href="/terms" class="hover:text-white">Terms of Service</a></li>
+                    <li><a href="/contact" class="hover:text-white">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <!-- Col 4: Contact Info (With correct address AZIZNAGAR, PIN 743425) -->
+            <div>
+                <h3 class="text-white font-bold uppercase text-sm mb-4 tracking-wider border-b border-blue-900 pb-2">Contact</h3>
+                <p class="text-gray-400 mb-2"><strong>Location:</strong> AZIZNAGAR, West Bengal, India - 743425</p>
+                <p class="text-gray-400 mb-2"><strong>Publisher:</strong> DWIPRAJ MALLICK</p>
+                <p class="text-gray-400"><strong>Email:</strong> dwiprajmallick@gmail.com</p>
+            </div>
         </div>
-        <p>© 2026 <strong>24 Early News Network</strong>. Published by <strong>DWIPRAJ MALLICK</strong>.</p>
+
+        <div class="max-w-7xl mx-auto px-4 border-t border-blue-900 pt-6 text-center text-gray-500 text-[11px]">
+            © 2026 <strong>24 Early News Network</strong>. All Rights Reserved. Published by <strong>DWIPRAJ MALLICK</strong>.
+        </div>
     </footer>
 
     <script>
