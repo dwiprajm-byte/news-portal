@@ -32,32 +32,35 @@
         </div>
     </div>
 
-    <!-- Main Header with Exact Reference Layout -->
+    <!-- Main Header strictly matching the user's reference image -->
     <header class="bg-blue-600 text-white shadow-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between">
+        <div class="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <button onclick="toggleSidebar()" class="text-white text-xl hover:text-blue-200 focus:outline-none"><i class="fa-solid fa-bars"></i></button>
                 
-                <a href="/" class="flex items-center gap-1.5 bg-blue-900 px-2.5 py-1 rounded shadow">
-                    <span class="bg-yellow-400 text-blue-950 font-black px-2 py-0.5 text-lg rounded">24</span>
-                    <span class="text-lg font-black tracking-wider uppercase font-serif">EARLY NEWS</span>
+                <a href="/" class="flex flex-col items-center justify-center bg-blue-900 px-3 py-1 rounded shadow text-center">
+                    <div class="flex items-center gap-1">
+                        <span class="bg-yellow-400 text-blue-950 font-black px-1.5 py-0.5 text-base rounded">24</span>
+                        <span class="text-base font-black tracking-wider uppercase font-serif">EARLY NEWS</span>
+                    </div>
+                    <span class="text-[8px] tracking-widest text-yellow-300 font-bold uppercase -mt-0.5">THINK FIRST</span>
                 </a>
 
-                <div class="hidden lg:flex items-center gap-2 text-[11px] bg-blue-700/80 px-3 py-1 rounded border border-blue-500">
-                    <span class="font-medium">Sat, Nov 14, 2026</span>
-                    <span class="text-blue-200">| Switch to: <a href="#" class="underline hover:text-white font-bold">हिंदी</a></span>
+                <div class="hidden lg:flex flex-col text-[11px] bg-blue-700/80 px-2.5 py-1 rounded border border-blue-500 leading-tight">
+                    <span class="font-bold">Sat, Nov 14, 2026</span>
+                    <span class="text-blue-200">Switch to: <a href="#" class="underline hover:text-white font-bold">हिंदी</a></span>
                 </div>
             </div>
             
-            <!-- Navbar Categories (All options requested) -->
+            <!-- Exact Navbar Categories as shown in the reference image -->
             <nav class="hidden 2xl:flex items-center gap-1 text-xs font-bold uppercase">
-                <a href="/?cat=LiveTV" class="hover:bg-blue-700 px-3 py-2 text-yellow-300 flex items-center gap-1"><i class="fa-solid fa-tower-broadcast"></i> Live TV</a>
-                <a href="/?cat=Latest" class="hover:bg-blue-700 px-3 py-2">Latest</a>
-                <a href="/?cat=India" class="hover:bg-blue-700 px-3 py-2">India</a>
+                <a href="/?cat=LiveTV" class="hover:bg-blue-700 px-3 py-2.5 text-yellow-300 flex items-center gap-1"><i class="fa-solid fa-tower-broadcast"></i> Live TV</a>
+                <a href="/?cat=Latest" class="hover:bg-blue-700 px-3 py-2.5">Latest</a>
+                <a href="/?cat=India" class="hover:bg-blue-700 px-3 py-2.5">India</a>
                 
                 <!-- Cities Dropdown -->
                 <div class="relative dropdown">
-                    <a href="#" class="hover:bg-blue-700 px-3 py-2 flex items-center gap-1">Cities <i class="fa-solid fa-chevron-down text-[9px]"></i></a>
+                    <a href="#" class="hover:bg-blue-700 px-3 py-2.5 flex items-center gap-1">Cities <i class="fa-solid fa-chevron-down text-[9px]"></i></a>
                     <div class="dropdown-menu absolute hidden bg-white text-slate-800 shadow-xl rounded-b-lg w-44 py-2 border border-gray-200 z-50">
                         <a href="/?cat=Bengaluru" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Bengaluru</a>
                         <a href="/?cat=Bhopal" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Bhopal</a>
@@ -68,12 +71,12 @@
                     </div>
                 </div>
 
-                <a href="/?cat=World" class="hover:bg-blue-700 px-3 py-2">World</a>
-                <a href="/?cat=Entertainment" class="hover:bg-blue-700 px-3 py-2">Entertainment</a>
+                <a href="/?cat=World" class="hover:bg-blue-700 px-3 py-2.5">World</a>
+                <a href="/?cat=Entertainment" class="hover:bg-blue-700 px-3 py-2.5">Entertainment</a>
 
                 <!-- Sports Dropdown -->
                 <div class="relative dropdown">
-                    <a href="#" class="hover:bg-blue-700 px-3 py-2 flex items-center gap-1">Sports <i class="fa-solid fa-chevron-down text-[9px]"></i></a>
+                    <a href="#" class="hover:bg-blue-700 px-3 py-2.5 flex items-center gap-1">Sports <i class="fa-solid fa-chevron-down text-[9px]"></i></a>
                     <div class="dropdown-menu absolute hidden bg-white text-slate-800 shadow-xl rounded-b-lg w-40 py-2 border border-gray-200 z-50">
                         <a href="/?cat=Cricket" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Cricket</a>
                         <a href="/?cat=Sports" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Other Sports</a>
@@ -82,20 +85,20 @@
 
                 <!-- Photos Dropdown -->
                 <div class="relative dropdown">
-                    <a href="#" class="hover:bg-blue-700 px-3 py-2 flex items-center gap-1">Photos <i class="fa-solid fa-chevron-down text-[9px]"></i></a>
+                    <a href="#" class="hover:bg-blue-700 px-3 py-2.5 flex items-center gap-1">Photos <i class="fa-solid fa-chevron-down text-[9px]"></i></a>
                     <div class="dropdown-menu absolute hidden bg-white text-slate-800 shadow-xl rounded-b-lg w-40 py-2 border border-gray-200 z-50">
                         <a href="/?cat=Photos" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Top Photos</a>
                         <a href="/?cat=Entertainment" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Entertainment</a>
                     </div>
                 </div>
 
-                <a href="/?cat=Auto" class="hover:bg-blue-700 px-3 py-2">Auto</a>
-                <a href="/?cat=Tech" class="hover:bg-blue-700 px-3 py-2">Tech</a>
-                <a href="/?cat=InDepth" class="hover:bg-blue-700 px-3 py-2">In-Depth 24</a>
+                <a href="/?cat=Auto" class="hover:bg-blue-700 px-3 py-2.5">Auto</a>
+                <a href="/?cat=Tech" class="hover:bg-blue-700 px-3 py-2.5">Tech</a>
+                <a href="/?cat=InDepth" class="hover:bg-blue-700 px-3 py-2.5">In-Depth 24</a>
 
                 <!-- More Dropdown -->
                 <div class="relative dropdown">
-                    <a href="#" class="hover:bg-blue-700 px-3 py-2 flex items-center gap-1">More <i class="fa-solid fa-chevron-down text-[9px]"></i></a>
+                    <a href="#" class="hover:bg-blue-700 px-3 py-2.5 flex items-center gap-1">More <i class="fa-solid fa-chevron-down text-[9px]"></i></a>
                     <div class="dropdown-menu absolute right-0 hidden bg-white text-slate-800 shadow-xl rounded-b-lg w-44 py-2 border border-gray-200 z-50">
                         <a href="/?cat=Trending" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Trending</a>
                         <a href="/?cat=Business" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Business</a>
