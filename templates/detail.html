@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="https://24earlynews.com{{ article.link }}">
+    <title>{{ article.title }} - 24 Early News</title>
+    <meta name="description" content="{{ article.summary }}">
+    <script src="https://cdn.tailwindcss.com" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-100 text-gray-900 font-sans">
+    
+    <!-- Top Utility Bar -->
+    <div class="bg-amber-600 text-white text-xs py-1 px-4 flex justify-between items-center shadow-xs">
+        <div class="flex items-center gap-2 font-bold">
+            <span class="tracking-wide">24 Early News Network</span>
+        </div>
+        <div class="flex items-center gap-4">
+            <span class="hidden md:inline text-[11px] text-amber-100">Preferred news source</span>
+            <a href="/" class="hover:text-amber-200 font-bold">← Back to Home</a>
+        </div>
+    </div>
+
+    <!-- Main Header -->
+    <header class="bg-blue-600 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+            <a href="/" class="flex flex-col items-center justify-center bg-blue-900 px-3 py-1 rounded shadow text-center">
+                <div class="flex items-center gap-1">
+                    <span class="bg-yellow-400 text-blue-950 font-black px-1.5 py-0.5 text-sm rounded">24</span>
+                    <span class="text-sm font-black tracking-wider uppercase font-serif">EARLY NEWS</span>
+                </div>
+                <span class="text-[7px] tracking-widest text-yellow-300 font-bold uppercase -mt-0.5">THINK FIRST</span>
+            </a>
+            <a href="/" class="bg-blue-700 hover:bg-blue-800 text-xs font-bold uppercase px-4 py-2 rounded transition">Home Portal</a>
+        </div>
+    </header>
+
+    <!-- News Article Content -->
+    <main class="max-w-4xl mx-auto px-4 py-8">
+        <article class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden p-6 md:p-10">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="bg-red-600 text-white text-xs font-black uppercase px-3 py-1 rounded">{{ article.category }}</span>
+                <span class="text-xs text-slate-400 font-mono"><i class="fa-regular fa-clock"></i> {{ article.published }}</span>
+            </div>
+            
+            <h1 class="text-2xl md:text-4xl font-black text-slate-900 leading-tight mb-6">
+                {{ article.title }}
+            </h1>
+
+            <div class="relative aspect-[16/9] overflow-hidden rounded-xl bg-slate-900 mb-8 shadow">
+                <img src="{{ article.image }}" alt="{{ article.title }}" class="w-full h-full object-cover">
+            </div>
+
+            <div class="text-base md:text-lg text-slate-700 leading-relaxed space-y-4 font-normal">
+                <p class="font-bold text-slate-900 text-xl border-l-4 border-red-600 pl-4 py-1 bg-red-50/50 mb-6">
+                    {{ article.summary }}
+                </p>
+                <p>
+                    {{ article.content }}
+                </p>
+                <p>
+                    24 Early News-এর বিশ্বস্ত ও প্রামাণিক সূত্রের বরাত দিয়ে বলা যায় যে, বর্তমান এই খবরের প্রতিটি খুঁটিনাটি বিষয় আমরা গভীরভাবে পর্যবেক্ষণ করছি। সাধারণ মানুষের সুবিধার্থে ভবিষ্যতে এই বিষয়ে আরও নতুন তথ্য সংযোজন করা হবে।
+                </p>
+            </div>
+
+            <div class="mt-10 pt-6 border-t border-gray-200 flex justify-between items-center text-xs text-slate-500">
+                <span>Published by: <strong>DWIPRAJ MALLICK (AZIZNAGAR, 743425)</strong></span>
+                <a href="/" class="font-bold text-blue-600 hover:underline">← Read More News</a>
+            </div>
+        </article>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-blue-950 text-gray-300 text-xs border-t-4 border-red-600 mt-20 pt-10 pb-6 text-center">
+        <p>© 2026 <strong>24 Early News Network</strong>. All Rights Reserved. Published by <strong>DWIPRAJ MALLICK</strong>.</p>
+    </footer>
+</body>
+</html>
