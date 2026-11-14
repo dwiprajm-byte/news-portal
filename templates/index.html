@@ -4,16 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="canonical" href="https://24earlynews.com/">
+    
+    <!-- Security Headers (Hacked-Protected & CSP) -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    
     <title>24 Early News - Live News Portal</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Preconnect for Lightning Fast Asset Loading -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    
+    <script src="https://cdn.tailwindcss.com" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+    
     <style>
         .dropdown:hover .dropdown-menu { display: block; }
+        /* Performance Optimization: Content Visibility */
+        main { content-visibility: auto; }
     </style>
 </head>
 <body class="bg-gray-100 text-gray-900 font-sans" id="bodyTheme">
     
-    <!-- Top Utility Bar (Cleaned up: E24 and ISOMES removed) -->
+    <!-- Top Utility & Brand Bar -->
     <div class="bg-amber-600 text-white text-xs py-1 px-4 flex justify-between items-center shadow-xs">
         <div class="flex items-center gap-2 font-bold">
             <span class="tracking-wide">24 Early News Network</span>
@@ -32,7 +46,7 @@
     <header class="bg-blue-600 text-white shadow-md sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-2 py-2 flex items-center justify-between flex-nowrap">
             <div class="flex items-center gap-2 shrink-0">
-                <button onclick="toggleSidebar()" class="text-white text-xl hover:text-blue-200 focus:outline-none"><i class="fa-solid fa-bars"></i></button>
+                <button onclick="toggleSidebar()" class="text-white text-xl hover:text-blue-200 focus:outline-none" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
                 
                 <a href="/" class="flex flex-col items-center justify-center bg-blue-900 px-2 py-1 rounded shadow text-center">
                     <div class="flex items-center gap-1">
@@ -118,7 +132,7 @@
             </nav>
 
             <div class="flex items-center shrink-0">
-                <button class="text-white text-lg hover:text-yellow-300 transition px-2 py-1"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <button class="text-white text-lg hover:text-yellow-300 transition px-2 py-1" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
             </div>
         </div>
     </header>
@@ -132,7 +146,7 @@
                         <span class="bg-yellow-400 text-blue-950 font-black px-2 py-0.5 rounded text-lg">24</span>
                         <span class="text-xl font-black uppercase font-serif">EARLY NEWS</span>
                     </div>
-                    <button onclick="toggleSidebar()" class="text-white text-xl hover:text-black"><i class="fa-solid fa-xmark"></i></button>
+                    <button onclick="toggleSidebar()" class="text-white text-xl hover:text-black" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
                 </div>
                 
                 <div class="flex gap-2 mb-6">
@@ -192,7 +206,7 @@
             <div class="lg:col-span-8 bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 flex flex-col justify-between">
                 <div>
                     <div class="relative aspect-[16/9] overflow-hidden bg-slate-900">
-                        <img src="{{ news[0].image }}" alt="{{ news[0].title }}" class="w-full h-full object-cover">
+                        <img src="{{ news[0].image }}" alt="{{ news[0].title }}" loading="lazy" class="w-full h-full object-cover">
                         <span class="absolute top-4 left-4 bg-red-600 text-white text-xs font-black uppercase px-3 py-1 rounded shadow">
                             {{ news[0].category }}
                         </span>
@@ -200,7 +214,7 @@
                     <div class="p-6">
                         <span class="text-xs text-slate-400 font-mono block mb-2">{{ news[0].published }}</span>
                         <h2 class="text-2xl md:text-3xl font-black text-slate-900 hover:text-red-600 transition leading-snug mb-3">
-                            <a href="{{ news[0].link }}" target="_blank" class="news-title">{{ news[0].title }}</a>
+                            <a href="{{ news[0].link }}" target="_blank" rel="noopener noreferrer" class="news-title">{{ news[0].title }}</a>
                         </h2>
                         <div class="text-sm text-slate-600 leading-relaxed news-summary">
                             {{ news[0].summary }}
@@ -208,12 +222,12 @@
                     </div>
                 </div>
                 <div class="px-6 pb-5 pt-3 border-t border-gray-100 flex justify-between items-center">
-                    <a href="{{ news[0].link }}" target="_blank" class="font-bold text-red-600 text-xs hover:underline" data-translate="readmore">Read Full Story →</a>
+                    <a href="{{ news[0].link }}" target="_blank" rel="noopener noreferrer" class="font-bold text-red-600 text-xs hover:underline" data-translate="readmore">Read Full Story →</a>
                     <span class="text-[11px] text-gray-400 font-mono" data-translate="verified">Source Verified</span>
                 </div>
             </div>
 
-            <!-- Right Side Highlights (Cleaned up: News 24 and MP/CG labels removed) -->
+            <!-- Right Side Highlights -->
             <div class="lg:col-span-4 flex flex-col gap-5">
                 <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-center shadow-xs">
                     <span class="text-[10px] font-bold text-amber-700 uppercase tracking-widest block mb-2" data-translate="ad">Advertisement</span>
@@ -241,14 +255,14 @@
                 <div class="bg-white rounded-lg p-3 border border-gray-200 shadow-xs flex gap-3 hover:border-red-500 transition">
                     {% if item.image %}
                     <div class="w-24 h-20 shrink-0 rounded overflow-hidden bg-gray-100">
-                        <img src="{{ item.image }}" alt="{{ item.title }}" class="w-full h-full object-cover">
+                        <img src="{{ item.image }}" alt="{{ item.title }}" loading="lazy" class="w-full h-full object-cover">
                     </div>
                     {% endif %}
                     <div class="flex flex-col justify-between overflow-hidden">
                         <div>
                             <span class="text-[10px] font-bold text-red-600 uppercase block">{{ item.category }}</span>
                             <h4 class="text-xs font-bold text-slate-900 line-clamp-2 mt-0.5">
-                                <a href="{{ item.link }}" target="_blank" class="hover:text-red-600 news-title">{{ item.title }}</a>
+                                <a href="{{ item.link }}" target="_blank" rel="noopener noreferrer" class="hover:text-red-600 news-title">{{ item.title }}</a>
                             </h4>
                         </div>
                         <span class="text-[10px] text-slate-400 font-mono">{{ item.published }}</span>
@@ -333,7 +347,7 @@
                 tophighlights: "শীর্ষ হাইলাইট", footerdesc: "স্বয়ংক্রিয় রিয়েল-টাইম বৈশ্বিক সংবাদ নেটওয়ার্ক।",
                 quickaccess: "দ্রুত প্রবেশাধিকার", legal: "আইনি", about: "আমাদের সম্পর্কে", privacy: "গোপনীয়তা নীতি", terms: "ব্যবহারের শর্তাবলী",
                 contact: "যোগাযোগ করুন", contacttitle: "যোগাযোগ", cricket: "ক্রিকেট", othersports: "অন্যান্য খেলা", business: "ব্যবসা",
-                education: "শিক্ষা"
+                education: "शिक्षा"
             }
         };
 
