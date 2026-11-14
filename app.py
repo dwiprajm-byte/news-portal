@@ -1,10 +1,11 @@
 ﻿from flask import Flask, render_template, request
-import feedparser
+import urllib.request
+import xml.etree.ElementTree as ET
 from datetime import datetime
 
 app = Flask(__name__)
 
-# বিশ্বস্ত ও আসল সংবাদ সংস্থার RSS ফিড (ভুল বা ফালতু খবর এড়ানোর জন্য ভেরিফাইড সোর্স)
+# বিশ্বস্ত ও আসল সংবাদ সংস্থার RSS ফিড (পাইথনের বিল্ট-ইন লাইব্রেরি দিয়ে পার্স করা হবে)
 RSS_FEEDS = {
     "India": "https://news.google.com/rss/search?q=India+news&hl=en-IN&gl=IN&ceid=IN:en",
     "World": "https://news.google.com/rss/search?q=World+news&hl=en-US&gl=US&ceid=US:en",
@@ -14,27 +15,32 @@ RSS_FEEDS = {
 
 def get_live_news():
     news_items = []
+    headers = {'User-Agent': 'Mozilla/5.0'}
     for category, url in RSS_FEEDS.items():
         try:
-            feed = feedparser.parse(url)
-            for entry in feed.entries[:5]:
-                # আসল ছবি বা ডিফল্ট প্রিমিয়াম ইমেজ সেট করা
-                image_url = "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?auto=format&fit=crop&w=800&q=80"
-                if hasattr(entry, 'media_content') and entry.media_content:
-                    image_url = entry.media_content[0]['url']
-                
-                news_items.append({
-                    "title": entry.get('title', 'Breaking News Update'),
-                    "category": category,
-                    "published": entry.get('published', datetime.now().strftime('%d %b %Y')),
-                    "image": image_url,
-                    "summary": entry.get('summary', 'Click read full story for complete coverage.'),
-                    "link": entry.get('link', '#')
-                })
+            req = urllib.request.Request(url, headers=headers)
+            with urllib.request.urlopen(req, timeout=5) as response:
+                xml_data = response.read()
+                root = ET.fromstring(xml_data)
+                channel = root.find('channel')
+                if channel is not None:
+                    for item in channel.findall('item')[:5]:
+                        title = item.find('title').text if item.find('title') is not None else 'Breaking News'
+                        link = item.find('link').text if item.find('link') is not None else '#'
+                        pubDate = item.find('pubDate').text if item.find('pubDate') is not None else datetime.now().strftime('%d %b %Y')
+                        
+                        news_items.append({
+                            "title": title,
+                            "category": category,
+                            "published": pubDate[:16],
+                            "image": "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?auto=format&fit=crop&w=800&q=80",
+                            "summary": "Read full coverage of this latest breaking news dispatch from verified sources.",
+                            "link": link
+                        })
         except Exception as e:
-            print(f"Error: {e}")
+            print(f"Error fetching {category}: {e}")
     
-    # যদি কোনো কারণে ফেচ না হয় তবে ডিফল্ট নিরাপদ খবর দেখাবে
+    # যদি কোনো কারণে নেটওয়ার্ক সমস্যা হয় তবে ব্যাকআপ প্রিমিয়াম খবর দেখাবে
     if not news_items:
         news_items = [
             {
