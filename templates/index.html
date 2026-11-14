@@ -10,7 +10,7 @@
 </head>
 <body class="bg-gray-100 text-gray-900 font-sans" id="bodyTheme">
     
-    <!-- Top Utility & Social Bar (Matching Screenshot) -->
+    <!-- Top Utility & Social Bar -->
     <div class="bg-blue-900 text-white text-xs py-1.5 px-4 flex justify-between items-center border-b border-blue-800">
         <div class="flex items-center gap-3">
             <span class="bg-red-600 text-white font-bold px-2 py-0.5 rounded text-[10px] uppercase animate-pulse">Live</span>
@@ -18,7 +18,7 @@
             <span class="text-gray-300">| Switch to: <a href="#" class="underline hover:text-white font-bold">हिंदी</a></span>
         </div>
         <div class="flex items-center gap-4">
-            <div class="hidden md:flex items-center gap-2.5 text-sm">
+            <div class="hidden md:flex items-center gap-3 text-sm">
                 <a href="#" class="hover:text-red-400"><i class="fa-brands fa-x-twitter"></i></a>
                 <a href="#" class="hover:text-red-400"><i class="fa-brands fa-instagram"></i></a>
                 <a href="#" class="hover:text-red-400"><i class="fa-brands fa-youtube"></i></a>
@@ -28,31 +28,33 @@
         </div>
     </div>
 
-    <!-- Main Header with Logo & Full Navigation Menu -->
+    <!-- Main Header with Hamburger and Full Nav -->
     <header class="bg-blue-950 text-white shadow-md sticky top-0 z-50 border-b-4 border-red-600">
         <div class="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between">
             <div class="flex items-center gap-4">
-                <button class="text-white text-lg hover:text-red-400"><i class="fa-solid fa-bars"></i></button>
+                <!-- Hamburger Menu Toggle -->
+                <button onclick="toggleSidebar()" class="text-white text-xl hover:text-red-400 focus:outline-none"><i class="fa-solid fa-bars"></i></button>
                 <a href="/" class="flex items-center gap-2">
                     <span class="bg-red-600 text-white font-black px-2.5 py-1 text-xl rounded">24</span>
                     <span class="text-2xl font-black tracking-wider uppercase font-serif">EARLY NEWS</span>
                 </a>
             </div>
             
-            <!-- Full Categories Navigation (Matching Screenshot) -->
-            <nav class="hidden 2xl:flex items-center gap-4 text-xs font-bold uppercase">
+            <!-- Desktop Navbar matching reference screenshots -->
+            <nav class="hidden 2xl:flex items-center gap-3 text-xs font-bold uppercase">
                 <a href="/" class="hover:text-red-400 py-2 border-b-2 border-red-600">Home</a>
                 <a href="/?cat=LiveTV" class="hover:text-red-400 py-2 text-red-400 flex items-center gap-1"><i class="fa-solid fa-tower-broadcast"></i> Live TV</a>
                 <a href="/?cat=Latest" class="hover:text-red-400 py-2">Latest</a>
                 <a href="/?cat=India" class="hover:text-red-400 py-2">India</a>
-                <a href="/?cat=Cities" class="hover:text-red-400 py-2">Cities</a>
+                <a href="/?cat=Cities" class="hover:text-red-400 py-2">Cities <i class="fa-solid fa-chevron-down text-[9px]"></i></a>
                 <a href="/?cat=World" class="hover:text-red-400 py-2">World</a>
                 <a href="/?cat=Entertainment" class="hover:text-red-400 py-2">Entertainment</a>
-                <a href="/?cat=Sports" class="hover:text-red-400 py-2">Sports</a>
-                <a href="/?cat=Photos" class="hover:text-red-400 py-2">Photos</a>
+                <a href="/?cat=Sports" class="hover:text-red-400 py-2">Sports <i class="fa-solid fa-chevron-down text-[9px]"></i></a>
+                <a href="/?cat=Photos" class="hover:text-red-400 py-2">Photos <i class="fa-solid fa-chevron-down text-[9px]"></i></a>
                 <a href="/?cat=Auto" class="hover:text-red-400 py-2">Auto</a>
                 <a href="/?cat=Tech" class="hover:text-red-400 py-2">Tech</a>
-                <a href="/?cat=InDepth" class="hover:text-red-400 py-2">In-Depth</a>
+                <a href="/?cat=InDepth" class="hover:text-red-400 py-2">In-Depth 24</a>
+                <a href="/?cat=More" class="hover:text-red-400 py-2">More <i class="fa-solid fa-chevron-down text-[9px]"></i></a>
             </nav>
 
             <div class="flex items-center gap-3">
@@ -61,7 +63,66 @@
         </div>
     </header>
 
-    <!-- Main Content Area -->
+    <!-- Sidebar Drawer Menu (Matching Reference Screenshot Sidebar) -->
+    <div id="sidebarMenu" class="fixed inset-0 bg-black/60 z-50 hidden transition-opacity">
+        <div class="bg-sky-600 text-white w-80 h-full p-6 overflow-y-auto shadow-2xl flex flex-col justify-between">
+            <div>
+                <div class="flex justify-between items-center mb-6 border-b border-sky-500 pb-4">
+                    <div class="flex items-center gap-2">
+                        <span class="bg-red-600 text-white font-black px-2 py-0.5 rounded text-lg">24</span>
+                        <span class="text-xl font-black uppercase font-serif">EARLY NEWS</span>
+                    </div>
+                    <button onclick="toggleSidebar()" class="text-white text-xl hover:text-black"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                
+                <div class="flex gap-2 mb-6">
+                    <span class="bg-white text-sky-700 font-bold px-3 py-1 rounded text-xs">English</span>
+                    <span class="bg-sky-700 text-white font-bold px-3 py-1 rounded text-xs">हिंदी</span>
+                </div>
+
+                <ul class="space-y-3 text-sm font-semibold uppercase">
+                    <li><a href="/" class="block hover:text-yellow-200">Home</a></li>
+                    <li><a href="/?cat=LiveTV" class="block text-yellow-200"><i class="fa-solid fa-tower-broadcast"></i> Live TV</a></li>
+                    <li><a href="/?cat=Latest" class="block hover:text-yellow-200">Latest</a></li>
+                    <li><a href="/?cat=India" class="block hover:text-yellow-200">India</a></li>
+                    <li><a href="/?cat=Cities" class="block hover:text-yellow-200">Cities</a></li>
+                    <li><a href="/?cat=World" class="block hover:text-yellow-200">World</a></li>
+                    <li><a href="/?cat=Entertainment" class="block hover:text-yellow-200">Entertainment</a></li>
+                    <li><a href="/?cat=Sports" class="block hover:text-yellow-200">Sports</a></li>
+                    <li><a href="/?cat=Photos" class="block hover:text-yellow-200">Photos</a></li>
+                    <li><a href="/?cat=Auto" class="block hover:text-yellow-200">Auto</a></li>
+                    <li><a href="/?cat=Tech" class="block hover:text-yellow-200">Tech</a></li>
+                    <li><a href="/?cat=InDepth" class="block hover:text-yellow-200">In-Depth 24</a></li>
+                </ul>
+
+                <div class="mt-8 pt-4 border-t border-sky-500 grid grid-cols-2 gap-2 text-xs">
+                    <a href="/about" class="hover:underline">About Us</a>
+                    <a href="/privacy" class="hover:underline">Privacy Policy</a>
+                    <a href="/terms" class="hover:underline">Terms of Service</a>
+                    <a href="/contact" class="hover:underline">Contact Us</a>
+                    <a href="/terms" class="hover:underline">Disclaimer</a>
+                    <a href="/privacy" class="hover:underline">Cookies</a>
+                </div>
+            </div>
+
+            <div class="mt-8 pt-4 border-t border-sky-500 text-center text-[10px] text-sky-200">
+                © 2026 24 Early News Network. DWIPRAJ MALLICK.
+            </div>
+        </div>
+    </div>
+
+    <!-- Trending Tags Bar -->
+    <div class="bg-white border-b border-gray-200 py-2 px-4 shadow-xs">
+        <div class="max-w-7xl mx-auto flex items-center gap-3 overflow-x-auto whitespace-nowrap text-xs">
+            <span class="font-black text-red-600 flex items-center gap-1 uppercase"><i class="fa-solid fa-bolt"></i> Trending:</span>
+            <a href="/?cat=India" class="bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-full text-slate-700 font-medium border border-gray-200">Delhi AQI</a>
+            <a href="/?cat=World" class="bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-full text-slate-700 font-medium border border-gray-200">Iran-US War</a>
+            <a href="/?cat=Sports" class="bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-full text-slate-700 font-medium border border-gray-200">IND vs NZ</a>
+            <a href="/?cat=Tech" class="bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-full text-slate-700 font-medium border border-gray-200">NVIDIA</a>
+        </div>
+    </div>
+
+    <!-- Main Content Area matching Screenshot Layout -->
     <main class="max-w-7xl mx-auto px-4 py-6">
         <div class="text-xs font-black uppercase text-red-600 tracking-wider mb-3 flex items-center gap-2">
             <span class="w-2 h-2 bg-red-600 rounded-full animate-ping"></span> Top News & Live Dispatches
@@ -69,7 +130,7 @@
 
         {% if news and news|length > 0 %}
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <!-- Left Big Featured News & Slider Grid -->
+            <!-- Left Big Featured News -->
             <div class="lg:col-span-8 bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 flex flex-col justify-between">
                 <div>
                     <div class="relative aspect-[16/9] overflow-hidden bg-slate-900">
@@ -94,9 +155,9 @@
                 </div>
             </div>
 
-            <!-- Right Side Highlights & Ads Slot -->
+            <!-- Right Side Highlights & Live TV Slots (Matching Screenshot 10) -->
             <div class="lg:col-span-4 flex flex-col gap-5">
-                <!-- Advertisement Box matching screenshot -->
+                <!-- Advertisement Box -->
                 <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-center shadow-xs">
                     <span class="text-[10px] font-bold text-amber-700 uppercase tracking-widest block mb-2">Advertisement</span>
                     <div class="bg-gradient-to-r from-amber-500 to-red-500 text-white p-4 rounded-lg font-bold text-sm shadow">
@@ -104,8 +165,23 @@
                     </div>
                 </div>
 
+                <!-- Live TV Widgets matching screenshot -->
+                <div class="bg-blue-900 text-white text-xs font-black uppercase px-3 py-2.5 rounded-t-lg tracking-wider flex items-center gap-2">
+                    <i class="fa-solid fa-tower-broadcast text-red-500"></i> Live TV & Streams
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-white p-3 rounded-lg border border-gray-200 text-center shadow-xs">
+                        <span class="text-xs font-bold text-slate-800 block mb-1">News 24</span>
+                        <span class="bg-red-600 text-white text-[9px] px-2 py-0.5 rounded font-bold uppercase animate-pulse">Watch Live</span>
+                    </div>
+                    <div class="bg-white p-3 rounded-lg border border-gray-200 text-center shadow-xs">
+                        <span class="text-xs font-bold text-slate-800 block mb-1">News 24 MP/CG</span>
+                        <span class="bg-red-600 text-white text-[9px] px-2 py-0.5 rounded font-bold uppercase animate-pulse">Watch Live</span>
+                    </div>
+                </div>
+
                 <div class="bg-blue-950 text-white text-xs font-black uppercase px-3 py-2.5 rounded-t-lg tracking-wider">Top Highlights</div>
-                {% for item in news[1:6] %}
+                {% for item in news[1:5] %}
                 <div class="bg-white rounded-lg p-3 border border-gray-200 shadow-xs flex gap-3 hover:border-red-500 transition">
                     {% if item.image %}
                     <div class="w-24 h-20 shrink-0 rounded overflow-hidden bg-gray-100">
@@ -128,10 +204,9 @@
         {% endif %}
     </main>
 
-    <!-- Professional Multi-Column Footer -->
+    <!-- Professional Multi-Column Footer with correct address -->
     <footer class="bg-blue-950 text-gray-300 text-xs border-t-4 border-red-600 mt-20 pt-12 pb-8">
         <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
-            <!-- Col 1 -->
             <div>
                 <div class="flex items-center gap-2 mb-4">
                     <span class="bg-red-600 text-white font-black px-2.5 py-1 text-lg rounded">24</span>
@@ -145,7 +220,6 @@
                 </div>
             </div>
 
-            <!-- Col 2 -->
             <div>
                 <h3 class="text-white font-bold uppercase text-sm mb-4 tracking-wider border-b border-blue-900 pb-2">Quick Access</h3>
                 <ul class="space-y-2">
@@ -157,7 +231,6 @@
                 </ul>
             </div>
 
-            <!-- Col 3 -->
             <div>
                 <h3 class="text-white font-bold uppercase text-sm mb-4 tracking-wider border-b border-blue-900 pb-2">Company & Legal</h3>
                 <ul class="space-y-2">
@@ -168,7 +241,6 @@
                 </ul>
             </div>
 
-            <!-- Col 4 -->
             <div>
                 <h3 class="text-white font-bold uppercase text-sm mb-4 tracking-wider border-b border-blue-900 pb-2">Contact</h3>
                 <p class="text-gray-400 mb-2"><strong>Location:</strong> AZIZNAGAR, West Bengal, India - 743425</p>
@@ -186,6 +258,10 @@
         function toggleDarkMode() {
             document.getElementById('bodyTheme').classList.toggle('bg-slate-900');
             document.getElementById('bodyTheme').classList.toggle('text-white');
+        }
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebarMenu');
+            sidebar.classList.toggle('hidden');
         }
     </script>
 </body>
