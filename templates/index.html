@@ -4,81 +4,109 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="canonical" href="https://24earlynews.com/">
-    <title>24 Early News - Global Newsroom</title>
+    <title>24 Early News - Live News Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-      @keyframes marquee { 0% { transform: translateX(100%);} 100% { transform: translateX(-100%); } }
-      .animate-marquee { display: inline-block; white-space: nowrap; animation: marquee 35s linear infinite; }
-      .animate-marquee:hover { animation-play-state: paused; }
-    </style>
 </head>
 <body class="bg-gray-100 text-gray-900 font-sans" id="bodyTheme">
-    <div class="bg-neutral-900 text-white text-xs py-2 px-4 flex justify-between items-center">
+    
+    <!-- Top Utility Bar -->
+    <div class="bg-blue-900 text-white text-xs py-1.5 px-4 flex justify-between items-center">
         <div class="flex items-center gap-3">
-            <span class="bg-red-600 text-white font-bold px-2 py-0.5 rounded text-[10px] uppercase animate-pulse">LIVE NEWS</span>
+            <span class="bg-red-600 text-white font-bold px-2 py-0.5 rounded text-[10px] uppercase animate-pulse">Live</span>
+            <span>Sat, Nov 14, 2026</span>
         </div>
         <div class="flex items-center gap-4">
-            <button onclick="toggleDarkMode()" class="bg-neutral-800 px-2.5 py-1 rounded border border-neutral-700 text-xs">Toggle Dark</button>
+            <button onclick="toggleDarkMode()" class="bg-blue-800 px-2.5 py-1 rounded border border-blue-700 text-xs font-semibold">Toggle Dark</button>
         </div>
     </div>
 
-    <header class="bg-red-700 text-white shadow-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+    <!-- Main Header with Logo -->
+    <header class="bg-blue-950 text-white shadow-md sticky top-0 z-50 border-b-4 border-red-600">
+        <div class="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
             <a href="/" class="flex items-center gap-2">
-                <span class="bg-white text-red-700 font-black px-2.5 py-1 text-lg">24</span>
-                <span class="text-3xl font-black tracking-wider uppercase font-serif">EARLY NEWS</span>
+                <span class="bg-red-600 text-white font-black px-2.5 py-1 text-xl rounded">24</span>
+                <span class="text-2xl font-black tracking-wider uppercase font-serif">EARLY NEWS</span>
             </a>
-            <nav class="hidden lg:flex items-center gap-6 text-sm font-bold uppercase">
-                <a href="/" class="hover:text-gray-200">Home</a>
-                <a href="/?cat=India" class="hover:text-gray-200">India</a>
-                <a href="/?cat=World" class="hover:text-gray-200">World</a>
-                <a href="/?cat=Business" class="hover:text-gray-200">Business</a>
-                <a href="/?cat=Technology" class="hover:text-gray-200">Tech</a>
+            
+            <!-- Navbar Categories (Matching Screenshot Style) -->
+            <nav class="hidden xl:flex items-center gap-4 text-xs font-bold uppercase">
+                <a href="/" class="hover:text-red-400 py-2 border-b-2 border-red-600">Home</a>
+                <a href="/?cat=India" class="hover:text-red-400 py-2">India</a>
+                <a href="/?cat=World" class="hover:text-red-400 py-2">World</a>
+                <a href="/?cat=Business" class="hover:text-red-400 py-2">Business</a>
+                <a href="/?cat=Technology" class="hover:text-red-400 py-2">Tech</a>
+                <a href="/about" class="hover:text-red-400 py-2">About</a>
+                <a href="/privacy" class="hover:text-red-400 py-2">Privacy</a>
+                <a href="/terms" class="hover:text-red-400 py-2">Terms</a>
+                <a href="/contact" class="hover:text-red-400 py-2">Contact</a>
             </nav>
         </div>
     </header>
 
-    <div class="bg-neutral-900 text-white text-xs py-2 px-4 border-b border-neutral-800 flex items-center overflow-hidden">
-        <span class="bg-red-600 text-white font-black px-2.5 py-1 uppercase text-[10px] shrink-0 mr-3 rounded animate-pulse">TRENDING NEWS</span>
-        <div class="overflow-hidden whitespace-nowrap w-full">
-            <div class="animate-marquee font-medium text-xs">
-                <span class="mx-4">🔴 Real-time global news dispatches and updates.</span>
-                <span class="mx-4">⚡ Instant trend analysis and multi-language publishing active.</span>
+    <!-- Trending Tags Bar -->
+    <div class="bg-white border-b border-gray-200 py-2 px-4 shadow-xs">
+        <div class="max-w-7xl mx-auto flex items-center gap-3 overflow-x-auto whitespace-nowrap text-xs">
+            <span class="font-black text-red-600 flex items-center gap-1 uppercase"><i class="fa-solid fa-bolt"></i> Trending:</span>
+            <a href="/?cat=India" class="bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-full text-slate-700 font-medium border border-gray-200">Delhi AQI</a>
+            <a href="/?cat=World" class="bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-full text-slate-700 font-medium border border-gray-200">Global Updates</a>
+            <a href="/?cat=Business" class="bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-full text-slate-700 font-medium border border-gray-200">Markets</a>
+            <a href="/?cat=Technology" class="bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-full text-slate-700 font-medium border border-gray-200">AI & Tech</a>
+        </div>
+    </div>
+
+    <!-- Breaking News Ticker Bar -->
+    <div class="max-w-7xl mx-auto px-4 mt-4">
+        <div class="bg-amber-600 text-white text-xs font-bold flex items-center rounded shadow-xs overflow-hidden">
+            <div class="bg-amber-800 px-3 py-2 uppercase tracking-wide shrink-0">Breaking News</div>
+            <div class="px-3 py-2 truncate">
+                {% if news and news|length > 0 %}
+                    {{ news[0].title }}
+                {% else %}
+                    Autonomous real-time global news network updates active across all regions.
+                {% endif %}
             </div>
         </div>
     </div>
 
+    <!-- Main Content Area -->
     <main class="max-w-7xl mx-auto px-4 py-6">
+        <div class="text-xs font-black uppercase text-red-600 tracking-wider mb-3 flex items-center gap-2">
+            <span class="w-2 h-2 bg-red-600 rounded-full animate-ping"></span> Top News
+        </div>
+
         {% if news and news|length > 0 %}
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <div class="lg:col-span-8 bg-white rounded-xl overflow-hidden shadow-xs border border-gray-200 flex flex-col justify-between">
+            <!-- Left Big Featured News -->
+            <div class="lg:col-span-8 bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 flex flex-col justify-between">
                 <div>
                     <div class="relative aspect-[16/9] overflow-hidden bg-slate-900">
                         <img src="{{ news[0].image }}" alt="{{ news[0].title }}" class="w-full h-full object-cover">
-                        <span class="absolute top-4 left-4 bg-red-600 text-white text-xs font-black uppercase px-3 py-1 rounded">
+                        <span class="absolute top-4 left-4 bg-red-600 text-white text-xs font-black uppercase px-3 py-1 rounded shadow">
                             {{ news[0].category }}
                         </span>
                     </div>
                     <div class="p-6">
                         <span class="text-xs text-slate-400 font-mono block mb-2">{{ news[0].published }}</span>
                         <h2 class="text-2xl md:text-3xl font-black text-slate-900 hover:text-red-600 transition leading-snug mb-3">
-                            <a href="{{ news[0].link }}">{{ news[0].title }}</a>
+                            <a href="{{ news[0].link }}" target="_blank">{{ news[0].title }}</a>
                         </h2>
-                        <div class="text-sm text-slate-600 line-clamp-3 leading-relaxed">
-                            {{ news[0].summary | striptags | truncate(220) }}
+                        <div class="text-sm text-slate-600 leading-relaxed">
+                            {{ news[0].summary }}
                         </div>
                     </div>
                 </div>
-                <div class="px-6 pb-5 pt-3 border-t border-gray-100">
-                    <a href="{{ news[0].link }}" class="font-bold text-red-600 text-xs">Read Full Story →</a>
+                <div class="px-6 pb-5 pt-3 border-t border-gray-100 flex justify-between items-center">
+                    <a href="{{ news[0].link }}" target="_blank" class="font-bold text-red-600 text-xs hover:underline">Read Full Story →</a>
+                    <span class="text-[11px] text-gray-400 font-mono">Source Verified</span>
                 </div>
             </div>
 
+            <!-- Right Side Highlights -->
             <div class="lg:col-span-4 flex flex-col gap-3.5">
-                <div class="bg-red-700 text-white text-xs font-black uppercase px-3 py-2 rounded-t-lg">Top Highlights</div>
-                {% for item in news[1:4] %}
-                <div class="bg-white rounded-lg p-3 border border-gray-200 shadow-xs flex gap-3">
+                <div class="bg-blue-950 text-white text-xs font-black uppercase px-3 py-2.5 rounded-t-lg tracking-wider">Top Highlights</div>
+                {% for item in news[1:5] %}
+                <div class="bg-white rounded-lg p-3 border border-gray-200 shadow-xs flex gap-3 hover:border-red-500 transition">
                     {% if item.image %}
                     <div class="w-24 h-20 shrink-0 rounded overflow-hidden bg-gray-100">
                         <img src="{{ item.image }}" alt="{{ item.title }}" class="w-full h-full object-cover">
@@ -88,7 +116,7 @@
                         <div>
                             <span class="text-[10px] font-bold text-red-600 uppercase block">{{ item.category }}</span>
                             <h4 class="text-xs font-bold text-slate-900 line-clamp-2 mt-0.5">
-                                <a href="{{ item.link }}">{{ item.title }}</a>
+                                <a href="{{ item.link }}" target="_blank" class="hover:text-red-600">{{ item.title }}</a>
                             </h4>
                         </div>
                         <span class="text-[10px] text-slate-400 font-mono">{{ item.published }}</span>
@@ -100,8 +128,9 @@
         {% endif %}
     </main>
 
-    <footer class="bg-neutral-900 text-gray-400 text-xs border-t-4 border-red-600 mt-16 py-8 text-center">
-        <div class="mb-4 flex justify-center gap-6 font-semibold uppercase text-gray-300">
+    <!-- Footer Area -->
+    <footer class="bg-blue-950 text-gray-400 text-xs border-t-4 border-red-600 mt-16 py-8 text-center">
+        <div class="mb-4 flex flex-wrap justify-center gap-6 font-semibold uppercase text-gray-300">
             <a href="/about" class="hover:text-white">About Us</a>
             <a href="/privacy" class="hover:text-white">Privacy Policy</a>
             <a href="/terms" class="hover:text-white">Terms of Service</a>
@@ -112,7 +141,7 @@
 
     <script>
         function toggleDarkMode() {
-            document.getElementById('bodyTheme').classList.toggle('bg-neutral-900');
+            document.getElementById('bodyTheme').classList.toggle('bg-slate-900');
             document.getElementById('bodyTheme').classList.toggle('text-white');
         }
     </script>
