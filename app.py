@@ -10,6 +10,7 @@ app = Flask(__name__)
 
 DB_FILE = "news_store.json"
 
+# ক্যাটাগরি অনুযায়ী নির্দিষ্ট রিয়েল-টাইম টপ সোর্স RSS ফিড
 RSS_FEEDS = {
     "India": [
         "https://news.google.com/rss/search?q=India+news&hl=en-IN&gl=IN&ceid=IN:en"
@@ -20,15 +21,36 @@ RSS_FEEDS = {
     "Business": [
         "https://news.google.com/rss/search?q=Business+economy+news&hl=en-IN&gl=IN&ceid=IN:en"
     ],
-    "Technology": [
+    "Tech": [
         "https://news.google.com/rss/search?q=Technology+AI+news&hl=en-IN&gl=IN&ceid=IN:en"
+    ],
+    "Sports": [
+        "https://news.google.com/rss/search?q=Cricket+sports+news&hl=en-IN&gl=IN&ceid=IN:en"
+    ],
+    "Cricket": [
+        "https://news.google.com/rss/search?q=Cricket+match+news&hl=en-IN&gl=IN&ceid=IN:en"
+    ],
+    "Entertainment": [
+        "https://news.google.com/rss/search?q=Entertainment+Bollywood+news&hl=en-IN&gl=IN&ceid=IN:en"
+    ],
+    "Auto": [
+        "https://news.google.com/rss/search?q=Automobile+cars+bikes+news&hl=en-IN&gl=IN&ceid=IN:en"
+    ],
+    "Cities": [
+        "https://news.google.com/rss/search?q=Kolkata+Delhi+Mumbai+news&hl=en-IN&gl=IN&ceid=IN:en"
+    ],
+    "Trending": [
+        "https://news.google.com/rss/search?q=Trending+viral+news&hl=en-IN&gl=IN&ceid=IN:en"
+    ],
+    "Education": [
+        "https://news.google.com/rss/search?q=Education+exams+jobs+news&hl=en-IN&gl=IN&ceid=IN:en"
     ]
 }
 
 def clean_news_text(text):
     if not text:
         return ""
-    # অন্য কোনো ওয়েবসাইটের নাম বা ব্র্যান্ড থাকলে তা রিমভ করার ফিল্টার
+    # অন্য কোনো ব্র্যান্ডের নাম থাকলে তা ফিল্টার করে নিজস্ব নাম রাখা
     unwanted_names = ["News24", "NEWS24", "News 24", "NDTV", "Aaj Tak", "Zee News", "ABP Live", "News18"]
     for name in unwanted_names:
         text = re.sub(re.escape(name), "24 Early News", text, flags=re.IGNORECASE)
@@ -71,26 +93,28 @@ def fetch_and_accumulate_news():
                             link = item.find('link').text if item.find('link') is not None else ''
                             pubDate = item.find('pubDate').text if item.find('pubDate') is not None else datetime.now().strftime('%d %b %Y')
                             
-                            # অন্য ওয়েবসাইটের নাম ফিল্টার করে মুছে ফেলা
                             title = clean_news_text(raw_title)
                             
-                            if link and link not in existing_links:
-                                img_url = "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?auto=format&fit=crop&w=800&q=80"
-                                if category == "Technology":
-                                    img_url = "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80"
-                                elif category == "Business":
-                                    img_url = "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80"
-                                elif category == "India":
-                                    img_url = "https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=800&q=80"
-                                elif category == "World":
-                                    img_url = "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80"
+                            # আসল ও প্রাসঙ্গিক ছবি যুক্ত করার স্মার্ট লজিক
+                            img_url = "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?auto=format&fit=crop&w=800&q=80"
+                            if category in ["Tech", "Auto"]:
+                                img_url = "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80"
+                            elif category in ["Business", "Trending"]:
+                                img_url = "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80"
+                            elif category in ["India", "Cities"]:
+                                img_url = "https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=800&q=80"
+                            elif category in ["Sports", "Cricket"]:
+                                img_url = "https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=800&q=80"
+                            elif category == "World":
+                                img_url = "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80"
 
+                            if link and link not in existing_links:
                                 news_item = {
                                     "title": title,
                                     "category": category,
                                     "published": pubDate[:16],
                                     "image": img_url,
-                                    "summary": "Real-time verified dispatch covering comprehensive regional and global updates.",
+                                    "summary": "Real-time verified dispatch covering comprehensive regional and global updates with top search optimization.",
                                     "link": link
                                 }
                                 existing_news.insert(0, news_item)
@@ -113,7 +137,7 @@ def index():
         all_news = [
             {
                 "title": "Autonomous AI Dispatches New Global Tech Standards for 2026",
-                "category": "Technology",
+                "category": "Tech",
                 "published": "14 Nov 2026",
                 "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80",
                 "summary": "Artificial intelligence systems have autonomously established a new framework.",
@@ -122,7 +146,10 @@ def index():
         ]
 
     if cat:
-        filtered = [n for n in all_news if n['category'].lower() == cat.lower()]
+        # নির্দিষ্ট ক্যাটাগরির সাথে মিল রেখে ফিল্টার করা
+        filtered = [n for n in all_news if cat.lower() in n['category'].lower() or n['category'].lower() in cat.lower()]
+        if not filtered:
+            filtered = all_news # ক্যাটাগরিতে খবর না থাকলে হোম ফিড দেখাবে
     else:
         filtered = all_news
 
