@@ -5,12 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="canonical" href="https://24earlynews.com/">
     
-    <!-- Security & Performance Headers -->
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta http-equiv="X-Frame-Options" content="DENY">
     <meta http-equiv="X-XSS-Protection" content="1; mode=block">
     
-    <title>24 Early News - Live News Portal</title>
+    <title>24 Early News - Live Trending Portal</title>
     
     <script src="https://cdn.tailwindcss.com" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
@@ -66,7 +65,6 @@
                 <a href="/?cat=Latest" class="hover:bg-blue-700 px-2.5 py-2 whitespace-nowrap" data-translate="latest">Latest</a>
                 <a href="/?cat=India" class="hover:bg-blue-700 px-2.5 py-2 whitespace-nowrap" data-translate="india">India</a>
                 
-                <!-- Cities Dropdown -->
                 <div class="relative dropdown">
                     <a href="#" class="hover:bg-blue-700 px-2.5 py-2 flex items-center gap-1 whitespace-nowrap"><span data-translate="cities">Cities</span> <i class="fa-solid fa-chevron-down text-[8px]"></i></a>
                     <div class="dropdown-menu absolute hidden bg-white text-slate-800 shadow-xl rounded-b-lg w-44 py-2 border border-gray-200 z-50">
@@ -85,7 +83,6 @@
                 <a href="/?cat=World" class="hover:bg-blue-700 px-2.5 py-2 whitespace-nowrap" data-translate="world">World</a>
                 <a href="/?cat=Entertainment" class="hover:bg-blue-700 px-2.5 py-2 whitespace-nowrap" data-translate="entertainment">Entertainment</a>
 
-                <!-- Sports Dropdown -->
                 <div class="relative dropdown">
                     <a href="#" class="hover:bg-blue-700 px-2.5 py-2 flex items-center gap-1 whitespace-nowrap"><span data-translate="sports">Sports</span> <i class="fa-solid fa-chevron-down text-[8px]"></i></a>
                     <div class="dropdown-menu absolute hidden bg-white text-slate-800 shadow-xl rounded-b-lg w-40 py-2 border border-gray-200 z-50">
@@ -94,19 +91,12 @@
                     </div>
                 </div>
 
-                <!-- Photos Dropdown -->
                 <div class="relative dropdown">
                     <a href="#" class="hover:bg-blue-700 px-2.5 py-2 flex items-center gap-1 whitespace-nowrap"><span data-translate="photos">Photos</span> <i class="fa-solid fa-chevron-down text-[8px]"></i></a>
                     <div class="dropdown-menu absolute hidden bg-white text-slate-800 shadow-xl rounded-b-lg w-44 py-2 border border-gray-200 z-50">
                         <a href="/?cat=Photos" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Photos</a>
                         <a href="/?cat=Entertainment" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Entertainment</a>
                         <a href="/?cat=India" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">India</a>
-                        <a href="/?cat=LifeStyle" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Life Style</a>
-                        <a href="/?cat=Sports" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Sports</a>
-                        <a href="/?cat=Business" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Business</a>
-                        <a href="/?cat=World" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">World</a>
-                        <a href="/?cat=Auto" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Auto</a>
-                        <a href="/?cat=Tech" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Tech</a>
                     </div>
                 </div>
 
@@ -114,14 +104,12 @@
                 <a href="/?cat=Tech" class="hover:bg-blue-700 px-2.5 py-2 whitespace-nowrap" data-translate="tech">Tech</a>
                 <a href="/?cat=InDepth" class="hover:bg-blue-700 px-2.5 py-2 whitespace-nowrap" data-translate="indepth">In-Depth 24</a>
 
-                <!-- More Dropdown -->
                 <div class="relative dropdown">
                     <a href="#" class="hover:bg-blue-700 px-2.5 py-2 flex items-center gap-1 whitespace-nowrap"><span data-translate="more">More</span> <i class="fa-solid fa-chevron-down text-[8px]"></i></a>
                     <div class="dropdown-menu absolute right-0 hidden bg-white text-slate-800 shadow-xl rounded-b-lg w-52 py-2 border border-gray-200 z-50">
                         <a href="/?cat=Trending" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Trending</a>
                         <a href="/?cat=Business" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Business</a>
                         <a href="/?cat=Education" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Education</a>
-                        <a href="/?cat=Elections" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Upcoming Elections</a>
                     </div>
                 </div>
             </nav>
@@ -144,12 +132,6 @@
                     <button onclick="toggleSidebar()" class="text-white text-xl hover:text-black" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
                 </div>
                 
-                <div class="flex gap-2 mb-6">
-                    <button onclick="changeLanguage('en')" class="bg-blue-800 hover:bg-blue-900 text-white font-bold px-3 py-1 rounded text-xs">English</button>
-                    <button onclick="changeLanguage('hi')" class="bg-blue-800 hover:bg-blue-900 text-white font-bold px-3 py-1 rounded text-xs">हिंदी</button>
-                    <button onclick="changeLanguage('bn')" class="bg-yellow-400 text-blue-950 font-bold px-3 py-1 rounded text-xs">বাংলা</button>
-                </div>
-
                 <ul class="space-y-3 text-sm font-semibold uppercase">
                     <li><a href="/" class="block hover:text-yellow-200" data-translate="home">Home</a></li>
                     <li><a href="/?cat=LiveTV" class="block text-yellow-200"><i class="fa-solid fa-tower-broadcast"></i> <span data-translate="livetv">Live TV</span></a></li>
@@ -164,15 +146,7 @@
                     <li><a href="/?cat=Tech" class="block hover:text-yellow-200" data-translate="tech">Tech</a></li>
                     <li><a href="/?cat=InDepth" class="block hover:text-yellow-200" data-translate="indepth">In-Depth 24</a></li>
                 </ul>
-
-                <div class="mt-8 pt-4 border-t border-blue-500 grid grid-cols-2 gap-2 text-xs">
-                    <a href="/about" class="hover:underline">About Us</a>
-                    <a href="/privacy" class="hover:underline">Privacy Policy</a>
-                    <a href="/terms" class="hover:underline">Terms of Service</a>
-                    <a href="/contact" class="hover:underline">Contact Us</a>
-                </div>
             </div>
-
             <div class="mt-8 pt-4 border-t border-blue-500 text-center text-[10px] text-blue-200">
                 © 2026 24 Early News Network. DWIPRAJ MALLICK.
             </div>
@@ -190,15 +164,15 @@
         </div>
     </div>
 
-    <!-- Main Content Area with Identical News Portal Grid Structure -->
+    <!-- Main Content Area -->
     <main class="max-w-7xl mx-auto px-4 py-6">
         <div class="text-xs font-black uppercase text-red-600 tracking-wider mb-3 flex items-center gap-2">
-            <span class="w-2 h-2 bg-red-600 rounded-full animate-ping"></span> <span data-translate="topnews">Top News & Live Dispatches</span>
+            <span class="w-2 h-2 bg-red-600 rounded-full animate-ping"></span> <span data-translate="topnews">Top Google Trending & Live News</span>
         </div>
 
         {% if news and news|length > 0 %}
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <!-- Left Big Featured Headline (Top Lead Story) -->
+            <!-- Left Big Featured Headline -->
             <div class="lg:col-span-8 bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 flex flex-col justify-between">
                 <div>
                     <div class="relative aspect-[16/9] overflow-hidden bg-slate-900">
@@ -209,46 +183,32 @@
                     </div>
                     <div class="p-6">
                         <span class="text-xs text-slate-400 font-mono block mb-2">{{ news[0].published }}</span>
-                        <h2 class="text-2xl md:text-3xl font-black text-slate-900 hover:text-red-600 transition leading-snug mb-3">
-                            <a href="{{ news[0].link }}" target="_blank" rel="noopener noreferrer" class="news-title">{{ news[0].title }}</a>
+                        <h2 class="text-2xl md:text-3xl font-black text-slate-900 hover:text-red-600 transition leading-snug mb-3 cursor-pointer" onclick='openModal({{ news[0] | tojson | safe }})'>
+                            {{ news[0].title }}
                         </h2>
-                        <div class="text-sm text-slate-600 leading-relaxed news-summary">
+                        <div class="text-sm text-slate-600 leading-relaxed">
                             {{ news[0].summary }}
                         </div>
                     </div>
                 </div>
                 <div class="px-6 pb-5 pt-3 border-t border-gray-100 flex justify-between items-center">
-                    <a href="{{ news[0].link }}" target="_blank" rel="noopener noreferrer" class="font-bold text-red-600 text-xs hover:underline" data-translate="readmore">Read Full Story →</a>
+                    <button onclick='openModal({{ news[0] | tojson | safe }})' class="font-bold text-red-600 text-xs hover:underline bg-transparent border-none cursor-pointer" data-translate="readmore">Read Full Story →</button>
                     <span class="text-[11px] text-gray-400 font-mono" data-translate="verified">Source Verified</span>
                 </div>
             </div>
 
-            <!-- Right Side Highlights & Secondary Feed -->
+            <!-- Right Side Highlights -->
             <div class="lg:col-span-4 flex flex-col gap-5">
                 <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-center shadow-xs">
                     <span class="text-[10px] font-bold text-amber-700 uppercase tracking-widest block mb-2" data-translate="ad">Advertisement</span>
-                    <div class="bg-gradient-to-r from-amber-500 to-red-500 text-white p-4 rounded-lg font-bold text-sm shadow" data-translate="adspot">
+                    <div class="bg-gradient-to-r from-amber-500 to-red-500 text-white p-4 rounded-lg font-bold text-sm shadow">
                         Special Featured Brand Partner Spot
                     </div>
                 </div>
 
-                <div class="bg-blue-600 text-white text-xs font-black uppercase px-3 py-2.5 rounded-t-lg tracking-wider flex items-center gap-2">
-                    <i class="fa-solid fa-tower-broadcast text-yellow-300"></i> <span data-translate="livetvstreams">Live TV & Streams</span>
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div class="bg-white p-3 rounded-lg border border-gray-200 text-center shadow-xs">
-                        <span class="text-xs font-bold text-slate-800 block mb-1">Early News 24</span>
-                        <span class="bg-red-600 text-white text-[9px] px-2 py-0.5 rounded font-bold uppercase animate-pulse" data-translate="watchlive">Watch Live</span>
-                    </div>
-                    <div class="bg-white p-3 rounded-lg border border-gray-200 text-center shadow-xs">
-                        <span class="text-xs font-bold text-slate-800 block mb-1">Early News Regional</span>
-                        <span class="bg-red-600 text-white text-[9px] px-2 py-0.5 rounded font-bold uppercase animate-pulse" data-translate="watchlive">Watch Live</span>
-                    </div>
-                </div>
-
-                <div class="bg-blue-600 text-white text-xs font-black uppercase px-3 py-2.5 rounded-t-lg tracking-wider" data-translate="tophighlights">Top Highlights</div>
+                <div class="bg-blue-600 text-white text-xs font-black uppercase px-3 py-2.5 rounded-t-lg tracking-wider" data-translate="tophighlights">Top Trending Highlights</div>
                 {% for item in news[1:6] %}
-                <div class="bg-white rounded-lg p-3 border border-gray-200 shadow-xs flex gap-3 hover:border-red-500 transition">
+                <div class="bg-white rounded-lg p-3 border border-gray-200 shadow-xs flex gap-3 hover:border-red-500 transition cursor-pointer" onclick='openModal({{ item | tojson | safe }})'>
                     {% if item.image %}
                     <div class="w-24 h-20 shrink-0 rounded overflow-hidden bg-gray-100">
                         <img src="{{ item.image }}" alt="{{ item.title }}" loading="lazy" class="w-full h-full object-cover">
@@ -257,8 +217,8 @@
                     <div class="flex flex-col justify-between overflow-hidden">
                         <div>
                             <span class="text-[10px] font-bold text-red-600 uppercase block">{{ item.category }}</span>
-                            <h4 class="text-xs font-bold text-slate-900 line-clamp-2 mt-0.5">
-                                <a href="{{ item.link }}" target="_blank" rel="noopener noreferrer" class="hover:text-red-600 news-title">{{ item.title }}</a>
+                            <h4 class="text-xs font-bold text-slate-900 line-clamp-2 mt-0.5 hover:text-red-600">
+                                {{ item.title }}
                             </h4>
                         </div>
                         <span class="text-[10px] text-slate-400 font-mono">{{ item.published }}</span>
@@ -268,14 +228,14 @@
             </div>
         </div>
 
-        <!-- Additional Continuous News Grid (Below Featured Section) -->
+        <!-- Additional News Grid -->
         <div class="mt-8">
-            <div class="bg-blue-600 text-white text-xs font-black uppercase px-4 py-2.5 rounded-t-lg tracking-wider mb-4 flex items-center justify-between">
-                <span><i class="fa-solid fa-newspaper"></i> <span data-translate="latestdispatches">Latest Regional & Global Dispatches</span></span>
+            <div class="bg-blue-600 text-white text-xs font-black uppercase px-4 py-2.5 rounded-t-lg tracking-wider mb-4">
+                <span><i class="fa-solid fa-newspaper"></i> <span data-translate="latestdispatches">Latest Google Trending Dispatches</span></span>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {% for item in news[6:15] %}
-                <div class="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 flex flex-col justify-between hover:border-blue-500 transition">
+                <div class="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 flex flex-col justify-between hover:border-blue-500 transition cursor-pointer" onclick='openModal({{ item | tojson | safe }})'>
                     <div>
                         <div class="aspect-[16/9] overflow-hidden bg-slate-900">
                             <img src="{{ item.image }}" alt="{{ item.title }}" loading="lazy" class="w-full h-full object-cover">
@@ -283,13 +243,13 @@
                         <div class="p-4">
                             <span class="text-[10px] font-bold text-red-600 uppercase block mb-1">{{ item.category }}</span>
                             <h3 class="text-sm font-bold text-slate-900 line-clamp-2 hover:text-blue-600 transition">
-                                <a href="{{ item.link }}" target="_blank" rel="noopener noreferrer">{{ item.title }}</a>
+                                {{ item.title }}
                             </h3>
                         </div>
                     </div>
                     <div class="px-4 pb-4 pt-2 border-t border-gray-100 flex justify-between items-center text-[11px]">
                         <span class="text-slate-400 font-mono">{{ item.published }}</span>
-                        <a href="{{ item.link }}" target="_blank" rel="noopener noreferrer" class="font-bold text-blue-600 hover:underline" data-translate="read">Read →</a>
+                        <span class="font-bold text-blue-600 hover:underline" data-translate="read">Read →</span>
                     </div>
                 </div>
                 {% endfor %}
@@ -298,94 +258,44 @@
         {% endif %}
     </main>
 
+    <!-- News Popup Modal (Opens directly on homepage without leaving page) -->
+    <div id="newsModal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative p-6 md:p-8">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-500 hover:text-slate-900 text-2xl font-bold">×</button>
+            <div class="flex items-center gap-3 mb-3">
+                <span id="modalCategory" class="bg-red-600 text-white text-xs font-black uppercase px-3 py-1 rounded"></span>
+                <span id="modalDate" class="text-xs text-slate-400 font-mono"></span>
+            </div>
+            <h2 id="modalTitle" class="text-xl md:text-2xl font-black text-slate-900 mb-4"></h2>
+            <div class="aspect-[16/9] overflow-hidden rounded-xl bg-slate-900 mb-6">
+                <img id="modalImage" src="" alt="" class="w-full h-full object-cover">
+            </div>
+            <div id="modalContent" class="text-sm md:text-base text-slate-700 leading-relaxed space-y-4"></div>
+            <div class="mt-8 pt-4 border-t border-gray-200 flex justify-between items-center text-xs text-slate-500">
+                <span>Published by: <strong>DWIPRAJ MALLICK (AZIZNAGAR, 743425)</strong></span>
+                <button onclick="closeModal()" class="bg-blue-600 text-white px-4 py-2 rounded font-bold">Close</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Professional Footer -->
-    <footer class="bg-blue-950 text-gray-300 text-xs border-t-4 border-red-600 mt-20 pt-12 pb-8">
-        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
-            <div>
-                <div class="flex items-center gap-2 mb-4">
-                    <span class="bg-yellow-400 text-blue-950 font-black px-2.5 py-1 text-lg rounded">24</span>
-                    <span class="text-xl font-black tracking-wider uppercase font-serif text-white">EARLY NEWS</span>
-                </div>
-                <p class="text-gray-400 text-xs mb-4" data-translate="footerdesc">Autonomous real-time global news aggregation network delivering verified reports across all regions.</p>
-            </div>
-            <div>
-                <h3 class="text-white font-bold uppercase text-sm mb-4 tracking-wider border-b border-blue-900 pb-2" data-translate="quickaccess">Quick Access</h3>
-                <ul class="space-y-2">
-                    <li><a href="/" class="hover:text-white" data-translate="home">Home</a></li>
-                    <li><a href="/?cat=Latest" class="hover:text-white" data-translate="latest">Latest News</a></li>
-                    <li><a href="/?cat=India" class="hover:text-white" data-translate="india">India</a></li>
-                    <li><a href="/?cat=World" class="hover:text-white" data-translate="world">World</a></li>
-                </ul>
-            </div>
-            <div>
-                <h3 class="text-white font-bold uppercase text-sm mb-4 tracking-wider border-b border-blue-900 pb-2" data-translate="legal">Legal</h3>
-                <ul class="space-y-2">
-                    <li><a href="/about" class="hover:text-white" data-translate="about">About Us</a></li>
-                    <li><a href="/privacy" class="hover:text-white" data-translate="privacy">Privacy Policy</a></li>
-                    <li><a href="/terms" class="hover:text-white" data-translate="terms">Terms of Service</a></li>
-                    <li><a href="/contact" class="hover:text-white" data-translate="contact">Contact Us</a></li>
-                </ul>
-            </div>
-            <div>
-                <h3 class="text-white font-bold uppercase text-sm mb-4 tracking-wider border-b border-blue-900 pb-2" data-translate="contacttitle">Contact</h3>
-                <p class="text-gray-400 mb-2"><strong>Location:</strong> AZIZNAGAR, West Bengal, India - 743425</p>
-                <p class="text-gray-400 mb-2"><strong>Publisher:</strong> DWIPRAJ MALLICK</p>
-                <p class="text-gray-400"><strong>Email:</strong> dwiprajmallick@gmail.com</p>
-            </div>
-        </div>
-        <div class="max-w-7xl mx-auto px-4 border-t border-blue-900 pt-6 text-center text-gray-500 text-[11px]">
-            © 2026 <strong>24 Early News Network</strong>. All Rights Reserved. Published by <strong>DWIPRAJ MALLICK</strong>.
-        </div>
+    <footer class="bg-blue-950 text-gray-300 text-xs border-t-4 border-red-600 mt-20 pt-12 pb-8 text-center">
+        <p>© 2026 <strong>24 Early News Network</strong>. All Rights Reserved. Published by <strong>DWIPRAJ MALLICK</strong>.</p>
     </footer>
 
     <script>
-        const translations = {
-            en: {
-                home: "Home", livetv: "Live TV", latest: "Latest", india: "India", cities: "Cities", world: "World",
-                entertainment: "Entertainment", sports: "Sports", photos: "Photos", auto: "Auto", tech: "Tech",
-                indepth: "In-Depth 24", more: "More", trending: "Trending", topnews: "Top News & Live Dispatches",
-                readmore: "Read Full Story →", verified: "Source Verified", ad: "Advertisement",
-                adspot: "Special Featured Brand Partner Spot", livetvstreams: "Live TV & Streams", watchlive: "Watch Live",
-                tophighlights: "Top Highlights", footerdesc: "Autonomous real-time global news aggregation network delivering verified reports across all regions.",
-                quickaccess: "Quick Access", legal: "Legal", about: "About Us", privacy: "Privacy Policy", terms: "Terms of Service",
-                contact: "Contact Us", contacttitle: "Contact", latestdispatches: "Latest Regional & Global Dispatches", read: "Read"
-            },
-            hi: {
-                home: "होम", livetv: "लाइव टीवी", latest: "ताज़ा खबर", india: "भारत", cities: "शहर", world: "दुनिया",
-                entertainment: "मनोरंजन", sports: "खेल", photos: "फोटो", auto: "ऑटो", tech: "टेक",
-                indepth: "इन-डेप्थ 24", more: "अन्य", trending: "ट्रेंडिंग", topnews: "प्रमुख समाचार और लाइव अपडेट",
-                readmore: " पूरी खबर पढ़ें →", verified: "स्रोत सत्यापित", ad: "विज्ञापन",
-                adspot: "विशेष ब्रांड पार्टनर स्पॉट", livetvstreams: "लाइव टीवी और स्ट्रीम", watchlive: "लाइव देखें",
-                tophighlights: "मुख्य हाइलाइट्स", footerdesc: "स्वायत्त रीयल-टाइम वैश्विक समाचार एकत्रीकरण नेटवर्क।",
-                quickaccess: "त्वरित पहुंच", legal: "कानूनी", about: "हमारे बारे में", privacy: "गोपनीयता नीति", terms: "सेवा की शर्तें",
-                contact: "संपर्क करें", contacttitle: "संपर्क", latestdispatches: "नवीनतम क्षेत्रीय और वैश्विक समाचार", read: "पढ़ें"
-            },
-            bn: {
-                home: "হোম", livetv: "লাইভ টিভি", latest: "সর্বশেষ", india: "ভারত", cities: "শহর", world: "বিশ্ব",
-                entertainment: "বিনোদন", sports: "খেলাধুলা", photos: "ছবি", auto: "অটো", tech: "প্রযুক্তি",
-                indepth: "ইন-ডেপথ ২৪", more: "আরও", trending: "ট্রেন্ডিং", topnews: "শীর্ষ সংবাদ এবং লাইভ আপডেট",
-                readmore: "সম্পূর্ণ খবর পড়ুন →", verified: "সোর্স যাচাইকৃত", ad: "বিজ্ঞাপন",
-                adspot: "বিশেষ ব্র্যান্ড পার্টনার স্পট", livetvstreams: "লাইভ টিভি ও স্ট্রিম", watchlive: "লাইভ দেখুন",
-                tophighlights: "শীর্ষ হাইলাইট", footerdesc: "স্বয়ংক্রিয় রিয়েল-টাইম বৈশ্বিক সংবাদ নেটওয়ার্ক।",
-                quickaccess: "দ্রুত প্রবেশাধিকার", legal: "আইনি", about: "আমাদের সম্পর্কে", privacy: "গোপনীয়তা নীতি", terms: "ব্যবহারের শর্তাবলী",
-                contact: "যোগাযোগ করুন", contacttitle: "যোগাযোগ", latestdispatches: "সর্বশেষ আঞ্চলিক ও বৈশ্বিক সংবাদ", read: "পড়ুন"
-            }
-        };
-
-        function changeLanguage(lang) {
-            localStorage.setItem('site_lang', lang);
-            document.querySelectorAll('[data-translate]').forEach(el => {
-                const key = el.getAttribute('data-translate');
-                if (translations[lang] && translations[lang][key]) {
-                    el.innerHTML = translations[lang][key];
-                }
-            });
+        function openModal(item) {
+            document.getElementById('modalCategory').innerText = item.category;
+            document.getElementById('modalDate').innerText = item.published;
+            document.getElementById('modalTitle').innerText = item.title;
+            document.getElementById('modalImage').src = item.image;
+            document.getElementById('modalContent').innerHTML = <p class="font-bold text-slate-900"></p><p></p>;
+            document.getElementById('newsModal').classList.remove('hidden');
         }
 
-        window.onload = function() {
-            const savedLang = localStorage.getItem('site_lang') || 'bn';
-            changeLanguage(savedLang);
-        };
+        function closeModal() {
+            document.getElementById('newsModal').classList.add('hidden');
+        }
 
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebarMenu');
