@@ -10,63 +10,56 @@
 </head>
 <body class="bg-gray-100 text-gray-900 font-sans" id="bodyTheme">
     
-    <!-- Top Utility Bar (Matching Screenshot 1) -->
+    <!-- Top Utility & Social Bar (Matching Screenshot) -->
     <div class="bg-blue-900 text-white text-xs py-1.5 px-4 flex justify-between items-center border-b border-blue-800">
         <div class="flex items-center gap-3">
             <span class="bg-red-600 text-white font-bold px-2 py-0.5 rounded text-[10px] uppercase animate-pulse">Live</span>
             <span>Sat, Nov 14, 2026</span>
+            <span class="text-gray-300">| Switch to: <a href="#" class="underline hover:text-white font-bold">हिंदी</a></span>
         </div>
         <div class="flex items-center gap-4">
+            <div class="hidden md:flex items-center gap-2.5 text-sm">
+                <a href="#" class="hover:text-red-400"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="#" class="hover:text-red-400"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="hover:text-red-400"><i class="fa-brands fa-youtube"></i></a>
+                <a href="#" class="hover:text-red-400"><i class="fa-brands fa-facebook-f"></i></a>
+            </div>
             <button onclick="toggleDarkMode()" class="bg-blue-800 px-2.5 py-1 rounded border border-blue-700 text-xs font-semibold">Toggle Dark</button>
         </div>
     </div>
 
-    <!-- Main Header with Logo & Navigation (Matching Screenshot 1) -->
+    <!-- Main Header with Logo & Full Navigation Menu -->
     <header class="bg-blue-950 text-white shadow-md sticky top-0 z-50 border-b-4 border-red-600">
-        <div class="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
-            <a href="/" class="flex items-center gap-2">
-                <span class="bg-red-600 text-white font-black px-2.5 py-1 text-xl rounded">24</span>
-                <span class="text-2xl font-black tracking-wider uppercase font-serif">EARLY NEWS</span>
-            </a>
+        <div class="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <button class="text-white text-lg hover:text-red-400"><i class="fa-solid fa-bars"></i></button>
+                <a href="/" class="flex items-center gap-2">
+                    <span class="bg-red-600 text-white font-black px-2.5 py-1 text-xl rounded">24</span>
+                    <span class="text-2xl font-black tracking-wider uppercase font-serif">EARLY NEWS</span>
+                </a>
+            </div>
             
-            <nav class="hidden xl:flex items-center gap-4 text-xs font-bold uppercase">
+            <!-- Full Categories Navigation (Matching Screenshot) -->
+            <nav class="hidden 2xl:flex items-center gap-4 text-xs font-bold uppercase">
                 <a href="/" class="hover:text-red-400 py-2 border-b-2 border-red-600">Home</a>
+                <a href="/?cat=LiveTV" class="hover:text-red-400 py-2 text-red-400 flex items-center gap-1"><i class="fa-solid fa-tower-broadcast"></i> Live TV</a>
+                <a href="/?cat=Latest" class="hover:text-red-400 py-2">Latest</a>
                 <a href="/?cat=India" class="hover:text-red-400 py-2">India</a>
+                <a href="/?cat=Cities" class="hover:text-red-400 py-2">Cities</a>
                 <a href="/?cat=World" class="hover:text-red-400 py-2">World</a>
-                <a href="/?cat=Business" class="hover:text-red-400 py-2">Business</a>
-                <a href="/?cat=Technology" class="hover:text-red-400 py-2">Tech</a>
-                <a href="/about" class="hover:text-red-400 py-2">About</a>
-                <a href="/privacy" class="hover:text-red-400 py-2">Privacy</a>
-                <a href="/terms" class="hover:text-red-400 py-2">Terms</a>
-                <a href="/contact" class="hover:text-red-400 py-2">Contact</a>
+                <a href="/?cat=Entertainment" class="hover:text-red-400 py-2">Entertainment</a>
+                <a href="/?cat=Sports" class="hover:text-red-400 py-2">Sports</a>
+                <a href="/?cat=Photos" class="hover:text-red-400 py-2">Photos</a>
+                <a href="/?cat=Auto" class="hover:text-red-400 py-2">Auto</a>
+                <a href="/?cat=Tech" class="hover:text-red-400 py-2">Tech</a>
+                <a href="/?cat=InDepth" class="hover:text-red-400 py-2">In-Depth</a>
             </nav>
-        </div>
-    </header>
 
-    <!-- Trending Tags Bar -->
-    <div class="bg-white border-b border-gray-200 py-2 px-4 shadow-xs">
-        <div class="max-w-7xl mx-auto flex items-center gap-3 overflow-x-auto whitespace-nowrap text-xs">
-            <span class="font-black text-red-600 flex items-center gap-1 uppercase"><i class="fa-solid fa-bolt"></i> Trending:</span>
-            <a href="/?cat=India" class="bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-full text-slate-700 font-medium border border-gray-200">Delhi AQI</a>
-            <a href="/?cat=World" class="bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-full text-slate-700 font-medium border border-gray-200">Global Updates</a>
-            <a href="/?cat=Business" class="bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-full text-slate-700 font-medium border border-gray-200">Markets</a>
-            <a href="/?cat=Technology" class="bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-full text-slate-700 font-medium border border-gray-200">AI & Tech</a>
-        </div>
-    </div>
-
-    <!-- Breaking News Ticker -->
-    <div class="max-w-7xl mx-auto px-4 mt-4">
-        <div class="bg-amber-600 text-white text-xs font-bold flex items-center rounded shadow-xs overflow-hidden">
-            <div class="bg-amber-800 px-3 py-2 uppercase tracking-wide shrink-0">Breaking News</div>
-            <div class="px-3 py-2 truncate">
-                {% if news and news|length > 0 %}
-                    {{ news[0].title }}
-                {% else %}
-                    Autonomous real-time global news network updates active across all regions.
-                {% endif %}
+            <div class="flex items-center gap-3">
+                <button class="bg-blue-900 text-white p-2 rounded hover:bg-red-600 transition"><i class="fa-solid fa-magnifying-glass text-xs"></i></button>
             </div>
         </div>
-    </div>
+    </header>
 
     <!-- Main Content Area -->
     <main class="max-w-7xl mx-auto px-4 py-6">
@@ -76,7 +69,7 @@
 
         {% if news and news|length > 0 %}
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <!-- Left Big Featured News -->
+            <!-- Left Big Featured News & Slider Grid -->
             <div class="lg:col-span-8 bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 flex flex-col justify-between">
                 <div>
                     <div class="relative aspect-[16/9] overflow-hidden bg-slate-900">
@@ -101,8 +94,16 @@
                 </div>
             </div>
 
-            <!-- Right Side Highlights -->
-            <div class="lg:col-span-4 flex flex-col gap-3.5">
+            <!-- Right Side Highlights & Ads Slot -->
+            <div class="lg:col-span-4 flex flex-col gap-5">
+                <!-- Advertisement Box matching screenshot -->
+                <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-center shadow-xs">
+                    <span class="text-[10px] font-bold text-amber-700 uppercase tracking-widest block mb-2">Advertisement</span>
+                    <div class="bg-gradient-to-r from-amber-500 to-red-500 text-white p-4 rounded-lg font-bold text-sm shadow">
+                        Special Featured Brand Partner Spot
+                    </div>
+                </div>
+
                 <div class="bg-blue-950 text-white text-xs font-black uppercase px-3 py-2.5 rounded-t-lg tracking-wider">Top Highlights</div>
                 {% for item in news[1:6] %}
                 <div class="bg-white rounded-lg p-3 border border-gray-200 shadow-xs flex gap-3 hover:border-red-500 transition">
@@ -127,10 +128,10 @@
         {% endif %}
     </main>
 
-    <!-- Professional Multi-Column Footer (Matching Screenshot 2 Style) -->
+    <!-- Professional Multi-Column Footer -->
     <footer class="bg-blue-950 text-gray-300 text-xs border-t-4 border-red-600 mt-20 pt-12 pb-8">
         <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
-            <!-- Col 1: Logo & Social -->
+            <!-- Col 1 -->
             <div>
                 <div class="flex items-center gap-2 mb-4">
                     <span class="bg-red-600 text-white font-black px-2.5 py-1 text-lg rounded">24</span>
@@ -144,21 +145,21 @@
                 </div>
             </div>
 
-            <!-- Col 2: Quick Access -->
+            <!-- Col 2 -->
             <div>
                 <h3 class="text-white font-bold uppercase text-sm mb-4 tracking-wider border-b border-blue-900 pb-2">Quick Access</h3>
                 <ul class="space-y-2">
                     <li><a href="/" class="hover:text-white">Home</a></li>
-                    <li><a href="/?cat=India" class="hover:text-white">India News</a></li>
-                    <li><a href="/?cat=World" class="hover:text-white">World Updates</a></li>
-                    <li><a href="/?cat=Business" class="hover:text-white">Business & Economy</a></li>
-                    <li><a href="/?cat=Technology" class="hover:text-white">Technology & AI</a></li>
+                    <li><a href="/?cat=Latest" class="hover:text-white">Latest News</a></li>
+                    <li><a href="/?cat=India" class="hover:text-white">India</a></li>
+                    <li><a href="/?cat=World" class="hover:text-white">World</a></li>
+                    <li><a href="/?cat=Tech" class="hover:text-white">Technology</a></li>
                 </ul>
             </div>
 
-            <!-- Col 3: Legal & Company -->
+            <!-- Col 3 -->
             <div>
-                <h3 class="text-white font-bold uppercase text-sm mb-4 tracking-wider border-b border-blue-900 pb-2">Legal & Company</h3>
+                <h3 class="text-white font-bold uppercase text-sm mb-4 tracking-wider border-b border-blue-900 pb-2">Company & Legal</h3>
                 <ul class="space-y-2">
                     <li><a href="/about" class="hover:text-white">About Us</a></li>
                     <li><a href="/privacy" class="hover:text-white">Privacy Policy</a></li>
@@ -167,7 +168,7 @@
                 </ul>
             </div>
 
-            <!-- Col 4: Contact Info (With correct address AZIZNAGAR, PIN 743425) -->
+            <!-- Col 4 -->
             <div>
                 <h3 class="text-white font-bold uppercase text-sm mb-4 tracking-wider border-b border-blue-900 pb-2">Contact</h3>
                 <p class="text-gray-400 mb-2"><strong>Location:</strong> AZIZNAGAR, West Bengal, India - 743425</p>
