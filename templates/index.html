@@ -32,35 +32,35 @@
         </div>
     </div>
 
-    <!-- Main Header strictly matching the user's reference image -->
+    <!-- Main Header strictly matching the second reference image bar -->
     <header class="bg-blue-600 text-white shadow-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
-            <div class="flex items-center gap-3">
+        <div class="max-w-7xl mx-auto px-2 py-2 flex items-center justify-between flex-nowrap">
+            <div class="flex items-center gap-2 shrink-0">
                 <button onclick="toggleSidebar()" class="text-white text-xl hover:text-blue-200 focus:outline-none"><i class="fa-solid fa-bars"></i></button>
                 
-                <a href="/" class="flex flex-col items-center justify-center bg-blue-900 px-3 py-1 rounded shadow text-center">
+                <a href="/" class="flex flex-col items-center justify-center bg-blue-900 px-2 py-1 rounded shadow text-center">
                     <div class="flex items-center gap-1">
-                        <span class="bg-yellow-400 text-blue-950 font-black px-1.5 py-0.5 text-base rounded">24</span>
-                        <span class="text-base font-black tracking-wider uppercase font-serif">EARLY NEWS</span>
+                        <span class="bg-yellow-400 text-blue-950 font-black px-1.5 py-0.5 text-sm rounded">24</span>
+                        <span class="text-sm font-black tracking-wider uppercase font-serif">EARLY NEWS</span>
                     </div>
-                    <span class="text-[8px] tracking-widest text-yellow-300 font-bold uppercase -mt-0.5">THINK FIRST</span>
+                    <span class="text-[7px] tracking-widest text-yellow-300 font-bold uppercase -mt-0.5">THINK FIRST</span>
                 </a>
 
-                <div class="hidden lg:flex flex-col text-[11px] bg-blue-700/80 px-2.5 py-1 rounded border border-blue-500 leading-tight">
+                <div class="hidden xl:flex flex-col text-[10px] bg-blue-700/90 px-2 py-1 rounded border border-blue-500 leading-tight">
                     <span class="font-bold">Sat, Nov 14, 2026</span>
                     <span class="text-blue-200">Switch to: <a href="#" class="underline hover:text-white font-bold">हिंदी</a></span>
                 </div>
             </div>
             
-            <!-- Exact Navbar Categories as shown in the reference image -->
-            <nav class="hidden 2xl:flex items-center gap-1 text-xs font-bold uppercase">
-                <a href="/?cat=LiveTV" class="hover:bg-blue-700 px-3 py-2.5 text-yellow-300 flex items-center gap-1"><i class="fa-solid fa-tower-broadcast"></i> Live TV</a>
-                <a href="/?cat=Latest" class="hover:bg-blue-700 px-3 py-2.5">Latest</a>
-                <a href="/?cat=India" class="hover:bg-blue-700 px-3 py-2.5">India</a>
+            <!-- Navbar Categories perfectly aligned in a single line -->
+            <nav class="hidden lg:flex items-center gap-0.5 text-[11px] font-bold uppercase shrink-0">
+                <a href="/?cat=LiveTV" class="hover:bg-blue-700 px-2.5 py-2 text-yellow-300 flex items-center gap-1 whitespace-nowrap"><i class="fa-solid fa-tower-broadcast"></i> Live TV</a>
+                <a href="/?cat=Latest" class="hover:bg-blue-700 px-2.5 py-2 whitespace-nowrap">Latest</a>
+                <a href="/?cat=India" class="hover:bg-blue-700 px-2.5 py-2 whitespace-nowrap">India</a>
                 
                 <!-- Cities Dropdown -->
                 <div class="relative dropdown">
-                    <a href="#" class="hover:bg-blue-700 px-3 py-2.5 flex items-center gap-1">Cities <i class="fa-solid fa-chevron-down text-[9px]"></i></a>
+                    <a href="#" class="hover:bg-blue-700 px-2.5 py-2 flex items-center gap-1 whitespace-nowrap">Cities <i class="fa-solid fa-chevron-down text-[8px]"></i></a>
                     <div class="dropdown-menu absolute hidden bg-white text-slate-800 shadow-xl rounded-b-lg w-44 py-2 border border-gray-200 z-50">
                         <a href="/?cat=Bengaluru" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Bengaluru</a>
                         <a href="/?cat=Bhopal" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Bhopal</a>
@@ -71,12 +71,12 @@
                     </div>
                 </div>
 
-                <a href="/?cat=World" class="hover:bg-blue-700 px-3 py-2.5">World</a>
-                <a href="/?cat=Entertainment" class="hover:bg-blue-700 px-3 py-2.5">Entertainment</a>
+                <a href="/?cat=World" class="hover:bg-blue-700 px-2.5 py-2 whitespace-nowrap">World</a>
+                <a href="/?cat=Entertainment" class="hover:bg-blue-700 px-2.5 py-2 whitespace-nowrap">Entertainment</a>
 
                 <!-- Sports Dropdown -->
                 <div class="relative dropdown">
-                    <a href="#" class="hover:bg-blue-700 px-3 py-2.5 flex items-center gap-1">Sports <i class="fa-solid fa-chevron-down text-[9px]"></i></a>
+                    <a href="#" class="hover:bg-blue-700 px-2.5 py-2 flex items-center gap-1 whitespace-nowrap">Sports <i class="fa-solid fa-chevron-down text-[8px]"></i></a>
                     <div class="dropdown-menu absolute hidden bg-white text-slate-800 shadow-xl rounded-b-lg w-40 py-2 border border-gray-200 z-50">
                         <a href="/?cat=Cricket" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Cricket</a>
                         <a href="/?cat=Sports" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Other Sports</a>
@@ -85,20 +85,20 @@
 
                 <!-- Photos Dropdown -->
                 <div class="relative dropdown">
-                    <a href="#" class="hover:bg-blue-700 px-3 py-2.5 flex items-center gap-1">Photos <i class="fa-solid fa-chevron-down text-[9px]"></i></a>
+                    <a href="#" class="hover:bg-blue-700 px-2.5 py-2 flex items-center gap-1 whitespace-nowrap">Photos <i class="fa-solid fa-chevron-down text-[8px]"></i></a>
                     <div class="dropdown-menu absolute hidden bg-white text-slate-800 shadow-xl rounded-b-lg w-40 py-2 border border-gray-200 z-50">
                         <a href="/?cat=Photos" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Top Photos</a>
                         <a href="/?cat=Entertainment" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Entertainment</a>
                     </div>
                 </div>
 
-                <a href="/?cat=Auto" class="hover:bg-blue-700 px-3 py-2.5">Auto</a>
-                <a href="/?cat=Tech" class="hover:bg-blue-700 px-3 py-2.5">Tech</a>
-                <a href="/?cat=InDepth" class="hover:bg-blue-700 px-3 py-2.5">In-Depth 24</a>
+                <a href="/?cat=Auto" class="hover:bg-blue-700 px-2.5 py-2 whitespace-nowrap">Auto</a>
+                <a href="/?cat=Tech" class="hover:bg-blue-700 px-2.5 py-2 whitespace-nowrap">Tech</a>
+                <a href="/?cat=InDepth" class="hover:bg-blue-700 px-2.5 py-2 whitespace-nowrap">In-Depth 24</a>
 
                 <!-- More Dropdown -->
                 <div class="relative dropdown">
-                    <a href="#" class="hover:bg-blue-700 px-3 py-2.5 flex items-center gap-1">More <i class="fa-solid fa-chevron-down text-[9px]"></i></a>
+                    <a href="#" class="hover:bg-blue-700 px-2.5 py-2 flex items-center gap-1 whitespace-nowrap">More <i class="fa-solid fa-chevron-down text-[8px]"></i></a>
                     <div class="dropdown-menu absolute right-0 hidden bg-white text-slate-800 shadow-xl rounded-b-lg w-44 py-2 border border-gray-200 z-50">
                         <a href="/?cat=Trending" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Trending</a>
                         <a href="/?cat=Business" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Business</a>
@@ -107,7 +107,7 @@
                 </div>
             </nav>
 
-            <div class="flex items-center gap-3">
+            <div class="flex items-center shrink-0">
                 <button class="text-white text-lg hover:text-yellow-300 transition px-2 py-1"><i class="fa-solid fa-magnifying-glass"></i></button>
             </div>
         </div>
