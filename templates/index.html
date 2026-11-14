@@ -13,45 +13,54 @@
 </head>
 <body class="bg-gray-100 text-gray-900 font-sans" id="bodyTheme">
     
-    <!-- Top Utility & Social Bar -->
-    <div class="bg-blue-900 text-white text-xs py-1.5 px-4 flex justify-between items-center border-b border-blue-800">
-        <div class="flex items-center gap-3">
-            <span class="bg-red-600 text-white font-bold px-2 py-0.5 rounded text-[10px] uppercase animate-pulse">Live</span>
-            <span>Sat, Nov 14, 2026</span>
-            <span class="text-gray-300">| Switch to: <a href="#" class="underline hover:text-white font-bold">हिंदी</a></span>
+    <!-- Top Utility & Brand Bar -->
+    <div class="bg-amber-600 text-white text-xs py-1 px-4 flex justify-between items-center shadow-xs">
+        <div class="flex items-center gap-2 font-bold">
+            <span class="bg-white text-amber-700 px-1.5 py-0.5 rounded text-[10px]">E24</span>
+            <span class="tracking-wide">ISOMES</span>
         </div>
         <div class="flex items-center gap-4">
-            <div class="hidden md:flex items-center gap-3 text-sm">
-                <a href="#" class="hover:text-red-400"><i class="fa-brands fa-x-twitter"></i></a>
-                <a href="#" class="hover:text-red-400"><i class="fa-brands fa-instagram"></i></a>
-                <a href="#" class="hover:text-red-400"><i class="fa-brands fa-youtube"></i></a>
-                <a href="#" class="hover:text-red-400"><i class="fa-brands fa-facebook-f"></i></a>
+            <span class="hidden md:inline text-[11px] text-amber-100">Preferred news source</span>
+            <div class="flex items-center gap-3 text-sm">
+                <a href="#" class="hover:text-amber-200"><i class="fa-solid fa-xmark text-xs"></i></a>
+                <a href="#" class="hover:text-amber-200"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="hover:text-amber-200"><i class="fa-brands fa-youtube"></i></a>
+                <a href="#" class="hover:text-amber-200"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#" class="hover:text-amber-200"><i class="fa-brands fa-google"></i></a>
+                <a href="#" class="hover:text-amber-200"><i class="fa-brands fa-apple"></i></a>
             </div>
-            <button onclick="toggleDarkMode()" class="bg-blue-800 px-2.5 py-1 rounded border border-blue-700 text-xs font-semibold">Toggle Dark</button>
         </div>
     </div>
 
-    <!-- Main Header with Hamburger and Full Nav -->
-    <header class="bg-blue-950 text-white shadow-md sticky top-0 z-50 border-b-4 border-red-600">
-        <div class="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between">
-            <div class="flex items-center gap-4">
-                <button onclick="toggleSidebar()" class="text-white text-xl hover:text-red-400 focus:outline-none"><i class="fa-solid fa-bars"></i></button>
-                <a href="/" class="flex items-center gap-2">
-                    <span class="bg-red-600 text-white font-black px-2.5 py-1 text-xl rounded">24</span>
-                    <span class="text-2xl font-black tracking-wider uppercase font-serif">EARLY NEWS</span>
+    <!-- Main Header strictly matching the red circled reference image -->
+    <header class="bg-blue-600 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <!-- Hamburger Menu Button -->
+                <button onclick="toggleSidebar()" class="text-white text-xl hover:text-blue-200 focus:outline-none"><i class="fa-solid fa-bars"></i></button>
+                
+                <!-- Logo -->
+                <a href="/" class="flex items-center gap-1.5 bg-blue-900 px-2 py-1 rounded">
+                    <span class="bg-yellow-400 text-blue-950 font-black px-2 py-0.5 text-lg rounded">24</span>
+                    <span class="text-lg font-black tracking-wider uppercase font-serif">EARLY NEWS</span>
                 </a>
+
+                <!-- Date & Language Switcher -->
+                <div class="hidden lg:flex items-center gap-2 text-[11px] bg-blue-700/60 px-2.5 py-1 rounded border border-blue-500">
+                    <span class="font-medium">Sat, Nov 14, 2026</span>
+                    <span class="text-blue-200">| Switch to: <a href="#" class="underline hover:text-white font-bold">हिंदी</a></span>
+                </div>
             </div>
             
-            <!-- Desktop Navbar with Dropdowns matching screenshots -->
-            <nav class="hidden 2xl:flex items-center gap-2 text-xs font-bold uppercase">
-                <a href="/" class="hover:text-red-400 px-3 py-2 border-b-2 border-red-600">Home</a>
-                <a href="/?cat=LiveTV" class="hover:text-red-400 px-3 py-2 text-red-400 flex items-center gap-1"><i class="fa-solid fa-tower-broadcast"></i> Live TV</a>
-                <a href="/?cat=Latest" class="hover:text-red-400 px-3 py-2">Latest</a>
-                <a href="/?cat=India" class="hover:text-red-400 px-3 py-2">India</a>
+            <!-- Navbar Categories matching the reference screenshot -->
+            <nav class="hidden 2xl:flex items-center gap-1 text-xs font-bold uppercase">
+                <a href="/?cat=LiveTV" class="hover:bg-blue-700 px-3 py-2 text-yellow-300 flex items-center gap-1"><i class="fa-solid fa-tower-broadcast"></i> Live TV</a>
+                <a href="/?cat=Latest" class="hover:bg-blue-700 px-3 py-2">Latest</a>
+                <a href="/?cat=India" class="hover:bg-blue-700 px-3 py-2">India</a>
                 
                 <!-- Cities Dropdown -->
                 <div class="relative dropdown">
-                    <a href="#" class="hover:text-red-400 px-3 py-2 flex items-center gap-1">Cities <i class="fa-solid fa-chevron-down text-[9px]"></i></a>
+                    <a href="#" class="hover:bg-blue-700 px-3 py-2 flex items-center gap-1">Cities <i class="fa-solid fa-chevron-down text-[9px]"></i></a>
                     <div class="dropdown-menu absolute hidden bg-white text-slate-800 shadow-xl rounded-b-lg w-44 py-2 border border-gray-200 z-50">
                         <a href="/?cat=Bengaluru" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Bengaluru</a>
                         <a href="/?cat=Bhopal" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Bhopal</a>
@@ -62,12 +71,12 @@
                     </div>
                 </div>
 
-                <a href="/?cat=World" class="hover:text-red-400 px-3 py-2">World</a>
-                <a href="/?cat=Entertainment" class="hover:text-red-400 px-3 py-2">Entertainment</a>
+                <a href="/?cat=World" class="hover:bg-blue-700 px-3 py-2">World</a>
+                <a href="/?cat=Entertainment" class="hover:bg-blue-700 px-3 py-2">Entertainment</a>
 
                 <!-- Sports Dropdown -->
                 <div class="relative dropdown">
-                    <a href="#" class="hover:text-red-400 px-3 py-2 flex items-center gap-1">Sports <i class="fa-solid fa-chevron-down text-[9px]"></i></a>
+                    <a href="#" class="hover:bg-blue-700 px-3 py-2 flex items-center gap-1">Sports <i class="fa-solid fa-chevron-down text-[9px]"></i></a>
                     <div class="dropdown-menu absolute hidden bg-white text-slate-800 shadow-xl rounded-b-lg w-40 py-2 border border-gray-200 z-50">
                         <a href="/?cat=Cricket" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Cricket</a>
                         <a href="/?cat=Sports" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Other Sports</a>
@@ -76,20 +85,20 @@
 
                 <!-- Photos Dropdown -->
                 <div class="relative dropdown">
-                    <a href="#" class="hover:text-red-400 px-3 py-2 flex items-center gap-1">Photos <i class="fa-solid fa-chevron-down text-[9px]"></i></a>
+                    <a href="#" class="hover:bg-blue-700 px-3 py-2 flex items-center gap-1">Photos <i class="fa-solid fa-chevron-down text-[9px]"></i></a>
                     <div class="dropdown-menu absolute hidden bg-white text-slate-800 shadow-xl rounded-b-lg w-40 py-2 border border-gray-200 z-50">
                         <a href="/?cat=Photos" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Top Photos</a>
                         <a href="/?cat=Entertainment" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Entertainment</a>
                     </div>
                 </div>
 
-                <a href="/?cat=Auto" class="hover:text-red-400 px-3 py-2">Auto</a>
-                <a href="/?cat=Tech" class="hover:text-red-400 px-3 py-2">Tech</a>
-                <a href="/?cat=InDepth" class="hover:text-red-400 px-3 py-2">In-Depth 24</a>
+                <a href="/?cat=Auto" class="hover:bg-blue-700 px-3 py-2">Auto</a>
+                <a href="/?cat=Tech" class="hover:bg-blue-700 px-3 py-2">Tech</a>
+                <a href="/?cat=InDepth" class="hover:bg-blue-700 px-3 py-2">In-Depth 24</a>
 
                 <!-- More Dropdown -->
                 <div class="relative dropdown">
-                    <a href="#" class="hover:text-red-400 px-3 py-2 flex items-center gap-1">More <i class="fa-solid fa-chevron-down text-[9px]"></i></a>
+                    <a href="#" class="hover:bg-blue-700 px-3 py-2 flex items-center gap-1">More <i class="fa-solid fa-chevron-down text-[9px]"></i></a>
                     <div class="dropdown-menu absolute right-0 hidden bg-white text-slate-800 shadow-xl rounded-b-lg w-44 py-2 border border-gray-200 z-50">
                         <a href="/?cat=Trending" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Trending</a>
                         <a href="/?cat=Business" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Business</a>
@@ -98,29 +107,25 @@
                 </div>
             </nav>
 
+            <!-- Search Icon Button -->
             <div class="flex items-center gap-3">
-                <button class="bg-blue-900 text-white p-2 rounded hover:bg-red-600 transition"><i class="fa-solid fa-magnifying-glass text-xs"></i></button>
+                <button class="text-white text-lg hover:text-yellow-300 transition px-2 py-1"><i class="fa-solid fa-magnifying-glass"></i></button>
             </div>
         </div>
     </header>
 
     <!-- Sidebar Drawer Menu -->
     <div id="sidebarMenu" class="fixed inset-0 bg-black/60 z-50 hidden transition-opacity">
-        <div class="bg-sky-600 text-white w-80 h-full p-6 overflow-y-auto shadow-2xl flex flex-col justify-between">
+        <div class="bg-blue-600 text-white w-80 h-full p-6 overflow-y-auto shadow-2xl flex flex-col justify-between">
             <div>
-                <div class="flex justify-between items-center mb-6 border-b border-sky-500 pb-4">
+                <div class="flex justify-between items-center mb-6 border-b border-blue-500 pb-4">
                     <div class="flex items-center gap-2">
-                        <span class="bg-red-600 text-white font-black px-2 py-0.5 rounded text-lg">24</span>
+                        <span class="bg-yellow-400 text-blue-950 font-black px-2 py-0.5 rounded text-lg">24</span>
                         <span class="text-xl font-black uppercase font-serif">EARLY NEWS</span>
                     </div>
                     <button onclick="toggleSidebar()" class="text-white text-xl hover:text-black"><i class="fa-solid fa-xmark"></i></button>
                 </div>
                 
-                <div class="flex gap-2 mb-6">
-                    <span class="bg-white text-sky-700 font-bold px-3 py-1 rounded text-xs">English</span>
-                    <span class="bg-sky-700 text-white font-bold px-3 py-1 rounded text-xs">हिंदी</span>
-                </div>
-
                 <ul class="space-y-3 text-sm font-semibold uppercase">
                     <li><a href="/" class="block hover:text-yellow-200">Home</a></li>
                     <li><a href="/?cat=LiveTV" class="block text-yellow-200"><i class="fa-solid fa-tower-broadcast"></i> Live TV</a></li>
@@ -136,7 +141,7 @@
                     <li><a href="/?cat=InDepth" class="block hover:text-yellow-200">In-Depth 24</a></li>
                 </ul>
 
-                <div class="mt-8 pt-4 border-t border-sky-500 grid grid-cols-2 gap-2 text-xs">
+                <div class="mt-8 pt-4 border-t border-blue-500 grid grid-cols-2 gap-2 text-xs">
                     <a href="/about" class="hover:underline">About Us</a>
                     <a href="/privacy" class="hover:underline">Privacy Policy</a>
                     <a href="/terms" class="hover:underline">Terms of Service</a>
@@ -144,7 +149,7 @@
                 </div>
             </div>
 
-            <div class="mt-8 pt-4 border-t border-sky-500 text-center text-[10px] text-sky-200">
+            <div class="mt-8 pt-4 border-t border-blue-500 text-center text-[10px] text-blue-200">
                 © 2026 24 Early News Network. DWIPRAJ MALLICK.
             </div>
         </div>
@@ -193,7 +198,7 @@
                 </div>
             </div>
 
-            <!-- Right Side Highlights & Live TV Slots -->
+            <!-- Right Side Highlights -->
             <div class="lg:col-span-4 flex flex-col gap-5">
                 <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-center shadow-xs">
                     <span class="text-[10px] font-bold text-amber-700 uppercase tracking-widest block mb-2">Advertisement</span>
@@ -202,8 +207,8 @@
                     </div>
                 </div>
 
-                <div class="bg-blue-900 text-white text-xs font-black uppercase px-3 py-2.5 rounded-t-lg tracking-wider flex items-center gap-2">
-                    <i class="fa-solid fa-tower-broadcast text-red-500"></i> Live TV & Streams
+                <div class="bg-blue-600 text-white text-xs font-black uppercase px-3 py-2.5 rounded-t-lg tracking-wider flex items-center gap-2">
+                    <i class="fa-solid fa-tower-broadcast text-yellow-300"></i> Live TV & Streams
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div class="bg-white p-3 rounded-lg border border-gray-200 text-center shadow-xs">
@@ -216,7 +221,7 @@
                     </div>
                 </div>
 
-                <div class="bg-blue-950 text-white text-xs font-black uppercase px-3 py-2.5 rounded-t-lg tracking-wider">Top Highlights</div>
+                <div class="bg-blue-600 text-white text-xs font-black uppercase px-3 py-2.5 rounded-t-lg tracking-wider">Top Highlights</div>
                 {% for item in news[1:5] %}
                 <div class="bg-white rounded-lg p-3 border border-gray-200 shadow-xs flex gap-3 hover:border-red-500 transition">
                     {% if item.image %}
@@ -245,7 +250,7 @@
         <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
             <div>
                 <div class="flex items-center gap-2 mb-4">
-                    <span class="bg-red-600 text-white font-black px-2.5 py-1 text-lg rounded">24</span>
+                    <span class="bg-yellow-400 text-blue-950 font-black px-2.5 py-1 text-lg rounded">24</span>
                     <span class="text-xl font-black tracking-wider uppercase font-serif text-white">EARLY NEWS</span>
                 </div>
                 <p class="text-gray-400 text-xs mb-4">Autonomous real-time global news aggregation network delivering verified reports across all regions.</p>
