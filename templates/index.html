@@ -5,23 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="canonical" href="https://24earlynews.com/">
     
-    <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <meta http-equiv="X-Frame-Options" content="DENY">
-    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
-    
     <title>24 Early News - Live Trending Portal</title>
     
-    <script src="https://cdn.tailwindcss.com" defer></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+    <!-- Fallback Tailwind CSS and FontAwesome -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
+        .dropdown-menu { display: none; }
         .dropdown:hover .dropdown-menu { display: block; }
-        main { content-visibility: auto; }
     </style>
 </head>
 <body class="bg-gray-100 text-gray-900 font-sans" id="bodyTheme">
     
-    <!-- Top Utility & Brand Bar -->
+    <!-- Top Utility Bar -->
     <div class="bg-amber-600 text-white text-xs py-1 px-4 flex justify-between items-center shadow-xs">
         <div class="flex items-center gap-2 font-bold">
             <span class="tracking-wide">24 Early News Network</span>
@@ -38,11 +35,11 @@
 
     <!-- Main Header -->
     <header class="bg-blue-600 text-white shadow-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-2 py-2 flex items-center justify-between flex-nowrap">
-            <div class="flex items-center gap-2 shrink-0">
+        <div class="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
+            <div class="flex items-center gap-3">
                 <button onclick="toggleSidebar()" class="text-white text-xl hover:text-blue-200 focus:outline-none" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
                 
-                <a href="/" class="flex flex-col items-center justify-center bg-blue-900 px-2 py-1 rounded shadow text-center">
+                <a href="/" class="flex flex-col items-center justify-center bg-blue-900 px-3 py-1 rounded shadow text-center">
                     <div class="flex items-center gap-1">
                         <span class="bg-yellow-400 text-blue-950 font-black px-1.5 py-0.5 text-sm rounded">24</span>
                         <span class="text-sm font-black tracking-wider uppercase font-serif">EARLY NEWS</span>
@@ -50,7 +47,7 @@
                     <span class="text-[7px] tracking-widest text-yellow-300 font-bold uppercase -mt-0.5">THINK FIRST</span>
                 </a>
 
-                <div class="hidden xl:flex items-center gap-1.5 text-[10px] bg-blue-700/90 px-2 py-1 rounded border border-blue-500 leading-tight">
+                <div class="hidden xl:flex items-center gap-2 text-[11px] bg-blue-700 px-3 py-1 rounded border border-blue-500">
                     <span class="font-bold">Sat, Nov 14, 2026</span>
                     <span>| Lang:</span>
                     <button onclick="changeLanguage('en')" class="hover:underline font-bold">EN</button> /
@@ -60,31 +57,28 @@
             </div>
             
             <!-- Navbar Categories -->
-            <nav class="hidden lg:flex items-center gap-0.5 text-[11px] font-bold uppercase shrink-0">
-                <a href="/?cat=LiveTV" class="hover:bg-blue-700 px-2.5 py-2 text-yellow-300 flex items-center gap-1 whitespace-nowrap"><i class="fa-solid fa-tower-broadcast"></i> <span data-translate="livetv">Live TV</span></a>
-                <a href="/?cat=Latest" class="hover:bg-blue-700 px-2.5 py-2 whitespace-nowrap" data-translate="latest">Latest</a>
-                <a href="/?cat=India" class="hover:bg-blue-700 px-2.5 py-2 whitespace-nowrap" data-translate="india">India</a>
+            <nav class="hidden lg:flex items-center gap-1 text-xs font-bold uppercase">
+                <a href="/?cat=LiveTV" class="hover:bg-blue-700 px-3 py-2 text-yellow-300 flex items-center gap-1"><i class="fa-solid fa-tower-broadcast"></i> <span data-translate="livetv">Live TV</span></a>
+                <a href="/?cat=Latest" class="hover:bg-blue-700 px-3 py-2" data-translate="latest">Latest</a>
+                <a href="/?cat=India" class="hover:bg-blue-700 px-3 py-2" data-translate="india">India</a>
                 
                 <div class="relative dropdown">
-                    <a href="#" class="hover:bg-blue-700 px-2.5 py-2 flex items-center gap-1 whitespace-nowrap"><span data-translate="cities">Cities</span> <i class="fa-solid fa-chevron-down text-[8px]"></i></a>
+                    <a href="#" class="hover:bg-blue-700 px-3 py-2 flex items-center gap-1"><span data-translate="cities">Cities</span> <i class="fa-solid fa-chevron-down text-[9px]"></i></a>
                     <div class="dropdown-menu absolute hidden bg-white text-slate-800 shadow-xl rounded-b-lg w-44 py-2 border border-gray-200 z-50">
                         <a href="/?cat=Bengaluru" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Bengaluru</a>
                         <a href="/?cat=Bhopal" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Bhopal</a>
                         <a href="/?cat=Chennai" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Chennai</a>
-                        <a href="/?cat=Chandigarh" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Chandigarh</a>
                         <a href="/?cat=Delhi" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Delhi/NCR</a>
-                        <a href="/?cat=Hyderabad" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Hyderabad</a>
-                        <a href="/?cat=Jaipur" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Jaipur</a>
                         <a href="/?cat=Kolkata" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Kolkata</a>
                         <a href="/?cat=Mumbai" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Mumbai</a>
                     </div>
                 </div>
 
-                <a href="/?cat=World" class="hover:bg-blue-700 px-2.5 py-2 whitespace-nowrap" data-translate="world">World</a>
-                <a href="/?cat=Entertainment" class="hover:bg-blue-700 px-2.5 py-2 whitespace-nowrap" data-translate="entertainment">Entertainment</a>
+                <a href="/?cat=World" class="hover:bg-blue-700 px-3 py-2" data-translate="world">World</a>
+                <a href="/?cat=Entertainment" class="hover:bg-blue-700 px-3 py-2" data-translate="entertainment">Entertainment</a>
 
                 <div class="relative dropdown">
-                    <a href="#" class="hover:bg-blue-700 px-2.5 py-2 flex items-center gap-1 whitespace-nowrap"><span data-translate="sports">Sports</span> <i class="fa-solid fa-chevron-down text-[8px]"></i></a>
+                    <a href="#" class="hover:bg-blue-700 px-3 py-2 flex items-center gap-1"><span data-translate="sports">Sports</span> <i class="fa-solid fa-chevron-down text-[9px]"></i></a>
                     <div class="dropdown-menu absolute hidden bg-white text-slate-800 shadow-xl rounded-b-lg w-40 py-2 border border-gray-200 z-50">
                         <a href="/?cat=Cricket" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Cricket</a>
                         <a href="/?cat=Sports" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Other Sports</a>
@@ -92,7 +86,7 @@
                 </div>
 
                 <div class="relative dropdown">
-                    <a href="#" class="hover:bg-blue-700 px-2.5 py-2 flex items-center gap-1 whitespace-nowrap"><span data-translate="photos">Photos</span> <i class="fa-solid fa-chevron-down text-[8px]"></i></a>
+                    <a href="#" class="hover:bg-blue-700 px-3 py-2 flex items-center gap-1"><span data-translate="photos">Photos</span> <i class="fa-solid fa-chevron-down text-[9px]"></i></a>
                     <div class="dropdown-menu absolute hidden bg-white text-slate-800 shadow-xl rounded-b-lg w-44 py-2 border border-gray-200 z-50">
                         <a href="/?cat=Photos" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Photos</a>
                         <a href="/?cat=Entertainment" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Entertainment</a>
@@ -100,12 +94,12 @@
                     </div>
                 </div>
 
-                <a href="/?cat=Auto" class="hover:bg-blue-700 px-2.5 py-2 whitespace-nowrap" data-translate="auto">Auto</a>
-                <a href="/?cat=Tech" class="hover:bg-blue-700 px-2.5 py-2 whitespace-nowrap" data-translate="tech">Tech</a>
-                <a href="/?cat=InDepth" class="hover:bg-blue-700 px-2.5 py-2 whitespace-nowrap" data-translate="indepth">In-Depth 24</a>
+                <a href="/?cat=Auto" class="hover:bg-blue-700 px-3 py-2" data-translate="auto">Auto</a>
+                <a href="/?cat=Tech" class="hover:bg-blue-700 px-3 py-2" data-translate="tech">Tech</a>
+                <a href="/?cat=InDepth" class="hover:bg-blue-700 px-3 py-2" data-translate="indepth">In-Depth 24</a>
 
                 <div class="relative dropdown">
-                    <a href="#" class="hover:bg-blue-700 px-2.5 py-2 flex items-center gap-1 whitespace-nowrap"><span data-translate="more">More</span> <i class="fa-solid fa-chevron-down text-[8px]"></i></a>
+                    <a href="#" class="hover:bg-blue-700 px-3 py-2 flex items-center gap-1"><span data-translate="more">More</span> <i class="fa-solid fa-chevron-down text-[9px]"></i></a>
                     <div class="dropdown-menu absolute right-0 hidden bg-white text-slate-800 shadow-xl rounded-b-lg w-52 py-2 border border-gray-200 z-50">
                         <a href="/?cat=Trending" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Trending</a>
                         <a href="/?cat=Business" class="block px-4 py-1.5 hover:bg-red-50 hover:text-red-600">Business</a>
@@ -114,7 +108,7 @@
                 </div>
             </nav>
 
-            <div class="flex items-center shrink-0">
+            <div class="flex items-center">
                 <button class="text-white text-lg hover:text-yellow-300 transition px-2 py-1" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
             </div>
         </div>
@@ -258,7 +252,7 @@
         {% endif %}
     </main>
 
-    <!-- News Popup Modal (Opens directly on homepage without leaving page) -->
+    <!-- News Popup Modal -->
     <div id="newsModal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative p-6 md:p-8">
             <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-500 hover:text-slate-900 text-2xl font-bold">×</button>
