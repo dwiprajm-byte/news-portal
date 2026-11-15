@@ -1,0 +1,47 @@
+24 EARLY NEWS — UPGRADE PACKAGE
+================================
+
+এই প্যাকেজে যা আপগ্রেড হয়েছে
+-----------------------------
+1. RSS Feed থেকে শিরোনাম, সংক্ষিপ্ত বিবরণ, প্রকাশের সময় এবং মূল প্রকাশকের URL সংগ্রহ।
+2. SQLite database-এ নিউজ সংরক্ষণ; একই RSS item পুনরায় এলে duplicate হবে না।
+3. Server-side background refresh (ডিফল্ট প্রতি ১০ মিনিটে)।
+4. /api/news JSON endpoint এবং /health status endpoint।
+5. /news/<slug> article route; পূর্ণ প্রতিবেদন পড়ার জন্য মূল প্রকাশকের লিংক।
+6. /admin Basic Authentication dashboard; ম্যানুয়াল RSS refresh।
+7. Render Blueprint-এ persistent disk path /var/data কনফিগার করা হয়েছে।
+8. মিথ্যা/কল্পিত article content এবং "Source Verified" দাবি সরানো হয়েছে।
+
+Windows-এ ইনস্টল
+-----------------
+১) প্রথমে বর্তমান C:\Users\dwipr\news-portal ফোল্ডারের আলাদা backup রাখুন।
+২) news-portal-upgraded.zip ফাইলটি Downloads-এ রাখুন।
+৩) PowerShell-এ চালান:
+
+$Project = "C:\Users\dwipr\news-portal"
+$Extract = "$env:TEMP\news-portal-upgraded"
+Remove-Item $Extract -Recurse -Force -ErrorAction SilentlyContinue
+Expand-Archive "$env:USERPROFILE\Downloads\news-portal-upgraded.zip" $Extract -Force
+Copy-Item "$Extract\*" $Project -Recurse -Force
+
+৪) তারপর:
+Set-Location "C:\Users\dwipr\news-portal"
+python -m pip install -r requirements.txt
+python app.py
+
+৫) ব্রাউজারে http://127.0.0.1:5000 এবং http://127.0.0.1:5000/health খুলুন।
+
+Render সেটআপ
+------------
+- render.yaml-এ 1 GB persistent disk যুক্ত আছে। Render-এ persistent disk সাধারণত paid service-এ পাওয়া যায়; deployment-এর আগে আপনার plan-এ disk support/খরচ যাচাই করুন।
+- Render Environment-এ ADMIN_USERNAME এবং ADMIN_PASSWORD দিন।
+- SECRET_KEY Render-এর generateValue থেকে তৈরি হবে।
+- Deploy করার আগে Git diff দেখে তারপর commit/push করুন।
+
+সীমাবদ্ধতা ও সতর্কতা
+--------------------
+- RSS headline/description-ই দেখানো হয়; মূল publisher-এর সম্পূর্ণ article কপি করা হয় না।
+- RSS feed-কে স্বাধীনভাবে fact-check করা হয়েছে এমন দাবি করা হয় না।
+- Bengali/Hindi/English-এর UI language preference আগের template-এ আছে, কিন্তু প্রকৃত machine translation এই প্যাকেজে সক্রিয় নয়। অনুবাদের জন্য আলাদা translation provider/API credentials লাগবে।
+- RSS provider-এর availability/terms এবং publisher copyright সম্মান করুন।
+- এই প্যাকেজ তৈরি করার সময় নেটওয়ার্ক বন্ধ থাকায় live RSS বা Render deployment পরীক্ষা করা যায়নি। Python syntax check সফল হয়েছে; আপনার Windows/Render পরিবেশে dependency install ও smoke test করতে হবে।

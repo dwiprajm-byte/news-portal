@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -42,6 +42,7 @@
             <div class="flex items-center gap-3 mb-4">
                 <span class="bg-red-600 text-white text-xs font-black uppercase px-3 py-1 rounded">{{ article.category }}</span>
                 <span class="text-xs text-slate-400 font-mono"><i class="fa-regular fa-clock"></i> {{ article.published }}</span>
+                <span class="text-xs text-slate-500">Source: {{ article.source_name }}</span>
             </div>
             
             <h1 class="text-2xl md:text-4xl font-black text-slate-900 leading-tight mb-6">
@@ -59,9 +60,8 @@
                 <p>
                     {{ article.content }}
                 </p>
-                <p>
-                    24 Early News-এর বিশ্বস্ত ও প্রামাণিক সূত্রের বরাত দিয়ে বলা যায় যে, বর্তমান এই খবরের প্রতিটি খুঁটিনাটি বিষয় আমরা গভীরভাবে পর্যবেক্ষণ করছি। সাধারণ মানুষের সুবিধার্থে ভবিষ্যতে এই বিষয়ে আরও নতুন তথ্য সংযোজন করা হবে।
-                </p>
+                <p class="text-sm text-slate-500">এই পাতায় RSS ফিডে পাওয়া শিরোনাম ও সংক্ষিপ্ত বিবরণ দেখানো হচ্ছে। পূর্ণ প্রতিবেদন পড়তে মূল প্রকাশকের ওয়েবসাইটে যান।</p>
+                <a href="{{ article.source_url }}" target="_blank" rel="noopener noreferrer" class="inline-flex bg-red-600 text-white px-5 py-3 rounded-lg font-bold">Read original report at {{ article.source_name }}</a>
             </div>
 
             <div class="mt-10 pt-6 border-t border-gray-200 flex justify-between items-center text-xs text-slate-500">

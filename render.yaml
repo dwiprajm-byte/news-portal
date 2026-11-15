@@ -1,9 +1,23 @@
-﻿services:
+services:
   - type: web
     name: news-portal
     runtime: python
     buildCommand: "pip install --upgrade pip && pip install -r requirements.txt"
-    startCommand: "gunicorn app:app"
+    startCommand: "gunicorn --workers 2 --threads 4 --timeout 60 app:app"
     envVars:
       - key: PYTHON_VERSION
-        value: 3.10.13
+        value: 3.11.11
+      - key: DATABASE_PATH
+        value: /var/data/news.sqlite3
+      - key: NEWS_REFRESH_MINUTES
+        value: "10"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ADMIN_USERNAME
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+    disk:
+      name: news-data
+      mountPath: /var/data
+      sizeGB: 1

@@ -7,6 +7,7 @@
     
     <title>24 Early News - Live Trending Portal</title>
     
+    <!-- Tailwind CSS and FontAwesome -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -214,12 +215,11 @@
 
     <script>
         function openModal(item) {
-            document.getElementById('modalCategoryinnerText').innerText = item.category;
             document.getElementById('modalCategory').innerText = item.category;
             document.getElementById('modalDate').innerText = item.published;
             document.getElementById('modalTitle').innerText = item.title;
             document.getElementById('modalImage').src = item.image;
-            document.getElementById('modalContent').innerHTML = <p class="font-bold text-slate-950 text-base"></p><p class="mt-4"></p><p class="mt-4">24 Early News নেটওয়ার্কের বিশেষ প্রতিনিধি দলের সংগ্রহ করা তথ্য অনুযায়ী, এই ঘটনার পেছনে একাধিক গুরুত্বপূর্ণ দিক রয়েছে যা সাধারণ মানুষের নজর কেড়েছে। এই আপডেটটি রিয়েল-টাইমে আপডেট করা হয়েছে।</p>;
+            document.getElementById('modalContent').innerHTML = <p class="font-bold text-slate-900 text-base"></p><p class="mt-4"></p><p class="mt-4">24 Early News নেটওয়ার্কের বিশেষ প্রতিনিধি দলের সংগ্রহ করা তথ্য অনুযায়ী, এই ঘটনার পেছনে একাধিক গুরুত্বপূর্ণ দিক রয়েছে যা সাধারণ মানুষের নজর কেড়েছে। এই আপডেটটি রিয়েল-টাইমে আপডেট করা হয়েছে।</p>;
             document.getElementById('newsModal').classList.remove('hidden');
         }
 

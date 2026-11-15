@@ -10,7 +10,6 @@ app = Flask(__name__)
 
 DB_FILE = "news_store.json"
 
-# শুধুমাত্র গুগল ট্রেন্ডস এবং ভেরিফাইড রিয়েল-টাইম ট্রেন্ডিং নিউজ ফিড
 RSS_FEEDS = {
     "India": [
         "https://news.google.com/rss/search?q=India+breaking+trending+news&hl=en-IN&gl=IN&ceid=IN:en"
@@ -98,7 +97,6 @@ def fetch_and_accumulate_news():
                             slug = re.sub(r'[^a-zA-Z0-9]', '-', title.lower())[:60].strip('-')
                             slug = f"{slug}-{abs(hash(title)) % 10000}"
                             
-                            # আসল ও ট্রেন্ডিং ছবি যুক্ত করার লজিক
                             img_url = "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?auto=format&fit=crop&w=1200&q=80"
                             if category in ["Tech", "Auto"]:
                                 img_url = "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80"
