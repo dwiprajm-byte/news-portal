@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="canonical" href="https://24earlynews.com/">
     
-    <title>24 Early News - Professional News Portal</title>
+    <title>24 Early News - Live Trending & Live Blog Portal</title>
     
     <!-- Tailwind CSS and FontAwesome -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -103,14 +103,14 @@
                 <ul class="space-y-3 text-sm font-semibold uppercase">
                     <li><a href="/" class="block hover:text-yellow-200">Home</a></li>
                     <li><a href="/?cat=LiveTV" class="block text-yellow-200">Live TV</a></li>
-                    <li><a href="/?cat=Latest" class="block hover:text-yellow-200">Latest</a></li>
-                    <li><a href="/?cat=India" class="block hover:text-yellow-200">India</a></li>
-                    <li><a href="/?cat=Cities" class="block hover:text-yellow-200">Cities</a></li>
-                    <li><a href="/?cat=Business" class="block hover:text-yellow-200">Business</a></li>
-                    <li><a href="/?cat=Sports" class="block hover:text-yellow-200">Sports</a></li>
-                    <li><a href="/?cat=Education" class="block hover:text-yellow-200">Education</a></li>
-                    <li><a href="/?cat=Lifestyle" class="block hover:text-yellow-200">Lifestyle</a></li>
-                    <li><a href="/?cat=Tech" class="block hover:text-yellow-200">Tech</a></li>
+                    <li><a href="/?cat=Latest" class="block text-yellow-200">Latest</a></li>
+                    <li><a href="/?cat=India" class="block text-yellow-200">India</a></li>
+                    <li><a href="/?cat=Cities" class="block text-yellow-200">Cities</a></li>
+                    <li><a href="/?cat=Business" class="block text-yellow-200">Business</a></li>
+                    <li><a href="/?cat=Sports" class="block text-yellow-200">Sports</a></li>
+                    <li><a href="/?cat=Education" class="block text-yellow-200">Education</a></li>
+                    <li><a href="/?cat=Lifestyle" class="block text-yellow-200">Lifestyle</a></li>
+                    <li><a href="/?cat=Tech" class="block text-yellow-200">Tech</a></li>
                 </ul>
             </div>
             <div class="mt-8 pt-4 border-t border-blue-500 text-center text-[10px] text-blue-200">
@@ -133,6 +133,7 @@
     <!-- Main Content Area -->
     <main class="max-w-7xl mx-auto px-4 py-6">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
             <!-- Left Big Featured Headline & Top Stories -->
             <div class="lg:col-span-8 flex flex-col gap-6">
                 {% if news and news|length > 0 %}
@@ -180,8 +181,31 @@
                 </div>
             </div>
 
-            <!-- Right Side Highlights & Today's Special -->
+            <!-- Right Side Highlights & Live Blog / Updates Block -->
             <div class="lg:col-span-4 flex flex-col gap-5">
+                
+                <!-- Live Blog Widget -->
+                <div class="bg-white rounded-xl border border-red-200 overflow-hidden shadow-sm">
+                    <div class="bg-red-600 text-white text-xs font-black uppercase px-4 py-2.5 flex items-center justify-between">
+                        <span class="flex items-center gap-2"><span class="w-2.5 h-2.5 bg-yellow-300 rounded-full animate-ping"></span> Live Updates & Blog</span>
+                        <span class="text-[10px] font-mono bg-red-700 px-2 py-0.5 rounded">REAL-TIME</span>
+                    </div>
+                    <div class="p-4 space-y-3 text-xs">
+                        <div class="border-l-2 border-red-600 pl-3 py-1">
+                            <span class="text-[10px] text-red-600 font-bold font-mono">10 MINS AGO</span>
+                            <p class="font-bold text-slate-900 mt-0.5">High-level strategic briefing underway regarding regional developments.</p>
+                        </div>
+                        <div class="border-l-2 border-blue-600 pl-3 py-1">
+                            <span class="text-[10px] text-blue-600 font-bold font-mono">45 MINS AGO</span>
+                            <p class="font-bold text-slate-900 mt-0.5">Sports Desk: Latest squad updates released for upcoming tournament matches.</p>
+                        </div>
+                        <div class="border-l-2 border-amber-600 pl-3 py-1">
+                            <span class="text-[10px] text-amber-600 font-bold font-mono">1 HOUR AGO</span>
+                            <p class="font-bold text-slate-900 mt-0.5">Market Watch: Tech and financial indices show strong positive momentum.</p>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-center shadow-xs">
                     <span class="text-[10px] font-bold text-amber-700 uppercase tracking-widest block mb-2">Advertisement</span>
                     <div class="bg-gradient-to-r from-amber-500 to-red-500 text-white p-4 rounded-lg font-bold text-sm shadow">
@@ -190,7 +214,7 @@
                 </div>
 
                 <div class="bg-blue-600 text-white text-xs font-black uppercase px-3 py-2.5 rounded-t-lg tracking-wider">Top Trending Highlights</div>
-                {% for item in news[11:17] %}
+                {% for item in news[11:16] %}
                 <div class="bg-white rounded-lg p-3 border border-gray-200 shadow-xs flex gap-3 hover:border-red-500 transition cursor-pointer" onclick='openModal({{ item | tojson | safe }})'>
                     {% if item.image %}
                     <div class="w-24 h-20 shrink-0 rounded overflow-hidden bg-gray-100">
@@ -211,13 +235,72 @@
             </div>
         </div>
 
-        <!-- Additional Category Sections (Business, Education, Cities, Lifestyle) -->
+        <!-- Specialized Categories Section (Business, Education, Cities, Lifestyle) -->
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div class="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+                <h3 class="text-xs font-black uppercase text-blue-600 border-b border-blue-600 pb-2 mb-3"><i class="fa-solid fa-briefcase"></i> Business & Economy</h3>
+                <div class="space-y-3">
+                    {% for item in news if item.category == 'Business' %}
+                        {% if loop.index <= 3 %}
+                        <div class="cursor-pointer hover:text-blue-600" onclick='openModal({{ item | tojson | safe }})'>
+                            <h4 class="text-xs font-bold line-clamp-2">{{ item.title }}</h4>
+                            <span class="text-[9px] text-slate-400 font-mono">{{ item.published }}</span>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+                <h3 class="text-xs font-black uppercase text-blue-600 border-b border-blue-600 pb-2 mb-3"><i class="fa-solid fa-graduation-cap"></i> Education & Jobs</h3>
+                <div class="space-y-3">
+                    {% for item in news if item.category == 'Education' %}
+                        {% if loop.index <= 3 %}
+                        <div class="cursor-pointer hover:text-blue-600" onclick='openModal({{ item | tojson | safe }})'>
+                            <h4 class="text-xs font-bold line-clamp-2">{{ item.title }}</h4>
+                            <span class="text-[9px] text-slate-400 font-mono">{{ item.published }}</span>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+                <h3 class="text-xs font-black uppercase text-blue-600 border-b border-blue-600 pb-2 mb-3"><i class="fa-solid fa-city"></i> Cities & Local</h3>
+                <div class="space-y-3">
+                    {% for item in news if item.category == 'Cities' %}
+                        {% if loop.index <= 3 %}
+                        <div class="cursor-pointer hover:text-blue-600" onclick='openModal({{ item | tojson | safe }})'>
+                            <h4 class="text-xs font-bold line-clamp-2">{{ item.title }}</h4>
+                            <span class="text-[9px] text-slate-400 font-mono">{{ item.published }}</span>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+                <h3 class="text-xs font-black uppercase text-blue-600 border-b border-blue-600 pb-2 mb-3"><i class="fa-solid fa-heart-pulse"></i> Lifestyle & Tech</h3>
+                <div class="space-y-3">
+                    {% for item in news if item.category == 'Tech' or item.category == 'Auto' %}
+                        {% if loop.index <= 3 %}
+                        <div class="cursor-pointer hover:text-blue-600" onclick='openModal({{ item | tojson | safe }})'>
+                            <h4 class="text-xs font-bold line-clamp-2">{{ item.title }}</h4>
+                            <span class="text-[9px] text-slate-400 font-mono">{{ item.published }}</span>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional News Grid -->
         <div class="mt-8">
             <div class="bg-blue-600 text-white text-xs font-black uppercase px-4 py-2.5 rounded-t-lg tracking-wider mb-4">
-                <span><i class="fa-solid fa-newspaper"></i> Latest Regional & Global Dispatches</span>
+                <span><i class="fa-solid fa-newspaper"></i> Latest Google Trending Dispatches</span>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {% for item in news[17:26] %}
+                {% for item in news[16:25] %}
                 <div class="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 flex flex-col justify-between hover:border-blue-500 transition cursor-pointer" onclick='openModal({{ item | tojson | safe }})'>
                     <div>
                         <div class="aspect-[16/9] overflow-hidden bg-slate-900">
@@ -261,7 +344,7 @@
         </div>
     </div>
 
-    <!-- Professional Footer with Editorial Policy, Disclaimer & Complaint links -->
+    <!-- Professional Footer -->
     <footer class="bg-blue-950 text-gray-300 text-xs border-t-4 border-red-600 mt-20 pt-12 pb-8">
         <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
             <div>
