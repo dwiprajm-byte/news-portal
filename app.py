@@ -1,186 +1,184 @@
-﻿from flask import Flask, render_template, request, abort
-import urllib.request
-import xml.etree.ElementTree as ET
-from datetime import datetime
-import json
-import os
-import re
+﻿import os, re, html, hashlib, sqlite3, urllib.request, xml.etree.ElementTree as ET
+from datetime import datetime, timezone, timedelta
+from email.utils import parsedate_to_datetime
+from threading import Lock
+from flask import Flask, render_template, request, abort
 
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+DB_FILE = os.environ.get("DATABASE_PATH", os.path.join(BASE_DIR, "news.sqlite3"))
+REFRESH_MINUTES = max(1, int(os.environ.get("NEWS_REFRESH_MINUTES", "10")))
+SECRET_KEY = os.environ.get("SECRET_KEY", "24earlynews-local-development-key-change-in-production")
 app = Flask(__name__)
-
-DB_FILE = "news_store.json"
+app.config["SECRET_KEY"] = SECRET_KEY
+_refresh_lock = Lock()
 
 RSS_FEEDS = {
-    "India": [
-        "https://news.google.com/rss/search?q=India+breaking+trending+news&hl=en-IN&gl=IN&ceid=IN:en"
-    ],
-    "World": [
-        "https://news.google.com/rss/search?q=World+top+trending+stories&hl=en-US&gl=US&ceid=US:en"
-    ],
-    "Business": [
-        "https://news.google.com/rss/search?q=Business+market+trending+news&hl=en-IN&gl=IN&ceid=IN:en"
-    ],
-    "Tech": [
-        "https://news.google.com/rss/search?q=Technology+AI+trending+news&hl=en-IN&gl=IN&ceid=IN:en"
-    ],
-    "Sports": [
-        "https://news.google.com/rss/search?q=Sports+cricket+trending+news&hl=en-IN&gl=IN&ceid=IN:en"
-    ],
-    "Cricket": [
-        "https://news.google.com/rss/search?q=Cricket+match+trending&hl=en-IN&gl=IN&ceid=IN:en"
-    ],
-    "Entertainment": [
-        "https://news.google.com/rss/search?q=Bollywood+entertainment+trending&hl=en-IN&gl=IN&ceid=IN:en"
-    ],
-    "Auto": [
-        "https://news.google.com/rss/search?q=Automobile+cars+launch+trending&hl=en-IN&gl=IN&ceid=IN:en"
-    ],
-    "Cities": [
-        "https://news.google.com/rss/search?q=Delhi+Kolkata+Mumbai+trending+news&hl=en-IN&gl=IN&ceid=IN:en"
-    ],
-    "Trending": [
-        "https://news.google.com/rss/search?q=Viral+trending+news+today&hl=en-IN&gl=IN&ceid=IN:en"
-    ],
-    "Education": [
-        "https://news.google.com/rss/search?q=Education+exams+results+trending&hl=en-IN&gl=IN&ceid=IN:en"
-    ]
+    "India": "https://news.google.com/rss/search?q=India+breaking+news&hl=en-IN&gl=IN&ceid=IN:en",
+    "World": "https://news.google.com/rss/search?q=World+news&hl=en-IN&gl=IN&ceid=IN:en",
+    "Business": "https://news.google.com/rss/search?q=India+business+markets&hl=en-IN&gl=IN&ceid=IN:en",
+    "Tech": "https://news.google.com/rss/search?q=technology+AI&hl=en-IN&gl=IN&ceid=IN:en",
+    "Sports": "https://news.google.com/rss/search?q=sports+news&hl=en-IN&gl=IN&ceid=IN:en",
+    "Cricket": "https://news.google.com/rss/search?q=cricket&hl=en-IN&gl=IN&ceid=IN:en",
+    "Entertainment": "https://news.google.com/rss/search?q=Bollywood+entertainment&hl=en-IN&gl=IN&ceid=IN:en",
+    "Auto": "https://news.google.com/rss/search?q=automobile+cars&hl=en-IN&gl=IN&ceid=IN:en",
+    "Cities": "https://news.google.com/rss/search?q=Kolkata+West+Bengal+news&hl=en-IN&gl=IN&ceid=IN:en",
+    "Trending": "https://news.google.com/rss/search?q=India+trending+news&hl=en-IN&gl=IN&ceid=IN:en",
+    "Education": "https://news.google.com/rss/search?q=India+education+exam+results&hl=en-IN&gl=IN&ceid=IN:en",
 }
 
-def clean_news_text(text):
-    if not text:
+def db():
+    conn = sqlite3.connect(DB_FILE, timeout=20)
+    conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA journal_mode=WAL")
+    conn.execute("PRAGMA busy_timeout=20000")
+    return conn
+
+def init_db():
+    os.makedirs(os.path.dirname(DB_FILE) or BASE_DIR, exist_ok=True)
+    with db() as con:
+        con.execute("""CREATE TABLE IF NOT EXISTS app_meta (key TEXT PRIMARY KEY, value TEXT)""")
+        con.execute("""CREATE TABLE IF NOT EXISTS news (
+            id INTEGER PRIMARY KEY AUTOINCREMENT, slug TEXT UNIQUE NOT NULL,
+            title TEXT NOT NULL, category TEXT NOT NULL, published TEXT,
+            image TEXT, summary TEXT, content TEXT, source_name TEXT,
+            source_url TEXT NOT NULL, created_at TEXT NOT NULL,
+            language TEXT DEFAULT 'en')""")
+        con.execute("CREATE INDEX IF NOT EXISTS idx_news_published ON news(published)")
+        con.execute("CREATE INDEX IF NOT EXISTS idx_news_category ON news(category)")
+
+def clean_text(value):
+    if not value:
         return ""
-    unwanted_names = ["News24", "NEWS24", "News 24", "NDTV", "Aaj Tak", "Zee News", "ABP Live", "News18", "The Indian Express", "Sakshi Education"]
-    for name in unwanted_names:
-        text = re.sub(re.escape(name), "24 Early News", text, flags=re.IGNORECASE)
-    return text
+    value = re.sub(r"<[^>]+>", " ", value)
+    value = html.unescape(value)
+    return re.sub(r"\s+", " ", value).strip()
 
-def load_saved_news():
-    if os.path.exists(DB_FILE):
+def make_slug(title, url):
+    base = re.sub(r"[^a-z0-9]+", "-", title.lower()).strip("-")[:65] or "news"
+    suffix = hashlib.sha256(url.encode("utf-8")).hexdigest()[:10]
+    return f"{base}-{suffix}"
+
+def parse_date(value):
+    if value:
         try:
-            with open(DB_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except:
-            return []
-    return []
+            dt = parsedate_to_datetime(value)
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=timezone.utc)
+            return dt.astimezone(timezone.utc).isoformat(timespec="seconds")
+        except Exception:
+            pass
+    return datetime.now(timezone.utc).isoformat(timespec="seconds")
 
-def save_news(news_list):
-    try:
-        with open(DB_FILE, "w", encoding="utf-8") as f:
-            json.dump(news_list, f, ensure_ascii=False, indent=4)
-    except Exception as e:
-        print(f"Error saving DB: {e}")
+def refresh_news(force=False):
+    # DB-level timestamp gate prevents each web worker from fetching on every page view.
+    with _refresh_lock:
+        now = datetime.now(timezone.utc)
+        with db() as con:
+            con.execute("BEGIN IMMEDIATE")
+            row = con.execute("SELECT value FROM app_meta WHERE key='last_refresh_started'").fetchone()
+            if not force and row:
+                try:
+                    last = datetime.fromisoformat(row["value"])
+                    if last.tzinfo is None:
+                        last = last.replace(tzinfo=timezone.utc)
+                    if now - last < timedelta(minutes=REFRESH_MINUTES):
+                        con.commit()
+                        return 0
+                except Exception:
+                    pass
+            con.execute("INSERT INTO app_meta(key,value) VALUES('last_refresh_started',?) ON CONFLICT(key) DO UPDATE SET value=excluded.value", (now.isoformat(),))
+            con.commit()
 
-def fetch_and_accumulate_news():
-    existing_news = load_saved_news()
-    existing_links = {n['link'] for n in existing_news}
-    
-    new_items_added = False
-    headers = {'User-Agent': 'Mozilla/5.0'}
-    
-    for category, urls in RSS_FEEDS.items():
-        for url in urls:
+        added = 0
+        headers = {"User-Agent": "Mozilla/5.0 (compatible; 24EarlyNews/1.0; +https://24earlynews.com)"}
+        for category, feed_url in RSS_FEEDS.items():
             try:
-                req = urllib.request.Request(url, headers=headers)
-                with urllib.request.urlopen(req, timeout=6) as response:
-                    xml_data = response.read()
-                    root = ET.fromstring(xml_data)
-                    channel = root.find('channel')
-                    if channel is not None:
-                        for item in channel.findall('item'):
-                            raw_title = item.find('title').text if item.find('title') is not None else ''
-                            pubDate = item.find('pubDate').text if item.find('pubDate') is not None else datetime.now().strftime('%d %b %Y')
-                            
-                            title = clean_news_text(raw_title)
-                            if not title:
-                                continue
-                                
-                            slug = re.sub(r'[^a-zA-Z0-9]', '-', title.lower())[:60].strip('-')
-                            slug = f"{slug}-{abs(hash(title)) % 10000}"
-                            
-                            img_url = "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?auto=format&fit=crop&w=1200&q=80"
-                            if category in ["Tech", "Auto"]:
-                                img_url = "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80"
-                            elif category in ["Business", "Trending"]:
-                                img_url = "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=80"
-                            elif category in ["India", "Cities"]:
-                                img_url = "https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=1200&q=80"
-                            elif category in ["Sports", "Cricket"]:
-                                img_url = "https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=1200&q=80"
-                            elif category == "World":
-                                img_url = "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80"
+                req = urllib.request.Request(feed_url, headers=headers)
+                with urllib.request.urlopen(req, timeout=5) as response:
+                    root = ET.fromstring(response.read())
+                for item in root.findall("./channel/item"):
+                    title = clean_text(item.findtext("title"))
+                    link = clean_text(item.findtext("link"))
+                    if not title or not link or not link.startswith(("http://", "https://")):
+                        continue
+                    source_node = item.find("source")
+                    source_name = clean_text(source_node.text if source_node is not None else "") or "Google News feed"
+                    description = clean_text(item.findtext("description"))
+                    published = parse_date(item.findtext("pubDate"))
+                    slug = make_slug(title, link)
+                    with db() as con:
+                        exists = con.execute("SELECT 1 FROM news WHERE source_url=? OR slug=? LIMIT 1", (link, slug)).fetchone()
+                        if exists:
+                            continue
+                        con.execute("""INSERT INTO news
+                            (slug,title,category,published,image,summary,content,source_name,source_url,created_at,language)
+                            VALUES(?,?,?,?,?,?,?,?,?,?,?)""",
+                            (slug, title, category, published, "", description[:500], description,
+                             source_name, link, now.isoformat(), "en"))
+                        added += 1
+            except Exception as exc:
+                app.logger.warning("RSS refresh failed for %s: %s", category, exc)
+        with db() as con:
+            con.execute("INSERT INTO app_meta(key,value) VALUES('last_refresh_completed',?) ON CONFLICT(key) DO UPDATE SET value=excluded.value", (datetime.now(timezone.utc).isoformat(),))
+        app.logger.info("RSS refresh complete; added %s articles", added)
+        return added
 
-                            if slug not in existing_links:
-                                full_content = f"""
-                                গুগল ট্রেন্ডসের রিয়েল-টাইম ডাটা অনুযায়ী '{title}' বিষয়টি বর্তমানে ব্যাপক চাঞ্চল্যের সৃষ্টি করেছে। 
-                                24 Early News-এর বিশেষ বিশ্লেষণ অনুযায়ী, এই ট্রেন্ডিং বিষয়ের সাথে জড়িত প্রতিটি তথ্য অত্যন্ত নিখুঁতভাবে যাচাই করা হয়েছে। 
-                                সংশ্লিষ্ট মহলের মতে, সাম্প্রতিক পরিস্থিতি অনুযায়ী এই আপডেটটি অত্যন্ত তাৎপর্যপূর্ণ। 
-                                আমাদের এডিটোরাল টিম এই বিষয়ে প্রতি মুহূর্তে আপডেট সংগ্রহ করছে। পাঠকদের সঠিক ও রিয়েল-টাইম তথ্য প্রদান করতে আমরা সর্বদা বদ্ধপরিকর।
-                                """
-                                
-                                news_item = {
-                                    "slug": slug,
-                                    "title": title,
-                                    "category": category,
-                                    "published": pubDate[:16],
-                                    "image": img_url,
-                                    "summary": f"বিশেষ ট্রেন্ডিং প্রতিবেদন: {title} সম্পর্কিত সর্বশেষ রিয়েল-টাইম আপডেট ও বিশ্লেষণ।",
-                                    "content": full_content.strip(),
-                                    "link": slug
-                                }
-                                existing_news.insert(0, news_item)
-                                existing_links.add(slug)
-                                new_items_added = True
-            except Exception as e:
-                print(f"Error fetching {category}: {e}")
-                
-    if new_items_added or not existing_news:
-        save_news(existing_news)
-        
-    return existing_news
+def row_to_dict(row):
+    return dict(row) if row else None
 
-@app.route('/')
+@app.route("/")
 def index():
-    cat = request.args.get('cat')
-    all_news = fetch_and_accumulate_news()
-    
-    if not all_news:
-        all_news = [
-            {
-                "slug": "sample-trending",
-                "title": "Top Google Trending Update for 2026 Live Now",
-                "category": "Trending",
-                "published": "14 Nov 2026",
-                "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
-                "summary": "Real-time trending news update loaded successfully.",
-                "content": "Live trending analysis and coverage.",
-                "link": "sample-trending"
-            }
-        ]
+    refresh_news()
+    category = (request.args.get("cat") or "").strip()
+    search = (request.args.get("q") or "").strip()
+    page = max(1, request.args.get("page", 1, type=int) or 1)
+    per_page = 18
+    clauses, params = [], []
+    if category and category.lower() not in ("latest", "all"):
+        clauses.append("LOWER(category)=LOWER(?)"); params.append(category)
+    if search:
+        clauses.append("(title LIKE ? OR summary LIKE ? OR source_name LIKE ?)")
+        term = f"%{search}%"; params.extend([term, term, term])
+    where = (" WHERE " + " AND ".join(clauses)) if clauses else ""
+    with db() as con:
+        total = con.execute("SELECT COUNT(*) FROM news" + where, params).fetchone()[0]
+        items = con.execute("SELECT * FROM news" + where + " ORDER BY COALESCE(published,created_at) DESC, id DESC LIMIT ? OFFSET ?", params + [per_page, (page-1)*per_page]).fetchall()
+        categories = con.execute("SELECT category, COUNT(*) AS total FROM news GROUP BY category ORDER BY category").fetchall()
+    return render_template("index.html", news=[row_to_dict(x) for x in items], categories=categories,
+                           category=category, search=search, page=page, total_pages=max(1,(total+per_page-1)//per_page), total=total)
 
-    if cat:
-        filtered = [n for n in all_news if cat.lower() in n['category'].lower() or n['category'].lower() in cat.lower()]
-        if not filtered:
-            filtered = all_news
-    else:
-        filtered = all_news
+@app.route("/news/<slug>")
+def detail(slug):
+    with db() as con:
+        article = con.execute("SELECT * FROM news WHERE slug=?", (slug,)).fetchone()
+    if not article:
+        abort(404)
+    return render_template("detail.html", article=row_to_dict(article))
 
-    return render_template('index.html', news=filtered)
+@app.route("/search")
+def search():
+    return index()
 
-@app.route('/about')
-def about():
-    return render_template('about.html')
+@app.route("/about")
+def about(): return render_template("about.html")
+@app.route("/privacy")
+def privacy(): return render_template("privacy.html")
+@app.route("/terms")
+def terms(): return render_template("terms.html")
+@app.route("/contact")
+def contact(): return render_template("contact.html")
 
-@app.route('/privacy')
-def privacy():
-    return render_template('privacy.html')
+@app.route("/health")
+def health():
+    with db() as con:
+        count = con.execute("SELECT COUNT(*) FROM news").fetchone()[0]
+    return {"status":"ok", "news_count":count}
 
-@app.route('/terms')
-def terms():
-    return render_template('terms.html')
+@app.errorhandler(404)
+def not_found(_error):
+    return render_template("404.html"), 404
 
-@app.route('/contact')
-def contact():
-    return render_template('contact.html')
+init_db()
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", "5000")), debug=False)

@@ -1,0 +1,655 @@
+﻿
+=================================================================
+24 EARLY NEWS - PROJECT DIAGNOSTIC
+=================================================================
+Project: C:\Users\dwipr\news-portal
+Date: 11/15/2026 15:49:09
+
+=================================================================
+PROJECT FILE LIST
+=================================================================
+C:\Users\dwipr\news-portal\24earlynews-project-report.txt
+C:\Users\dwipr\news-portal\24earlynews.zip
+C:\Users\dwipr\news-portal\app.py
+C:\Users\dwipr\news-portal\news.sqlite3
+C:\Users\dwipr\news-portal\render.yaml
+C:\Users\dwipr\news-portal\requirements.txt
+C:\Users\dwipr\news-portal\UPGRADE-INSTRUCTIONS-BN.txt
+C:\Users\dwipr\news-portal\templates\about.html
+C:\Users\dwipr\news-portal\templates\contact.html
+C:\Users\dwipr\news-portal\templates\detail.html
+C:\Users\dwipr\news-portal\templates\index.html
+C:\Users\dwipr\news-portal\templates\index.html.backup-20261115-091629
+C:\Users\dwipr\news-portal\templates\privacy.html
+C:\Users\dwipr\news-portal\templates\single.html
+C:\Users\dwipr\news-portal\templates\submit.html
+C:\Users\dwipr\news-portal\templates\terms.html
+
+=================================================================
+FILE: app.py
+=================================================================
+from flask import Flask, render_template, request, abort
+import urllib.request
+import xml.etree.ElementTree as ET
+from datetime import datetime
+import json
+import os
+import re
+
+app = Flask(__name__)
+
+DB_FILE = "news_store.json"
+
+RSS_FEEDS = {
+    "India": [
+        "https://news.google.com/rss/search?q=India+breaking+trending+news&hl=en-IN&gl=IN&ceid=IN:en"
+    ],
+    "World": [
+        "https://news.google.com/rss/search?q=World+top+trending+stories&hl=en-US&gl=US&ceid=US:en"
+    ],
+    "Business": [
+        "https://news.google.com/rss/search?q=Business+market+trending+news&hl=en-IN&gl=IN&ceid=IN:en"
+    ],
+    "Tech": [
+        "https://news.google.com/rss/search?q=Technology+AI+trending+news&hl=en-IN&gl=IN&ceid=IN:en"
+    ],
+    "Sports": [
+        "https://news.google.com/rss/search?q=Sports+cricket+trending+news&hl=en-IN&gl=IN&ceid=IN:en"
+    ],
+    "Cricket": [
+        "https://news.google.com/rss/search?q=Cricket+match+trending&hl=en-IN&gl=IN&ceid=IN:en"
+    ],
+    "Entertainment": [
+        "https://news.google.com/rss/search?q=Bollywood+entertainment+trending&hl=en-IN&gl=IN&ceid=IN:en"
+    ],
+    "Auto": [
+        "https://news.google.com/rss/search?q=Automobile+cars+launch+trending&hl=en-IN&gl=IN&ceid=IN:en"
+    ],
+    "Cities": [
+        "https://news.google.com/rss/search?q=Delhi+Kolkata+Mumbai+trending+news&hl=en-IN&gl=IN&ceid=IN:en"
+    ],
+    "Trending": [
+        "https://news.google.com/rss/search?q=Viral+trending+news+today&hl=en-IN&gl=IN&ceid=IN:en"
+    ],
+    "Education": [
+        "https://news.google.com/rss/search?q=Education+exams+results+trending&hl=en-IN&gl=IN&ceid=IN:en"
+    ]
+}
+
+def clean_news_text(text):
+    if not text:
+        return ""
+    unwanted_names = ["News24", "NEWS24", "News 24", "NDTV", "Aaj Tak", "Zee News", "ABP Live", "News18", "The Indian Express", "Sakshi Education"]
+    for name in unwanted_names:
+        text = re.sub(re.escape(name), "24 Early News", text, flags=re.IGNORECASE)
+    return text
+
+def load_saved_news():
+    if os.path.exists(DB_FILE):
+        try:
+            with open(DB_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except:
+            return []
+    return []
+
+def save_news(news_list):
+    try:
+        with open(DB_FILE, "w", encoding="utf-8") as f:
+            json.dump(news_list, f, ensure_ascii=False, indent=4)
+    except Exception as e:
+        print(f"Error saving DB: {e}")
+
+def fetch_and_accumulate_news():
+    existing_news = load_saved_news()
+    existing_links = {n['link'] for n in existing_news}
+    
+    new_items_added = False
+    headers = {'User-Agent': 'Mozilla/5.0'}
+    
+    for category, urls in RSS_FEEDS.items():
+        for url in urls:
+            try:
+                req = urllib.request.Request(url, headers=headers)
+                with urllib.request.urlopen(req, timeout=6) as response:
+                    xml_data = response.read()
+                    root = ET.fromstring(xml_data)
+                    channel = root.find('channel')
+                    if channel is not None:
+                        for item in channel.findall('item'):
+                            raw_title = item.find('title').text if item.find('title') is not None else ''
+                            pubDate = item.find('pubDate').text if item.find('pubDate') is not None else datetime.now().strftime('%d %b %Y')
+                            
+                            title = clean_news_text(raw_title)
+                            if not title:
+                                continue
+                                
+                            slug = re.sub(r'[^a-zA-Z0-9]', '-', title.lower())[:60].strip('-')
+                            slug = f"{slug}-{abs(hash(title)) % 10000}"
+                            
+                            img_url = "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?auto=format&fit=crop&w=1200&q=80"
+                            if category in ["Tech", "Auto"]:
+                                img_url = "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80"
+                            elif category in ["Business", "Trending"]:
+                                img_url = "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=80"
+                            elif category in ["India", "Cities"]:
+                                img_url = "https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=1200&q=80"
+                            elif category in ["Sports", "Cricket"]:
+                                img_url = "https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=1200&q=80"
+                            elif category == "World":
+                                img_url = "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80"
+
+                            if slug not in existing_links:
+                                full_content = f"""
+                                গুগল ট্রেন্ডসের রিয়েল-টাইম ডাটা অনুযায়ী '{title}' বিষয়টি বর্তমানে ব্যাপক চাঞ্চল্যের সৃষ্টি করেছে। 
+                                24 Early News-এর বিশেষ বিশ্লেষণ অনুযায়ী, এই ট্রেন্ডিং বিষয়ের সাথে জড়িত প্রতিটি তথ্য অত্যন্ত নিখুঁতভাবে যাচাই করা হয়েছে। 
+                                সংশ্লিষ্ট মহলের মতে, সাম্প্রতিক পরিস্থিতি অনুযায়ী এই আপডেটটি অত্যন্ত তাৎপর্যপূর্ণ। 
+                                আমাদের এডিটোরাল টিম এই বিষয়ে প্রতি মুহূর্তে আপডেট সংগ্রহ করছে। পাঠকদের সঠিক ও রিয়েল-টাইম তথ্য প্রদান করতে আমরা সর্বদা বদ্ধপরিকর।
+                                """
+                                
+                                news_item = {
+                                    "slug": slug,
+                                    "title": title,
+                                    "category": category,
+                                    "published": pubDate[:16],
+                                    "image": img_url,
+                                    "summary": f"বিশেষ ট্রেন্ডিং প্রতিবেদন: {title} সম্পর্কিত সর্বশেষ রিয়েল-টাইম আপডেট ও বিশ্লেষণ।",
+                                    "content": full_content.strip(),
+                                    "link": slug
+                                }
+                                existing_news.insert(0, news_item)
+                                existing_links.add(slug)
+                                new_items_added = True
+            except Exception as e:
+                print(f"Error fetching {category}: {e}")
+                
+    if new_items_added or not existing_news:
+        save_news(existing_news)
+        
+    return existing_news
+
+@app.route('/')
+def index():
+    cat = request.args.get('cat')
+    all_news = fetch_and_accumulate_news()
+    
+    if not all_news:
+        all_news = [
+            {
+                "slug": "sample-trending",
+                "title": "Top Google Trending Update for 2026 Live Now",
+                "category": "Trending",
+                "published": "14 Nov 2026",
+                "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
+                "summary": "Real-time trending news update loaded successfully.",
+                "content": "Live trending analysis and coverage.",
+                "link": "sample-trending"
+            }
+        ]
+
+    if cat:
+        filtered = [n for n in all_news if cat.lower() in n['category'].lower() or n['category'].lower() in cat.lower()]
+        if not filtered:
+            filtered = all_news
+    else:
+        filtered = all_news
+
+    return render_template('index.html', news=filtered)
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+@app.route('/privacy')
+def privacy():
+    return render_template('privacy.html')
+
+@app.route('/terms')
+def terms():
+    return render_template('terms.html')
+
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
+
+
+=================================================================
+FILE: requirements.txt
+=================================================================
+Flask==3.1.1
+Werkzeug==3.1.3
+gunicorn==23.0.0
+APScheduler==3.11.0
+
+
+=================================================================
+FILE: render.yaml
+=================================================================
+services:
+  - type: web
+    name: news-portal
+    runtime: python
+    buildCommand: "pip install --upgrade pip && pip install -r requirements.txt"
+    startCommand: "gunicorn --workers 2 --threads 4 --timeout 60 app:app"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.11
+      - key: DATABASE_PATH
+        value: /var/data/news.sqlite3
+      - key: NEWS_REFRESH_MINUTES
+        value: "10"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ADMIN_USERNAME
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+    disk:
+      name: news-data
+      mountPath: /var/data
+      sizeGB: 1
+
+
+=================================================================
+FILE: templates\index.html
+=================================================================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="https://24earlynews.com/">
+    
+    <title>24 Early News - Live Trending Portal</title>
+    
+    <!-- Tailwind CSS and FontAwesome -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        .dropdown-menu { display: none; }
+        .dropdown:hover .dropdown-menu { display: block; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-900 font-sans" id="bodyTheme">
+    
+    <!-- Top Utility Bar -->
+    <div class="bg-amber-600 text-white text-xs py-1 px-4 flex justify-between items-center shadow-xs">
+        <div class="flex items-center gap-2 font-bold">
+            <span class="tracking-wide">24 Early News Network</span>
+        </div>
+        <div class="flex items-center gap-4">
+            <span class="hidden md:inline text-[11px] text-amber-100">Preferred news source</span>
+            <div class="flex items-center gap-3 text-sm">
+                <a href="#" class="hover:text-amber-200" onclick="changeLanguage('en')" title="English">EN</a>
+                <a href="#" class="hover:text-amber-200" onclick="changeLanguage('hi')" title="Hindi">हिंदी</a>
+                <a href="#" class="hover:text-amber-200 font-bold" onclick="changeLanguage('bn')" title="Bengali">বাংলা</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Header -->
+    <header class="bg-blue-600 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <button onclick="toggleSidebar()" class="text-white text-xl hover:text-blue-200 focus:outline-none" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+                
+                <a href="/" class="flex flex-col items-center justify-center bg-blue-900 px-3 py-1 rounded shadow text-center">
+                    <div class="flex items-center gap-1">
+                        <span class="bg-yellow-400 text-blue-950 font-black px-1.5 py-0.5 text-sm rounded">24</span>
+                        <span class="text-sm font-black tracking-wider uppercase font-serif">EARLY NEWS</span>
+                    </div>
+                    <span class="text-[7px] tracking-widest text-yellow-300 font-bold uppercase -mt-0.5">THINK FIRST</span>
+                </a>
+            </div>
+            
+            <!-- Navbar Categories -->
+            <nav class="hidden lg:flex items-center gap-1 text-xs font-bold uppercase">
+                <a href="/?cat=LiveTV" class="hover:bg-blue-700 px-3 py-2 text-yellow-300 flex items-center gap-1"><i class="fa-solid fa-tower-broadcast"></i> Live TV</a>
+                <a href="/?cat=Latest" class="hover:bg-blue-700 px-3 py-2">Latest</a>
+                <a href="/?cat=India" class="hover:bg-blue-700 px-3 py-2">India</a>
+                <a href="/?cat=World" class="hover:bg-blue-700 px-3 py-2">World</a>
+                <a href="/?cat=Entertainment" class="hover:bg-blue-700 px-3 py-2">Entertainment</a>
+                <a href="/?cat=Sports" class="hover:bg-blue-700 px-3 py-2">Sports</a>
+                <a href="/?cat=Auto" class="hover:bg-blue-700 px-3 py-2">Auto</a>
+                <a href="/?cat=Tech" class="hover:bg-blue-700 px-3 py-2">Tech</a>
+                <a href="/?cat=Trending" class="hover:bg-blue-700 px-3 py-2">Trending</a>
+            </nav>
+
+            <div class="flex items-center">
+                <button class="text-white text-lg hover:text-yellow-300 transition px-2 py-1" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar Drawer Menu -->
+    <div id="sidebarMenu" class="fixed inset-0 bg-black/60 z-50 hidden transition-opacity">
+        <div class="bg-blue-600 text-white w-80 h-full p-6 overflow-y-auto shadow-2xl flex flex-col justify-between">
+            <div>
+                <div class="flex justify-between items-center mb-6 border-b border-blue-500 pb-4">
+                    <div class="flex items-center gap-2">
+                        <span class="bg-yellow-400 text-blue-950 font-black px-2 py-0.5 rounded text-lg">24</span>
+                        <span class="text-xl font-black uppercase font-serif">EARLY NEWS</span>
+                    </div>
+                    <button onclick="toggleSidebar()" class="text-white text-xl hover:text-black" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                
+                <ul class="space-y-3 text-sm font-semibold uppercase">
+                    <li><a href="/" class="block hover:text-yellow-200">Home</a></li>
+                    <li><a href="/?cat=LiveTV" class="block text-yellow-200">Live TV</a></li>
+                    <li><a href="/?cat=Latest" class="block hover:text-yellow-200">Latest</a></li>
+                    <li><a href="/?cat=India" class="block hover:text-yellow-200">India</a></li>
+                    <li><a href="/?cat=Sports" class="block hover:text-yellow-200">Sports</a></li>
+                    <li><a href="/?cat=Trending" class="block hover:text-yellow-200">Trending</a></li>
+                </ul>
+            </div>
+            <div class="mt-8 pt-4 border-t border-blue-500 text-center text-[10px] text-blue-200">
+                © 2026 24 Early News Network. DWIPRAJ MALLICK.
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto px-4 py-6">
+        <div class="text-xs font-black uppercase text-red-600 tracking-wider mb-3 flex items-center gap-2">
+            <span class="w-2 h-2 bg-red-600 rounded-full animate-ping"></span> Top Google Trending & Live News
+        </div>
+
+        {% if news and news|length > 0 %}
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- Left Big Featured Headline -->
+            <div class="lg:col-span-8 bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 flex flex-col justify-between">
+                <div>
+                    <div class="relative aspect-[16/9] overflow-hidden bg-slate-900 cursor-pointer" onclick='openModal({{ news[0] | tojson | safe }})'>
+                        <img src="{{ news[0].image }}" alt="{{ news[0].title }}" loading="lazy" class="w-full h-full object-cover">
+                        <span class="absolute top-4 left-4 bg-red-600 text-white text-xs font-black uppercase px-3 py-1 rounded shadow">
+                            {{ news[0].category }}
+                        </span>
+                    </div>
+                    <div class="p-6">
+                        <span class="text-xs text-slate-400 font-mono block mb-2">{{ news[0].published }}</span>
+                        <h2 class="text-2xl md:text-3xl font-black text-slate-900 hover:text-red-600 transition leading-snug mb-3 cursor-pointer" onclick='openModal({{ news[0] | tojson | safe }})'>
+                            {{ news[0].title }}
+                        </h2>
+                        <div class="text-sm text-slate-600 leading-relaxed">
+                            {{ news[0].summary }}
+                        </div>
+                    </div>
+                </div>
+                <div class="px-6 pb-5 pt-3 border-t border-gray-100 flex justify-between items-center">
+                    <button onclick='openModal({{ news[0] | tojson | safe }})' class="font-bold text-red-600 text-xs hover:underline bg-transparent border-none cursor-pointer">Read Full Story →</button>
+                    <span class="text-[11px] text-gray-400 font-mono">Source Verified</span>
+                </div>
+            </div>
+
+            <!-- Right Side Highlights -->
+            <div class="lg:col-span-4 flex flex-col gap-5">
+                <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-center shadow-xs">
+                    <span class="text-[10px] font-bold text-amber-700 uppercase tracking-widest block mb-2">Advertisement</span>
+                    <div class="bg-gradient-to-r from-amber-500 to-red-500 text-white p-4 rounded-lg font-bold text-sm shadow">
+                        Special Featured Brand Partner Spot
+                    </div>
+                </div>
+
+                <div class="bg-blue-600 text-white text-xs font-black uppercase px-3 py-2.5 rounded-t-lg tracking-wider">Top Trending Highlights</div>
+                {% for item in news[1:6] %}
+                <div class="bg-white rounded-lg p-3 border border-gray-200 shadow-xs flex gap-3 hover:border-red-500 transition cursor-pointer" onclick='openModal({{ item | tojson | safe }})'>
+                    {% if item.image %}
+                    <div class="w-24 h-20 shrink-0 rounded overflow-hidden bg-gray-100">
+                        <img src="{{ item.image }}" alt="{{ item.title }}" loading="lazy" class="w-full h-full object-cover">
+                    </div>
+                    {% endif %}
+                    <div class="flex flex-col justify-between overflow-hidden">
+                        <div>
+                            <span class="text-[10px] font-bold text-red-600 uppercase block">{{ item.category }}</span>
+                            <h4 class="text-xs font-bold text-slate-900 line-clamp-2 mt-0.5 hover:text-red-600">
+                                {{ item.title }}
+                            </h4>
+                        </div>
+                        <span class="text-[10px] text-slate-400 font-mono">{{ item.published }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Additional News Grid -->
+        <div class="mt-8">
+            <div class="bg-blue-600 text-white text-xs font-black uppercase px-4 py-2.5 rounded-t-lg tracking-wider mb-4">
+                <span><i class="fa-solid fa-newspaper"></i> Latest Google Trending Dispatches</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {% for item in news[6:15] %}
+                <div class="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 flex flex-col justify-between hover:border-blue-500 transition cursor-pointer" onclick='openModal({{ item | tojson | safe }})'>
+                    <div>
+                        <div class="aspect-[16/9] overflow-hidden bg-slate-900">
+                            <img src="{{ item.image }}" alt="{{ item.title }}" loading="lazy" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-4">
+                            <span class="text-[10px] font-bold text-red-600 uppercase block mb-1">{{ item.category }}</span>
+                            <h3 class="text-sm font-bold text-slate-900 line-clamp-2 hover:text-blue-600 transition">
+                                {{ item.title }}
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="px-4 pb-4 pt-2 border-t border-gray-100 flex justify-between items-center text-[11px]">
+                        <span class="text-slate-400 font-mono">{{ item.published }}</span>
+                        <span class="font-bold text-blue-600 hover:underline">Read →</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </main>
+
+    <!-- News Popup Modal -->
+    <div id="newsModal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative p-6 md:p-8">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-500 hover:text-slate-900 text-2xl font-bold">×</button>
+            <div class="flex items-center gap-3 mb-3">
+                <span id="modalCategory" class="bg-red-600 text-white text-xs font-black uppercase px-3 py-1 rounded"></span>
+                <span id="modalDate" class="text-xs text-slate-400 font-mono"></span>
+            </div>
+            <h2 id="modalTitle" class="text-xl md:text-2xl font-black text-slate-900 mb-4"></h2>
+            <div class="aspect-[16/9] overflow-hidden rounded-xl bg-slate-900 mb-6">
+                <img id="modalImage" src="" alt="" class="w-full h-full object-cover">
+            </div>
+            <div id="modalContent" class="text-sm md:text-base text-slate-700 leading-relaxed space-y-4"></div>
+            <div class="mt-8 pt-4 border-t border-gray-200 flex justify-between items-center text-xs text-slate-500">
+                <span>Published by: <strong>DWIPRAJ MALLICK (AZIZNAGAR, 743425)</strong></span>
+                <button onclick="closeModal()" class="bg-blue-600 text-white px-4 py-2 rounded font-bold">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Professional Footer -->
+    <footer class="bg-blue-950 text-gray-300 text-xs border-t-4 border-red-600 mt-20 pt-12 pb-8 text-center">
+        <p>© 2026 <strong>24 Early News Network</strong>. All Rights Reserved. Published by <strong>DWIPRAJ MALLICK</strong>.</p>
+    </footer>
+
+    <script>
+        function openModal(item) {
+            document.getElementById('modalCategory').innerText = item.category;
+            document.getElementById('modalDate').innerText = item.published;
+            document.getElementById('modalTitle').innerText = item.title;
+            document.getElementById('modalImage').src = item.image;
+            document.getElementById('modalContent').innerHTML = <p class="font-bold text-slate-900 text-base"></p><p class="mt-4"></p><p class="mt-4">24 Early News নেটওয়ার্কের বিশেষ প্রতিনিধি দলের সংগ্রহ করা তথ্য অনুযায়ী, এই ঘটনার পেছনে একাধিক গুরুত্বপূর্ণ দিক রয়েছে যা সাধারণ মানুষের নজর কেড়েছে। এই আপডেটটি রিয়েল-টাইমে আপডেট করা হয়েছে।</p>;
+            document.getElementById('newsModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('newsModal').classList.add('hidden');
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebarMenu');
+            sidebar.classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>
+
+
+=================================================================
+FILE: templates\detail.html
+=================================================================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="https://24earlynews.com{{ article.link }}">
+    <title>{{ article.title }} - 24 Early News</title>
+    <meta name="description" content="{{ article.summary }}">
+    <script src="https://cdn.tailwindcss.com" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-100 text-gray-900 font-sans">
+    
+    <!-- Top Utility Bar -->
+    <div class="bg-amber-600 text-white text-xs py-1 px-4 flex justify-between items-center shadow-xs">
+        <div class="flex items-center gap-2 font-bold">
+            <span class="tracking-wide">24 Early News Network</span>
+        </div>
+        <div class="flex items-center gap-4">
+            <span class="hidden md:inline text-[11px] text-amber-100">Preferred news source</span>
+            <a href="/" class="hover:text-amber-200 font-bold">â† Back to Home</a>
+        </div>
+    </div>
+
+    <!-- Main Header -->
+    <header class="bg-blue-600 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+            <a href="/" class="flex flex-col items-center justify-center bg-blue-900 px-3 py-1 rounded shadow text-center">
+                <div class="flex items-center gap-1">
+                    <span class="bg-yellow-400 text-blue-950 font-black px-1.5 py-0.5 text-sm rounded">24</span>
+                    <span class="text-sm font-black tracking-wider uppercase font-serif">EARLY NEWS</span>
+                </div>
+                <span class="text-[7px] tracking-widest text-yellow-300 font-bold uppercase -mt-0.5">THINK FIRST</span>
+            </a>
+            <a href="/" class="bg-blue-700 hover:bg-blue-800 text-xs font-bold uppercase px-4 py-2 rounded transition">Home Portal</a>
+        </div>
+    </header>
+
+    <!-- News Article Content -->
+    <main class="max-w-4xl mx-auto px-4 py-8">
+        <article class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden p-6 md:p-10">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="bg-red-600 text-white text-xs font-black uppercase px-3 py-1 rounded">{{ article.category }}</span>
+                <span class="text-xs text-slate-400 font-mono"><i class="fa-regular fa-clock"></i> {{ article.published }}</span>
+                <span class="text-xs text-slate-500">Source: {{ article.source_name }}</span>
+            </div>
+            
+            <h1 class="text-2xl md:text-4xl font-black text-slate-900 leading-tight mb-6">
+                {{ article.title }}
+            </h1>
+
+            <div class="relative aspect-[16/9] overflow-hidden rounded-xl bg-slate-900 mb-8 shadow">
+                <img src="{{ article.image }}" alt="{{ article.title }}" class="w-full h-full object-cover">
+            </div>
+
+            <div class="text-base md:text-lg text-slate-700 leading-relaxed space-y-4 font-normal">
+                <p class="font-bold text-slate-900 text-xl border-l-4 border-red-600 pl-4 py-1 bg-red-50/50 mb-6">
+                    {{ article.summary }}
+                </p>
+                <p>
+                    {{ article.content }}
+                </p>
+                <p class="text-sm text-slate-500">à¦à¦‡ à¦ªà¦¾à¦¤à¦¾à§Ÿ RSS à¦«à¦¿à¦¡à§‡ à¦ªà¦¾à¦“à§Ÿà¦¾ à¦¶à¦¿à¦°à§‹à¦¨à¦¾à¦® à¦“ à¦¸à¦‚à¦•à§à¦·à¦¿à¦ªà§à¦¤ à¦¬à¦¿à¦¬à¦°à¦£ à¦¦à§‡à¦–à¦¾à¦¨à§‹ à¦¹à¦šà§à¦›à§‡à¥¤ à¦ªà§‚à¦°à§à¦£ à¦ªà§à¦°à¦¤à¦¿à¦¬à§‡à¦¦à¦¨ à¦ªà§œà¦¤à§‡ à¦®à§‚à¦² à¦ªà§à¦°à¦•à¦¾à¦¶à¦•à§‡à¦° à¦“à§Ÿà§‡à¦¬à¦¸à¦¾à¦‡à¦Ÿà§‡ à¦¯à¦¾à¦¨à¥¤</p>
+                <a href="{{ article.source_url }}" target="_blank" rel="noopener noreferrer" class="inline-flex bg-red-600 text-white px-5 py-3 rounded-lg font-bold">Read original report at {{ article.source_name }}</a>
+            </div>
+
+            <div class="mt-10 pt-6 border-t border-gray-200 flex justify-between items-center text-xs text-slate-500">
+                <span>Published by: <strong>DWIPRAJ MALLICK (AZIZNAGAR, 743425)</strong></span>
+                <a href="/" class="font-bold text-blue-600 hover:underline">â† Read More News</a>
+            </div>
+        </article>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-blue-950 text-gray-300 text-xs border-t-4 border-red-600 mt-20 pt-10 pb-6 text-center">
+        <p>Â© 2026 <strong>24 Early News Network</strong>. All Rights Reserved. Published by <strong>DWIPRAJ MALLICK</strong>.</p>
+    </footer>
+</body>
+</html>
+
+
+=================================================================
+FILE: templates\single.html
+=================================================================
+
+
+=================================================================
+FILE: templates\submit.html
+=================================================================
+
+
+=================================================================
+FILE: templates\about.html
+=================================================================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - 24 Early News</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-slate-800 p-6 md:p-12 font-sans">
+    <div class="max-w-3xl mx-auto bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-gray-200">
+        <h1 class="text-3xl font-black text-red-700 mb-6">About Us</h1>
+        <p class="text-base leading-relaxed mb-4">Welcome to <strong>24 Early News</strong> (24earlynews.com). We are a modern digital news platform dedicated to delivering fast, accurate, and comprehensive news coverages across India, World, Business, and Technology.</p>
+        <p class="text-base leading-relaxed mb-4">Our autonomous news aggregation and editorial pipeline ensures that our readers get timely updates with strict adherence to journalistic ethics and transparency.</p>
+        <div class="mt-8 pt-6 border-t border-gray-100">
+            <a href="/" class="inline-block bg-red-600 text-white font-bold px-5 py-2 rounded-lg text-sm hover:bg-red-700 transition">← Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>
+
+
+=================================================================
+FILE: templates\contact.html
+=================================================================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - 24 Early News</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-slate-800 p-6 md:p-12 font-sans">
+    <div class="max-w-3xl mx-auto bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-gray-200">
+        <h1 class="text-3xl font-black text-red-700 mb-6">Contact Us</h1>
+        <p class="text-sm leading-relaxed mb-4">If you have any questions, feedback, or news tips regarding 24 Early News, feel free to reach out to us directly.</p>
+        
+        <div class="bg-slate-50 p-6 rounded-xl border border-gray-200 my-6">
+            <p class="text-sm font-bold text-slate-900 mb-2">Publisher & Editor:</p>
+            <p class="text-sm text-slate-700 mb-1"><strong>Name:</strong> DWIPRAJ MALLICK</p>
+            <p class="text-sm text-slate-700 mb-1"><strong>Email:</strong> dwiprajmallick@gmail.com</p>
+            <p class="text-sm text-slate-700"><strong>Location:</strong> AZIZNAGAR, West Bengal, India - 743425</p>
+        </div>
+
+        <div class="mt-8 pt-6 border-t border-gray-100">
+            <a href="/" class="inline-block bg-red-600 text-white font-bold px-5 py-2 rounded-lg text-sm hover:bg-red-700 transition">← Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>
+
+
+=================================================================
+PYTHON VERSION
+=================================================================
+Python 3.11.9
+
+
+=================================================================
+GIT STATUS
+=================================================================
+

@@ -1,0 +1,711 @@
+﻿========== 24 EARLY NEWS - NEXT CHECK (READ ONLY) ==========
+Date: 2026-11-15 15:53:22
+Project: C:\Users\dwipr\news-portal
+
+--- FILES ---
+.git | DIR bytes
+.venv | DIR bytes
+static | DIR bytes
+templates | DIR bytes
+24EarlyNews-Diagnostic.txt | 34847 bytes
+24earlynews-project-report.txt | 44160 bytes
+24earlynews.zip | 12926 bytes
+app.py | 8853 bytes
+news.sqlite3 | 991232 bytes
+render.yaml | 627 bytes
+requirements.txt | 66 bytes
+UPGRADE-INSTRUCTIONS-BN.txt | 3719 bytes
+
+--- DATABASE SCHEMA / COUNTS ---
+DB_SIZE_BYTES: 991232
+
+TABLE: app_meta
+CREATE_SQL: CREATE TABLE app_meta (key TEXT PRIMARY KEY, value TEXT)
+COLUMNS: [{"cid": 0, "name": "key", "type": "TEXT", "notnull": 0, "dflt_value": null, "pk": 1}, {"cid": 1, "name": "value", "type": "TEXT", "notnull": 0, "dflt_value": null, "pk": 0}]
+ROW_COUNT: 2
+
+TABLE: news
+CREATE_SQL: CREATE TABLE news (
+            id INTEGER PRIMARY KEY AUTOINCREMENT, slug TEXT UNIQUE NOT NULL,
+            title TEXT NOT NULL, category TEXT NOT NULL, published TEXT,
+            image TEXT, summary TEXT, content TEXT, source_name TEXT,
+            source_url TEXT NOT NULL, created_at TEXT NOT NULL,
+            language TEXT DEFAULT 'en')
+COLUMNS: [{"cid": 0, "name": "id", "type": "INTEGER", "notnull": 0, "dflt_value": null, "pk": 1}, {"cid": 1, "name": "slug", "type": "TEXT", "notnull": 1, "dflt_value": null, "pk": 0}, {"cid": 2, "name": "title", "type": "TEXT", "notnull": 1, "dflt_value": null, "pk": 0}, {"cid": 3, "name": "category", "type": "TEXT", "notnull": 1, "dflt_value": null, "pk": 0}, {"cid": 4, "name": "published", "type": "TEXT", "notnull": 0, "dflt_value": null, "pk": 0}, {"cid": 5, "name": "image", "type": "TEXT", "notnull": 0, "dflt_value": null, "pk": 0}, {"cid": 6, "name": "summary", "type": "TEXT", "notnull": 0, "dflt_value": null, "pk": 0}, {"cid": 7, "name": "content", "type": "TEXT", "notnull": 0, "dflt_value": null, "pk": 0}, {"cid": 8, "name": "source_name", "type": "TEXT", "notnull": 0, "dflt_value": null, "pk": 0}, {"cid": 9, "name": "source_url", "type": "TEXT", "notnull": 1, "dflt_value": null, "pk": 0}, {"cid": 10, "name": "created_at", "type": "TEXT", "notnull": 1, "dflt_value": null, "pk": 0}, {"cid": 11, "name": "language", "type": "TEXT", "notnull": 0, "dflt_value": "'en'", "pk": 0}]
+ROW_COUNT: 865
+
+TABLE: sqlite_sequence
+CREATE_SQL: CREATE TABLE sqlite_sequence(name,seq)
+COLUMNS: [{"cid": 0, "name": "name", "type": "", "notnull": 0, "dflt_value": null, "pk": 0}, {"cid": 1, "name": "seq", "type": "", "notnull": 0, "dflt_value": null, "pk": 0}]
+ROW_COUNT: 1
+
+--- JSON NEWS STORE STATUS ---
+news_store.json NOT FOUND
+
+--- TEMPLATE FILES (FULL CONTENT, UP TO 1200 LINES EACH) ---
+
+===== TEMPLATE: about.html | 1234 bytes =====
+   1: <!DOCTYPE html>
+   2: <html lang="en">
+   3: <head>
+   4:     <meta charset="UTF-8">
+   5:     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   6:     <title>About Us - 24 Early News</title>
+   7:     <script src="https://cdn.tailwindcss.com"></script>
+   8: </head>
+   9: <body class="bg-gray-50 text-slate-800 p-6 md:p-12 font-sans">
+  10:     <div class="max-w-3xl mx-auto bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-gray-200">
+  11:         <h1 class="text-3xl font-black text-red-700 mb-6">About Us</h1>
+  12:         <p class="text-base leading-relaxed mb-4">Welcome to <strong>24 Early News</strong> (24earlynews.com). We are a modern digital news platform dedicated to delivering fast, accurate, and comprehensive news coverages across India, World, Business, and Technology.</p>
+  13:         <p class="text-base leading-relaxed mb-4">Our autonomous news aggregation and editorial pipeline ensures that our readers get timely updates with strict adherence to journalistic ethics and transparency.</p>
+  14:         <div class="mt-8 pt-6 border-t border-gray-100">
+  15:             <a href="/" class="inline-block bg-red-600 text-white font-bold px-5 py-2 rounded-lg text-sm hover:bg-red-700 transition">← Back to Home</a>
+  16:         </div>
+  17:     </div>
+  18: </body>
+  19: </html>
+
+===== TEMPLATE: contact.html | 1416 bytes =====
+   1: <!DOCTYPE html>
+   2: <html lang="en">
+   3: <head>
+   4:     <meta charset="UTF-8">
+   5:     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   6:     <title>Contact Us - 24 Early News</title>
+   7:     <script src="https://cdn.tailwindcss.com"></script>
+   8: </head>
+   9: <body class="bg-gray-50 text-slate-800 p-6 md:p-12 font-sans">
+  10:     <div class="max-w-3xl mx-auto bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-gray-200">
+  11:         <h1 class="text-3xl font-black text-red-700 mb-6">Contact Us</h1>
+  12:         <p class="text-sm leading-relaxed mb-4">If you have any questions, feedback, or news tips regarding 24 Early News, feel free to reach out to us directly.</p>
+  13:         
+  14:         <div class="bg-slate-50 p-6 rounded-xl border border-gray-200 my-6">
+  15:             <p class="text-sm font-bold text-slate-900 mb-2">Publisher & Editor:</p>
+  16:             <p class="text-sm text-slate-700 mb-1"><strong>Name:</strong> DWIPRAJ MALLICK</p>
+  17:             <p class="text-sm text-slate-700 mb-1"><strong>Email:</strong> dwiprajmallick@gmail.com</p>
+  18:             <p class="text-sm text-slate-700"><strong>Location:</strong> AZIZNAGAR, West Bengal, India - 743425</p>
+  19:         </div>
+  20: 
+  21:         <div class="mt-8 pt-6 border-t border-gray-100">
+  22:             <a href="/" class="inline-block bg-red-600 text-white font-bold px-5 py-2 rounded-lg text-sm hover:bg-red-700 transition">← Back to Home</a>
+  23:         </div>
+  24:     </div>
+  25: </body>
+  26: </html>
+
+===== TEMPLATE: detail.html | 4619 bytes =====
+   1: <!DOCTYPE html>
+   2: <html lang="en">
+   3: <head>
+   4:     <meta charset="UTF-8">
+   5:     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   6:     <link rel="canonical" href="https://24earlynews.com{{ article.link }}">
+   7:     <title>{{ article.title }} - 24 Early News</title>
+   8:     <meta name="description" content="{{ article.summary }}">
+   9:     <script src="https://cdn.tailwindcss.com" defer></script>
+  10:     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  11: </head>
+  12: <body class="bg-gray-100 text-gray-900 font-sans">
+  13:     
+  14:     <!-- Top Utility Bar -->
+  15:     <div class="bg-amber-600 text-white text-xs py-1 px-4 flex justify-between items-center shadow-xs">
+  16:         <div class="flex items-center gap-2 font-bold">
+  17:             <span class="tracking-wide">24 Early News Network</span>
+  18:         </div>
+  19:         <div class="flex items-center gap-4">
+  20:             <span class="hidden md:inline text-[11px] text-amber-100">Preferred news source</span>
+  21:             <a href="/" class="hover:text-amber-200 font-bold">â† Back to Home</a>
+  22:         </div>
+  23:     </div>
+  24: 
+  25:     <!-- Main Header -->
+  26:     <header class="bg-blue-600 text-white shadow-md sticky top-0 z-50">
+  27:         <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+  28:             <a href="/" class="flex flex-col items-center justify-center bg-blue-900 px-3 py-1 rounded shadow text-center">
+  29:                 <div class="flex items-center gap-1">
+  30:                     <span class="bg-yellow-400 text-blue-950 font-black px-1.5 py-0.5 text-sm rounded">24</span>
+  31:                     <span class="text-sm font-black tracking-wider uppercase font-serif">EARLY NEWS</span>
+  32:                 </div>
+  33:                 <span class="text-[7px] tracking-widest text-yellow-300 font-bold uppercase -mt-0.5">THINK FIRST</span>
+  34:             </a>
+  35:             <a href="/" class="bg-blue-700 hover:bg-blue-800 text-xs font-bold uppercase px-4 py-2 rounded transition">Home Portal</a>
+  36:         </div>
+  37:     </header>
+  38: 
+  39:     <!-- News Article Content -->
+  40:     <main class="max-w-4xl mx-auto px-4 py-8">
+  41:         <article class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden p-6 md:p-10">
+  42:             <div class="flex items-center gap-3 mb-4">
+  43:                 <span class="bg-red-600 text-white text-xs font-black uppercase px-3 py-1 rounded">{{ article.category }}</span>
+  44:                 <span class="text-xs text-slate-400 font-mono"><i class="fa-regular fa-clock"></i> {{ article.published }}</span>
+  45:                 <span class="text-xs text-slate-500">Source: {{ article.source_name }}</span>
+  46:             </div>
+  47:             
+  48:             <h1 class="text-2xl md:text-4xl font-black text-slate-900 leading-tight mb-6">
+  49:                 {{ article.title }}
+  50:             </h1>
+  51: 
+  52:             <div class="relative aspect-[16/9] overflow-hidden rounded-xl bg-slate-900 mb-8 shadow">
+  53:                 <img src="{{ article.image }}" alt="{{ article.title }}" class="w-full h-full object-cover">
+  54:             </div>
+  55: 
+  56:             <div class="text-base md:text-lg text-slate-700 leading-relaxed space-y-4 font-normal">
+  57:                 <p class="font-bold text-slate-900 text-xl border-l-4 border-red-600 pl-4 py-1 bg-red-50/50 mb-6">
+  58:                     {{ article.summary }}
+  59:                 </p>
+  60:                 <p>
+  61:                     {{ article.content }}
+  62:                 </p>
+  63:                 <p class="text-sm text-slate-500">à¦à¦‡ à¦ªà¦¾à¦¤à¦¾à§Ÿ RSS à¦«à¦¿à¦¡à§‡ à¦ªà¦¾à¦“à§Ÿà¦¾ à¦¶à¦¿à¦°à§‹à¦¨à¦¾à¦® à¦“ à¦¸à¦‚à¦•à§à¦·à¦¿à¦ªà§à¦¤ à¦¬à¦¿à¦¬à¦°à¦£ à¦¦à§‡à¦–à¦¾à¦¨à§‹ à¦¹à¦šà§à¦›à§‡à¥¤ à¦ªà§‚à¦°à§à¦£ à¦ªà§à¦°à¦¤à¦¿à¦¬à§‡à¦¦à¦¨ à¦ªà§œà¦¤à§‡ à¦®à§‚à¦² à¦ªà§à¦°à¦•à¦¾à¦¶à¦•à§‡à¦° à¦“à§Ÿà§‡à¦¬à¦¸à¦¾à¦‡à¦Ÿà§‡ à¦¯à¦¾à¦¨à¥¤</p>
+  64:                 <a href="{{ article.source_url }}" target="_blank" rel="noopener noreferrer" class="inline-flex bg-red-600 text-white px-5 py-3 rounded-lg font-bold">Read original report at {{ article.source_name }}</a>
+  65:             </div>
+  66: 
+  67:             <div class="mt-10 pt-6 border-t border-gray-200 flex justify-between items-center text-xs text-slate-500">
+  68:                 <span>Published by: <strong>DWIPRAJ MALLICK (AZIZNAGAR, 743425)</strong></span>
+  69:                 <a href="/" class="font-bold text-blue-600 hover:underline">â† Read More News</a>
+  70:             </div>
+  71:         </article>
+  72:     </main>
+  73: 
+  74:     <!-- Footer -->
+  75:     <footer class="bg-blue-950 text-gray-300 text-xs border-t-4 border-red-600 mt-20 pt-10 pb-6 text-center">
+  76:         <p>Â© 2026 <strong>24 Early News Network</strong>. All Rights Reserved. Published by <strong>DWIPRAJ MALLICK</strong>.</p>
+  77:     </footer>
+  78: </body>
+  79: </html>
+
+===== TEMPLATE: index.html | 14756 bytes =====
+   1: <!DOCTYPE html>
+   2: <html lang="en">
+   3: <head>
+   4:     <meta charset="UTF-8">
+   5:     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   6:     <link rel="canonical" href="https://24earlynews.com/">
+   7:     
+   8:     <title>24 Early News - Live Trending Portal</title>
+   9:     
+  10:     <!-- Tailwind CSS and FontAwesome -->
+  11:     <script src="https://cdn.tailwindcss.com"></script>
+  12:     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  13:     
+  14:     <style>
+  15:         .dropdown-menu { display: none; }
+  16:         .dropdown:hover .dropdown-menu { display: block; }
+  17:     </style>
+  18: </head>
+  19: <body class="bg-gray-100 text-gray-900 font-sans" id="bodyTheme">
+  20:     
+  21:     <!-- Top Utility Bar -->
+  22:     <div class="bg-amber-600 text-white text-xs py-1 px-4 flex justify-between items-center shadow-xs">
+  23:         <div class="flex items-center gap-2 font-bold">
+  24:             <span class="tracking-wide">24 Early News Network</span>
+  25:         </div>
+  26:         <div class="flex items-center gap-4">
+  27:             <span class="hidden md:inline text-[11px] text-amber-100">Preferred news source</span>
+  28:             <div class="flex items-center gap-3 text-sm">
+  29:                 <a href="#" class="hover:text-amber-200" onclick="changeLanguage('en')" title="English">EN</a>
+  30:                 <a href="#" class="hover:text-amber-200" onclick="changeLanguage('hi')" title="Hindi">हिंदी</a>
+  31:                 <a href="#" class="hover:text-amber-200 font-bold" onclick="changeLanguage('bn')" title="Bengali">বাংলা</a>
+  32:             </div>
+  33:         </div>
+  34:     </div>
+  35: 
+  36:     <!-- Main Header -->
+  37:     <header class="bg-blue-600 text-white shadow-md sticky top-0 z-50">
+  38:         <div class="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
+  39:             <div class="flex items-center gap-3">
+  40:                 <button onclick="toggleSidebar()" class="text-white text-xl hover:text-blue-200 focus:outline-none" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+  41:                 
+  42:                 <a href="/" class="flex flex-col items-center justify-center bg-blue-900 px-3 py-1 rounded shadow text-center">
+  43:                     <div class="flex items-center gap-1">
+  44:                         <span class="bg-yellow-400 text-blue-950 font-black px-1.5 py-0.5 text-sm rounded">24</span>
+  45:                         <span class="text-sm font-black tracking-wider uppercase font-serif">EARLY NEWS</span>
+  46:                     </div>
+  47:                     <span class="text-[7px] tracking-widest text-yellow-300 font-bold uppercase -mt-0.5">THINK FIRST</span>
+  48:                 </a>
+  49:             </div>
+  50:             
+  51:             <!-- Navbar Categories -->
+  52:             <nav class="hidden lg:flex items-center gap-1 text-xs font-bold uppercase">
+  53:                 <a href="/?cat=LiveTV" class="hover:bg-blue-700 px-3 py-2 text-yellow-300 flex items-center gap-1"><i class="fa-solid fa-tower-broadcast"></i> Live TV</a>
+  54:                 <a href="/?cat=Latest" class="hover:bg-blue-700 px-3 py-2">Latest</a>
+  55:                 <a href="/?cat=India" class="hover:bg-blue-700 px-3 py-2">India</a>
+  56:                 <a href="/?cat=World" class="hover:bg-blue-700 px-3 py-2">World</a>
+  57:                 <a href="/?cat=Entertainment" class="hover:bg-blue-700 px-3 py-2">Entertainment</a>
+  58:                 <a href="/?cat=Sports" class="hover:bg-blue-700 px-3 py-2">Sports</a>
+  59:                 <a href="/?cat=Auto" class="hover:bg-blue-700 px-3 py-2">Auto</a>
+  60:                 <a href="/?cat=Tech" class="hover:bg-blue-700 px-3 py-2">Tech</a>
+  61:                 <a href="/?cat=Trending" class="hover:bg-blue-700 px-3 py-2">Trending</a>
+  62:             </nav>
+  63: 
+  64:             <div class="flex items-center">
+  65:                 <button class="text-white text-lg hover:text-yellow-300 transition px-2 py-1" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
+  66:             </div>
+  67:         </div>
+  68:     </header>
+  69: 
+  70:     <!-- Sidebar Drawer Menu -->
+  71:     <div id="sidebarMenu" class="fixed inset-0 bg-black/60 z-50 hidden transition-opacity">
+  72:         <div class="bg-blue-600 text-white w-80 h-full p-6 overflow-y-auto shadow-2xl flex flex-col justify-between">
+  73:             <div>
+  74:                 <div class="flex justify-between items-center mb-6 border-b border-blue-500 pb-4">
+  75:                     <div class="flex items-center gap-2">
+  76:                         <span class="bg-yellow-400 text-blue-950 font-black px-2 py-0.5 rounded text-lg">24</span>
+  77:                         <span class="text-xl font-black uppercase font-serif">EARLY NEWS</span>
+  78:                     </div>
+  79:                     <button onclick="toggleSidebar()" class="text-white text-xl hover:text-black" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+  80:                 </div>
+  81:                 
+  82:                 <ul class="space-y-3 text-sm font-semibold uppercase">
+  83:                     <li><a href="/" class="block hover:text-yellow-200">Home</a></li>
+  84:                     <li><a href="/?cat=LiveTV" class="block text-yellow-200">Live TV</a></li>
+  85:                     <li><a href="/?cat=Latest" class="block hover:text-yellow-200">Latest</a></li>
+  86:                     <li><a href="/?cat=India" class="block hover:text-yellow-200">India</a></li>
+  87:                     <li><a href="/?cat=Sports" class="block hover:text-yellow-200">Sports</a></li>
+  88:                     <li><a href="/?cat=Trending" class="block hover:text-yellow-200">Trending</a></li>
+  89:                 </ul>
+  90:             </div>
+  91:             <div class="mt-8 pt-4 border-t border-blue-500 text-center text-[10px] text-blue-200">
+  92:                 © 2026 24 Early News Network. DWIPRAJ MALLICK.
+  93:             </div>
+  94:         </div>
+  95:     </div>
+  96: 
+  97:     <!-- Main Content Area -->
+  98:     <main class="max-w-7xl mx-auto px-4 py-6">
+  99:         <div class="text-xs font-black uppercase text-red-600 tracking-wider mb-3 flex items-center gap-2">
+ 100:             <span class="w-2 h-2 bg-red-600 rounded-full animate-ping"></span> Top Google Trending & Live News
+ 101:         </div>
+ 102: 
+ 103:         {% if news and news|length > 0 %}
+ 104:         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+ 105:             <!-- Left Big Featured Headline -->
+ 106:             <div class="lg:col-span-8 bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 flex flex-col justify-between">
+ 107:                 <div>
+ 108:                     <div class="relative aspect-[16/9] overflow-hidden bg-slate-900 cursor-pointer" onclick='openModal({{ news[0] | tojson | safe }})'>
+ 109:                         <img src="{{ news[0].image }}" alt="{{ news[0].title }}" loading="lazy" class="w-full h-full object-cover">
+ 110:                         <span class="absolute top-4 left-4 bg-red-600 text-white text-xs font-black uppercase px-3 py-1 rounded shadow">
+ 111:                             {{ news[0].category }}
+ 112:                         </span>
+ 113:                     </div>
+ 114:                     <div class="p-6">
+ 115:                         <span class="text-xs text-slate-400 font-mono block mb-2">{{ news[0].published }}</span>
+ 116:                         <h2 class="text-2xl md:text-3xl font-black text-slate-900 hover:text-red-600 transition leading-snug mb-3 cursor-pointer" onclick='openModal({{ news[0] | tojson | safe }})'>
+ 117:                             {{ news[0].title }}
+ 118:                         </h2>
+ 119:                         <div class="text-sm text-slate-600 leading-relaxed">
+ 120:                             {{ news[0].summary }}
+ 121:                         </div>
+ 122:                     </div>
+ 123:                 </div>
+ 124:                 <div class="px-6 pb-5 pt-3 border-t border-gray-100 flex justify-between items-center">
+ 125:                     <button onclick='openModal({{ news[0] | tojson | safe }})' class="font-bold text-red-600 text-xs hover:underline bg-transparent border-none cursor-pointer">Read Full Story →</button>
+ 126:                     <span class="text-[11px] text-gray-400 font-mono">Source Verified</span>
+ 127:                 </div>
+ 128:             </div>
+ 129: 
+ 130:             <!-- Right Side Highlights -->
+ 131:             <div class="lg:col-span-4 flex flex-col gap-5">
+ 132:                 <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-center shadow-xs">
+ 133:                     <span class="text-[10px] font-bold text-amber-700 uppercase tracking-widest block mb-2">Advertisement</span>
+ 134:                     <div class="bg-gradient-to-r from-amber-500 to-red-500 text-white p-4 rounded-lg font-bold text-sm shadow">
+ 135:                         Special Featured Brand Partner Spot
+ 136:                     </div>
+ 137:                 </div>
+ 138: 
+ 139:                 <div class="bg-blue-600 text-white text-xs font-black uppercase px-3 py-2.5 rounded-t-lg tracking-wider">Top Trending Highlights</div>
+ 140:                 {% for item in news[1:6] %}
+ 141:                 <div class="bg-white rounded-lg p-3 border border-gray-200 shadow-xs flex gap-3 hover:border-red-500 transition cursor-pointer" onclick='openModal({{ item | tojson | safe }})'>
+ 142:                     {% if item.image %}
+ 143:                     <div class="w-24 h-20 shrink-0 rounded overflow-hidden bg-gray-100">
+ 144:                         <img src="{{ item.image }}" alt="{{ item.title }}" loading="lazy" class="w-full h-full object-cover">
+ 145:                     </div>
+ 146:                     {% endif %}
+ 147:                     <div class="flex flex-col justify-between overflow-hidden">
+ 148:                         <div>
+ 149:                             <span class="text-[10px] font-bold text-red-600 uppercase block">{{ item.category }}</span>
+ 150:                             <h4 class="text-xs font-bold text-slate-900 line-clamp-2 mt-0.5 hover:text-red-600">
+ 151:                                 {{ item.title }}
+ 152:                             </h4>
+ 153:                         </div>
+ 154:                         <span class="text-[10px] text-slate-400 font-mono">{{ item.published }}</span>
+ 155:                     </div>
+ 156:                 </div>
+ 157:                 {% endfor %}
+ 158:             </div>
+ 159:         </div>
+ 160: 
+ 161:         <!-- Additional News Grid -->
+ 162:         <div class="mt-8">
+ 163:             <div class="bg-blue-600 text-white text-xs font-black uppercase px-4 py-2.5 rounded-t-lg tracking-wider mb-4">
+ 164:                 <span><i class="fa-solid fa-newspaper"></i> Latest Google Trending Dispatches</span>
+ 165:             </div>
+ 166:             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+ 167:                 {% for item in news[6:15] %}
+ 168:                 <div class="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 flex flex-col justify-between hover:border-blue-500 transition cursor-pointer" onclick='openModal({{ item | tojson | safe }})'>
+ 169:                     <div>
+ 170:                         <div class="aspect-[16/9] overflow-hidden bg-slate-900">
+ 171:                             <img src="{{ item.image }}" alt="{{ item.title }}" loading="lazy" class="w-full h-full object-cover">
+ 172:                         </div>
+ 173:                         <div class="p-4">
+ 174:                             <span class="text-[10px] font-bold text-red-600 uppercase block mb-1">{{ item.category }}</span>
+ 175:                             <h3 class="text-sm font-bold text-slate-900 line-clamp-2 hover:text-blue-600 transition">
+ 176:                                 {{ item.title }}
+ 177:                             </h3>
+ 178:                         </div>
+ 179:                     </div>
+ 180:                     <div class="px-4 pb-4 pt-2 border-t border-gray-100 flex justify-between items-center text-[11px]">
+ 181:                         <span class="text-slate-400 font-mono">{{ item.published }}</span>
+ 182:                         <span class="font-bold text-blue-600 hover:underline">Read →</span>
+ 183:                     </div>
+ 184:                 </div>
+ 185:                 {% endfor %}
+ 186:             </div>
+ 187:         </div>
+ 188:         {% endif %}
+ 189:     </main>
+ 190: 
+ 191:     <!-- News Popup Modal -->
+ 192:     <div id="newsModal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center p-4">
+ 193:         <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative p-6 md:p-8">
+ 194:             <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-500 hover:text-slate-900 text-2xl font-bold">×</button>
+ 195:             <div class="flex items-center gap-3 mb-3">
+ 196:                 <span id="modalCategory" class="bg-red-600 text-white text-xs font-black uppercase px-3 py-1 rounded"></span>
+ 197:                 <span id="modalDate" class="text-xs text-slate-400 font-mono"></span>
+ 198:             </div>
+ 199:             <h2 id="modalTitle" class="text-xl md:text-2xl font-black text-slate-900 mb-4"></h2>
+ 200:             <div class="aspect-[16/9] overflow-hidden rounded-xl bg-slate-900 mb-6">
+ 201:                 <img id="modalImage" src="" alt="" class="w-full h-full object-cover">
+ 202:             </div>
+ 203:             <div id="modalContent" class="text-sm md:text-base text-slate-700 leading-relaxed space-y-4"></div>
+ 204:             <div class="mt-8 pt-4 border-t border-gray-200 flex justify-between items-center text-xs text-slate-500">
+ 205:                 <span>Published by: <strong>DWIPRAJ MALLICK (AZIZNAGAR, 743425)</strong></span>
+ 206:                 <button onclick="closeModal()" class="bg-blue-600 text-white px-4 py-2 rounded font-bold">Close</button>
+ 207:             </div>
+ 208:         </div>
+ 209:     </div>
+ 210: 
+ 211:     <!-- Professional Footer -->
+ 212:     <footer class="bg-blue-950 text-gray-300 text-xs border-t-4 border-red-600 mt-20 pt-12 pb-8 text-center">
+ 213:         <p>© 2026 <strong>24 Early News Network</strong>. All Rights Reserved. Published by <strong>DWIPRAJ MALLICK</strong>.</p>
+ 214:     </footer>
+ 215: 
+ 216:     <script>
+ 217:         function openModal(item) {
+ 218:             document.getElementById('modalCategory').innerText = item.category;
+ 219:             document.getElementById('modalDate').innerText = item.published;
+ 220:             document.getElementById('modalTitle').innerText = item.title;
+ 221:             document.getElementById('modalImage').src = item.image;
+ 222:             document.getElementById('modalContent').innerHTML = <p class="font-bold text-slate-900 text-base"></p><p class="mt-4"></p><p class="mt-4">24 Early News নেটওয়ার্কের বিশেষ প্রতিনিধি দলের সংগ্রহ করা তথ্য অনুযায়ী, এই ঘটনার পেছনে একাধিক গুরুত্বপূর্ণ দিক রয়েছে যা সাধারণ মানুষের নজর কেড়েছে। এই আপডেটটি রিয়েল-টাইমে আপডেট করা হয়েছে।</p>;
+ 223:             document.getElementById('newsModal').classList.remove('hidden');
+ 224:         }
+ 225: 
+ 226:         function closeModal() {
+ 227:             document.getElementById('newsModal').classList.add('hidden');
+ 228:         }
+ 229: 
+ 230:         function toggleSidebar() {
+ 231:             const sidebar = document.getElementById('sidebarMenu');
+ 232:             sidebar.classList.toggle('hidden');
+ 233:         }
+ 234:     </script>
+ 235: </body>
+ 236: </html>
+
+===== TEMPLATE: index.html.backup-20261115-091629 | 14803 bytes =====
+   1: <!DOCTYPE html>
+   2: <html lang="en">
+   3: <head>
+   4:     <meta charset="UTF-8">
+   5:     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   6:     <link rel="canonical" href="https://24earlynews.com/">
+   7:     
+   8:     <title>24 Early News - Live Trending Portal</title>
+   9:     
+  10:     <script src="https://cdn.tailwindcss.com"></script>
+  11:     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  12:     
+  13:     <style>
+  14:         .dropdown-menu { display: none; }
+  15:         .dropdown:hover .dropdown-menu { display: block; }
+  16:     </style>
+  17: </head>
+  18: <body class="bg-gray-100 text-gray-900 font-sans" id="bodyTheme">
+  19:     
+  20:     <!-- Top Utility Bar -->
+  21:     <div class="bg-amber-600 text-white text-xs py-1 px-4 flex justify-between items-center shadow-xs">
+  22:         <div class="flex items-center gap-2 font-bold">
+  23:             <span class="tracking-wide">24 Early News Network</span>
+  24:         </div>
+  25:         <div class="flex items-center gap-4">
+  26:             <span class="hidden md:inline text-[11px] text-amber-100">Preferred news source</span>
+  27:             <div class="flex items-center gap-3 text-sm">
+  28:                 <a href="#" class="hover:text-amber-200" onclick="changeLanguage('en')" title="English">EN</a>
+  29:                 <a href="#" class="hover:text-amber-200" onclick="changeLanguage('hi')" title="Hindi">हिंदी</a>
+  30:                 <a href="#" class="hover:text-amber-200 font-bold" onclick="changeLanguage('bn')" title="Bengali">বাংলা</a>
+  31:             </div>
+  32:         </div>
+  33:     </div>
+  34: 
+  35:     <!-- Main Header -->
+  36:     <header class="bg-blue-600 text-white shadow-md sticky top-0 z-50">
+  37:         <div class="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
+  38:             <div class="flex items-center gap-3">
+  39:                 <button onclick="toggleSidebar()" class="text-white text-xl hover:text-blue-200 focus:outline-none" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+  40:                 
+  41:                 <a href="/" class="flex flex-col items-center justify-center bg-blue-900 px-3 py-1 rounded shadow text-center">
+  42:                     <div class="flex items-center gap-1">
+  43:                         <span class="bg-yellow-400 text-blue-950 font-black px-1.5 py-0.5 text-sm rounded">24</span>
+  44:                         <span class="text-sm font-black tracking-wider uppercase font-serif">EARLY NEWS</span>
+  45:                     </div>
+  46:                     <span class="text-[7px] tracking-widest text-yellow-300 font-bold uppercase -mt-0.5">THINK FIRST</span>
+  47:                 </a>
+  48:             </div>
+  49:             
+  50:             <!-- Navbar Categories -->
+  51:             <nav class="hidden lg:flex items-center gap-1 text-xs font-bold uppercase">
+  52:                 <a href="/?cat=LiveTV" class="hover:bg-blue-700 px-3 py-2 text-yellow-300 flex items-center gap-1"><i class="fa-solid fa-tower-broadcast"></i> Live TV</a>
+  53:                 <a href="/?cat=Latest" class="hover:bg-blue-700 px-3 py-2">Latest</a>
+  54:                 <a href="/?cat=India" class="hover:bg-blue-700 px-3 py-2">India</a>
+  55:                 <a href="/?cat=World" class="hover:bg-blue-700 px-3 py-2">World</a>
+  56:                 <a href="/?cat=Entertainment" class="hover:bg-blue-700 px-3 py-2">Entertainment</a>
+  57:                 <a href="/?cat=Sports" class="hover:bg-blue-700 px-3 py-2">Sports</a>
+  58:                 <a href="/?cat=Auto" class="hover:bg-blue-700 px-3 py-2">Auto</a>
+  59:                 <a href="/?cat=Tech" class="hover:bg-blue-700 px-3 py-2">Tech</a>
+  60:                 <a href="/?cat=Trending" class="hover:bg-blue-700 px-3 py-2">Trending</a>
+  61:             </nav>
+  62: 
+  63:             <div class="flex items-center">
+  64:                 <button class="text-white text-lg hover:text-yellow-300 transition px-2 py-1" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
+  65:             </div>
+  66:         </div>
+  67:     </header>
+  68: 
+  69:     <!-- Sidebar Drawer Menu -->
+  70:     <div id="sidebarMenu" class="fixed inset-0 bg-black/60 z-50 hidden transition-opacity">
+  71:         <div class="bg-blue-600 text-white w-80 h-full p-6 overflow-y-auto shadow-2xl flex flex-col justify-between">
+  72:             <div>
+  73:                 <div class="flex justify-between items-center mb-6 border-b border-blue-500 pb-4">
+  74:                     <div class="flex items-center gap-2">
+  75:                         <span class="bg-yellow-400 text-blue-950 font-black px-2 py-0.5 rounded text-lg">24</span>
+  76:                         <span class="text-xl font-black uppercase font-serif">EARLY NEWS</span>
+  77:                     </div>
+  78:                     <button onclick="toggleSidebar()" class="text-white text-xl hover:text-black" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+  79:                 </div>
+  80:                 
+  81:                 <ul class="space-y-3 text-sm font-semibold uppercase">
+  82:                     <li><a href="/" class="block hover:text-yellow-200">Home</a></li>
+  83:                     <li><a href="/?cat=LiveTV" class="block text-yellow-200">Live TV</a></li>
+  84:                     <li><a href="/?cat=Latest" class="block hover:text-yellow-200">Latest</a></li>
+  85:                     <li><a href="/?cat=India" class="block hover:text-yellow-200">India</a></li>
+  86:                     <li><a href="/?cat=Sports" class="block hover:text-yellow-200">Sports</a></li>
+  87:                     <li><a href="/?cat=Trending" class="block hover:text-yellow-200">Trending</a></li>
+  88:                 </ul>
+  89:             </div>
+  90:             <div class="mt-8 pt-4 border-t border-blue-500 text-center text-[10px] text-blue-200">
+  91:                 © 2026 24 Early News Network. DWIPRAJ MALLICK.
+  92:             </div>
+  93:         </div>
+  94:     </div>
+  95: 
+  96:     <!-- Main Content Area -->
+  97:     <main class="max-w-7xl mx-auto px-4 py-6">
+  98:         <div class="text-xs font-black uppercase text-red-600 tracking-wider mb-3 flex items-center gap-2">
+  99:             <span class="w-2 h-2 bg-red-600 rounded-full animate-ping"></span> Top Google Trending & Live News
+ 100:         </div>
+ 101: 
+ 102:         {% if news and news|length > 0 %}
+ 103:         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+ 104:             <!-- Left Big Featured Headline -->
+ 105:             <div class="lg:col-span-8 bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 flex flex-col justify-between">
+ 106:                 <div>
+ 107:                     <div class="relative aspect-[16/9] overflow-hidden bg-slate-900 cursor-pointer" onclick='openModal({{ news[0] | tojson | safe }})'>
+ 108:                         <img src="{{ news[0].image }}" alt="{{ news[0].title }}" loading="lazy" class="w-full h-full object-cover">
+ 109:                         <span class="absolute top-4 left-4 bg-red-600 text-white text-xs font-black uppercase px-3 py-1 rounded shadow">
+ 110:                             {{ news[0].category }}
+ 111:                         </span>
+ 112:                     </div>
+ 113:                     <div class="p-6">
+ 114:                         <span class="text-xs text-slate-400 font-mono block mb-2">{{ news[0].published }}</span>
+ 115:                         <h2 class="text-2xl md:text-3xl font-black text-slate-900 hover:text-red-600 transition leading-snug mb-3 cursor-pointer" onclick='openModal({{ news[0] | tojson | safe }})'>
+ 116:                             {{ news[0].title }}
+ 117:                         </h2>
+ 118:                         <div class="text-sm text-slate-600 leading-relaxed">
+ 119:                             {{ news[0].summary }}
+ 120:                         </div>
+ 121:                     </div>
+ 122:                 </div>
+ 123:                 <div class="px-6 pb-5 pt-3 border-t border-gray-100 flex justify-between items-center">
+ 124:                     <button onclick='openModal({{ news[0] | tojson | safe }})' class="font-bold text-red-600 text-xs hover:underline bg-transparent border-none cursor-pointer">Read Full Story →</button>
+ 125:                     <span class="text-[11px] text-gray-400 font-mono">Source Verified</span>
+ 126:                 </div>
+ 127:             </div>
+ 128: 
+ 129:             <!-- Right Side Highlights -->
+ 130:             <div class="lg:col-span-4 flex flex-col gap-5">
+ 131:                 <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-center shadow-xs">
+ 132:                     <span class="text-[10px] font-bold text-amber-700 uppercase tracking-widest block mb-2">Advertisement</span>
+ 133:                     <div class="bg-gradient-to-r from-amber-500 to-red-500 text-white p-4 rounded-lg font-bold text-sm shadow">
+ 134:                         Special Featured Brand Partner Spot
+ 135:                     </div>
+ 136:                 </div>
+ 137: 
+ 138:                 <div class="bg-blue-600 text-white text-xs font-black uppercase px-3 py-2.5 rounded-t-lg tracking-wider">Top Trending Highlights</div>
+ 139:                 {% for item in news[1:6] %}
+ 140:                 <div class="bg-white rounded-lg p-3 border border-gray-200 shadow-xs flex gap-3 hover:border-red-500 transition cursor-pointer" onclick='openModal({{ item | tojson | safe }})'>
+ 141:                     {% if item.image %}
+ 142:                     <div class="w-24 h-20 shrink-0 rounded overflow-hidden bg-gray-100">
+ 143:                         <img src="{{ item.image }}" alt="{{ item.title }}" loading="lazy" class="w-full h-full object-cover">
+ 144:                     </div>
+ 145:                     {% endif %}
+ 146:                     <div class="flex flex-col justify-between overflow-hidden">
+ 147:                         <div>
+ 148:                             <span class="text-[10px] font-bold text-red-600 uppercase block">{{ item.category }}</span>
+ 149:                             <h4 class="text-xs font-bold text-slate-900 line-clamp-2 mt-0.5 hover:text-red-600">
+ 150:                                 {{ item.title }}
+ 151:                             </h4>
+ 152:                         </div>
+ 153:                         <span class="text-[10px] text-slate-400 font-mono">{{ item.published }}</span>
+ 154:                     </div>
+ 155:                 </div>
+ 156:                 {% endfor %}
+ 157:             </div>
+ 158:         </div>
+ 159: 
+ 160:         <!-- Additional News Grid -->
+ 161:         <div class="mt-8">
+ 162:             <div class="bg-blue-600 text-white text-xs font-black uppercase px-4 py-2.5 rounded-t-lg tracking-wider mb-4">
+ 163:                 <span><i class="fa-solid fa-newspaper"></i> Latest Google Trending Dispatches</span>
+ 164:             </div>
+ 165:             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+ 166:                 {% for item in news[6:15] %}
+ 167:                 <div class="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 flex flex-col justify-between hover:border-blue-500 transition cursor-pointer" onclick='openModal({{ item | tojson | safe }})'>
+ 168:                     <div>
+ 169:                         <div class="aspect-[16/9] overflow-hidden bg-slate-900">
+ 170:                             <img src="{{ item.image }}" alt="{{ item.title }}" loading="lazy" class="w-full h-full object-cover">
+ 171:                         </div>
+ 172:                         <div class="p-4">
+ 173:                             <span class="text-[10px] font-bold text-red-600 uppercase block mb-1">{{ item.category }}</span>
+ 174:                             <h3 class="text-sm font-bold text-slate-900 line-clamp-2 hover:text-blue-600 transition">
+ 175:                                 {{ item.title }}
+ 176:                             </h3>
+ 177:                         </div>
+ 178:                     </div>
+ 179:                     <div class="px-4 pb-4 pt-2 border-t border-gray-100 flex justify-between items-center text-[11px]">
+ 180:                         <span class="text-slate-400 font-mono">{{ item.published }}</span>
+ 181:                         <span class="font-bold text-blue-600 hover:underline">Read →</span>
+ 182:                     </div>
+ 183:                 </div>
+ 184:                 {% endfor %}
+ 185:             </div>
+ 186:         </div>
+ 187:         {% endif %}
+ 188:     </main>
+ 189: 
+ 190:     <!-- News Popup Modal -->
+ 191:     <div id="newsModal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center p-4">
+ 192:         <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative p-6 md:p-8">
+ 193:             <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-500 hover:text-slate-900 text-2xl font-bold">×</button>
+ 194:             <div class="flex items-center gap-3 mb-3">
+ 195:                 <span id="modalCategory" class="bg-red-600 text-white text-xs font-black uppercase px-3 py-1 rounded"></span>
+ 196:                 <span id="modalDate" class="text-xs text-slate-400 font-mono"></span>
+ 197:             </div>
+ 198:             <h2 id="modalTitle" class="text-xl md:text-2xl font-black text-slate-900 mb-4"></h2>
+ 199:             <div class="aspect-[16/9] overflow-hidden rounded-xl bg-slate-900 mb-6">
+ 200:                 <img id="modalImage" src="" alt="" class="w-full h-full object-cover">
+ 201:             </div>
+ 202:             <div id="modalContent" class="text-sm md:text-base text-slate-700 leading-relaxed space-y-4"></div>
+ 203:             <div class="mt-8 pt-4 border-t border-gray-200 flex justify-between items-center text-xs text-slate-500">
+ 204:                 <span>Published by: <strong>DWIPRAJ MALLICK (AZIZNAGAR, 743425)</strong></span>
+ 205:                 <button onclick="closeModal()" class="bg-blue-600 text-white px-4 py-2 rounded font-bold">Close</button>
+ 206:             </div>
+ 207:         </div>
+ 208:     </div>
+ 209: 
+ 210:     <!-- Professional Footer -->
+ 211:     <footer class="bg-blue-950 text-gray-300 text-xs border-t-4 border-red-600 mt-20 pt-12 pb-8 text-center">
+ 212:         <p>© 2026 <strong>24 Early News Network</strong>. All Rights Reserved. Published by <strong>DWIPRAJ MALLICK</strong>.</p>
+ 213:     </footer>
+ 214: 
+ 215:     <script>
+ 216:         function openModal(item) {
+ 217:             document.getElementById('modalCategoryinnerText').innerText = item.category;
+ 218:             document.getElementById('modalCategory').innerText = item.category;
+ 219:             document.getElementById('modalDate').innerText = item.published;
+ 220:             document.getElementById('modalTitle').innerText = item.title;
+ 221:             document.getElementById('modalImage').src = item.image;
+ 222:             document.getElementById('modalContent').innerHTML = <p class="font-bold text-slate-950 text-base"></p><p class="mt-4"></p><p class="mt-4">24 Early News নেটওয়ার্কের বিশেষ প্রতিনিধি দলের সংগ্রহ করা তথ্য অনুযায়ী, এই ঘটনার পেছনে একাধিক গুরুত্বপূর্ণ দিক রয়েছে যা সাধারণ মানুষের নজর কেড়েছে। এই আপডেটটি রিয়েল-টাইমে আপডেট করা হয়েছে।</p>;
+ 223:             document.getElementById('newsModal').classList.remove('hidden');
+ 224:         }
+ 225: 
+ 226:         function closeModal() {
+ 227:             document.getElementById('newsModal').classList.add('hidden');
+ 228:         }
+ 229: 
+ 230:         function toggleSidebar() {
+ 231:             const sidebar = document.getElementById('sidebarMenu');
+ 232:             sidebar.classList.toggle('hidden');
+ 233:         }
+ 234:     </script>
+ 235: </body>
+ 236: </html>
+
+===== TEMPLATE: privacy.html | 1977 bytes =====
+   1: <!DOCTYPE html>
+   2: <html lang="en">
+   3: <head>
+   4:     <meta charset="UTF-8">
+   5:     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   6:     <title>Privacy Policy - 24 Early News</title>
+   7:     <script src="https://cdn.tailwindcss.com"></script>
+   8: </head>
+   9: <body class="bg-gray-50 text-slate-800 p-6 md:p-12 font-sans">
+  10:     <div class="max-w-3xl mx-auto bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-gray-200">
+  11:         <h1 class="text-3xl font-black text-red-700 mb-6">Privacy Policy</h1>
+  12:         <p class="text-sm leading-relaxed mb-4">At 24 Early News, accessible from https://24earlynews.com, safeguarding the privacy of our visitors is of paramount importance to us. This Privacy Policy document outlines the types of personal information that is collected and recorded by 24 Early News and how we use it.</p>
+  13:         
+  14:         <h2 class="text-xl font-bold text-slate-900 mt-6 mb-3">Log Files & Google Analytics</h2>
+  15:         <p class="text-sm leading-relaxed mb-4">24 Early News follows a standard procedure of using log files. These files log visitors when they visit websites. The information collected includes internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), date and time stamp, referring/exit pages, and possibly the number of clicks. We use Google Analytics to analyze site traffic and improve user experience.</p>
+  16: 
+  17:         <h2 class="text-xl font-bold text-slate-900 mt-6 mb-3">Cookies and Web Beacons</h2>
+  18:         <p class="text-sm leading-relaxed mb-4">Like any other website, 24 Early News uses 'cookies'. These cookies are used to store information including visitors' preferences, and the pages on the website that the visitor accessed or visited.</p>
+  19:         
+  20:         <div class="mt-8 pt-6 border-t border-gray-100">
+  21:             <a href="/" class="inline-block bg-red-600 text-white font-bold px-5 py-2 rounded-lg text-sm hover:bg-red-700 transition">← Back to Home</a>
+  22:         </div>
+  23:     </div>
+  24: </body>
+  25: </html>
+
+===== TEMPLATE: single.html | 3 bytes =====
+
+===== TEMPLATE: submit.html | 3 bytes =====
+
+===== TEMPLATE: terms.html | 1614 bytes =====
+   1: <!DOCTYPE html>
+   2: <html lang="en">
+   3: <head>
+   4:     <meta charset="UTF-8">
+   5:     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   6:     <title>Terms of Service - 24 Early News</title>
+   7:     <script src="https://cdn.tailwindcss.com"></script>
+   8: </head>
+   9: <body class="bg-gray-50 text-slate-800 p-6 md:p-12 font-sans">
+  10:     <div class="max-w-3xl mx-auto bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-gray-200">
+  11:         <h1 class="text-3xl font-black text-red-700 mb-6">Terms of Service</h1>
+  12:         <p class="text-sm leading-relaxed mb-4">By accessing 24 Early News at https://24earlynews.com, you agree to be bound by these terms of service and agree that you are responsible for compliance with any applicable local laws.</p>
+  13:         
+  14:         <h2 class="text-xl font-bold text-slate-900 mt-6 mb-3">Use License</h2>
+  15:         <p class="text-sm leading-relaxed mb-4">Permission is granted to temporarily download one copy of the materials on 24 Early News for personal, non-commercial transitory viewing only.</p>
+  16: 
+  17:         <h2 class="text-xl font-bold text-slate-900 mt-6 mb-3">Disclaimer</h2>
+  18:         <p class="text-sm leading-relaxed mb-4">All the materials on 24 Early News's website are provided on an 'as is' basis. 24 Early News makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties.</p>
+  19:         
+  20:         <div class="mt-8 pt-6 border-t border-gray-100">
+  21:             <a href="/" class="inline-block bg-red-600 text-white font-bold px-5 py-2 rounded-lg text-sm hover:bg-red-700 transition">← Back to Home</a>
+  22:         </div>
+  23:     </div>
+  24: </body>
+  25: </html>
+
+========== END OF READ-ONLY REPORT ==========
